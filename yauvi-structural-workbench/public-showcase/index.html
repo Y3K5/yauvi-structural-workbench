@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="YAUVI Structural Biology Platform — Mark 1 turns protein coordinates into inspectable, checksum-bound structural evidence across six workflows.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="YAUVI Structural Biology Platform — Mark 1">
+  <meta property="og:description" content="From protein coordinates to inspectable structural evidence. Six workflows, separate evidence dimensions, no universal score.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="YAUVI Structural Biology Platform — Mark 1">
+  <meta name="twitter:description" content="A local-first, evidence-bounded structural bioinformatics platform.">
+  <title>YAUVI Structural Biology Platform — Mark 1</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the evidence</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="YAUVI Structural Biology Platform Mark 1 showcase home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>YAUVI</strong><small>Structural Biology Platform</small><b class="edition-badge">Mark 1</b></span>
+    </a>
+    <nav aria-label="Showcase navigation">
+      <a href="#questions">Questions</a>
+      <a href="#cases">Demonstrations</a>
+      <a href="#qualification">Qualification</a>
+      <a href="#reviewer">JOSS path</a>
+      <a href="#run">Run locally</a>
+    </nav>
+    <span class="release-chip" id="release-chip">Local preparation</span>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">YAUVI Structural Biology Platform · Mark 1</p>
+        <h1 id="hero-title">From protein coordinates to <em>inspectable structural evidence.</em></h1>
+        <p class="hero-lead">Mark 1 helps researchers understand what a protein structure supports, what remains uncertain, and what question should come next.</p>
+        <p class="hero-rule">Six structural questions. Separate evidence dimensions. No universal score.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#cases">Explore six traceable cases</a>
+          <a class="button secondary" href="#run">Start Mark 1 locally</a>
+          <a class="text-link" href="#raw-evidence">Inspect raw evidence <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-stats" id="hero-stats" aria-label="Showcase summary"></div>
+      </div>
+      <div class="coordinate-stage" aria-hidden="true">
+        <svg class="protein-map" viewBox="0 0 620 560" role="img">
+          <defs>
+            <linearGradient id="trace" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#57f0ff"/><stop offset="1" stop-color="#61f59c"/></linearGradient>
+            <radialGradient id="glow"><stop stop-color="#57f0ff" stop-opacity=".7"/><stop offset="1" stop-color="#57f0ff" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle class="map-glow" cx="310" cy="280" r="245" fill="url(#glow)"/>
+          <g class="map-grid"><path d="M70 140H550M55 220H565M55 300H565M70 380H550M140 55V505M225 40V520M310 40V520M395 40V520M480 55V505"/></g>
+          <path class="backbone" d="M103 364C136 323 141 246 193 230C246 213 261 301 304 282C345 264 319 196 366 177C415 157 438 229 487 208C523 193 527 145 505 115M115 397C160 427 215 413 226 365C237 315 184 291 203 248M305 282C355 326 405 353 466 328C514 309 530 264 496 222"/>
+          <g class="coordinate-points">
+            <circle cx="103" cy="364" r="7"/><circle cx="141" cy="281" r="5"/><circle cx="193" cy="230" r="8"/><circle cx="260" cy="280" r="5"/><circle cx="304" cy="282" r="9"/><circle cx="350" cy="217" r="5"/><circle cx="366" cy="177" r="8"/><circle cx="438" cy="215" r="5"/><circle cx="487" cy="208" r="8"/><circle cx="505" cy="115" r="5"/><circle cx="115" cy="397" r="6"/><circle cx="226" cy="365" r="7"/><circle cx="466" cy="328" r="7"/><circle cx="496" cy="222" r="5"/>
+          </g>
+          <g class="map-labels"><text x="80" y="344">ATOM 018</text><text x="276" y="316">RES 142</text><text x="388" y="153">CHAIN A</text><text x="430" y="365">EVIDENCE</text></g>
+          <g class="scan"><line x1="72" y1="0" x2="72" y2="560"/><circle cx="72" cy="278" r="4"/></g>
+        </svg>
+        <div class="stage-readout"><span>COORDINATE TRACE</span><strong>Evidence remains residue-bound</strong></div>
+      </div>
+    </section>
+
+    <section class="problem band" aria-labelledby="problem-title">
+      <div><p class="section-index">01 · The problem</p><h2 id="problem-title">A protein model can look convincing and still support the wrong conclusion.</h2></div>
+      <div class="problem-copy"><p>Residue numbering can drift. Predicted confidence can be mistaken for experimental validation. A conformation can be labeled “active” without two-sided references. A surface can be called exposed without biological context.</p><p>YAUVI turns those hidden assumptions into visible inputs, measurements, limitations, and reproducible files.</p></div>
+    </section>
+
+    <section class="questions section" id="questions" aria-labelledby="questions-title">
+      <div class="section-heading"><div><p class="section-index">02 · Six scientific questions</p><h2 id="questions-title">Start with the question—not a black-box score.</h2></div><p>Each workflow keeps its evidence dimension separate and carries an explicit claim ceiling.</p></div>
+      <div class="question-grid" id="question-grid"></div>
+    </section>
+
+    <section class="evidence-flow band" aria-labelledby="flow-title">
+      <div class="section-heading"><div><p class="section-index">03 · Evidence flow</p><h2 id="flow-title">Every conclusion has a route back to its inputs.</h2></div></div>
+      <ol class="flow-list">
+        <li><span>01</span><strong>Exact files</strong><small>Coordinates, sequence, references, provenance</small></li>
+        <li><span>02</span><strong>Preflight</strong><small>Identity, residue mapping, evidence, runtimes</small></li>
+        <li><span>03</span><strong>Canonical CLI</strong><small>Recorded parameters and deterministic methods</small></li>
+        <li><span>04</span><strong>Bounded result</strong><small>Measurements, gaps, uncertainty, non-claims</small></li>
+        <li><span>05</span><strong>Evidence bundle</strong><small>JSON, TSV, report, manifest, checksums</small></li>
+      </ol>
+    </section>
+
+    <section class="cases section" id="cases" aria-labelledby="cases-title">
+      <div class="section-heading"><div><p class="section-index">04 · Executed demonstrations</p><h2 id="cases-title">Six traceable evidence cases.</h2></div><p>Five use invented scientific inputs. SF-CSA tests the canonical pipeline with disclosed alignment-engine test doubles. These are software demonstrations—not biological or patient findings.</p></div>
+      <div class="case-grid" id="case-grid"></div>
+    </section>
+
+    <section class="qualification section" id="qualification" aria-labelledby="qualification-title">
+      <div class="section-heading"><div><p class="section-index">05 · Independent public qualification</p><h2 id="qualification-title">What agreed—and what did not.</h2></div><p>These cases use checksum-locked public records and real scientific runtimes. A passed public case is stronger than a synthetic demonstration, but it does not establish accuracy across every protein class.</p></div>
+      <div class="qualification-summary" id="qualification-summary" aria-label="Qualification totals"></div>
+      <div class="qualification-case-grid" id="qualification-case-grid"></div>
+      <div class="qualification-files"><div><p class="section-index">Evidence identity</p><h3>Reproduce the exact decision trail.</h3><p>Every public artifact was checksum-verified before the canonical command ran. The qualification runner returns incomplete while any required case remains partial.</p></div><div class="evidence-link-list" id="qualification-files"></div></div>
+      <div class="qualification-files" id="qualification-v2-status" aria-label="Qualification v2 expanded-panel status"></div>
+    </section>
+
+    <section class="audiences band" aria-labelledby="audiences-title">
+      <div class="section-heading"><div><p class="section-index">06 · Who benefits</p><h2 id="audiences-title">One evidence trail, read at different depths.</h2></div></div>
+      <div class="audience-grid">
+        <article><span>Researchers</span><h3>Catch structural assumptions before they shape experiments.</h3><p>Review mappings, references, geometry, interfaces, and missing evidence in one traceable workflow.</p></article>
+        <article><span>Students</span><h3>Learn what each computational result can and cannot mean.</h3><p>Plain-language explanations sit beside methods, units, uncertainty, and raw tables.</p></article>
+        <article><span>Collaborators</span><h3>Share the same exact model, question, and evidence boundary.</h3><p>Checksum-bound reports reduce ambiguity across computational and experimental teams.</p></article>
+        <article><span>Reviewers</span><h3>Inspect methods and raw outputs instead of trusting a screenshot.</h3><p>Deterministic evidence bundles expose inputs, parameters, versions, and limitations.</p></article>
+      </div>
+    </section>
+
+    <section class="transparency section" id="transparency" aria-labelledby="transparency-title">
+      <div class="section-heading"><div><p class="section-index">07 · Scientific transparency</p><h2 id="transparency-title">Passing tests and scientific qualification are different claims.</h2></div></div>
+      <div class="qualification-grid">
+        <article class="qualification-card passed"><span>Software test evidence</span><strong id="test-count">—</strong><p>Recorded offline tests exercise code paths, contracts, security boundaries, and deterministic fixtures.</p></article>
+        <article class="qualification-card pending"><span>External scientific cases</span><strong id="qualification-count">—</strong><p>Public case agreement and workflow-general qualification remain separate claims.</p></article>
+        <article class="qualification-card neutral"><span>Release status</span><strong id="release-state">—</strong><p>This local showcase is not a public release, JOSS submission, or authorization to publish.</p></article>
+      </div>
+      <div class="nonclaims" aria-labelledby="nonclaims-title"><h3 id="nonclaims-title">Five boundaries to keep visible</h3><ul id="nonclaim-list"></ul></div>
+      <details class="readiness-details"><summary>See readiness for all six workflows</summary><div class="readiness-table-wrap"><table><caption>Workflow readiness shown without a combined score</caption><thead><tr><th scope="col">Workflow</th><th scope="col">Software state</th><th scope="col">Qualified scientific scope</th><th scope="col">Showcase evidence</th><th scope="col">External benchmark</th><th scope="col">Runtime note</th></tr></thead><tbody id="readiness-rows"></tbody></table></div></details>
+    </section>
+
+    <section class="raw section" id="raw-evidence" aria-labelledby="raw-title">
+      <div class="section-heading"><div><p class="section-index">08 · Raw evidence</p><h2 id="raw-title">Do not stop at the summary.</h2></div><p>Every demonstrated case links to sanitized copies of its generated JSON and TSV outputs, plus SHA-256 identities and visible runtime boundaries.</p></div>
+      <div class="raw-grid" id="raw-grid"></div>
+    </section>
+
+    <section class="reviewer section" id="reviewer" aria-labelledby="reviewer-title">
+      <div class="section-heading"><div><p class="section-index">09 · JOSS publication path</p><h2 id="reviewer-title">Technically prepared. Public-history gates remain.</h2></div><p>The roadmap is relative to an explicitly approved public launch. Local preparation cannot start public history or authorize publication.</p></div>
+      <div class="roadmap-grid" id="roadmap-grid"></div>
+      <div class="gate-panel"><div><p class="section-index">Submission gates</p><h3>Every gate stays independently visible.</h3></div><div class="gate-list" id="gate-list"></div></div>
+      <div class="reviewer-pack"><div><p class="section-index">Reviewer pack</p><h3>Install, reproduce, inspect, and challenge.</h3><p>The reviewer materials keep documentation, software tests, scientific cases, release readiness, and publication approval separate.</p></div><div class="evidence-link-list" id="reviewer-files"></div></div>
+    </section>
+
+    <section class="run band" id="run" aria-labelledby="run-title">
+      <div class="run-copy"><p class="section-index">10 · Run locally</p><h2 id="run-title">Your structures stay on your machine.</h2><p>Install the workbench, start its loopback controller, then choose one of six task-specific analyses. The browser builds the manifest; it does not silently upload, fetch, adopt, or run files.</p></div>
+      <div class="terminal" aria-label="Local installation commands"><div><i></i><i></i><i></i><span>local terminal</span></div><pre><code>python -m pip install .
+yauvi --workspace . workbench serve --port 8943</code></pre><p id="runner-status">Checking whether this page is inside a local YAUVI runner…</p><a class="button primary runner-home" id="runner-home" href="/?#new" hidden>Open local workbench</a></div>
+    </section>
+
+    <section class="share-start section" id="share" aria-labelledby="share-title">
+      <div class="section-heading"><div><p class="section-index">11 · Share and start</p><h2 id="share-title">One name. One honest starting point.</h2></div><p>Use the Mark 1 identity for presentations and early sharing while keeping the scientific suite, evidence state, and non-claims visible.</p></div>
+      <div class="share-profile" id="share-profile"></div>
+      <div class="share-links"><a class="button secondary" href="share/PLATFORM_IDENTITY.json">Platform identity</a><a class="button secondary" href="share/START_HERE.md">Start and share guide</a><a class="button primary" href="/?#new">Start a local analysis</a></div>
+    </section>
+
+    <section class="metadata section" aria-labelledby="metadata-title">
+      <div><p class="section-index">12 · Cite and inspect</p><h2 id="metadata-title">Built for scrutiny.</h2></div>
+      <dl class="metadata-list" id="metadata-list"></dl>
+      <div class="metadata-actions"><button class="button secondary" id="print-button" type="button">Print / Save as PDF</button><a class="text-link" href="PUBLIC_SHOWCASE_MANIFEST.json">Public manifest</a><a class="text-link" href="CHECKSUMS.json">SHA-256 checksums</a></div>
+    </section>
+  </main>
+
+  <footer><div><strong>YAUVI Structural Biology Platform — Mark 1</strong><p>Powered by the YAUVI Structural Workbench. Evidence before interpretation. Local by default.</p></div><p>Demonstrations use synthetic data; qualification summaries use checksum-locked public records. No analytics, cookies, remote assets, or external uploads.</p></footer>
+  <noscript><p class="noscript">JavaScript is required to render the generated evidence summaries. The raw JSON and TSV files remain available in the evidence directory.</p></noscript>
+</body>
+</html>

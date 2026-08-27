@@ -1,0 +1,30 @@
+{
+  "input_sha256": {
+    "structure": "00c5d35eb773846d18b2b80727650a1f4fa38b9a3c59f12a29916622be20ca1a",
+    "topology_evidence": "10fd5fbef527426c374d5b7ca29533f72f216f2b55bc967ab145ffcf31862829"
+  },
+  "limitations": [
+    "Modeled orientation and coordinate accessibility do not prove native intact-cell exposure.",
+    "Alpha-helical orientation is experimental and is not part of the Mark 1 qualified scope."
+  ],
+  "missing_evidence": [
+    "external_opm_ppm_benchmark_adoption"
+  ],
+  "module_id": "membrane_orientation",
+  "outputs": [
+    "MEMBRANE_ORIENTATION.json",
+    "ORIENTED_STRUCTURE.pdb",
+    "MEMBRANE_LAYER.json",
+    "MEMBRANE_ORIENTATION.pml",
+    "RESIDUE_ORIENTATION.tsv"
+  ],
+  "parameters": {
+    "chain": "A",
+    "context": "tm_receptor"
+  },
+  "runtime_versions": {
+    "python": "3.12.7"
+  },
+  "schema_version": "1.0",
+  "version": "0.3.0"
+}

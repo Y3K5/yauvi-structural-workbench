@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sf-csa"
+version = "1.1.0"
+description = "Structure-Function Comparative Species Analysis: compares a checksum-pinned protein model against a frozen experimental structure database and a local proteome universe, keeping structural similarity and sequence homology as separate outputs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{ name = "Yuvraj Patel" }]
+
+# core.py is stdlib-only by design. Foldseek and DIAMOND are external binaries
+# resolved from PATH at run time and version-pinned in the database manifest;
+# they are runtimes, not Python dependencies.
+dependencies = []
+
+[project.optional-dependencies]
+sources = ["yauvi-sources>=0.1.0"]
+dev = ["pytest>=7", "hypothesis>=6.100", "mutmut>=2.4"]
+
+[project.scripts]
+sf-csa = "sf_csa.cli:main"
+
+# Standard src/ layout, matching the other components. The previous
+# `package-dir = { "sf_csa" = "." }` made the package its own project directory,
+# which put the Dockerfile, the container scripts and the campaign config inside
+# the importable package.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sf_csa = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "adapter: needs an external runtime (foldseek, diamond); deselected by default",
+    "network: needs a live endpoint; deselected by default",
+]

@@ -1,0 +1,173 @@
+{
+  "schema_version": "2.0",
+  "collection_id": "yauvi-structural-public-qualification-v2",
+  "manifest_state": "source_adoption_required",
+  "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
+  "execution_policy": {
+    "network_access": "forbidden",
+    "software_tests_are_separate": true,
+    "independent_second_machine_required": true,
+    "predicted_structures_allowed_for_state_atlas": false
+  },
+  "release_blocking_scopes": [
+    "structure_qc:coordinate_provenance_and_validation",
+    "membrane_orientation:beta_barrel",
+    "conformational_state:abl_family",
+    "functional_site_state:curated_functional_site_mapping",
+    "assembly_interface:deposited_biological_assembly",
+    "sf_csa:curated_structure_sequence_comparison"
+  ],
+  "non_blocking_scopes": [
+    "membrane_orientation:alpha_helical",
+    "conformational_state:other_proteins"
+  ],
+  "panels": [
+    {
+      "workflow": "membrane_orientation",
+      "panel_id": "qualification-v2-membrane",
+      "requirements": [
+        {"record_kind": "benchmark_case", "stratum": "beta_barrel", "split": "development", "count": 8},
+        {"record_kind": "benchmark_case", "stratum": "beta_barrel", "split": "held_out", "count": 8},
+        {"record_kind": "benchmark_case", "stratum": "alpha_helical", "split": "development", "count": 8},
+        {"record_kind": "benchmark_case", "stratum": "alpha_helical", "split": "held_out", "count": 8}
+      ],
+      "coverage_rules": [
+        "Alpha-helical cases must include single-pass, multipass, oligomeric, and insufficient-flank controls.",
+        "Development and held-out records cannot share a PDB entry or close-homolog group."
+      ],
+      "gates": {
+        "mean_unsigned_normal_error_deg_max": 15.0,
+        "per_case_unsigned_normal_error_deg_max": 30.0,
+        "mean_half_thickness_error_A_max": 2.5,
+        "non_vacuous_residue_jaccard_min": 0.95,
+        "normal_drift_across_20_rotations_deg_max": 1.0,
+        "empty_extracellular_comparison": "not_applicable"
+      },
+      "records": []
+    },
+    {
+      "workflow": "conformational_state",
+      "panel_id": "qualification-v2-abl-state-atlas",
+      "requirements": [
+        {"record_kind": "reference", "stratum": "active", "split": "reference", "count": 2},
+        {"record_kind": "reference", "stratum": "inactive", "split": "reference", "count": 4},
+        {"record_kind": "benchmark_case", "stratum": "active", "split": "held_out", "count": 4},
+        {"record_kind": "benchmark_case", "stratum": "inactive", "split": "held_out", "count": 8}
+      ],
+      "coverage_rules": [
+        "Reference and held-out records must cover at least eight distinct PDB entries.",
+        "Every comparison uses an exact SIFTS or explicit residue-equivalence map over UniProt ABL1 242-495 with at least 90 percent coverage.",
+        "Every reference has experimental provenance and independent state evidence."
+      ],
+      "gates": {
+        "max_best_reference_rmsd_A": 2.5,
+        "minimum_opposite_state_margin_A": 0.25,
+        "confident_opposite_state_calls_max": 0,
+        "correct_interpretable_coverage_per_state_min": 0.8
+      },
+      "records": []
+    },
+    {
+      "workflow": "structure_qc",
+      "panel_id": "qualification-v2-structqc",
+      "requirements": [
+        {"record_kind": "benchmark_case", "stratum": "x_ray", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "x_ray", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "cryo_em", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "cryo_em", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "nmr", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "nmr", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "alphafold", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "alphafold", "split": "held_out", "count": 2}
+      ],
+      "coverage_rules": [
+        "The panel covers insertion codes, alternate locations, missing residues, nonstandard residues, multichain coordinates, pLDDT, PAE, and experiment-specific wwPDB validation.",
+        "Synthetic sequence-mismatch and undeclared-provenance controls are recorded separately from the 16 public cases."
+      ],
+      "gates": {
+        "residue_identity": "exact",
+        "official_metric_import": "exact",
+        "missing_evidence_behavior": "fail_closed"
+      },
+      "records": []
+    },
+    {
+      "workflow": "functional_site_state",
+      "panel_id": "qualification-v2-site-context",
+      "requirements": [
+        {"record_kind": "benchmark_case", "stratum": "acid_base", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "acid_base", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "nucleophile_or_covalent", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "nucleophile_or_covalent", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "metal_or_cofactor", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "metal_or_cofactor", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "apo_modified_or_incomplete", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "apo_modified_or_incomplete", "split": "held_out", "count": 2}
+      ],
+      "coverage_rules": [
+        "Every catalytic residue and role is frozen from a cited M-CSA release before execution.",
+        "Apo, modified, and incomplete controls must preserve missing or unresolved evidence."
+      ],
+      "gates": {
+        "false_exact_mappings_max": 0,
+        "unambiguous_curated_residue_recovery_min": 0.95,
+        "cofactor_identifier_match": "exact",
+        "missing_state_accuracy": "exact"
+      },
+      "records": []
+    },
+    {
+      "workflow": "assembly_interface",
+      "panel_id": "qualification-v2-assembly-context",
+      "requirements": [
+        {"record_kind": "benchmark_case", "stratum": "homodimer", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "homodimer", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "heterooligomer", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "heterooligomer", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "tetramer", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "tetramer", "split": "held_out", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "higher_order", "split": "development", "count": 2},
+        {"record_kind": "benchmark_case", "stratum": "higher_order", "split": "held_out", "count": 2}
+      ],
+      "coverage_rules": [
+        "Operator expansion and stoichiometry are compared with deposited mmCIF metadata.",
+        "SASA is compared with a checksum-pinned standalone FreeSASA calculation."
+      ],
+      "gates": {
+        "operator_copy_stoichiometry": "exact",
+        "freesasa_relative_tolerance": 0.001,
+        "freesasa_absolute_tolerance_A2": 1.0
+      },
+      "records": []
+    },
+    {
+      "workflow": "sf_csa",
+      "panel_id": "qualification-v2-sf-csa",
+      "requirements": [
+        {"record_kind": "relationship_judgment", "stratum": "exact", "split": "curator_frozen", "count": 4},
+        {"record_kind": "relationship_judgment", "stratum": "homologous_superfamily", "split": "curator_frozen", "count": 4},
+        {"record_kind": "relationship_judgment", "stratum": "fold_analogy", "split": "curator_frozen", "count": 4},
+        {"record_kind": "relationship_judgment", "stratum": "unrelated", "split": "curator_frozen", "count": 4}
+      ],
+      "coverage_rules": [
+        "Exactly four unrelated protein families are represented, with one independently curated judgment in each relationship stratum per family.",
+        "Foldseek and DIAMOND execute as separate checksum-bound evidence legs."
+      ],
+      "gates": {
+        "exact_controls_recovered": "all",
+        "structural_homolog_controls_recovered": "all",
+        "analogy_or_unrelated_promoted_to_function_max": 0,
+        "structural_and_sequence_outputs": "separate"
+      },
+      "records": []
+    }
+  ],
+  "candidate_migrations": [
+    {
+      "source_collection": "yauvi-structural-public-qualification-v1",
+      "source_lock_sha256": "07445616ebed053bd8fe407da184512b4918b920946c4c24f99ae98a19be4fff",
+      "state": "not_adopted",
+      "reason": "Qualification v1 artifacts remain useful curation candidates but do not satisfy v2 split, mapping, stratum, or expected-result metadata by themselves."
+    }
+  ]
+}

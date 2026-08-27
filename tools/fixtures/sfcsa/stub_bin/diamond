@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""Stub `diamond` for the offline fixture. Not a sequence aligner.
+
+Stands in at the process boundary for the two DIAMOND calls the pipeline makes —
+the proteome search and the reverse search that decides reciprocal-best-hit
+status. Emits canned rows from `hits.json`.
+
+The reverse search is the interesting one. RBH status is what promotes a hit from
+`same_mechanism_class` to `probable_same_function`, so the fixture needs to
+control it exactly: `sequence_hits` carries the forward hits, and
+`reverse_best_hit` maps each subject back to whatever the reverse search should
+call its best hit. Point that at the original query and the pair is reciprocal;
+point it elsewhere and it is not. Both cases appear in the fixture.
+
+Supports:
+
+    diamond version
+    diamond makedb --in FASTA --db PREFIX --quiet
+    diamond blastp --query Q --db PREFIX --out OUT --outfmt 6 <fields...> ...
+"""
+import json
+import pathlib
+import sys
+
+HERE = pathlib.Path(__file__).resolve().parent
+CANNED = json.loads((HERE / "hits.json").read_text(encoding="utf-8"))
+
+
+def value_after(argv: list[str], flag: str, default: str = "") -> str:
+    return argv[argv.index(flag) + 1] if flag in argv else default
+
+
+def read_fasta_ids(path: pathlib.Path) -> list[str]:
+    if not path.is_file():
+        return []
+    return [
+        line[1:].split()[0]
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines()
+        if line.startswith(">")
+    ]
+
+
+def main(argv: list[str]) -> int:
+    if not argv:
+        print("usage: diamond version|makedb|blastp", file=sys.stderr)
+        return 2
+
+    if argv[0] == "version":
+        print(CANNED["diamond_version"])
+        return 0
+
+    if argv[0] == "makedb":
+        # The pipeline checks for `<prefix>.dmnd` before rebuilding, so the marker
+        # has to exist. Contents are never read by anything.
+        prefix = value_after(argv, "--db")
+        if not prefix:
+            print("makedb needs --db", file=sys.stderr)
+            return 2
+        pathlib.Path(prefix + ".dmnd").write_text("stub diamond database\n", encoding="utf-8")
+        return 0
+
+    if argv[0] != "blastp":
+        print(f"stub diamond does not implement: {argv[0]}", file=sys.stderr)
+        return 2
+
+    out = pathlib.Path(value_after(argv, "--out"))
+    query_path = pathlib.Path(value_after(argv, "--query"))
+    if not out.name:
+        print("blastp needs --out", file=sys.stderr)
+        return 2
+
+    fields = []
+    if "--outfmt" in argv:
+        # `--outfmt 6 qseqid sseqid ...` — the format number then bare field names.
+        for token in argv[argv.index("--outfmt") + 2 :]:
+            if token.startswith("--"):
+                break
+            fields.append(token)
+
+    # The reverse RBH search is distinguished by its three-column output format;
+    # the forward proteome search asks for ten.
+    is_reverse = fields == ["qseqid", "sseqid", "bitscore"]
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as handle:
+        if is_reverse:
+            for subject in read_fasta_ids(query_path):
+                best = CANNED["reverse_best_hit"].get(subject)
+                if best:
+                    handle.write(f"{subject}\t{best}\t100.0\n")
+        else:
+            for hit in CANNED["sequence_hits"]:
+                handle.write("\t".join(str(hit.get(name, "")) for name in fields) + "\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-structural-workbench"
+version = "0.1.0.dev0"
+description = "Local, evidence-bounded structural protein analysis with deterministic reports and provenance."
+readme = "yauvi-structural-workbench/README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "Yuvraj Patel"}]
+keywords = ["structural bioinformatics", "protein structure", "reproducibility", "provenance"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+  "biopython>=1.81",
+  "gemmi>=0.6",
+  "numpy>=1.24",
+  "PyYAML>=6",
+  "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+md = ["MDAnalysis>=2.6"]
+source-fetch = ["requests>=2.28"]
+dev = ["pytest>=7", "hypothesis>=6.100", "build>=1.2"]
+
+[project.scripts]
+yauvi = "yauvi_structural_workbench.cli:main"
+yauvi-fetch = "yauvi_sources.cli:main"
+structqc = "structqc.cli:main"
+memorient = "memorient.cli:main"
+state-atlas = "state_atlas.cli:main"
+site-context = "site_context.cli:main"
+actstate = "actstate.cli:main"
+assembly-context = "assembly_context.cli:main"
+sf-csa = "sf_csa.cli:main"
+
+[tool.setuptools.packages.find]
+where = [
+  "structural-workbench/src",
+  "platform/src",
+  "sources/src",
+  "structqc/src",
+  "Membrane Orientor/memorient/src",
+  "state-atlas/src",
+  "site-context/src",
+  "activity-state/src",
+  "assembly-context/src",
+  "sf-csa/src",
+]
+include = [
+  "yauvi_structural_workbench*", "yauvi_platform.structural_workbench*", "yauvi_sources*", "structqc*", "memorient*",
+  "state_atlas*", "site_context*", "actstate*", "assembly_context*", "sf_csa*",
+]
+
+[tool.setuptools]
+license-files = ["yauvi-structural-workbench/LICENSE"]
+
+[tool.setuptools.package-data]
+structqc = ["sources.yaml", "py.typed"]
+memorient = ["sources.yaml", "*.js"]
+state_atlas = ["sources.yaml", "py.typed"]
+site_context = ["sources.yaml", "py.typed"]
+actstate = ["sources.yaml", "py.typed"]
+assembly_context = ["sources.yaml", "py.typed"]
+sf_csa = ["sources.yaml", "py.typed"]
+yauvi_sources = ["py.typed"]
+
+[tool.pytest.ini_options]
+addopts = "-ra -m 'not network'"
+markers = [
+  "network: requires a live public endpoint and is deselected by default",
+  "adapter: requires an optional scientific runtime",
+]

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-structqc"
+version = "0.1.0"
+description = "Fail-closed structure provenance, identity, and coordinate-quality evidence."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{ name = "Yuvraj Patel" }]
+dependencies = ["biopython>=1.81", "numpy>=1.24"]
+
+[project.optional-dependencies]
+gemmi = ["gemmi>=0.6"]
+sources = ["yauvi-sources>=0.1.0"]
+dev = ["pytest>=7", "hypothesis>=6.100"]
+
+[project.scripts]
+structqc = "structqc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+structqc = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["adapter: optional scientific runtime"]

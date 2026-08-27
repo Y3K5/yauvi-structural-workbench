@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-state-atlas"
+version = "0.2.0"
+description = "Reference-bounded conformational-state and molecular-ensemble evidence."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{ name = "Yuvraj Patel" }]
+dependencies = ["biopython>=1.81", "numpy>=1.24", "scipy>=1.10"]
+
+[project.optional-dependencies]
+md = ["MDAnalysis>=2.6"]
+sources = ["yauvi-sources>=0.1.0"]
+dev = ["pytest>=7", "hypothesis>=6.100"]
+
+[project.scripts]
+state-atlas = "state_atlas.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+state_atlas = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["adapter: requires MDAnalysis and a trajectory"]

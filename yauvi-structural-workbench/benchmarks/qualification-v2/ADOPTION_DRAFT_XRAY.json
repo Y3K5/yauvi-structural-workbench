@@ -1,0 +1,342 @@
+{
+  "schema_version": "1.0",
+  "draft_state": "artifacts_acquired_expectations_measured",
+  "policy": "A draft only. Nothing here is adopted, and PANEL_MANIFEST.json is unchanged. Records enter the frozen manifest only after artifacts are acquired, checksums recorded, and the open questions in ADOPTION_SCOPING.md are answered.",
+  "panel_id": "qualification-v2-structqc",
+  "stratum": "x_ray",
+  "covers_requirements": [
+    {
+      "stratum": "x_ray",
+      "split": "development",
+      "count": 2
+    },
+    {
+      "stratum": "x_ray",
+      "split": "held_out",
+      "count": 2
+    }
+  ],
+  "split_rationale": "The four ABL entries available (2G1T, 2HZ4, 2V7A, 8SSN) all share UniProt P00519 and therefore one homolog group, so they cannot straddle the splits. Both feature-richest candidates are ABL, so the group is confined to held_out, which also puts the harder cases where generalization is tested. 4HHB is deliberately not used here: it shares the haemoglobin group with AF-P69905, which the alphafold stratum needs, and the leakage rule applies across strata within a panel.",
+  "coverage_achieved": {
+    "alternate_locations": "4EA9 (108 atoms)",
+    "missing_residues": "8SSN (14 gaps), 4EA9 (1 gap)",
+    "nonstandard_residues": "2V7A (PTR)",
+    "multichain_coordinates": "1OAI, 2V7A, 8SSN (2 chains each)",
+    "expression_tags": "4EA9 (6), 8SSN (2)",
+    "engineered_mutation": "2V7A (T315I)",
+    "insertion_codes": "NOT COVERED - no candidate on hand has any insertion code"
+  },
+  "records": [
+    {
+      "record_id": "v2-structqc-xray-dev-4EA9",
+      "record_kind": "benchmark_case",
+      "stratum": "x_ray",
+      "split": "development",
+      "pdb_entry_id": "4EA9",
+      "homolog_group": "gdp_perosamine_nat",
+      "artifact": "sources/wwpdb/4EA9.cif",
+      "checksum": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88",
+      "source_release": {
+        "wwpdb_latest_revision": "2023-09-13",
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "journal": "Biochemistry",
+        "year": "2012",
+        "doi": "10.1021/bi300197h"
+      },
+      "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "1 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "invocation": {
+          "structure": "sources/wwpdb/4EA9.cif",
+          "reference_fasta": "sources/uniprot/O85353.fasta",
+          "validation_report": "sources/wwpdb/4ea9_validation.xml",
+          "chain": null
+        },
+        "residue_identity": {
+          "identity_fraction": 1.0,
+          "coverage_fraction": 0.962791,
+          "mapped_residues": 207,
+          "reference_length": 215,
+          "coordinate_residues": 207,
+          "state": "evaluated"
+        },
+        "chain_summary": {
+          "chain_breaks": 1,
+          "missing_backbone_residues": 0,
+          "residues": 207
+        },
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 4.01,
+            "r_free": 0.1487,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 0.9,
+            "rotamer_outliers_percent": 2.76,
+            "rsrz_outliers_percent": 5.31
+          }
+        },
+        "gemmi_coordinate_validation": "validated"
+      }
+    },
+    {
+      "record_id": "v2-structqc-xray-dev-1OAI",
+      "record_kind": "benchmark_case",
+      "stratum": "x_ray",
+      "split": "development",
+      "pdb_entry_id": "1OAI",
+      "homolog_group": "tap_uba",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "source_release": {
+        "wwpdb_latest_revision": "2024-05-08",
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "journal": "J.Mol.Biol.",
+        "year": "2003",
+        "doi": "10.1016/S0022-2836(02)01474-2"
+      },
+      "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "no chain break in the selected chain",
+        "invocation": {
+          "structure": "sources/wwpdb/1OAI.cif",
+          "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+          "validation_report": "sources/wwpdb/1oai_validation.xml",
+          "chain": null
+        },
+        "residue_identity": {
+          "identity_fraction": 1.0,
+          "coverage_fraction": 0.095315,
+          "mapped_residues": 59,
+          "reference_length": 619,
+          "coordinate_residues": 68,
+          "state": "evaluated"
+        },
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 59
+        },
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.35,
+            "r_free": 0.1762,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.0,
+            "rotamer_outliers_percent": 1.69,
+            "rsrz_outliers_percent": 4.41
+          }
+        },
+        "gemmi_coordinate_validation": "validated"
+      }
+    },
+    {
+      "record_id": "v2-structqc-xray-held-2V7A",
+      "record_kind": "benchmark_case",
+      "stratum": "x_ray",
+      "split": "held_out",
+      "pdb_entry_id": "2V7A",
+      "homolog_group": "abl1_kinase",
+      "artifact": "sources/wwpdb/2V7A.cif",
+      "checksum": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3",
+      "source_release": {
+        "wwpdb_latest_revision": "2024-11-06",
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "journal": "Cancer Res.",
+        "year": "2007",
+        "doi": "10.1158/0008-5472.CAN-07-1825"
+      },
+      "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "1 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "invocation": {
+          "structure": "sources/wwpdb/2V7A.cif",
+          "reference_fasta": "sources/uniprot/P00519.fasta",
+          "validation_report": "sources/wwpdb/2v7a_validation.xml",
+          "chain": "A"
+        },
+        "residue_identity": {
+          "identity_fraction": 0.996296,
+          "coverage_fraction": 0.238938,
+          "mapped_residues": 270,
+          "reference_length": 1130,
+          "coordinate_residues": 270,
+          "state": "evaluated"
+        },
+        "chain_summary": {
+          "chain_breaks": 1,
+          "missing_backbone_residues": 1,
+          "residues": 270
+        },
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 5.54,
+            "r_free": 0.2338,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 2.5,
+            "rotamer_outliers_percent": 5.12,
+            "rsrz_outliers_percent": 3.34
+          }
+        },
+        "gemmi_coordinate_validation": "validated"
+      }
+    },
+    {
+      "record_id": "v2-structqc-xray-held-8SSN",
+      "record_kind": "benchmark_case",
+      "stratum": "x_ray",
+      "split": "held_out",
+      "pdb_entry_id": "8SSN",
+      "homolog_group": "abl1_kinase",
+      "artifact": "sources/wwpdb/8SSN.cif",
+      "checksum": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537",
+      "source_release": {
+        "wwpdb_latest_revision": "2023-09-06",
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "journal": "Proc.Natl.Acad.Sci.USA",
+        "year": "2023",
+        "doi": "10.1073/pnas.2304611120"
+      },
+      "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "5 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "invocation": {
+          "structure": "sources/wwpdb/8SSN.cif",
+          "reference_fasta": "sources/uniprot/P00519.fasta",
+          "validation_report": "sources/wwpdb/8ssn_validation.xml",
+          "chain": "A"
+        },
+        "residue_identity": {
+          "identity_fraction": 0.997619,
+          "coverage_fraction": 0.371681,
+          "mapped_residues": 420,
+          "reference_length": 1130,
+          "coordinate_residues": 420,
+          "state": "evaluated"
+        },
+        "chain_summary": {
+          "chain_breaks": 5,
+          "missing_backbone_residues": 0,
+          "residues": 420
+        },
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.76,
+            "r_free": 0.3507,
+            "ramachandran_outliers_percent": 0.13,
+            "resolution_angstrom": 2.86,
+            "rotamer_outliers_percent": 2.41,
+            "rsrz_outliers_percent": 23.7
+          }
+        },
+        "gemmi_coordinate_validation": "validated"
+      }
+    }
+  ],
+  "source_lock_additions": [
+    {
+      "source_id": "PDB:4EA9",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/4EA9.cif",
+      "url": "https://files.rcsb.org/download/4EA9.cif",
+      "sha256": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88"
+    },
+    {
+      "source_id": "PDB:1OAI",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "url": "https://files.rcsb.org/download/1OAI.cif",
+      "sha256": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c"
+    },
+    {
+      "source_id": "PDB:2V7A",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2V7A.cif",
+      "url": "https://files.rcsb.org/download/2V7A.cif",
+      "sha256": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3"
+    },
+    {
+      "source_id": "PDB:8SSN",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/8SSN.cif",
+      "url": "https://files.rcsb.org/download/8SSN.cif",
+      "sha256": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537"
+    },
+    {
+      "source_id": "PDB:4EA9:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/4ea9_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ea/4ea9/4ea9_validation.xml.gz",
+      "sha256": "6931194705ae471bc6100de52c54cf561faac661cc027e2eba84107afd5a3243"
+    },
+    {
+      "source_id": "PDB:1OAI:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/1oai_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/oa/1oai/1oai_validation.xml.gz",
+      "sha256": "9729a302dd8f5906c7d6e420d1c4fcc43eb9911ebf17de0a45064270179f3d9c"
+    },
+    {
+      "source_id": "PDB:2V7A:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/2v7a_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/v7/2v7a/2v7a_validation.xml.gz",
+      "sha256": "94615a492e788bf9cf09d50aa5e4266e12935758cbde11b948d66d1c58e5d68e"
+    },
+    {
+      "source_id": "PDB:8SSN:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/8ssn_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ss/8ssn/8ssn_validation.xml.gz",
+      "sha256": "b1aea92dfba264c7e324b07a3f813db7a8a6d9861a4e0db1bca1b47f15a5d15f"
+    },
+    {
+      "source_id": "UNIPROT:O85353",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/O85353.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/O85353.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "6cbe0e1924c1ca4573e4a968cf680df863f128ff585e45971184ba0b4f108a58"
+    },
+    {
+      "source_id": "UNIPROT:Q9UBU9",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/Q9UBU9.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/Q9UBU9.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "09b7f1c360bdf8208a8fc9236db5dae4144da78763ccfe0e7b5f37ef8e085102"
+    },
+    {
+      "source_id": "UNIPROT:P00519",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P00519.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P00519.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "f28f5df82a7b04e5a51dc63582a0ce7a41459f6c221e8efa24313fe7e550cc12"
+    }
+  ],
+  "measured_on": {
+    "date": "2026-08-26",
+    "python": "3.12.7",
+    "note": "Expectations are measured outputs of the current StructQC, recorded so a future run can be compared against them. They are not independent ground truth."
+  }
+}

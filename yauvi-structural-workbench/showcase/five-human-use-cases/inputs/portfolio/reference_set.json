@@ -1,0 +1,23 @@
+{
+  "reference_set_id": "synthetic-two-state",
+  "decision_rules": {
+    "max_rmsd_A": 0.5,
+    "min_margin_A": 0.2
+  },
+  "references": [
+    {
+      "reference_id": "ACTIVE_SYNTHETIC",
+      "state": "active",
+      "structure": "query.pdb",
+      "provenance": {"class": "experimental", "method": "synthetic coordinate fixture"},
+      "state_evidence": {"basis": "synthetic compact reference; no biological activity claim"}
+    },
+    {
+      "reference_id": "INACTIVE_SYNTHETIC",
+      "state": "inactive",
+      "structure": "inactive_reference.pdb",
+      "provenance": {"class": "experimental", "method": "synthetic coordinate fixture"},
+      "state_evidence": {"basis": "synthetic extended reference; no biological activity claim"}
+    }
+  ]
+}

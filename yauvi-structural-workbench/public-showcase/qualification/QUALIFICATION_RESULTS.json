@@ -1,0 +1,1144 @@
+{
+  "collection_id": "yauvi-structural-public-qualification-v1",
+  "overall_state": "incomplete_or_failed",
+  "qualification_rule": "All required checks for all six workflows must pass. Software tests are a separate gate.",
+  "schema_version": "1.0",
+  "source_lock": {
+    "artifact_count": 27,
+    "passed": true
+  },
+  "workflow_counts": {
+    "blocked": 0,
+    "failed": 0,
+    "partial": 2,
+    "passed": 4
+  },
+  "workflows": [
+    {
+      "checks": [
+        {
+          "check": "experimental_cli_completed",
+          "expected": 0,
+          "observed": 0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "gemmi_coordinate_validation",
+          "expected": "gemmi validated",
+          "observed": {
+            "coordinate_analysis": "biopython",
+            "gemmi_validation": "validated",
+            "gemmi_version": "0.7.5"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "author_label_identity_present",
+          "expected": 46,
+          "observed": 46,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "reference_mapping_exact",
+          "expected": "identity_fraction=1.0",
+          "observed": {
+            "coordinate_residues": 46,
+            "coverage_fraction": 1.0,
+            "identity_fraction": 1.0,
+            "mapped_residues": 46,
+            "reference_length": 46,
+            "state": "evaluated"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "wwpdb_validation_imported",
+          "expected": "imported",
+          "observed": "imported",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "wwpdb_geometry_metrics_imported",
+          "expected": [
+            "clashscore",
+            "ramachandran_outliers_percent",
+            "rotamer_outliers_percent"
+          ],
+          "observed": [
+            "clashscore",
+            "ramachandran_outliers_percent",
+            "resolution_angstrom",
+            "rotamer_outliers_percent"
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "wwpdb_raw_clashscore_not_percentile",
+          "expected": 0.0,
+          "observed": 0.0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "predicted_cli_completed",
+          "expected": 0,
+          "observed": 0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "plddt_only_under_declared_prediction",
+          "expected": 142,
+          "observed": 142,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "pae_matrix_evaluated",
+          "expected": "evaluated square matrix of 142",
+          "observed": {
+            "max_angstrom": 28.0,
+            "mean_angstrom": 2.061545,
+            "size": 142,
+            "state": "evaluated"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "unknown_provenance_fails_incomplete",
+          "expected": {
+            "class": "unknown",
+            "exit_code": 1
+          },
+          "observed": {
+            "class": "unknown",
+            "exit_code": 1
+          },
+          "passed": true,
+          "required": true
+        }
+      ],
+      "claim_boundary": "Coordinate and imported validation evidence do not establish native conformation or function.",
+      "independent_references": [
+        "wwPDB validation XML",
+        "AlphaFold DB v6 metadata/model/PAE"
+      ],
+      "observations": {
+        "predicted_mean_plddt": 98.063732,
+        "predicted_pae": {
+          "max_angstrom": 28.0,
+          "mean_angstrom": 2.061545,
+          "size": 142,
+          "state": "evaluated"
+        },
+        "wwpdb_metrics_imported": {
+          "clashscore": 0.0,
+          "ramachandran_outliers_percent": 0.0,
+          "resolution_angstrom": 1.5,
+          "rotamer_outliers_percent": 0.0
+        }
+      },
+      "status": "passed",
+      "workflow": "structure_qc"
+    },
+    {
+      "checks": [
+        {
+          "check": "beta_barrel_mean_normal_error",
+          "expected": "<= 15 degrees",
+          "observed": 7.441992,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "beta_barrel_mean_half_thickness_error",
+          "expected": "<= 2.5 A",
+          "observed": 0.743508,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "beta_barrel_rotation_invariance",
+          "expected": "all seed Jaccards >= 0.95",
+          "observed": [
+            0.961,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "alpha_helical_mean_normal_error",
+          "expected": "<= 15 degrees",
+          "observed": 31.60872,
+          "passed": false,
+          "required": true
+        },
+        {
+          "check": "alpha_helical_mean_half_thickness_error",
+          "expected": "<= 2.5 A",
+          "observed": 0.926167,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "alpha_helical_rotation_invariance",
+          "expected": "all seed Jaccards >= 0.95",
+          "observed": [
+            1.0,
+            1.0,
+            0.88
+          ],
+          "passed": false,
+          "required": true
+        }
+      ],
+      "claim_boundary": "Agreement with OPM placement does not establish native-cell exposure or topology in a tested cell.",
+      "independent_reference": "OPM-oriented coordinates; deposited membrane normal is Z and REMARK records bilayer half-thickness",
+      "precommitted_tolerances": {
+        "mean_half_thickness_error_A": 2.5,
+        "mean_normal_error_deg": 15.0,
+        "rotation_jaccard": 0.95
+      },
+      "records": [
+        {
+          "context": "gram_negative_om",
+          "fitted_half_thickness_A": 12.427997,
+          "half_thickness_absolute_error_A": 0.172003,
+          "mean_normal_error_deg": 5.742114,
+          "normal_error_sd_deg": 1.109799,
+          "opm_half_thickness_A": 12.6,
+          "pdb_id": "1BXW",
+          "rotation_invariance": {
+            "jaccards": [
+              0.961,
+              0.961,
+              0.961,
+              0.961
+            ],
+            "mean_jaccard": 0.961,
+            "n_reference_extracellular": 51,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "beta_barrel"
+        },
+        {
+          "context": "gram_negative_om",
+          "fitted_half_thickness_A": 13.496953,
+          "half_thickness_absolute_error_A": 1.796953,
+          "mean_normal_error_deg": 0.084365,
+          "normal_error_sd_deg": 0.015748,
+          "opm_half_thickness_A": 11.7,
+          "pdb_id": "2POR",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 24,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "beta_barrel"
+        },
+        {
+          "context": "gram_negative_om",
+          "fitted_half_thickness_A": 12.979482,
+          "half_thickness_absolute_error_A": 0.979482,
+          "mean_normal_error_deg": 8.38456,
+          "normal_error_sd_deg": 0.783596,
+          "opm_half_thickness_A": 12.0,
+          "pdb_id": "1QD6",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 34,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "beta_barrel"
+        },
+        {
+          "context": "gram_negative_om",
+          "fitted_half_thickness_A": 11.639992,
+          "half_thickness_absolute_error_A": 0.360008,
+          "mean_normal_error_deg": 9.321213,
+          "normal_error_sd_deg": 1.263271,
+          "opm_half_thickness_A": 12.0,
+          "pdb_id": "2F1T",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 39,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "beta_barrel"
+        },
+        {
+          "context": "gram_negative_om",
+          "fitted_half_thickness_A": 12.090908,
+          "half_thickness_absolute_error_A": 0.409092,
+          "mean_normal_error_deg": 13.677707,
+          "normal_error_sd_deg": 4.43204,
+          "opm_half_thickness_A": 12.5,
+          "pdb_id": "1P4T",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 26,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "beta_barrel"
+        },
+        {
+          "context": "tm_receptor",
+          "fitted_half_thickness_A": 14.999872,
+          "half_thickness_absolute_error_A": 1.000128,
+          "mean_normal_error_deg": 78.812881,
+          "normal_error_sd_deg": 1.448742,
+          "opm_half_thickness_A": 16.0,
+          "pdb_id": "1AFO",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 0,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "alpha_helical"
+        },
+        {
+          "context": "eukaryotic_pm",
+          "fitted_half_thickness_A": 14.50893,
+          "half_thickness_absolute_error_A": 0.49107,
+          "mean_normal_error_deg": 2.151108,
+          "normal_error_sd_deg": 3.690051,
+          "opm_half_thickness_A": 15.0,
+          "pdb_id": "1C3W",
+          "rotation_invariance": {
+            "jaccards": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard": 1.0,
+            "n_reference_extracellular": 6,
+            "passed": true,
+            "threshold": 0.95
+          },
+          "stratum": "alpha_helical"
+        },
+        {
+          "context": "eukaryotic_pm",
+          "fitted_half_thickness_A": 14.312697,
+          "half_thickness_absolute_error_A": 1.287303,
+          "mean_normal_error_deg": 13.86217,
+          "normal_error_sd_deg": 4.970829,
+          "opm_half_thickness_A": 15.6,
+          "pdb_id": "1U19",
+          "rotation_invariance": {
+            "jaccards": [
+              0.84,
+              0.84,
+              0.84,
+              1.0
+            ],
+            "mean_jaccard": 0.88,
+            "n_reference_extracellular": 23,
+            "passed": false,
+            "threshold": 0.95
+          },
+          "stratum": "alpha_helical"
+        }
+      ],
+      "status": "partial",
+      "workflow": "membrane_orientation"
+    },
+    {
+      "checks": [
+        {
+          "check": "two_sided_reference_validation",
+          "expected": "exit_code 0",
+          "observed": {
+            "exit_code": 0,
+            "stderr": "",
+            "stdout": "{\n  \"errors\": [],\n  \"valid\": true\n}"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "held_out_2V7A_active_like",
+          "expected": "active_like",
+          "observed": "active_like",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "held_out_8SSN_inactive_like",
+          "expected": "inactive_like",
+          "observed": "unresolved",
+          "passed": false,
+          "required": true
+        },
+        {
+          "check": "no_opposite_confident_calls",
+          "expected": "no held-out opposite-state call",
+          "observed": [
+            "active_like",
+            "unresolved"
+          ],
+          "passed": true,
+          "required": true
+        }
+      ],
+      "claim_boundary": "A state label is geometric resemblance to curated references, not kinase activity.",
+      "independent_reference": "KinCore ABL1 experimental-chain labels",
+      "precommitted_rules": {
+        "alignment": "sequence-mapped shared CA atoms",
+        "max_rmsd_A": 2.5,
+        "min_margin_A": 0.25
+      },
+      "records": [
+        {
+          "chain": "A",
+          "expected_yauvi_label": "active_like",
+          "frame_metrics": [
+            {
+              "best_reference": "2HZ4_B_KinCore_active",
+              "best_rmsd_A": 0.98987,
+              "call": "active_like",
+              "cluster": 1,
+              "frame": 0,
+              "margin_A": 3.057389,
+              "rmsd_2G1T_A_KinCore_inactive_A": 4.047258,
+              "rmsd_2HZ4_B_KinCore_active_A": 0.98987
+            }
+          ],
+          "independent_label": "KinCore active",
+          "observed_yauvi_label": "active_like",
+          "pdb_id": "2V7A",
+          "state_atlas_exit_code": 0,
+          "structqc_exit_code": 0
+        },
+        {
+          "chain": "A",
+          "expected_yauvi_label": "inactive_like",
+          "frame_metrics": [
+            {
+              "best_reference": "2G1T_A_KinCore_inactive",
+              "best_rmsd_A": 6.23899,
+              "call": "unresolved",
+              "cluster": 1,
+              "frame": 0,
+              "margin_A": 0.566458,
+              "rmsd_2G1T_A_KinCore_inactive_A": 6.23899,
+              "rmsd_2HZ4_B_KinCore_active_A": 6.805448
+            }
+          ],
+          "independent_label": "KinCore inactive",
+          "observed_yauvi_label": "unresolved",
+          "pdb_id": "8SSN",
+          "state_atlas_exit_code": 1,
+          "structqc_exit_code": 0
+        }
+      ],
+      "status": "partial",
+      "workflow": "conformational_state"
+    },
+    {
+      "checks": [
+        {
+          "check": "structqc_boundary_completed",
+          "expected": 0,
+          "observed": 0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "mcsa_six_reference_residues_loaded",
+          "expected": [
+            7,
+            8,
+            70,
+            147,
+            178,
+            180
+          ],
+          "observed": [
+            7,
+            8,
+            70,
+            147,
+            178,
+            180
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "all_mcsa_residues_exactly_mapped",
+          "expected": "six role_compatible records",
+          "observed": [
+            "role_compatible",
+            "role_compatible",
+            "role_compatible",
+            "role_compatible",
+            "role_compatible",
+            "role_compatible"
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "site_cli_scientifically_incomplete_without_pocket_leg",
+          "expected": {
+            "exit_code": 1,
+            "missing_evidence": [
+              "pocket_results"
+            ]
+          },
+          "observed": {
+            "exit_code": 1,
+            "missing_evidence": [
+              "pocket_results"
+            ]
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "no_activity_claim_emitted",
+          "expected": "no observed activity claim",
+          "observed": "claim language inspected",
+          "passed": true,
+          "required": true
+        }
+      ],
+      "claim_boundary": "Exact mapping of M-CSA residues is not an observation of catalysis.",
+      "independent_reference": "M-CSA entry 1, glutamate racemase P56868 / PDB 1B73",
+      "mapped_sites": [
+        {
+          "annotation_detail": "Acts as the general acid/base for Cys70 activation.",
+          "auth_seq_id": 7,
+          "chain_id": "A",
+          "detail": "observed D; expected one of D for declared role acid_base",
+          "expected_residues": [
+            "D"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "D",
+          "position": 7,
+          "role": "acid_base",
+          "state": "role_compatible",
+          "type": "active_site"
+        },
+        {
+          "annotation_detail": "Activates Asp7",
+          "auth_seq_id": 8,
+          "chain_id": "A",
+          "detail": "observed S; expected one of S for declared role unspecified",
+          "expected_residues": [
+            "S"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "S",
+          "position": 8,
+          "role": "unspecified",
+          "state": "role_compatible",
+          "type": "active_site"
+        },
+        {
+          "annotation_detail": "The catalytic general acid/base that deprotonates the L-substrate. In the reverse reaction, Cys70 re-protonates the substrate to produce the L-product.",
+          "auth_seq_id": 70,
+          "chain_id": "A",
+          "detail": "observed C; expected one of C for declared role acid_base",
+          "expected_residues": [
+            "C"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "C",
+          "position": 70,
+          "role": "acid_base",
+          "state": "role_compatible",
+          "type": "active_site"
+        },
+        {
+          "annotation_detail": "Re-protonates Cys178 to return the active site to a favourable state. In the reverse reaction it accepts a proton from Cys178 to initiate the reaction.",
+          "auth_seq_id": 147,
+          "chain_id": "A",
+          "detail": "observed E; expected one of E for declared role acid_base",
+          "expected_residues": [
+            "E"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "E",
+          "position": 147,
+          "role": "acid_base",
+          "state": "role_compatible",
+          "type": "active_site"
+        },
+        {
+          "annotation_detail": "The catalytic general acid/base that re-protonates the substrate to produce the D-product. In the reverse reaction it deprotonates the D-substrate.",
+          "auth_seq_id": 178,
+          "chain_id": "A",
+          "detail": "observed C; expected one of C for declared role acid_base",
+          "expected_residues": [
+            "C"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "C",
+          "position": 178,
+          "role": "acid_base",
+          "state": "role_compatible",
+          "type": "active_site"
+        },
+        {
+          "annotation_detail": "Activates Glu147",
+          "auth_seq_id": 180,
+          "chain_id": "A",
+          "detail": "observed H; expected one of H for declared role unspecified",
+          "expected_residues": [
+            "H"
+          ],
+          "insertion_code": "",
+          "nearest_heteroatoms": [],
+          "observed_residue": "H",
+          "position": 180,
+          "role": "unspecified",
+          "state": "role_compatible",
+          "type": "active_site"
+        }
+      ],
+      "missing_evidence": [
+        "pocket_results"
+      ],
+      "status": "passed",
+      "workflow": "functional_site_state"
+    },
+    {
+      "assembly": {
+        "chains_expected": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "chains_observed": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "complete": true,
+        "file_name": "4HHB-assembly1.cif",
+        "lower_bound": false,
+        "metadata": {
+          "assembly_id": "1",
+          "asym_ids": [],
+          "format": "mmcif",
+          "operator_application": {
+            "chain_copies": [
+              {
+                "copy_chain_id": "A",
+                "copy_index": 1,
+                "source_chain_id": "A"
+              },
+              {
+                "copy_chain_id": "B",
+                "copy_index": 1,
+                "source_chain_id": "B"
+              },
+              {
+                "copy_chain_id": "C",
+                "copy_index": 1,
+                "source_chain_id": "C"
+              },
+              {
+                "copy_chain_id": "D",
+                "copy_index": 1,
+                "source_chain_id": "D"
+              }
+            ],
+            "observed_atom_count_before": 4779,
+            "observed_chain_count_before": 4,
+            "operator_backend": "gemmi",
+            "operator_state": "not_declared",
+            "requested_assembly_id": "1"
+          },
+          "operator_expressions": []
+        }
+      },
+      "checks": [
+        {
+          "check": "structqc_boundary_completed",
+          "expected": 0,
+          "observed": 0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "assembly_cli_completed",
+          "expected": 0,
+          "observed": 0,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "wwpdb_tetramer_stoichiometry",
+          "expected": "complete A,B,C,D tetramer",
+          "observed": {
+            "chains_expected": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "chains_observed": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "complete": true,
+            "file_name": "4HHB-assembly1.cif",
+            "lower_bound": false,
+            "metadata": {
+              "assembly_id": "1",
+              "asym_ids": [],
+              "format": "mmcif",
+              "operator_application": {
+                "chain_copies": [
+                  {
+                    "copy_chain_id": "A",
+                    "copy_index": 1,
+                    "source_chain_id": "A"
+                  },
+                  {
+                    "copy_chain_id": "B",
+                    "copy_index": 1,
+                    "source_chain_id": "B"
+                  },
+                  {
+                    "copy_chain_id": "C",
+                    "copy_index": 1,
+                    "source_chain_id": "C"
+                  },
+                  {
+                    "copy_chain_id": "D",
+                    "copy_index": 1,
+                    "source_chain_id": "D"
+                  }
+                ],
+                "observed_atom_count_before": 4779,
+                "observed_chain_count_before": 4,
+                "operator_backend": "gemmi",
+                "operator_state": "not_declared",
+                "requested_assembly_id": "1"
+              },
+              "operator_expressions": []
+            }
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "gemmi_assembly_metadata_read",
+          "expected": "gemmi",
+          "observed": {
+            "chain_copies": [
+              {
+                "copy_chain_id": "A",
+                "copy_index": 1,
+                "source_chain_id": "A"
+              },
+              {
+                "copy_chain_id": "B",
+                "copy_index": 1,
+                "source_chain_id": "B"
+              },
+              {
+                "copy_chain_id": "C",
+                "copy_index": 1,
+                "source_chain_id": "C"
+              },
+              {
+                "copy_chain_id": "D",
+                "copy_index": 1,
+                "source_chain_id": "D"
+              }
+            ],
+            "observed_atom_count_before": 4779,
+            "observed_chain_count_before": 4,
+            "operator_backend": "gemmi",
+            "operator_state": "not_declared",
+            "requested_assembly_id": "1"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "interface_contacts_observed",
+          "expected": "> 0 heavy-atom residue contacts at 5 A",
+          "observed": 201,
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "buried_surface_positive",
+          "expected": "buried_sasa_A2 > 0",
+          "observed": {
+            "buried_sasa_A2": 1760.002685,
+            "subject_assembly_sasa_A2": 6083.185108,
+            "subject_isolated_sasa_A2": 7843.187793
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "publication_grade_freesasa_invoked",
+          "expected": "FreeSASA available and invoked",
+          "observed": {
+            "binary": "/usr/local/bin/freesasa",
+            "method": "freesasa_lee_richards_default_single_thread",
+            "runtime": "available_invoked"
+          },
+          "passed": true,
+          "required": true
+        }
+      ],
+      "claim_boundary": "A deposited assembly and computed interface are not binding affinity or intact-cell accessibility.",
+      "independent_reference": "wwPDB biological assembly 1 for hemoglobin 4HHB",
+      "methods": {
+        "contact_cutoff_A": 5.0,
+        "contact_geometry": "scipy_ckdtree",
+        "sasa": "freesasa_lee_richards_default_single_thread"
+      },
+      "status": "passed",
+      "surface": {
+        "buried_sasa_A2": 1760.002685,
+        "subject_assembly_sasa_A2": 6083.185108,
+        "subject_isolated_sasa_A2": 7843.187793
+      },
+      "workflow": "assembly_interface"
+    },
+    {
+      "checks": [
+        {
+          "check": "foldseek_runtime_installed",
+          "expected": "installed",
+          "observed": "/opt/miniconda3/bin/foldseek",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "diamond_runtime_installed",
+          "expected": "installed",
+          "observed": "/opt/miniconda3/bin/diamond",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "cath_control_classes_frozen",
+          "expected": [
+            [
+              "1B73",
+              "A",
+              "3.40.50.1860",
+              "exact query control"
+            ],
+            [
+              "2JFN",
+              "A",
+              "3.40.50.1860",
+              "same CATH homologous superfamily"
+            ],
+            [
+              "4EA9",
+              "A",
+              "3.40.50.20",
+              "same CATH topology, different homologous superfamily"
+            ],
+            [
+              "1OAI",
+              "A",
+              "1.10.8.10",
+              "different CATH class and topology"
+            ]
+          ],
+          "observed": [
+            [
+              "1B73",
+              "A",
+              "3.40.50.1860",
+              "exact query control"
+            ],
+            [
+              "2JFN",
+              "A",
+              "3.40.50.1860",
+              "same CATH homologous superfamily"
+            ],
+            [
+              "4EA9",
+              "A",
+              "3.40.50.20",
+              "same CATH topology, different homologous superfamily"
+            ],
+            [
+              "1OAI",
+              "A",
+              "1.10.8.10",
+              "different CATH class and topology"
+            ]
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "manifest_builder_completed",
+          "expected": "exit_code 0",
+          "observed": {
+            "exit_code": 0,
+            "stderr": "",
+            "stdout": "wrote <repo>/yauvi-structural-workbench/benchmarks/qualification-v1/build/sf-csa/config/target_manifest.json\nwrote <repo>/yauvi-structural-workbench/benchmarks/qualification-v1/build/sf-csa/config/database_manifest.json"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "manifest_validation_completed",
+          "expected": "exit_code 0",
+          "observed": {
+            "exit_code": 0,
+            "stderr": "",
+            "stdout": "[ok]      manifest:queries  <repo>/yauvi-structural-workbench/benchmarks/qualification-v1/build/sf-csa/config/target_manifest.json\n  [ok]      manifest:databases  <repo>/yauvi-structural-workbench/benchmarks/qualification-v1/build/sf-csa/config/database_manifest.json\n  [ok]      queries:present  1 query/queries\n  [ok]      queries:mechanism_group  every query names a mechanism group\n  [ok]      databases:pdb_database  present\n  [ok]      databases:pdb_database_checksum  present\n  [ok]      databases:thresholds  present\n  [ok]      databases:classification_vocabulary  present\n  [ok]      databases:mechanism_families  declared in the manifest\n  [ok]      databases:contested_groups  declared in the manifest\n  [ok]      databases:divergence_sets  declared in the manifest"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "real_sf_csa_release_executed",
+          "expected": "exit_code 0",
+          "observed": {
+            "exit_code": 0,
+            "stderr": "",
+            "stdout": "SF-CSA release release: 1 queries, 1 proteomes"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "real_sf_csa_release_verified",
+          "expected": "exit_code 0",
+          "observed": {
+            "exit_code": 0,
+            "stderr": "",
+            "stdout": "SF-CSA release verification: PASS"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "exact_structure_control",
+          "expected": "1B73 exact_function_supported",
+          "observed": {
+            "aligned_length": "252",
+            "aligned_tm_score": "1.004E+00",
+            "classification_basis": "exact accession self-match",
+            "database": "experimental_pdb",
+            "evalue": "3.437E-55",
+            "evidence_class": "E1_exact_identity",
+            "fident": "1.000",
+            "function_classification": "exact_function_supported",
+            "limitation": "self-match is a control, not an independent function experiment",
+            "query_coverage": "1.000",
+            "query_id": "1B73",
+            "query_length": "252",
+            "query_tm_score": "1.000E+00",
+            "rmsd": "2.594E-02",
+            "structural_category": "whole_architecture_match",
+            "target_coverage": "1.000",
+            "target_description": "1B73",
+            "target_id": "1B73",
+            "target_length": "252",
+            "target_tm_score": "1.000E+00",
+            "transform_t": "-0.000,0.000,-0.000",
+            "transform_u": "1.000,-0.000,0.000,0.000,1.000,-0.000,-0.000,0.000,1.000"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "cath_homolog_recovered",
+          "expected": "2JFN structural match",
+          "observed": {
+            "aligned_length": "252",
+            "aligned_tm_score": "7.897E-01",
+            "classification_basis": "whole-architecture similarity without concordant independent function evidence",
+            "database": "experimental_pdb",
+            "evalue": "7.578E-15",
+            "evidence_class": "E4_computational",
+            "fident": "0.269",
+            "function_classification": "structural_analogy_only",
+            "limitation": "fold similarity alone is non-functional evidence",
+            "query_coverage": "0.940",
+            "query_id": "1B73",
+            "query_length": "252",
+            "query_tm_score": "7.450E-01",
+            "rmsd": "4.664E+00",
+            "structural_category": "whole_architecture_match",
+            "target_coverage": "0.944",
+            "target_description": "2JFN",
+            "target_id": "2JFN",
+            "target_length": "266",
+            "target_tm_score": "7.100E-01",
+            "transform_t": "-13.480,37.778,-7.434",
+            "transform_u": "0.385,-0.291,0.876,0.738,-0.473,-0.482,0.554,0.832,0.032"
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "cath_fold_analogy_not_promoted_to_exact_function",
+          "expected": "4EA9 absent or bounded analogy",
+          "observed": "not returned at threshold",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "cath_unrelated_not_promoted",
+          "expected": "1OAI absent or unresolved",
+          "observed": "not returned at threshold",
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "sequence_exact_control_recovered",
+          "expected": "1B73",
+          "observed": [
+            "1B73",
+            "2JFN"
+          ],
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "structural_and_sequence_legs_preserved",
+          "expected": "separate Foldseek and DIAMOND tables",
+          "observed": {
+            "sequence_table": true,
+            "structure_table": true
+          },
+          "passed": true,
+          "required": true
+        },
+        {
+          "check": "database_bundle_checksum_complete",
+          "expected": "composite checksum binds every Foldseek database file",
+          "observed": {
+            "bundle_file_count": 14,
+            "bundle_files": [
+              "public_structures",
+              "public_structures.dbtype",
+              "public_structures.index",
+              "public_structures.lookup",
+              "public_structures.source",
+              "public_structures_ca",
+              "public_structures_ca.dbtype",
+              "public_structures_ca.index",
+              "public_structures_h",
+              "public_structures_h.dbtype",
+              "public_structures_h.index",
+              "public_structures_ss",
+              "public_structures_ss.dbtype",
+              "public_structures_ss.index"
+            ],
+            "manifest_checksum": "af8bc81cedc3ad1b64027badc1d641f21fe5c568bb1552588cf339439d97dac3",
+            "manifest_file_count": 14
+          },
+          "passed": true,
+          "required": true
+        }
+      ],
+      "claim_boundary": "A fold or sequence hit cannot be promoted to exact functional transfer.",
+      "control_relationships": [
+        {
+          "cath": "3.40.50.1860",
+          "chain": "A",
+          "pdb_id": "1B73",
+          "relationship": "exact query control"
+        },
+        {
+          "cath": "3.40.50.1860",
+          "chain": "A",
+          "pdb_id": "2JFN",
+          "relationship": "same CATH homologous superfamily"
+        },
+        {
+          "cath": "3.40.50.20",
+          "chain": "A",
+          "pdb_id": "4EA9",
+          "relationship": "same CATH topology, different homologous superfamily"
+        },
+        {
+          "cath": "1.10.8.10",
+          "chain": "A",
+          "pdb_id": "1OAI",
+          "relationship": "different CATH class and topology"
+        }
+      ],
+      "independent_reference": "CATH v4.3 classifications plus public PDB controls",
+      "runtime_versions": {
+        "diamond": "diamond version 2.1.11",
+        "foldseek": "10.941cd33"
+      },
+      "sequence_hit_count": 2,
+      "status": "passed",
+      "structure_hit_count": 3,
+      "workflow": "sf_csa"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "subject": {"id": "SYNTHETIC_QUERY"},
+  "receptor": {"path": "query.pdb", "sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d"},
+  "contact_cutoff_A": 5.0,
+  "native_site_residues": [["A", 1], ["A", 2]],
+  "poses": [
+    {
+      "pose_id": "synthetic_pose_1",
+      "path": "ligand.pdbqt",
+      "engine": "autodock_vina",
+      "job_type": "small_molecule",
+      "ligand_chains": ["L"],
+      "engine_score": -6.0,
+      "engine_score_unit": "kcal/mol (Vina score)",
+      "seed": 7,
+      "receptor_state": "synthetic_observed"
+    }
+  ]
+}

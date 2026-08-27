@@ -1,0 +1,38 @@
+# The raw inputs this module consumes, named against catalogs/sources.yaml.
+#
+# SF-CSA compares a protein against two universes: a frozen experimental
+# structure database, and a local set of proteomes. Both are declared here.
+# Foldseek and DIAMOND are runtimes rather than files; they are declared so that
+# `plan` reports them, and resolved by the runtime registry's preflight.
+schema_version: "1.0"
+module_id: sf_csa
+
+requires:
+  - source_id: pdb
+    role: >
+      the frozen experimental structure database the query is searched against;
+      the release records its checksum and version, and two releases built
+      against different snapshots are not comparable
+    required: true
+
+  - source_id: uniprot_proteomes
+    role: "the proteome universe for the sequence-homology leg, kept separate from the structural leg"
+    required: true
+
+  - source_id: alphafold_db
+    role: "predicted models for queries with no local structure; absent models are reported, never treated as structural negatives"
+    required: false
+
+  - source_id: interpro
+    role: "family assignment, for reading a hit in its mechanism class"
+    required: false
+
+  # Runtimes, not files. Declared so `plan` shows the full picture; preflight
+  # resolves them through shared/runtime-registry.yaml, which is fail-closed.
+  - source_id: diamond
+    role: "the sequence-homology leg"
+    required: true
+
+  - source_id: foldseek
+    role: "the structural-similarity leg against the frozen checksum-pinned structure database"
+    required: true

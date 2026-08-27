@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "baseline_id": "structural-workbench-offline-qualification-v2-2026-08-26",
+  "python": "3.12.7",
+  "selection": "not network and not adapter",
+  "total_passed": 495,
+  "total_deselected": 6,
+  "total_skipped": 1,
+  "aggregate_state": "passed",
+  "suites": [
+    {
+      "path": "structqc/tests",
+      "passed": 7,
+      "deselected": 0
+    },
+    {
+      "path": "Membrane Orientor/memorient/tests",
+      "passed": 87,
+      "deselected": 4,
+      "skipped": 1
+    },
+    {
+      "path": "state-atlas/tests",
+      "passed": 10,
+      "deselected": 1,
+      "deselection_reason": "optional MDAnalysis adapter test is excluded from the offline reviewer selection"
+    },
+    {
+      "path": "site-context/tests",
+      "passed": 2,
+      "deselected": 0
+    },
+    {
+      "path": "activity-state/tests",
+      "passed": 127,
+      "deselected": 0
+    },
+    {
+      "path": "assembly-context/tests",
+      "passed": 5,
+      "deselected": 0
+    },
+    {
+      "path": "sf-csa/tests",
+      "passed": 111,
+      "deselected": 0
+    },
+    {
+      "path": "tools/fixtures/sfcsa",
+      "passed": 22,
+      "deselected": 0
+    },
+    {
+      "path": "platform/tests/test_structural_workbench.py",
+      "passed": 12,
+      "deselected": 0
+    },
+    {
+      "path": "platform/tests/test_qualification_v2.py",
+      "passed": 3,
+      "deselected": 0
+    },
+    {
+      "path": "sources/tests",
+      "passed": 109,
+      "deselected": 1
+    }
+  ],
+  "execution_note": "Offline reviewer-scope run of this command-line distribution. Suites are invoked in separate pytest processes because legacy suites contain duplicate test module and conftest names; python tools/run_structural_workbench_tests.py is the authoritative runner and bare pytest does not work. The private control plane and the loopback browser controller are outside this distribution and contribute no tests to this baseline. Cross-platform clean-install evidence remains a separate recorded gate.",
+  "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks."
+}

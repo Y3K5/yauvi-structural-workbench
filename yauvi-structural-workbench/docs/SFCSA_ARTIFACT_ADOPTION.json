@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "record_id": "sfcsa-reviewed-artifact-adoption",
+  "source_archive": {
+    "name": "protein-platform-modularization-reviewed.zip",
+    "sha256": "a06cf34d720710519faa33ecabb46c28f8ca667f896b6018dcb816a0824d5e2c"
+  },
+  "adopted": [
+    {
+      "component": "canonical_sf_csa_core_cli_and_manifests",
+      "disposition": "already_current_no_overwrite",
+      "evidence": "Archive package files are byte-identical to the canonical workspace files."
+    },
+    {
+      "component": "offline_sfcsa_fixture",
+      "disposition": "adopted_as_regression_and_showcase_fixture",
+      "evidence": "The 22-test fixture exercises subprocess construction, parsing, release verification, classification boundaries, and deterministic canonicalisation."
+    },
+    {
+      "component": "sfcsa_interpretation_ceiling_probe",
+      "disposition": "adopted_as_regression_probe",
+      "evidence": "The artifact and canonical probe files are byte-identical."
+    },
+    {
+      "component": "HUC_06_public_evidence_case",
+      "disposition": "generated_from_canonical_pipeline_and_fixture",
+      "evidence": "Canonical run and verify commands execute through disclosed Foldseek and DIAMOND process-boundary test doubles."
+    }
+  ],
+  "not_adopted": [
+    {
+      "component": "flat_export_core.py",
+      "reason": "It differs from the archive's canonical SF-CSA core and is not a complete, reviewable package delta."
+    },
+    {
+      "component": "flattened_phase_b_provenance_files",
+      "reason": "Their original package locations and complete cross-package change set are not recoverable safely from the flat export."
+    },
+    {
+      "component": "generated_reports_and_images",
+      "reason": "They are review aids, not canonical scientific source or qualification evidence."
+    },
+    {
+      "component": "campaign_specific_interpretation_defaults",
+      "reason": "The JOSS-facing SF-CSA workflow must remain organism-neutral unless an explicit campaign pack is selected."
+    }
+  ],
+  "canonical_file_sha256": {
+    "sf-csa/src/sf_csa/cli.py": "412ade9e7713889a311d81019063e0522505c29748b9ea64bc2c1e34ed17d5ce",
+    "sf-csa/src/sf_csa/core.py": "2831fdc068b6ff4bd6cd65b2e6dc30d0e9d2993a466b37b3f65ea8fa8fe5db84",
+    "sf-csa/src/sf_csa/manifests.py": "bc65ec95523c3f317462290d98f4af21bdb93d066ee936767477edfe99697ab0",
+    "tools/fixtures/sfcsa/test_fixture.py": "4d9d1aee801d53f3808fa55e29a4ee842570f13a717895684f2d29ee5326d687",
+    "tools/probes/probe_05_sfcsa_ceiling.py": "e4bba62c408b665c5ff28f5ab9f814d9cfa5569bf2a319c9ce9c674a208a5992"
+  },
+  "open_scientific_gates": [
+    "Run checksum-pinned mini-databases with real Foldseek and DIAMOND binaries.",
+    "Feed computed reciprocal-best-hit evidence into structural classification or document the intentional separation.",
+    "Apply title-trap protection consistently at direct classification and release-audit boundaries.",
+    "Normalize missing-value handling across manifest, parsing, classification, and verification paths.",
+    "Reconstruct Phase B provenance changes only from a complete package-aware source tree and review them independently."
+  ],
+  "public_claim_boundary": "HUC-06 demonstrates pipeline wiring and evidence separation; it does not demonstrate alignment accuracy, biological function, or external scientific qualification."
+}

@@ -1,0 +1,110 @@
+{
+  "cofactors": [],
+  "config": {
+    "annotation_sites": 3,
+    "component_map_supplied": false,
+    "pocket_methods": [
+      "fpocket"
+    ]
+  },
+  "coordinate_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+  "input_sha256": {
+    "annotations": "dcd2db89ba3d09425dd6b499941fa832a31f2ba5ca49d6f8f78303f6b4c60ac2",
+    "pocket_result_1": "47288089fd54b6e15a9cdb4557799a8f9d5cdd6519e0c61b9a10b8a3be3da087",
+    "structure": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+    "structure_evidence_manifest": "ba394629c63d32e94a1ed068a335ab1e8947bd677e6f5db22012a4bfbd519cbe"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [],
+  "module_id": "site_context",
+  "observed_heteroatoms": [],
+  "pockets": [
+    {
+      "method": "fpocket",
+      "pocket_id": "P1",
+      "residues": [
+        {
+          "auth_seq_id": 1,
+          "chain_id": "A"
+        },
+        {
+          "auth_seq_id": 2,
+          "chain_id": "A"
+        },
+        {
+          "auth_seq_id": 3,
+          "chain_id": "A"
+        }
+      ],
+      "score": 0.5
+    }
+  ],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 5.295281,
+    "pair_count": 3,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "synthetic role declaration",
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "detail": "observed S; expected one of C,S for declared role nucleophile",
+      "expected_residues": [
+        "C",
+        "S"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "S",
+      "position": 1,
+      "role": "nucleophile",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "synthetic role declaration",
+      "auth_seq_id": 2,
+      "chain_id": "A",
+      "detail": "observed H; expected one of D,E,H for declared role acid_base",
+      "expected_residues": [
+        "D",
+        "E",
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "H",
+      "position": 2,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "binding_site"
+    },
+    {
+      "annotation_detail": "synthetic role declaration",
+      "auth_seq_id": 3,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D,E for declared role charge_relay",
+      "expected_residues": [
+        "D",
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "D",
+      "position": 3,
+      "role": "charge_relay",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "SYNTHETIC_QUERY"
+  }
+}

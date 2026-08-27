@@ -1,0 +1,26 @@
+{
+  "sites": [
+    {
+      "position": 1,
+      "type": "active_site",
+      "role": "nucleophile",
+      "expected_residues": ["S", "C"],
+      "detail": "synthetic role declaration"
+    },
+    {
+      "position": 2,
+      "type": "binding_site",
+      "role": "acid_base",
+      "expected_residues": ["H", "D", "E"],
+      "detail": "synthetic role declaration"
+    },
+    {
+      "position": 3,
+      "type": "active_site",
+      "role": "charge_relay",
+      "expected_residues": ["D", "E"],
+      "detail": "synthetic role declaration"
+    }
+  ],
+  "declared_cofactors": []
+}

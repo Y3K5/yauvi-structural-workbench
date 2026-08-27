@@ -1,0 +1,94 @@
+{
+  "analysis_type": "sf_csa",
+  "case_id": "HUC-06",
+  "classification_counts": {
+    "exact_function_supported": 1,
+    "same_mechanism_class": 3,
+    "structural_analogy_only": 1,
+    "unresolved_or_conflicted": 1
+  },
+  "evidence_files": [
+    "release/SF_CSA_RELEASE_MANIFEST.json",
+    "release/RELEASE_COMPARISON_MATRIX.tsv",
+    "release/targets/QRY_A/structure_hits.tsv",
+    "release/targets/QRY_A/species_comparison.tsv",
+    "release/targets/QRY_B/structure_hits.tsv",
+    "release/targets/QRY_B/species_comparison.tsv",
+    "release/CHECKSUMS.json"
+  ],
+  "evidence_sha256": {
+    "release/CHECKSUMS.json": "eb83999d30d1c2ddb9e0dae01a50b9e0e7df3c2fd76d52589f2a5f2f2f2e348f",
+    "release/RELEASE_COMPARISON_MATRIX.tsv": "80f326307e5b9f8b8984afcacd0cb60a535a496dec155febac5bc57e94559cdb",
+    "release/SF_CSA_RELEASE_MANIFEST.json": "a691d1364cce0b70e9a119549ba781f875a0f1bf4404ee87b929192e50de75a0",
+    "release/targets/QRY_A/species_comparison.tsv": "5beccaa6df68fa793919e23bcec14b93783b1866cf2b3597f3ad14961ee8da88",
+    "release/targets/QRY_A/structure_hits.tsv": "e6eafe75bba0763b250f0546b190c6076479f80d970807f40626c7552602788e",
+    "release/targets/QRY_B/species_comparison.tsv": "f134549abd96dc4969018881105c164281039eb6dd9f778ee3b27d905b7d048e",
+    "release/targets/QRY_B/structure_hits.tsv": "04ba36169e12b9baf4486a12e456acc99d98faa8117f6d31ff76bb48672f33bd"
+  },
+  "exit_codes": {
+    "run": 0,
+    "verify": 0
+  },
+  "human_benefits": [
+    "Shows where fold similarity and sequence homology agree or disagree.",
+    "Prevents a strong structural match from silently becoming exact functional transfer.",
+    "Preserves missing structures and unresolved relationships as visible evidence gaps."
+  ],
+  "human_label": "How does structure-based evidence differ from sequence-based evidence?",
+  "human_question": "Can the same invented proteins be compared through separate structural and sequence legs without turning similarity into exact functional transfer?",
+  "input_sha256": {
+    "inputs/database_manifest.json": "d9760fa72a50abf7cb837e44ab2aebbad721842286d0742104b9ac6db23c907a",
+    "inputs/queries/QRY_A.faa": "f7e596dd8deec8b294dc3b5fa2a67032138505467c44d4bb53b33e5f421ccff3",
+    "inputs/queries/QRY_A.pdb": "11dae7081d173d7f06e79ac38cf990ce46dd8c8fb7460dea0eae2bd2e4ec246d",
+    "inputs/queries/QRY_B.faa": "d0bd2cb71218974e243bad81a28b8e69656d4ec1122f46ce70c2c23d877c9096",
+    "inputs/queries/QRY_B.pdb": "ed2eba7ea57ef77e13eee2dc644c7c5840d878c6029686993de267447e52a8b9",
+    "inputs/query_manifest.json": "907364e1957383cf5abbfc7328b5fc9a85c524fbf04f5d4147755a6d2405c56d",
+    "runtime-fixture/hits.json": "447fc07fe07dfd6aad9fa78ee2a7dbba30eeeb09d7c05a1d93e8308d0672aa24"
+  },
+  "known_findings": [
+    "The title-trap protection currently acts during release verification, not direct classify_hit calls.",
+    "The main pipeline does not currently feed computed sequence reciprocal-best-hit evidence back into structural classification.",
+    "External mini-database runs with the installed Foldseek and DIAMOND binaries remain pending."
+  ],
+  "measurements": [
+    {
+      "help": "Canonical sf-csa verify returned exit code 0",
+      "label": "Release audit",
+      "value": "passed"
+    },
+    {
+      "help": "Invented checksum-bound query structures",
+      "label": "Queries",
+      "value": "2"
+    },
+    {
+      "help": "Canned Foldseek-shaped rows interpreted by the real pipeline",
+      "label": "Structural rows",
+      "value": "6"
+    },
+    {
+      "help": "Canned DIAMOND-shaped rows retained in a separate table",
+      "label": "Sequence rows",
+      "value": "3"
+    },
+    {
+      "help": "Structural similarity and sequence homology are not merged",
+      "label": "Evidence legs",
+      "value": "2 separate"
+    },
+    {
+      "help": "No Foldseek or DIAMOND alignment was computed in this case",
+      "label": "Alignment engines",
+      "value": "stubbed"
+    }
+  ],
+  "non_claim": "Real alignment performance, biological function, orthology, substrate transfer, activity, pathogenic importance, or external scientific qualification.",
+  "observed_result": "2 invented queries completed a checksum-bound SF-CSA release; the release audit passed and structural classifications remained separate from sequence orthology candidates.",
+  "reviewed_artifact_sha256": "not_available",
+  "runtime_class": "deterministic_process_boundary_test_doubles",
+  "runtime_disclosure": "The canonical pipeline, subprocess construction, TSV parsing, classification, checksums, and release audit ran. Foldseek and DIAMOND were deterministic test doubles and computed no alignments.",
+  "schema_version": "1.0",
+  "scientific_qualification_state": "external_benchmark_pending",
+  "test_state": "passed_stubbed_pipeline_case",
+  "tool": "SF-CSA"
+}

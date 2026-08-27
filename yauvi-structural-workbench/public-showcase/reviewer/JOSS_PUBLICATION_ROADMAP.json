@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "product": "YAUVI Structural Biology Platform — Mark 1",
+  "scientific_suite": "YAUVI Structural Workbench",
+  "edition": "Mark 1",
+  "policy": "Local preparation does not authorize repository publication, release, archival deposit, or JOSS submission.",
+  "current_phase": "local_hardening",
+  "submission_rule": "All scientific, packaging, public-history, research-use, and approval gates must be satisfied before submission.",
+  "phases": [
+    {
+      "phase_id": "local_hardening",
+      "label": "Harden and explain",
+      "duration": "2-4 weeks",
+      "state": "in_progress",
+      "deliverables": [
+        "Six task-first showcase narratives",
+        "Separate synthetic and public qualification evidence",
+        "Passing macOS and Linux installation matrix on Python 3.10-3.12",
+        "Resolved or explicitly narrowed membrane-orientation and conformational-state claims",
+        "Completed third-party license and redistribution audit",
+        "Complete AI-use, authorship, funding, and conflict records"
+      ]
+    },
+    {
+      "phase_id": "approved_public_launch",
+      "label": "Open the project",
+      "duration": "Approval boundary",
+      "state": "awaiting_explicit_approval",
+      "deliverables": [
+        "Freely cloneable public repository",
+        "Public issue and contribution pathways",
+        "Continuous integration and tagged alpha release",
+        "Public documentation and static evidence showcase",
+        "Changelog, support policy, governance, and security reporting"
+      ]
+    },
+    {
+      "phase_id": "open_development",
+      "label": "Develop through use",
+      "duration": "More than 6 months",
+      "state": "blocked_public_history_not_started",
+      "deliverables": [
+        "Active public development distributed across the period",
+        "Tagged releases and documented changes",
+        "Independent installation feedback",
+        "Documented research use or workflow integration",
+        "Public issues, discussions, or external contributions",
+        "Software changes traceable to user and scientific feedback"
+      ]
+    },
+    {
+      "phase_id": "joss_submission",
+      "label": "Submit and review",
+      "duration": "After every gate passes",
+      "state": "blocked",
+      "deliverables": [
+        "Stable tagged release",
+        "JOSS paper with required sections and verified references",
+        "Approved author, affiliation, ORCID, funding, conflict, and AI-use statements",
+        "Submission through the JOSS process",
+        "Public response to reviewer issues",
+        "Final archived software release and DOI when requested"
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "six_scientific_cases",
+      "label": "Six external scientific case gates",
+      "state": "partial",
+      "evidence": "Four passed and two partial"
+    },
+    {
+      "gate_id": "offline_software_baseline",
+      "label": "Complete recorded offline regression",
+      "state": "passed",
+      "evidence": "Current local reviewer selection: 524 passed and 6 network or adapter tests deselected; cross-platform clean-install reproduction remains a separate gate"
+    },
+    {
+      "gate_id": "public_history",
+      "label": "More than six months of active public history",
+      "state": "blocked",
+      "evidence": "Not started or not verified"
+    },
+    {
+      "gate_id": "independent_use",
+      "label": "Independent installation and research use",
+      "state": "blocked",
+      "evidence": "Not recorded"
+    },
+    {
+      "gate_id": "license_audit",
+      "label": "License and third-party redistribution audit",
+      "state": "blocked",
+      "evidence": "Incomplete"
+    },
+    {
+      "gate_id": "paper_and_disclosures",
+      "label": "Paper, authorship, funding, conflicts, and AI disclosure",
+      "state": "partial",
+      "evidence": "The 1,095-word paper compiles with official Inara and the four-page draft was visually reviewed; final approvals, journal metadata, and exact tool records remain"
+    },
+    {
+      "gate_id": "publication_approval",
+      "label": "Explicit approval for the exact public repository and release",
+      "state": "blocked",
+      "evidence": "Not granted by local preparation"
+    }
+  ],
+  "official_guidance": [
+    {
+      "label": "JOSS submission requirements",
+      "url": "https://joss.readthedocs.io/en/latest/submitting.html"
+    },
+    {
+      "label": "JOSS review criteria",
+      "url": "https://joss.readthedocs.io/en/latest/review_criteria.html"
+    },
+    {
+      "label": "JOSS review checklist",
+      "url": "https://joss.readthedocs.io/en/latest/review_checklist.html"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+# --- Third-party benchmark data: never redistributed ---------------------
+# benchmark-manifest.yaml declares ships_public_records: false. SOURCE_LOCK.json
+# records the provider, URL, and SHA-256 of every artifact so a reviewer acquires
+# the identical bytes themselves. The bytes never enter this repository.
+yauvi-structural-workbench/benchmarks/*/sources/
+yauvi-structural-workbench/benchmarks/*/build/
+
+# --- Build outputs -------------------------------------------------------
+build/
+dist/
+*.egg-info/
+*.whl
+*.tar.gz
+
+# --- Python runtime ------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Tooling state (never publish) ---------------------------------------
+.claude/
+.vscode/
+.idea/
+
+# --- OS ------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# --- Local scratch -------------------------------------------------------
+qc-demo*/
+out-*/
+*.local

@@ -1,0 +1,37 @@
+# The raw inputs this module consumes, named against catalogs/sources.yaml.
+#
+# Only the annotation export is required. Everything else widens what can be
+# concluded: without structures the geometry and occupancy signals report
+# `unevaluated`, and the module says so rather than reaching a conclusion
+# without them.
+schema_version: "1.0"
+module_id: actstate
+
+requires:
+  - source_id: uniprot_proteomes
+    role: >
+      the annotation export carrying ft_act_site, ft_binding, ft_site and
+      cc_cofactor, plus the sequences the completeness signal checks against
+    required: true
+
+  - source_id: alphafold_db
+    role: "predicted monomer models; sufficient for geometry, never for a functional-state claim"
+    required: false
+
+  - source_id: pdb
+    role: >
+      experimental coordinates; the only kind that can support
+      active_state_supported, and the only source of real cofactor occupancy
+    required: false
+
+  - source_id: interpro
+    role: "family and domain assignment, for interpreting a site in its mechanism class"
+    required: false
+
+  - source_id: mcsa
+    role: "curated residue roles used without inferring activity from amino-acid identity"
+    required: false
+
+  - source_id: chebi
+    role: "exact cofactor identifiers used to avoid fuzzy synonym acceptance"
+    required: false

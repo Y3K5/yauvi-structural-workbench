@@ -1,0 +1,48 @@
+schema_version: '1.0'
+benchmark_collection_id: yauvi-structural-public-qualification-v2
+state: panel_frozen_source_adoption_required
+ships_public_records: false
+acquisition_policy: checksum_manifest_only_unless_redistribution_is_reviewed
+workflows:
+  structure_qc:
+    records: [1CRN, AlphaFold_P69905_v6, synthetic_unknown_provenance]
+    gates: [author_label_mapping, validation_import, missing_validation_incomplete, deterministic_output]
+    historical_v1_case_state: passed
+    qualification_v2_state: source_adoption_required
+  membrane_orientation:
+    records: [1BXW, 2POR, 1QD6, 2F1T, 1P4T, 1AFO, 1C3W, 1U19]
+    gates: [rotation_invariance, stratified_opm_ppm_agreement, offline_default]
+    historical_v1_case_state: partial
+    qualification_v2_state: source_adoption_required
+  conformational_state:
+    records: [2HZ4_B_active_reference, 2G1T_A_inactive_reference, 2V7A_A_active_holdout, 8SSN_A_inactive_holdout]
+    gates: [two_sided_references, held_out_error_bound, ambiguous_unresolved]
+    historical_v1_case_state: partial
+    qualification_v2_state: source_adoption_required
+  functional_site_state:
+    records: [1B73]
+    gates: [mcsa_role_mapping, cofactor_identity, no_activity_claim]
+    historical_v1_case_state: passed
+    qualification_v2_state: source_adoption_required
+  assembly_interface:
+    records: [4HHB]
+    gates: [assembly_operator_expansion, stoichiometry, freesasa_tolerance, fallback_named]
+    historical_v1_case_state: passed
+    qualification_v2_state: source_adoption_required
+  sf_csa:
+    records: [1B73_exact, 2JFN_cath_homolog, 4EA9_topology_analogy, 1OAI_unrelated]
+    gates: [real_foldseek, real_diamond, database_checksums, separate_evidence_legs]
+    historical_v1_case_state: passed
+    qualification_v2_state: source_adoption_required
+release_rule: all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2
+release_rule_satisfied: false
+qualification_runner: qualification-v2/run_qualification.py
+qualification_results: qualification-v2/results/QUALIFICATION_V2_STATUS.json
+panel_manifest: qualification-v2/PANEL_MANIFEST.json
+historical_qualification: qualification-v1/results/QUALIFICATION_RESULTS.json
+limitations:
+  - Qualification v2 has frozen scopes and gates but no adopted public cases; scientific execution has not occurred.
+  - Historical v1 named cases remain evidence but do not fill v2 strata automatically.
+  - Alpha-helical MembraneOrient is experimental and not part of the Mark 1 qualified scope.
+  - StateAtlas Mark 1 scope is limited to exact-mapped ABL-family conformational resemblance.
+  - Public artifact redistribution and attribution terms require review before repository publication.

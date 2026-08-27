@@ -1,0 +1,136 @@
+{
+  "chain_summaries": [
+    {
+      "chain_breaks": 0,
+      "chain_id": "A",
+      "missing_backbone_residues": 0,
+      "nonstandard_residues": 0,
+      "residues": 3,
+      "sequence": "SHD"
+    }
+  ],
+  "completeness": {
+    "coordinate_residues": 3,
+    "coverage_fraction": 1.0,
+    "identity_fraction": 1.0,
+    "mapped_residues": 3,
+    "reference_length": 3,
+    "state": "evaluated"
+  },
+  "coordinate": {
+    "assemblies": [],
+    "chains": [
+      "A"
+    ],
+    "file_name": "query.pdb",
+    "format": "pdb",
+    "model_count": 1,
+    "parser": {
+      "coordinate_analysis": "biopython",
+      "gemmi_validation": "validated",
+      "gemmi_version": "0.7.5"
+    },
+    "selected_chain": "A",
+    "selected_model": 0,
+    "sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d"
+  },
+  "external_validation": {
+    "limitations": [
+      "No wwPDB, MolProbity, or Phenix validation report was supplied."
+    ],
+    "metrics": {},
+    "state": "missing"
+  },
+  "input_sha256": {
+    "provenance": "c6123c5a19a8af009d3a6ed3bc1e3725d36f2a2dae8f526625dafed8138d9ece",
+    "reference_sequence": "a9cd8b380ebf3f454909e9836c4c226ff3296acabf2646a28744e51962a77ed5",
+    "structure": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d"
+  },
+  "limitations": [
+    "Coordinate quality does not establish native conformation or biological function.",
+    "Unknown provenance remains unknown; filename/header hints cannot certify experiment.",
+    "Completeness is unevaluated without a reference sequence."
+  ],
+  "module_id": "structure_quality",
+  "pae": {
+    "detail": "no PAE supplied",
+    "state": "unevaluated"
+  },
+  "provenance": {
+    "class": "predicted",
+    "confidence_encoding": "plddt_in_bfactor",
+    "method": "synthetic predictor",
+    "source_id": "synthetic_fixture"
+  },
+  "reference": {
+    "id": "SYNTHETIC_QUERY",
+    "sequence_supplied": true
+  },
+  "residues": [
+    {
+      "altlocs": [],
+      "auth_seq_id": 1,
+      "ca_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "chain_id": "A",
+      "entity_id": "",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": null,
+      "mean_b_factor": 92.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 92.0,
+      "resname": "SER",
+      "sequence_index": 1
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 2,
+      "ca_xyz": [
+        2.7,
+        1.5,
+        0.0
+      ],
+      "chain_id": "A",
+      "entity_id": "",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": null,
+      "mean_b_factor": 88.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 88.0,
+      "resname": "HIS",
+      "sequence_index": 2
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 3,
+      "ca_xyz": [
+        5.2,
+        -1.0,
+        0.0
+      ],
+      "chain_id": "A",
+      "entity_id": "",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": null,
+      "mean_b_factor": 85.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 85.0,
+      "resname": "ASP",
+      "sequence_index": 3
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "SYNTHETIC_QUERY"
+  },
+  "warnings": []
+}

@@ -1,0 +1,24 @@
+schema_version: "1.0"
+module_id: site_context
+requires:
+  - source_id: uniprot_proteomes
+    role: "active-site, binding-site, disulfide, cofactor, and sequence annotations"
+    required: false
+  - source_id: pdb
+    role: "observed ligands, component identifiers, and experimental coordinates"
+    required: false
+  - source_id: alphafold_db
+    role: "predicted coordinates for geometry only, never observed ligand occupancy"
+    required: false
+  - source_id: interpro
+    role: "family/domain context for user-supplied site annotations"
+    required: false
+  - source_id: mcsa
+    role: "curated catalytic residues and chemical roles"
+    required: false
+  - source_id: pdb_ccd
+    role: "exact identifiers and connectivity for observed PDB chemical components"
+    required: false
+  - source_id: chebi
+    role: "exact chemical identifier mapping for declared ligands and cofactors"
+    required: false

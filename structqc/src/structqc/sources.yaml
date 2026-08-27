@@ -1,0 +1,15 @@
+schema_version: "1.0"
+module_id: structure_quality
+requires:
+  - source_id: pdb
+    role: "experimental coordinates and declared experimental metadata"
+    required: false
+  - source_id: alphafold_db
+    role: "predicted coordinates, PAE, and prediction confidence metadata"
+    required: false
+  - source_id: uniprot_proteomes
+    role: "reference sequence used to map coordinates and measure completeness"
+    required: false
+  - source_id: wwpdb_validation
+    role: "community geometry and experiment-specific validation tied to an experimental PDB entry"
+    required: false

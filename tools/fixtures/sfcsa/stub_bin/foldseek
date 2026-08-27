@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""Stub `foldseek` for the offline fixture. Not a structural aligner.
+
+The real pipeline shells out to Foldseek, so it cannot run in CI or on a laptop
+without the binary and a PDB database. This stub stands in at the process
+boundary — `shutil.which("foldseek")` finds it and `run_cmd` invokes it — and
+emits a canned, deterministic hit table read from `hits.json` beside this file.
+
+It computes nothing. Every number it emits was written by hand to place a hit on
+a chosen side of a documented threshold, so the fixture tests the pipeline's
+*interpretation* of alignment output, not the alignment.
+
+Supports exactly the two invocations the pipeline makes:
+
+    foldseek version
+    foldseek easy-search QUERY TARGET OUT TMP --format-output F -e E --max-seqs N
+"""
+import json
+import os
+import pathlib
+import sys
+
+HERE = pathlib.Path(__file__).resolve().parent
+CANNED = json.loads((HERE / "hits.json").read_text(encoding="utf-8"))
+
+
+def norm(name: str) -> str:
+    """Mirror the pipeline's own accession normalisation for lookup keys."""
+    stem = pathlib.Path(name).name
+    for suffix in (".pdb", "_oriented"):
+        if stem.endswith(suffix):
+            stem = stem[: -len(suffix)]
+    return stem
+
+
+def main(argv: list[str]) -> int:
+    if not argv:
+        print("usage: foldseek version | foldseek easy-search ...", file=sys.stderr)
+        return 2
+
+    if argv[0] == "version":
+        print(CANNED["foldseek_version"])
+        return 0
+
+    if argv[0] != "easy-search":
+        print(f"stub foldseek does not implement: {argv[0]}", file=sys.stderr)
+        return 2
+
+    if len(argv) < 4:
+        print("easy-search needs QUERY TARGET OUT TMP", file=sys.stderr)
+        return 2
+    query, target, out = argv[1], argv[2], pathlib.Path(argv[3])
+
+    fields = CANNED["fields"].split(",")
+    if "--format-output" in argv:
+        fields = argv[argv.index("--format-output") + 1].split(",")
+
+    # Which canned database is being searched: the pipeline searches a PDB
+    # database path and a staged campaign directory. Keyed on the target path so
+    # the two searches return different hits, as they would in a real run.
+    database = "campaign_models" if "campaign_structures" in str(target) else "experimental_pdb"
+    query_id = norm(query)
+
+    # The fixture runs two scenarios against the same stub. `main` is the clean
+    # release; `trap` drives one hit up to a promoted label under a trapped PDB
+    # title so `verify_release` has something to catch. A hit with no `_scenario`
+    # belongs to both.
+    scenario = os.environ.get("SFCSA_FIXTURE_SCENARIO", "main")
+
+    rows = [
+        hit
+        for hit in CANNED["hits"]
+        if hit["_query"] == query_id
+        and hit["_database"] == database
+        and scenario in hit.get("_scenarios", [scenario])
+    ]
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as handle:
+        for hit in rows:
+            handle.write("\t".join(str(hit.get(name, "")) for name in fields) + "\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

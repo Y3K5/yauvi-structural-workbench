@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "actstate"
+version = "0.1.0"
+description = "Activity-state classification: does the available evidence support this protein being in a functionally competent state?"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{ name = "Yuvraj Patel" }]
+
+# Standard-library only, following the house rule for these packages: heavy
+# tools are consumed through their outputs rather than imported. The structure
+# reader and the geometry test are written against the few fields they need, so
+# neither numpy nor biopython is required to run the module.
+dependencies = []
+
+[project.optional-dependencies]
+sources = ["yauvi-sources>=0.1.0"]
+dev = ["pytest>=7", "hypothesis>=6.100", "mutmut>=2.4"]
+
+[project.scripts]
+actstate = "actstate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+actstate = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "adapter: needs an external runtime (foldseek); deselected by default",
+    "network: needs a live endpoint; deselected by default",
+]

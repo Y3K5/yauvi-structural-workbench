@@ -1,0 +1,21 @@
+# memorient fits a bilayer to a structure and labels per-residue topology. It
+# consumes exactly one kind of input — a protein structure — so its requirements
+# are the two places a structure can come from.
+#
+# Neither is marked required: `memorient orient <file.pdb>` runs on a structure
+# the user already has, and the bundled synthetic fixtures need no download at
+# all. These entries exist so that a user who does NOT have a structure is told
+# where to get one, with the licence and versioning attached.
+schema_version: "1.0"
+module_id: memorient
+
+requires:
+  - source_id: alphafold_db
+    role: "predicted monomer model, keyed by UniProt accession"
+    required: false
+  - source_id: pdb
+    role: "experimental structure or biological assembly, keyed by PDB ID"
+    required: false
+  - source_id: opm_ppm
+    role: "external membrane-positioning comparison pack used only for checksum-pinned qualification"
+    required: false

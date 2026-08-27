@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "release_id": "<RELEASE_ID>",
+  "status": "COMPUTATIONAL_STRUCTURE_FUNCTION_COMPARISON_NOT_EXPERIMENTAL_VALIDATION",
+  "queries": [
+    "QRY_A",
+    "QRY_B"
+  ],
+  "query_count": 2,
+  "target_statuses": {
+    "QRY_A": "retained_for_review",
+    "QRY_B": "retained_for_review"
+  },
+  "tools": {
+    "sf_csa": "1.0.0",
+    "foldseek": "0.0.0-stub",
+    "diamond": "diamond version 0.0.0-stub"
+  },
+  "database_manifest_sha256": "594b88878b2904392a8c133e234081e507468981a34b053bad0816c5ef5633ab",
+  "query_manifest_sha256": "8edbf38d57e4cb5f693173b9c74a2635de5a406a3a08de6d1560bb66219f571c",
+  "pdb_database": {
+    "path_record": "pdb_database",
+    "version": "synthetic-fixture-0",
+    "checksum": "bafd89f6320c4568f131a1a2a7d09b8a14016a886776bcc24555fcbcb26bae64"
+  },
+  "campaign_structure_count": 2,
+  "proteome_count": 2,
+  "protein_count": 3,
+  "thresholds": {
+    "max_structure_hits": 50,
+    "same_fold_tm": 0.5,
+    "sequence_evalue": "1e-5",
+    "sequence_hits_per_proteome": 5,
+    "sequence_max_hits": 25,
+    "sequence_min_identity": 30,
+    "sequence_min_query_coverage": 60,
+    "structure_evalue": "1e-3",
+    "whole_architecture_coverage": 0.8
+  },
+  "classification_vocabulary": [
+    "exact_function_supported",
+    "probable_same_function",
+    "same_mechanism_class",
+    "structural_analogy_only",
+    "candidate_functional_divergence",
+    "unresolved_or_conflicted"
+  ],
+  "scientific_boundaries": [
+    "fold similarity does not establish direct functional equivalence",
+    "predicted orientation is not native surface-exposure proof",
+    "proteins without structures are missing evidence, not structural negatives",
+    "target decisions are not changed automatically"
+  ]
+}

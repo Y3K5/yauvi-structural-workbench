@@ -1,0 +1,12 @@
+schema_version: "1.0"
+module_id: assembly_context
+requires:
+  - source_id: pdb
+    role: "deposited biological assemblies and assembly metadata"
+    required: false
+  - source_id: alphafold_db
+    role: "isolated predicted monomer coordinates used only as the query state"
+    required: false
+  - source_id: freesasa
+    role: "optional local publication-grade SASA runtime, reported separately from internal Shrake-Rupley"
+    required: false

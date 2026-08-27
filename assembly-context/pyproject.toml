@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-assembly-context"
+version = "0.1.0"
+description = "Biological assembly, interface, and isolated-versus-assembly occlusion evidence."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{ name = "Yuvraj Patel" }]
+dependencies = ["biopython>=1.81", "numpy>=1.24", "scipy>=1.10"]
+
+[project.optional-dependencies]
+gemmi = ["gemmi>=0.6"]
+sources = ["yauvi-sources>=0.1.0"]
+dev = ["pytest>=7", "hypothesis>=6.100"]
+
+[project.scripts]
+assembly-context = "assembly_context.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+assembly_context = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

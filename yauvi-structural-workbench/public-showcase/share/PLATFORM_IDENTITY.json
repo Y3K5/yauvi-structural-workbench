@@ -1,0 +1,19 @@
+{
+  "display_name": "YAUVI Structural Biology Platform \u2014 Mark 1",
+  "distribution": "yauvi-structural-workbench",
+  "distribution_scope": "Command-line distribution. The loopback browser workbench is excluded: its controller imports private control-plane modules outside the published boundary.",
+  "edition": "Mark 1",
+  "identity_policy": "The Mark 1 name identifies the integrated platform. Standalone package, CLI, module, evidence-contract, and scientific-method names remain unchanged.",
+  "platform_id": "yauvi_structural_biology_platform_mark_1",
+  "primary_name": "YAUVI Structural Biology Platform",
+  "publication_authorized": false,
+  "release_state": "pre_public_preparation",
+  "schema_version": "1.0",
+  "scientific_suite_name": "YAUVI Structural Workbench",
+  "share_non_claim": "It is not a clinical tool, a biochemical activity assay, or a universal protein-scoring system.",
+  "share_status": "Mark 1 is a pre-public scientific build. Historical named cases remain visible; the expanded Qualification v2 panels are frozen but not yet source-adopted or executed.",
+  "share_summary": "A local-first structural bioinformatics platform that turns protein coordinate files into inspectable, checksum-bound evidence across six analysis workflows.",
+  "short_name": "YAUVI SBP Mark 1",
+  "start_command": "python -m pip install -e \".[dev]\" && structqc describe",
+  "tagline": "From protein coordinates to inspectable structural evidence."
+}

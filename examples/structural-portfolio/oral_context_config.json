@@ -1,0 +1,29 @@
+{
+  "subject": {
+    "id": "SYNTHETIC_QUERY",
+    "species": "Synthetic oral organism",
+    "strain": "SYNTHETIC-1",
+    "coordinate_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d"
+  },
+  "tested_context": {"oral_body_site": "synthetic_biofilm", "context": "synthetic intact-cell fixture"},
+  "records": [
+    {
+      "category": "localization",
+      "assertion": "surface localization predicted",
+      "state": "predicted",
+      "evidence_class": "synthetic_localization_prediction",
+      "strain": "SYNTHETIC-1"
+    },
+    {
+      "category": "direct_surface_evidence",
+      "assertion": "surface accessibility observed in synthetic fixture",
+      "state": "observed",
+      "evidence_class": "direct_intact_cell",
+      "strain": "SYNTHETIC-1",
+      "oral_body_site": "synthetic_biofilm",
+      "context": "synthetic intact-cell fixture",
+      "chain_id": "A",
+      "auth_seq_id": 1
+    }
+  ]
+}

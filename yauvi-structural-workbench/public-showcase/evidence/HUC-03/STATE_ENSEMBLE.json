@@ -1,0 +1,152 @@
+{
+  "clusters": [
+    {
+      "calls": {
+        "active_like": 1,
+        "inactive_like": 0,
+        "mixed": 0,
+        "unresolved": 0
+      },
+      "cluster": 1,
+      "fraction_total": 1.0,
+      "frames": 1,
+      "majority_call": "active_like"
+    }
+  ],
+  "config": {
+    "alignment_map_sha256": null,
+    "chain": "A",
+    "cluster_cutoff_A": 0.5,
+    "ensemble_alignment_residue_count": 3,
+    "pbc": null,
+    "selection": "protein and name CA",
+    "stride": 1
+  },
+  "coordinate_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+  "frame_metrics": [
+    {
+      "best_reference": "ACTIVE_SYNTHETIC",
+      "best_rmsd_A": 0.0,
+      "call": "active_like",
+      "cluster": 1,
+      "frame": 0,
+      "margin_A": 1.672293,
+      "rmsd_ACTIVE_SYNTHETIC_A": 0.0,
+      "rmsd_INACTIVE_SYNTHETIC_A": 1.672293
+    }
+  ],
+  "frames_interpretable": 1,
+  "frames_total": 1,
+  "input_kind": "static_ensemble",
+  "input_sha256": {
+    "reference_ACTIVE_SYNTHETIC": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+    "reference_INACTIVE_SYNTHETIC": "38b2c93aab091181db5a29cb23a60c925f5c749ce3c184c66ef7c65ccf16a9c0",
+    "reference_set": "720aee428ed3e4de70d6a6a97c7e1c911e81eb83020e867794a5b2b12928091e",
+    "structure": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+    "structure_evidence_manifest": "ba394629c63d32e94a1ed068a335ab1e8947bd677e6f5db22012a4bfbd519cbe"
+  },
+  "limitations": [
+    "State labels describe structural resemblance, not biochemical activity.",
+    "Frame populations depend on trajectory preparation, selection, stride, references, and thresholds.",
+    "Unresolved frames remain in the total-frame denominator.",
+    "Reference Set v1 sequence alignment is retained for compatibility but is not a Mark 1 qualified scope."
+  ],
+  "module_id": "conformational_state",
+  "overall_label": "active_like",
+  "populations": {
+    "active_like": {
+      "count": 1,
+      "fraction_interpretable": 1.0,
+      "fraction_total": 1.0
+    },
+    "inactive_like": {
+      "count": 0,
+      "fraction_interpretable": 0.0,
+      "fraction_total": 0.0
+    },
+    "mixed": {
+      "count": 0,
+      "fraction_interpretable": 0.0,
+      "fraction_total": 0.0
+    },
+    "unresolved": {
+      "count": 0,
+      "fraction_interpretable": null,
+      "fraction_total": 0.0
+    }
+  },
+  "reference_set": {
+    "decision_rules": {
+      "max_rmsd_A": 0.5,
+      "min_margin_A": 0.2
+    },
+    "id": "synthetic-two-state",
+    "qualification_scope": "unscoped_prototype",
+    "references": [
+      {
+        "id": "ACTIVE_SYNTHETIC",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "coordinate_sequence_alignment",
+          "coverage": 1.0,
+          "excluded_uniprot_positions": [],
+          "included_uniprot_positions": [],
+          "missing_coordinate_positions": [],
+          "positions_declared": 3,
+          "positions_mapped": 3
+        },
+        "sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+        "state": "active"
+      },
+      {
+        "id": "INACTIVE_SYNTHETIC",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "coordinate_sequence_alignment",
+          "coverage": 1.0,
+          "excluded_uniprot_positions": [],
+          "included_uniprot_positions": [],
+          "missing_coordinate_positions": [],
+          "positions_declared": 3,
+          "positions_mapped": 3
+        },
+        "sha256": "38b2c93aab091181db5a29cb23a60c925f5c749ce3c184c66ef7c65ccf16a9c0",
+        "state": "inactive"
+      }
+    ],
+    "schema_version": "1.0",
+    "subject_family": "unresolved"
+  },
+  "rmsf": [
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 3,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    }
+  ],
+  "schema_version": "1.1",
+  "scientific_scope": {
+    "claim_boundary": "Conformational resemblance is not biochemical activity.",
+    "qualification_gate": "outside_mark_1_qualified_scope",
+    "release_blocking": false,
+    "scientific_state": "prototype",
+    "scope_id": "unscoped_prototype",
+    "supported_subject_class": "user-declared reference family"
+  },
+  "subject": {
+    "id": "SYNTHETIC_QUERY"
+  }
+}

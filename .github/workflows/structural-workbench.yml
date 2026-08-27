@@ -1,0 +1,107 @@
+name: Structural Workbench reviewer gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: structural-workbench-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  reviewer-install:
+    name: Reviewer install · py${{ matrix.python }} · ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: One-command reviewer installation
+        run: python -m pip install ".[dev]"
+      - name: Six canonical CLIs answer describe
+        run: |
+          structqc describe > /dev/null
+          memorient describe > /dev/null
+          state-atlas describe > /dev/null
+          site-context describe > /dev/null
+          actstate describe > /dev/null
+          assembly-context describe > /dev/null
+          sf-csa describe > /dev/null
+      - name: Six standalone suites remain offline and isolated by process
+        run: |
+          python -m pytest structqc/tests -m "not network and not adapter" --tb=short
+          python -m pytest "Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
+          python -m pytest state-atlas/tests -m "not network and not adapter" --tb=short
+          python -m pytest site-context/tests -m "not network and not adapter" --tb=short
+          python -m pytest activity-state/tests -m "not network and not adapter" --tb=short
+          python -m pytest assembly-context/tests -m "not network and not adapter" --tb=short
+          python -m pytest sf-csa/tests -m "not network and not adapter" --tb=short
+          python -m pytest tools/fixtures/sfcsa -m "not network and not adapter" --tb=short
+
+  workbench:
+    name: Workbench contracts, security, and pre-public materials
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install reviewer distribution
+        run: python -m pip install ".[dev]"
+      - name: Controller, source, report, and contract tests
+        run: |
+          # This distribution contains only yauvi_platform.structural_workbench,
+          # not the private platform's campaign, cell-fate, oral-atlas, or
+          # vaccine-orchestration modules, and not the loopback browser
+          # controller that imports them.
+          python -m pytest platform/tests/test_structural_workbench.py platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
+          python -m pytest sources/tests -m "not network and not adapter" --tb=short
+      - name: Showcase bundle parses without a network build
+        run: node --check yauvi-structural-workbench/public-showcase/app.js
+      - name: Qualification v2 fails closed until public cases are adopted
+        run: |
+          set +e
+          python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
+          qualification_code=$?
+          set -e
+          test "$qualification_code" -eq 1
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("yauvi-structural-workbench/benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json")
+          result = json.loads(path.read_text(encoding="utf-8"))
+          assert result["overall_state"] == "blocked_panel_incomplete"
+          assert result["scientific_execution_performed"] is False
+          PY
+      - name: Public showcase and five human use cases reproduce byte-for-byte
+        run: |
+          python tools/build_five_use_case_showcase.py --replace
+          python tools/verify_five_use_case_showcase.py
+          python tools/verify_public_showcase.py
+          showcase_tmp="$(mktemp -d)"
+          python tools/build_five_use_case_showcase.py --out "$showcase_tmp/technical-a" --public-out "$showcase_tmp/public-a"
+          python tools/build_five_use_case_showcase.py --out "$showcase_tmp/technical-b" --public-out "$showcase_tmp/public-b"
+          diff -qr "$showcase_tmp/technical-a" "$showcase_tmp/technical-b"
+          diff -qr "$showcase_tmp/public-a" "$showcase_tmp/public-b"
+      - name: CLI reference matches the installed parsers
+        run: python tools/build_cli_reference.py --check
+
+      - name: Wheel contains only canonical package namespaces
+        run: |
+          python -m build --wheel --outdir dist
+          python tools/verify_structural_workbench_wheel.py dist/*.whl
+      - name: Pre-public JOSS material is internally honest
+        run: python tools/verify_structural_joss_staging.py

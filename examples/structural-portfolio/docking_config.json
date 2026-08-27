@@ -1,0 +1,36 @@
+{
+  "job_type": "small_molecule",
+  "receptor": {
+    "path": "query.pdb",
+    "assembly_id": "SYNTHETIC_MONOMER",
+    "conformational_state": "synthetic_observed",
+    "selected_site_residues": [
+      {"chain_id": "A", "auth_seq_id": 1, "mapping_state": "exact"},
+      {"chain_id": "A", "auth_seq_id": 2, "mapping_state": "exact"}
+    ]
+  },
+  "ligand": {
+    "path": "ligand.pdbqt",
+    "identifier": "SYNTHETIC:LIGAND",
+    "chemistry": {
+      "identifier": "SYNTHETIC:LIGAND",
+      "connectivity": "declared in synthetic PDBQT fixture",
+      "bond_orders": "declared in synthetic fixture",
+      "charge": 0,
+      "protonation": "synthetic user declaration",
+      "provenance": "synthetic fixture"
+    }
+  },
+  "preparation": {
+    "protonation_assumptions": "synthetic user declaration",
+    "retained_waters": [],
+    "metals": [],
+    "cofactors": [],
+    "repaired_atoms": [],
+    "flexible_residues": []
+  },
+  "search": {"center": [2.7, 0.2, 0.0], "size": [12.0, 12.0, 12.0], "seed": 7, "exhaustiveness": 8, "num_modes": 3},
+  "restraints": [],
+  "source_terms": {"derivatives_allowed": true, "docking_allowed": true},
+  "approval": {"path": "docking_approval.json"}
+}

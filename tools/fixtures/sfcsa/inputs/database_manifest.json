@@ -1,0 +1,62 @@
+{
+  "annotation_tables": [
+    "proteomes/annotations.tsv"
+  ],
+  "campaign_structure_roots": [
+    "campaign_structures"
+  ],
+  "classification_vocabulary": [
+    "exact_function_supported",
+    "probable_same_function",
+    "same_mechanism_class",
+    "structural_analogy_only",
+    "candidate_functional_divergence",
+    "unresolved_or_conflicted"
+  ],
+  "contested_groups": [],
+  "divergence_sets": [],
+  "mechanism_families": [
+    {
+      "group": "synthetic_barrel",
+      "pattern": "synthetic barrel",
+      "refine": [
+        {
+          "group": "synthetic_partial_domain",
+          "pattern": "partial domain"
+        }
+      ]
+    },
+    {
+      "group": "synthetic_transporter",
+      "pattern": "transporter"
+    }
+  ],
+  "path_base": ".",
+  "pdb_database": "pdb_database",
+  "pdb_database_checksum": "bafd89f6320c4568f131a1a2a7d09b8a14016a886776bcc24555fcbcb26bae64",
+  "pdb_database_version": "synthetic-fixture-0",
+  "proteome_globs": [
+    "proteomes/*.faa"
+  ],
+  "release_expectations": {
+    "proteome_count": 2,
+    "query_count": 2,
+    "target_statuses": {
+      "QRY_A": "retained_for_review",
+      "QRY_B": "retained_for_review"
+    }
+  },
+  "required_foldseek_version": "0.0.0-stub",
+  "seqmatch_tables": [],
+  "thresholds": {
+    "max_structure_hits": 50,
+    "same_fold_tm": 0.5,
+    "sequence_evalue": "1e-5",
+    "sequence_hits_per_proteome": 5,
+    "sequence_max_hits": 25,
+    "sequence_min_identity": 30,
+    "sequence_min_query_coverage": 60,
+    "structure_evalue": "1e-3",
+    "whole_architecture_coverage": 0.8
+  }
+}

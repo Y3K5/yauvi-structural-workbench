@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memorient"
+version = "0.3.0"
+description = "Context-aware membrane orientation, structural-biology labeling, and 3D visualization for protein structures."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+# The context registry and CLI are stdlib-only. The numeric orientation / labeling / viz
+# modules need numpy + biopython; scipy is used for the Nelder-Mead polish in the barrel fit.
+dependencies = []
+
+[project.optional-dependencies]
+compute = ["numpy>=1.24.0", "scipy>=1.10.0", "biopython>=1.81"]
+examples = ["numpy>=1.24.0", "scipy>=1.10.0", "biopython>=1.81", "matplotlib>=3.6.0"]
+dev = ["pytest>=7.3.0", "numpy>=1.24.0", "scipy>=1.10.0", "biopython>=1.81", "matplotlib>=3.6.0"]
+
+[project.scripts]
+memorient = "memorient.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+# sources.yaml ships inside the package so `yauvi-fetch plan --for memorient`
+# works from an install, with no checkout of the workspace present.
+memorient = ["sources.yaml", "*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not network'"
+markers = [
+    "network: test requires network access (fetches a PDB from RCSB); skipped offline",
+]

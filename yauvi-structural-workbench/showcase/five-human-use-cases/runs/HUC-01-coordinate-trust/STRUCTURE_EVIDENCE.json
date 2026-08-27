@@ -1,0 +1,122 @@
+{
+  "chain_summaries": [
+    {
+      "chain_breaks": 0,
+      "chain_id": "A",
+      "missing_backbone_residues": 0,
+      "nonstandard_residues": 0,
+      "residues": 2,
+      "sequence": "SH"
+    }
+  ],
+  "completeness": {
+    "coordinate_residues": 2,
+    "coverage_fraction": 1.0,
+    "identity_fraction": 1.0,
+    "mapped_residues": 2,
+    "reference_length": 2,
+    "state": "evaluated"
+  },
+  "coordinate": {
+    "assemblies": [],
+    "chains": [
+      "A"
+    ],
+    "file_name": "model.pdb",
+    "format": "pdb",
+    "model_count": 1,
+    "parser": {
+      "coordinate_analysis": "biopython",
+      "gemmi_validation": "validated",
+      "gemmi_version": "0.7.5"
+    },
+    "selected_chain": "A",
+    "selected_model": 0,
+    "sha256": "a598a5203e772bb96e4d2005f1f5cd5cb6d4d753511fce064025a258f34ac4b0"
+  },
+  "external_validation": {
+    "file_name": "validation.json",
+    "format": "json",
+    "limitations": [
+      "Imported values retain the producing validator's definitions and are not recomputed by StructQC."
+    ],
+    "metrics": {
+      "clashscore": 2.5
+    },
+    "sha256": "32ecc8b222d8815d2e46d6c10b55361ef1684f7804f6412071ebcd3904bff205",
+    "state": "imported"
+  },
+  "input_sha256": {
+    "external_validation": "32ecc8b222d8815d2e46d6c10b55361ef1684f7804f6412071ebcd3904bff205",
+    "provenance": "6ca21fa6bdf71480491c1440564d4612cfa91ce9d636fe0a5264aaa510c3431d",
+    "reference_sequence": "68d0766ae14980daddb49ef3d11191e6bc9bf22c5193df8fd5349177b37ed62f",
+    "structure": "a598a5203e772bb96e4d2005f1f5cd5cb6d4d753511fce064025a258f34ac4b0"
+  },
+  "limitations": [
+    "Coordinate quality does not establish native conformation or biological function.",
+    "Unknown provenance remains unknown; filename/header hints cannot certify experiment.",
+    "Completeness is unevaluated without a reference sequence."
+  ],
+  "module_id": "structure_quality",
+  "pae": {
+    "detail": "no PAE supplied",
+    "state": "unevaluated"
+  },
+  "provenance": {
+    "class": "predicted",
+    "confidence_encoding": "plddt_in_bfactor",
+    "method": "synthetic predictor",
+    "source_id": "synthetic"
+  },
+  "reference": {
+    "id": "SYNTHETIC",
+    "sequence_supplied": true
+  },
+  "residues": [
+    {
+      "altlocs": [],
+      "auth_seq_id": 1,
+      "ca_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "chain_id": "A",
+      "entity_id": "",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": null,
+      "mean_b_factor": 92.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 92.0,
+      "resname": "SER",
+      "sequence_index": 1
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 2,
+      "ca_xyz": [
+        2.7,
+        1.5,
+        0.0
+      ],
+      "chain_id": "A",
+      "entity_id": "",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": null,
+      "mean_b_factor": 88.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 88.0,
+      "resname": "HIS",
+      "sequence_index": 2
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "SYNTHETIC"
+  },
+  "warnings": []
+}

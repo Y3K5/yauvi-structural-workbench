@@ -1,0 +1,147 @@
+{
+  "assembly": {
+    "chains_expected": [
+      "A",
+      "B"
+    ],
+    "chains_observed": [
+      "A",
+      "B"
+    ],
+    "complete": true,
+    "file_name": "assembly.pdb",
+    "lower_bound": false,
+    "metadata": {
+      "assembly_id": "SYNTHETIC_AB",
+      "asym_ids": [],
+      "format": "pdb",
+      "operator_application": {
+        "chain_copies": [
+          {
+            "copy_chain_id": "A",
+            "copy_index": 1,
+            "source_chain_id": "A"
+          },
+          {
+            "copy_chain_id": "B",
+            "copy_index": 1,
+            "source_chain_id": "B"
+          }
+        ],
+        "observed_atom_count_before": 16,
+        "observed_chain_count_before": 2,
+        "operator_backend": "not_required",
+        "operator_state": "not_declared",
+        "requested_assembly_id": "SYNTHETIC_AB"
+      },
+      "operator_expressions": []
+    }
+  },
+  "assembly_sha256": "f2ad4d9e50daf000069ce25310fc6585401308822821b492954e41b10d8b3fc6",
+  "config": {
+    "assembly_id": "SYNTHETIC_AB",
+    "chains_expected": [
+      "A",
+      "B"
+    ],
+    "contact_cutoff_A": 5.0,
+    "relationship": "exact_protein",
+    "resolved_subject_chain": "A",
+    "subject_chain": "A"
+  },
+  "coordinate_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+  "input_sha256": {
+    "assembly": "f2ad4d9e50daf000069ce25310fc6585401308822821b492954e41b10d8b3fc6",
+    "isolated": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+    "structure_evidence_manifest": "ba394629c63d32e94a1ed068a335ab1e8947bd677e6f5db22012a4bfbd519cbe"
+  },
+  "interfaces": [
+    {
+      "minimum_distance_A": 2.765863,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 1,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 1
+    },
+    {
+      "minimum_distance_A": 1.5,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 1,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "HIS",
+      "subject_resseq": 2
+    },
+    {
+      "minimum_distance_A": 4.016217,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 1,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASP",
+      "subject_resseq": 3
+    }
+  ],
+  "limitations": [
+    "Assembly geometry from one coordinate state is not native surface exposure.",
+    "A homolog assembly transfers architecture, not residue identity.",
+    "Incomplete assemblies make contacts and burial lower bounds."
+  ],
+  "methods": {
+    "contact_cutoff_A": 5.0,
+    "contact_geometry": "scipy_ckdtree",
+    "sasa": "freesasa_lee_richards_default_single_thread"
+  },
+  "module_id": "assembly_context",
+  "reference": {
+    "assembly_id": "SYNTHETIC_AB",
+    "id": "",
+    "relationship": "exact_protein"
+  },
+  "residue_contacts": [
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "HIS"
+    },
+    {
+      "auth_seq_id": 3,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ASP"
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "SYNTHETIC_QUERY"
+  },
+  "surface": {
+    "buried_sasa_A2": 62.106082,
+    "subject_assembly_sasa_A2": 244.382719,
+    "subject_isolated_sasa_A2": 306.4888
+  }
+}

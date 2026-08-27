@@ -1,0 +1,16 @@
+{
+  "parent_fasta": "reference.fasta",
+  "parent_sequence_sha256": "a9cd8b380ebf3f454909e9836c4c226ff3296acabf2646a28744e51962a77ed5",
+  "parent_structure": "query.pdb",
+  "parent_structure_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+  "scientific_purpose": "Synthetic interface-disruption control for software reproduction",
+  "purpose_category": "interface_hypothesis",
+  "engine": "manual",
+  "editable_residues": [2],
+  "catalytic_residues": [1, 3],
+  "maximum_edit_count": 1,
+  "permitted_amino_acids": "ACDEFGHIKLMNPQRSTVWY",
+  "substitutions": [{"position": 2, "residue": "A", "label": "synthetic_H2A"}],
+  "constructs": [{"start_position": 1, "end_position": 3, "tag_location": "none", "tag_sequence": ""}],
+  "hard_rejection_rules": ["protected_residue_change", "maximum_edit_count", "required_motif_loss"]
+}

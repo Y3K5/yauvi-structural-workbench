@@ -1,0 +1,77 @@
+{
+  "contract_id": "structure_layer_bundle",
+  "coordinate_sha256": "5bbc5614de1bacaee2aa4fa595d66053826ee86536e0bc6eb7c9a183ac51d82d",
+  "layer_id": "site_context",
+  "records": [
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "detail": "observed S; expected one of C,S for declared role nucleophile",
+      "evidence_class": "annotation_mapped",
+      "insertion_code": "",
+      "metric": "active_site",
+      "source_digest": "dcd2db89ba3d09425dd6b499941fa832a31f2ba5ca49d6f8f78303f6b4c60ac2",
+      "state": "role_compatible",
+      "value": null
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "detail": "fpocket pocket P1",
+      "evidence_class": "fpocket",
+      "insertion_code": "",
+      "metric": "predicted_pocket",
+      "source_digest": "383986a50632bec461ef98b97f15d3f7f94b502861426f3c0243efb5dcdc0f52",
+      "state": "predicted",
+      "value": 0.5
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "A",
+      "detail": "observed H; expected one of D,E,H for declared role acid_base",
+      "evidence_class": "annotation_mapped",
+      "insertion_code": "",
+      "metric": "binding_site",
+      "source_digest": "dcd2db89ba3d09425dd6b499941fa832a31f2ba5ca49d6f8f78303f6b4c60ac2",
+      "state": "role_compatible",
+      "value": null
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "A",
+      "detail": "fpocket pocket P1",
+      "evidence_class": "fpocket",
+      "insertion_code": "",
+      "metric": "predicted_pocket",
+      "source_digest": "383986a50632bec461ef98b97f15d3f7f94b502861426f3c0243efb5dcdc0f52",
+      "state": "predicted",
+      "value": 0.5
+    },
+    {
+      "auth_seq_id": 3,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D,E for declared role charge_relay",
+      "evidence_class": "annotation_mapped",
+      "insertion_code": "",
+      "metric": "active_site",
+      "source_digest": "dcd2db89ba3d09425dd6b499941fa832a31f2ba5ca49d6f8f78303f6b4c60ac2",
+      "state": "role_compatible",
+      "value": null
+    },
+    {
+      "auth_seq_id": 3,
+      "chain_id": "A",
+      "detail": "fpocket pocket P1",
+      "evidence_class": "fpocket",
+      "insertion_code": "",
+      "metric": "predicted_pocket",
+      "source_digest": "383986a50632bec461ef98b97f15d3f7f94b502861426f3c0243efb5dcdc0f52",
+      "state": "predicted",
+      "value": 0.5
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "SYNTHETIC_QUERY"
+  }
+}
