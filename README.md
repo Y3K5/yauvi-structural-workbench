@@ -59,19 +59,32 @@ the out-of-scope module directories.
 
 ## Status — not submission-eligible
 
-Assembling a working build does not clear the publication gates. The blocking
-items are unchanged:
+Assembling a working build does not clear the publication gates. What still
+blocks submission:
 
 - **Public development has only just begun** (first public commit 2026-08-27).
   JOSS expects sustained public history, tagged releases, and evidence of
   independent use. None of that exists yet.
-- **Qualification v2 is unexecuted** — 0 of 114 required cases adopted across six
-  panels. No scope is scientifically qualified for release.
-- **No community channels.** The code of conduct, security, and support routes
-  have no monitored contact.
+- **No scope is scientifically qualified.** Qualification v2 requires 114 cases
+  across six panels and **0 are adopted** into the frozen panel manifest. The
+  four x-ray StructQC cases are drafted, acquired, and measured
+  ([`ADOPTION_DRAFT_XRAY.json`](yauvi-structural-workbench/benchmarks/qualification-v2/ADOPTION_DRAFT_XRAY.json)),
+  but adoption and the executor that evaluates the gates are both outstanding.
+  The historical v1 collection passed four public cases and left two partial;
+  those are named cases, not workflow-general accuracy evidence.
 - **The paper still states its own ineligibility** and carries unresolved
   conflict-of-interest and funding statements.
 - No independent installation or research-use evidence is recorded.
+- Two known interpretation defects remain open: ActState's catalytic-residue
+  screen over-labels, and SF-CSA computes reciprocal-best-hit after structural
+  classification, so `probable_same_function` is unreachable end-to-end.
+
+Community channels are in place — see [`CONTRIBUTING.md`](CONTRIBUTING.md),
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md),
+[`SECURITY.md`](SECURITY.md), and
+[`SUPPORT.md`](SUPPORT.md). This is a
+single-maintainer project with no conduct committee and no response-time
+commitment, which those documents state directly rather than imply.
 
 Passing local tests is not JOSS acceptance and not external scientific
 validation. See [`CHANGES.md`](CHANGES.md) for how this distribution was assembled and what

@@ -1,0 +1,19 @@
+name: Question
+description: How do I use this, or how should I read a result?
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [`docs/quickstart.md`](../../yauvi-structural-workbench/docs/quickstart.md)
+        and [`docs/methods-and-limitations.md`](../../yauvi-structural-workbench/docs/methods-and-limitations.md)
+        first — the second one states what each result may and may not be taken to mean.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations: {required: true}
+  - type: textarea
+    id: context
+    attributes:
+      label: What you have tried

@@ -11,9 +11,15 @@ import yaml
 from yauvi_platform.structural_workbench import analysis_definitions
 
 
+# GitHub only detects community health files at the repository root, in
+# .github/, or in docs/. They therefore live at the root, not in the staging
+# directory, and are checked there.
+REQUIRED_ROOT = (
+    "README.md", "LICENSE", "CITATION.cff", "CONTRIBUTING.md", "SUPPORT.md",
+    "SECURITY.md", "GOVERNANCE.md", "CODE_OF_CONDUCT.md", "NOTICE.md",
+)
 REQUIRED = (
-    "README.md", "LICENSE", "NOTICE.md", "CITATION.cff", "CONTRIBUTING.md",
-    "SUPPORT.md", "SECURITY.md", "GOVERNANCE.md", "CODE_OF_CONDUCT.md",
+    "README.md", "LICENSE", "CITATION.cff",
     "RELEASE_STATUS.json", "BASELINE.json", "JOSS_CHECKLIST.md",
     "JOSS_PUBLICATION_ROADMAP.json", "PLATFORM_IDENTITY.json", "START_HERE.md",
     "paper/paper.md", "paper/paper.bib",
@@ -35,6 +41,7 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     staging = root / "yauvi-structural-workbench"
     problems = [f"missing {name}" for name in REQUIRED if not (staging / name).is_file()]
+    problems += [f"missing root {name}" for name in REQUIRED_ROOT if not (root / name).is_file()]
     if problems:
         print("\n".join(problems), file=sys.stderr)
         return 1

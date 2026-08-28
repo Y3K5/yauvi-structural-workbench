@@ -2,11 +2,11 @@
 
 ## Start with the documentation
 
-- [`START_HERE.md`](START_HERE.md) — install and first run
-- [`docs/quickstart.md`](docs/quickstart.md) — a complete offline analysis you can run
-- [`docs/cli-reference.md`](docs/cli-reference.md) — every command in all nine CLIs
-- [`docs/methods-and-limitations.md`](docs/methods-and-limitations.md) — what results may and may not be taken to mean
-- [`docs/reproducibility.md`](docs/reproducibility.md) — determinism and provenance contract
+- [`START_HERE.md`](yauvi-structural-workbench/START_HERE.md) — install and first run
+- [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) — a complete offline analysis you can run
+- [`docs/cli-reference.md`](yauvi-structural-workbench/docs/cli-reference.md) — every command in all nine CLIs
+- [`docs/methods-and-limitations.md`](yauvi-structural-workbench/docs/methods-and-limitations.md) — what results may and may not be taken to mean
+- [`docs/reproducibility.md`](yauvi-structural-workbench/docs/reproducibility.md) — determinism and provenance contract
 
 ## Asking for help
 

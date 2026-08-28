@@ -1,0 +1,47 @@
+name: Bug report
+description: Something behaves incorrectly, or an evidence record looks wrong.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Exit code `1` means **scientifically incomplete**, not failure. Check the
+        `missing_evidence` list in `RUN_MANIFEST.json` first — it usually explains
+        the result. Please do not attach unpublished sequences, private
+        coordinates, credentials, or local omics data.
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: The exact command you ran.
+      render: shell
+    validations: {required: true}
+  - type: input
+    id: exit_code
+    attributes:
+      label: Exit code
+      placeholder: "0, 1, or 2"
+    validations: {required: true}
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened instead
+    validations: {required: true}
+  - type: textarea
+    id: manifest
+    attributes:
+      label: RUN_MANIFEST.json
+      description: Paste the run manifest, or the relevant part of it.
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: Platform and Python version
+      placeholder: "macOS 15 arm64, Python 3.12.7"
+    validations: {required: true}
+  - type: checkboxes
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - label: "This is silent scientific corruption: wrong residue identity, a mismatched checksum, permissive missing-evidence behavior, or a claim widened beyond its recorded ceiling."
