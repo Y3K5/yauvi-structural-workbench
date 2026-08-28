@@ -13,7 +13,9 @@
       ],
       "cofactor_identifier_match": "exact",
       "missing_state_accuracy": "exact",
-      "note": "The recovery floor is written for complete structures. The apo/modified/incomplete stratum exists to carry structures whose curated residues cannot all be resolved -- 1ALG resolves none of five -- so applying the floor there would fail the stratum for doing its job. Those cases are held to their declared per-site states instead, which is the stricter test."
+      "note": "The recovery floor is written for complete structures. The apo/modified/incomplete stratum exists to carry structures whose curated residues cannot all be resolved -- 1ALG resolves none of five -- so applying the floor there would fail the stratum for doing its job. Those cases are held to their declared per-site states instead, which is the stricter test.",
+      "cofactor_declaration_source": "UniProt COFACTOR annotation, joined to PDB component ids through an explicit ChEBI table. Declaring from UniProt rather than from the coordinate file is what makes the gate non-vacuous: a cofactor the structure lacks is still declared and reported not_observed.",
+      "component_map_note": "Every case supplies the ChEBI-to-component map, not only the metal stratum. Without it a declared cofactor resolves to \"unresolved\" rather than \"not_observed\", which would let an apo or fragment structure look merely unmapped instead of missing its cofactor."
     },
     "missing_evidence_behavior": {
       "mode": "fail_closed",
@@ -68,7 +70,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1B73.cif",
-          "annotations": "sources/mcsa/MCSA-1.annotations.json"
+          "annotations": "sources/mcsa/MCSA-1.annotations.json",
+          "component_map": "sources/mcsa/MCSA-1.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -177,7 +180,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1OTH.cif",
-          "annotations": "sources/mcsa/MCSA-12.annotations.json"
+          "annotations": "sources/mcsa/MCSA-12.annotations.json",
+          "component_map": "sources/mcsa/MCSA-12.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -288,7 +292,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1ALG.cif",
-          "annotations": "sources/mcsa/MCSA-6.annotations.json"
+          "annotations": "sources/mcsa/MCSA-6.annotations.json",
+          "component_map": "sources/mcsa/MCSA-6.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -350,7 +355,15 @@
           }
         ],
         "curated_residue_recovery": 0.0,
-        "cofactors": [],
+        "cofactors": [
+          {
+            "chebi": "CHEBI:57692",
+            "component_id": "",
+            "detail": "expected component(s) not present: FAD",
+            "name": "FAD",
+            "state": "not_observed"
+          }
+        ],
         "observed_heteroatoms": []
       }
     },
@@ -387,7 +400,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/2JDW.cif",
-          "annotations": "sources/mcsa/MCSA-18.annotations.json"
+          "annotations": "sources/mcsa/MCSA-18.annotations.json",
+          "component_map": "sources/mcsa/MCSA-18.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -451,6 +465,590 @@
         "curated_residue_recovery": 1.0,
         "cofactors": [],
         "observed_heteroatoms": []
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-metal_or_cofactor-dev-1NIA",
+      "record_kind": "benchmark_case",
+      "stratum": "metal_or_cofactor",
+      "split": "development",
+      "pdb_entry_id": "1NIA",
+      "homolog_group": "nitrite_reductase_cu",
+      "artifact": "sources/wwpdb/1NIA.cif",
+      "checksum": "783eb91b7b4a4115f974f53304dd48568f6ab53366d5399176d8037883b1a086",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P25006",
+        "annotation_source": "M-CSA:4",
+        "cofactor_source": "UniProt:P25006 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1NIA",
+        "mcsa": "M-CSA:4"
+      },
+      "exclusion_rationale": "Copper nitrite reductase. UniProt declares Cu(+), Cu(2+) and FAD; the structure carries copper but no FAD, so the declaration is only partly observed.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1NIA.cif",
+            "reference_fasta": "sources/uniprot/P25006.fasta",
+            "validation_report": "sources/wwpdb/1nia_validation.xml",
+            "provenance": "provenance/1NIA.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1NIA.cif",
+          "annotations": "sources/mcsa/MCSA-4.annotations.json",
+          "component_map": "sources/mcsa/MCSA-4.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 7,
+        "state_counts": {
+          "role_compatible": 7
+        },
+        "sites": [
+          {
+            "position": 133,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 136,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 138,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 173,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 174,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "C",
+            "expected_residues": [
+              "C"
+            ]
+          },
+          {
+            "position": 183,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 188,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "M",
+            "expected_residues": [
+              "M"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:49552",
+            "component_id": "",
+            "detail": "observed component(s): CU",
+            "name": "Cu(+)",
+            "state": "observed_match"
+          },
+          {
+            "chebi": "CHEBI:29036",
+            "component_id": "",
+            "detail": "observed component(s): CU",
+            "name": "Cu(2+)",
+            "state": "observed_match"
+          },
+          {
+            "chebi": "CHEBI:57692",
+            "component_id": "",
+            "detail": "expected component(s) not present: FAD",
+            "name": "FAD",
+            "state": "not_observed"
+          }
+        ],
+        "observed_heteroatoms": [
+          "CU"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-metal_or_cofactor-dev-5ICD",
+      "record_kind": "benchmark_case",
+      "stratum": "metal_or_cofactor",
+      "split": "development",
+      "pdb_entry_id": "5ICD",
+      "homolog_group": "isocitrate_dehydrogenase",
+      "artifact": "sources/wwpdb/5ICD.cif",
+      "checksum": "2743bffee86fbe414d6f21f69260e622e440f7c3de30f3b0c1194b0515354c62",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P08200",
+        "annotation_source": "M-CSA:7",
+        "cofactor_source": "UniProt:P08200 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:5ICD",
+        "mcsa": "M-CSA:7"
+      },
+      "exclusion_rationale": "Mg/Mn-dependent dehydrogenase: a divalent-metal declaration against a structure solved with its metal.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/5ICD.cif",
+            "reference_fasta": "sources/uniprot/P08200.fasta",
+            "validation_report": "sources/wwpdb/5icd_validation.xml",
+            "provenance": "provenance/5ICD.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/5ICD.cif",
+          "annotations": "sources/mcsa/MCSA-7.annotations.json",
+          "component_map": "sources/mcsa/MCSA-7.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 4,
+        "state_counts": {
+          "role_compatible": 4
+        },
+        "sites": [
+          {
+            "position": 160,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          },
+          {
+            "position": 230,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 283,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 307,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:18420",
+            "component_id": "",
+            "detail": "observed component(s): MG",
+            "name": "Mg(2+)",
+            "state": "observed_match"
+          },
+          {
+            "chebi": "CHEBI:29035",
+            "component_id": "",
+            "detail": "expected component(s) not present: MN",
+            "name": "Mn(2+)",
+            "state": "not_observed"
+          }
+        ],
+        "observed_heteroatoms": [
+          "ICT",
+          "MG"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-metal_or_cofactor-held-1QUM",
+      "record_kind": "benchmark_case",
+      "stratum": "metal_or_cofactor",
+      "split": "held_out",
+      "pdb_entry_id": "1QUM",
+      "homolog_group": "dnase_iv",
+      "artifact": "sources/wwpdb/1QUM.cif",
+      "checksum": "8ef91fa5ce01aef925052a0df8c0198620407657bc0cd2408f4bd5d71e157dce",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0A6C1",
+        "annotation_source": "M-CSA:11",
+        "cofactor_source": "UniProt:P0A6C1 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1QUM",
+        "mcsa": "M-CSA:11"
+      },
+      "exclusion_rationale": "Zn/Mn nuclease with eleven curated residues, the largest curated site in the panel.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1QUM.cif",
+            "reference_fasta": "sources/uniprot/P0A6C1.fasta",
+            "validation_report": "sources/wwpdb/1qum_validation.xml",
+            "provenance": "provenance/1QUM.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1QUM.cif",
+          "annotations": "sources/mcsa/MCSA-11.annotations.json",
+          "component_map": "sources/mcsa/MCSA-11.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 11,
+        "state_counts": {
+          "role_compatible": 11
+        },
+        "sites": [
+          {
+            "position": 37,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "R",
+            "expected_residues": [
+              "R"
+            ]
+          },
+          {
+            "position": 69,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 72,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          },
+          {
+            "position": 109,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 145,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          },
+          {
+            "position": 179,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 182,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 216,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 229,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 231,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 261,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:29105",
+            "component_id": "",
+            "detail": "observed component(s): ZN",
+            "name": "Zn(2+)",
+            "state": "observed_match"
+          },
+          {
+            "chebi": "CHEBI:29035",
+            "component_id": "",
+            "detail": "expected component(s) not present: MN",
+            "name": "Mn(2+)",
+            "state": "not_observed"
+          }
+        ],
+        "observed_heteroatoms": [
+          "3DR",
+          "ZN"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-metal_or_cofactor-held-1DO8",
+      "record_kind": "benchmark_case",
+      "stratum": "metal_or_cofactor",
+      "split": "held_out",
+      "pdb_entry_id": "1DO8",
+      "homolog_group": "malate_dehydrogenase_oxaloacetate_decarboxylating",
+      "artifact": "sources/wwpdb/1DO8.cif",
+      "checksum": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P23368",
+        "annotation_source": "M-CSA:21",
+        "cofactor_source": "UniProt:P23368 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1DO8",
+        "mcsa": "M-CSA:21"
+      },
+      "exclusion_rationale": "Mg/Mn malic enzyme; a second divalent-metal case in a different fold from 5ICD.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1DO8.cif",
+            "reference_fasta": "sources/uniprot/P23368.fasta",
+            "validation_report": "sources/wwpdb/1do8_validation.xml",
+            "provenance": "provenance/1DO8.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1DO8.cif",
+          "annotations": "sources/mcsa/MCSA-21.annotations.json",
+          "component_map": "sources/mcsa/MCSA-21.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 8,
+        "state_counts": {
+          "role_compatible": 8
+        },
+        "sites": [
+          {
+            "position": 112,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          },
+          {
+            "position": 165,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "R",
+            "expected_residues": [
+              "R"
+            ]
+          },
+          {
+            "position": 183,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 255,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          },
+          {
+            "position": 256,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 278,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 279,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 421,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "N",
+            "expected_residues": [
+              "N"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:18420",
+            "component_id": "",
+            "detail": "expected component(s) not present: MG",
+            "name": "Mg(2+)",
+            "state": "not_observed"
+          },
+          {
+            "chebi": "CHEBI:29035",
+            "component_id": "",
+            "detail": "observed component(s): MN",
+            "name": "Mn(2+)",
+            "state": "observed_match"
+          }
+        ],
+        "observed_heteroatoms": [
+          "MN",
+          "MSE",
+          "NAD",
+          "OXL"
+        ]
       }
     }
   ],

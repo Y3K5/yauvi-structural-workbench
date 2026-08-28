@@ -34,6 +34,27 @@ from pathlib import Path
 from typing import Any
 
 API = "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/"
+UNIPROT = "https://rest.uniprot.org/uniprotkb/"
+
+# ChEBI identity -> PDB Chemical Component Dictionary id.
+#
+# UniProt declares a cofactor as a chemical species with a ChEBI id; a
+# coordinate file contains a three-letter component id. The gate compares a
+# declaration against an observation, so the two vocabularies have to be joined
+# somewhere, and doing it in an explicit table keeps the join auditable. It is
+# deliberately small: entries are added when a curated case needs one, never
+# inferred from what a structure happens to contain, because reading the
+# declaration off the observation would make the gate circular.
+CHEBI_TO_COMPONENT = {
+    "CHEBI:49552": ["CU"],    # Cu(+)
+    "CHEBI:29036": ["CU"],    # Cu(2+)
+    "CHEBI:29105": ["ZN"],    # Zn(2+)
+    "CHEBI:18420": ["MG"],    # Mg(2+)
+    "CHEBI:29035": ["MN"],    # Mn(2+)
+    "CHEBI:57692": ["FAD"],   # FAD
+    "CHEBI:57783": ["NDP"],   # NADPH
+    "CHEBI:58349": ["NAP"],   # NADP(+)
+}
 
 THREE_TO_ONE = {
     "Ala": "A", "Arg": "R", "Asn": "N", "Asp": "D", "Cys": "C", "Gln": "Q",
@@ -76,6 +97,31 @@ def fetch(url: str) -> Any:
     req = urllib.request.Request(url, headers={"User-Agent": "yauvi-qualification/2.0"})
     with urllib.request.urlopen(req, timeout=180) as r:
         return json.loads(r.read().decode("utf-8"))
+
+
+def uniprot_cofactors(accession: str) -> list[dict]:
+    """Declared cofactors for an accession, from UniProt's COFACTOR annotation.
+
+    Declaring from UniProt rather than from the coordinate file is the point: a
+    cofactor the structure lacks must still be declared, or an apo structure
+    would silently satisfy the gate by declaring nothing.
+    """
+    if not accession:
+        return []
+    data = fetch(f"{UNIPROT}{accession}.json?fields=cc_cofactor")
+    out: list[dict] = []
+    for comment in data.get("comments", []):
+        if comment.get("commentType") != "COFACTOR":
+            continue
+        for cofactor in comment.get("cofactors", []):
+            ref = cofactor.get("cofactorCrossReference") or {}
+            if str(ref.get("database", "")).upper() != "CHEBI":
+                continue
+            chebi = str(ref.get("id", "")).upper()
+            out.append({"name": cofactor.get("name"), "chebi": chebi,
+                        "component_id": "",
+                        "source": f"UniProt:{accession} COFACTOR"})
+    return out
 
 
 def classify(entry: dict) -> str:
@@ -152,8 +198,13 @@ def build_annotations(entry: dict) -> dict:
             "detail": residue.get("roles_summary") or "",
         })
     sites.sort(key=lambda s: (s["position"] is None, s["position"]))
+    cofactors = uniprot_cofactors(entry.get("reference_uniprot_id") or "")
+    component_map = {c["chebi"]: CHEBI_TO_COMPONENT[c["chebi"]]
+                     for c in cofactors if c["chebi"] in CHEBI_TO_COMPONENT}
+    unmapped = sorted({c["chebi"] for c in cofactors if c["chebi"] not in CHEBI_TO_COMPONENT})
     return {
-        "declared_cofactors": [],
+        "declared_cofactors": cofactors,
+        "component_map": component_map,
         "sites": sites,
         "provenance": {
             "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
@@ -164,6 +215,12 @@ def build_annotations(entry: dict) -> dict:
             "enzyme": entry.get("enzyme_name"), "ec": entry.get("all_ecs"),
             "stratum": classify(entry),
             "skipped_nonstandard_residues": skipped,
+            "unmapped_chebi": unmapped,
+            "cofactor_note": ("Cofactors are declared from UniProt's COFACTOR annotation, not read "
+                              "off the coordinate file, so an apo structure fails the gate instead "
+                              "of satisfying it vacuously. ChEBI identities are joined to PDB "
+                              "component ids through an explicit table; anything unmapped is listed "
+                              "in unmapped_chebi rather than dropped."),
             "role_mapping_note": ("M-CSA functions are mapped onto the five roles site-context "
                                   "accepts; unrecognised functions become 'unspecified' rather "
                                   "than being guessed into a role."),
@@ -195,6 +252,11 @@ def main(argv: list[str] | None = None) -> int:
     doc = build_annotations(fetch(f"{API}{args.entry}/?format=json"))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # site-context takes the ChEBI -> component mapping as its own document, so
+    # it is written beside the annotations rather than nested inside them.
+    map_path = args.out.with_name(args.out.name.replace(".annotations.json", ".component_map.json"))
+    map_path.write_text(json.dumps(doc["component_map"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
     p = doc["provenance"]
     print(f"M-CSA:{args.entry} -> {args.out}  stratum={p['stratum']} "
           f"pdb={p['reference_pdb']}:{p['reference_chain']} sites={len(doc['sites'])}"
