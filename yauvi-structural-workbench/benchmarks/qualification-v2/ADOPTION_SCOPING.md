@@ -307,6 +307,66 @@ no provenance record. Supplying one per case would exercise the complete path,
 yield exit 0, and make the fail-closed gate test something stronger than a
 uniformly missing leg.
 
+## 4e. The site-context panel: what curation surfaced
+
+The functional-site panel is a two-stage chain -- site-context consumes
+StructQC's evidence document plus an M-CSA annotation file -- and its four
+strata are mechanism classes, not structure classes. `tools/harvest_mcsa_annotations.py`
+generates the annotations from the M-CSA API rather than transcribing residue
+numbers by hand.
+
+**The harvester was validated against the one hand-curated file that exists.**
+Regenerating M-CSA entry 1 reproduces the qualification v1 annotations exactly --
+same positions, roles, expected residues, and types. Getting there took two
+corrections:
+
+1. **Role priority, not first match.** Taking the first recognised M-CSA function
+   made every residue in entry 1 a charge relay, because "hydrogen bond acceptor"
+   is listed before "proton acceptor". The mechanistically decisive function has
+   to win.
+2. **pKa modulation is not acid/base catalysis.** Ser8 carries "increase
+   basicity" -- it raises Asp7's basicity, while Asp7 is the residue that
+   actually accepts the proton. Mapping modulation to `acid_base` labelled Ser8 a
+   catalytic base it is not. Only proton transfer by the residue itself counts.
+
+Interaction-level functions map to `unspecified` rather than `charge_relay`: a
+charge relay is a specific catalytic arrangement, and calling every polar contact
+one asserts more than the curation supports.
+
+### The numbering bug that would have poisoned the panel
+
+site-context resolves an annotation position through the **reference sequence
+map**, so positions must be in UniProt numbering. The first harvester emitted
+PDB author numbering. For M-CSA entry 1 the two coincide, so it validated
+against v1 and looked correct.
+
+They diverge wherever a signal peptide or tag shifts deposited numbering. In
+1NIA the offset is 38 residues, and every one of its seven curated residues
+resolved to the wrong position and reported `role_mismatch` -- a confident,
+entirely wrong answer. Four of the first candidates failed this way before the
+cause was found.
+
+After the fix, **18 of 18 probed entries resolve 100% `role_compatible`**, with
+no mismatches and no unresolved mappings. That is the evidence the mapping is
+right; a single validating entry was not.
+
+The annotation records both numbering systems now: `position` in reference
+numbering for resolution, `pdb_auth_resid` alongside it so a curator can check
+against the deposited file.
+
+### The fourth stratum needs a different selection strategy
+
+`acid_base`, `nucleophile_or_covalent`, and `metal_or_cofactor` are mechanism
+classes and can be selected straight from M-CSA. `apo_modified_or_incomplete` is
+a property of the **structure**, not the mechanism: it needs entries whose
+curated residues are unresolved, modified, or absent.
+
+None of the 18 probed candidates supplies one, and that is expected -- M-CSA
+reference structures are chosen to be complete and holo. The API exposes exactly
+one reference structure per entry, so alternative crystal forms must be found
+through RCSB by UniProt accession and then tested for unresolved catalytic
+residues. That is the outstanding work for this panel.
+
 ## 5. Adoption is not execution — the executor does not exist
 
 `run_qualification.py` is a **composition audit only**: it validates that records
