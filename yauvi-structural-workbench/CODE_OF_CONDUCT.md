@@ -7,6 +7,20 @@ honest environment. Unacceptable conduct includes harassment, personal attacks,
 publishing private information, and knowingly weakening evidence or provenance
 boundaries without disclosure.
 
-The enforcement contact and public reporting route will be finalized before the
-repository is published. No public reporting channel is claimed by this local
-staging copy.
+## Reporting
+
+The project is maintained by [@Y3K5](https://github.com/Y3K5), who is
+responsible for enforcement.
+
+- **Conduct concerns that can be discussed openly:** open an issue at
+  https://github.com/Y3K5/yauvi-structural-workbench/issues
+- **Anything sensitive, or a report about the maintainer:** use GitHub's own
+  reporting route at https://github.com/contact/report-abuse, which reaches
+  GitHub Support directly rather than this project.
+
+Reports are handled as promptly as a single-maintainer project allows. The
+maintainer will not act as the sole arbiter of a report concerning themselves;
+such reports should go to GitHub Support by the route above.
+
+This project has one maintainer and no separate conduct committee. That is a
+real limitation, stated here rather than implied.
