@@ -19,7 +19,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import gzip
 import http.client
+import shutil
 import sys
 import time
 import urllib.error
@@ -38,37 +40,46 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def fetch(url: str, dest: Path, attempts: int = 4) -> None:
-    """Download one artifact, retrying transient transport failures.
+def fetch(url: str, dest: Path, expected: str = "", attempts: int = 6) -> None:
+    """Download one artifact, retrying until its digest matches.
 
-    Providers truncate connections under load. Without a retry the whole
-    acquisition fails on a hiccup that has nothing to do with the science, and
-    a scheduled qualification run turns into noise. The digest check downstream
-    is what actually establishes correctness, so retrying is safe.
+    Retrying only on transport errors is not enough: a provider under load can
+    truncate a response in ways that surface as a short read, and the larger
+    coordinate files here (several megabytes) hit that often enough to break a
+    whole acquisition. The digest is the real success criterion, so the loop
+    retries until the bytes on disk match the lock, streaming to a partial file
+    so a failed attempt never leaves a plausible-looking artifact behind.
     """
     dest.parent.mkdir(parents=True, exist_ok=True)
+    part = dest.with_suffix(dest.suffix + ".part")
     last: Exception | None = None
     for attempt in range(1, attempts + 1):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "yauvi-qualification/2.0"})
-            with urllib.request.urlopen(req, timeout=180) as r:
+            with urllib.request.urlopen(req, timeout=300) as r:
                 declared = r.headers.get("Content-Length")
-                data = r.read()
-            if declared is not None and len(data) != int(declared):
-                raise http.client.IncompleteRead(data, int(declared) - len(data))
+                with part.open("wb") as fh:
+                    shutil.copyfileobj(r, fh, 1 << 16)
+            size = part.stat().st_size
+            if declared is not None and size != int(declared):
+                raise http.client.IncompleteRead(b"", int(declared) - size)
+
+            data = part.read_bytes()
             if url.endswith(".gz") and not dest.name.endswith(".gz"):
-                import gzip
                 data = gzip.decompress(data)
-            dest.write_bytes(data)
+                part.write_bytes(data)
+
+            if expected:
+                observed = hashlib.sha256(part.read_bytes()).hexdigest()
+                if observed != expected:
+                    raise ValueError(f"digest mismatch (got {observed[:12]}...)")
+            part.replace(dest)
             return
-        except (urllib.error.URLError, http.client.HTTPException, OSError, EOFError) as exc:
-            # http.client.IncompleteRead derives from HTTPException, not from
-            # URLError or OSError, so it escapes the obvious except clause and a
-            # truncated download reads as a hard failure. Providers truncate
-            # under load often enough that this is the common retry case.
+        except Exception as exc:  # transport, truncation, or digest mismatch
             last = exc
+            part.unlink(missing_ok=True)
             if attempt < attempts:
-                time.sleep(2 ** attempt)
+                time.sleep(min(2 ** attempt, 20))
     raise RuntimeError(f"{attempts} attempts failed: {last}")
 
 
@@ -100,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
                 problems.append(f"no url to acquire: {entry['artifact']}")
                 continue
             try:
-                fetch(url, artifact)
+                fetch(url, artifact, expected)
             except Exception as exc:
                 problems.append(f"download failed: {entry['artifact']}: {exc}")
                 continue

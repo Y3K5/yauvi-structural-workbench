@@ -22,6 +22,7 @@ Exit:   0 every case passed, 1 a case failed or the panel could not be executed.
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import platform
@@ -202,12 +203,22 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
     # else appearing in the missing list is a change that must be noticed.
     missing = sorted(manifest.get("missing_evidence") or [])
     if record["record_kind"] == "control_case":
-        # A control exists to be incomplete: withholding evidence is its whole
-        # point, so it is held to its own recorded expectation rather than to
-        # the stratum's, which describes complete cases.
-        checks.append({"check": "control_reports_withheld_evidence", "required": True,
-                       "expected": "a non-empty missing-evidence list",
-                       "observed": missing, "passed": bool(missing)})
+        # Controls have declared purposes. A fail-closed control exists to be
+        # incomplete, so it must report withheld evidence. A coverage control
+        # exists to supply a feature no benchmark case carries, so it must be
+        # complete like any other run. Holding both to one rule failed the
+        # coverage control for supplying the evidence it was meant to supply.
+        purpose = record.get("control_purpose", "fail_closed")
+        if purpose == "fail_closed":
+            checks.append({"check": "control_reports_withheld_evidence", "required": True,
+                           "expected": "a non-empty missing-evidence list",
+                           "observed": missing, "passed": bool(missing)})
+        else:
+            expected_missing = sorted(
+                gates["missing_evidence_behavior"]["expected_missing_by_stratum"].get(stratum, []))
+            checks.append({"check": "coverage_control_is_complete", "required": True,
+                           "expected": expected_missing, "observed": missing,
+                           "passed": missing == expected_missing})
     else:
         expected_missing = sorted(
             gates["missing_evidence_behavior"]["expected_missing_by_stratum"].get(stratum, []))
@@ -220,7 +231,50 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
 
     return {"record_id": record["record_id"], "pdb_entry_id": record["pdb_entry_id"],
             "stratum": record["stratum"], "split": record["split"],
+            "output_dir": str(out.relative_to(HERE)) if out.is_relative_to(HERE) else str(out),
             "passed": all(c["passed"] for c in checks if c["required"]), "checks": checks}
+
+
+def witness_coverage(out: Path) -> set[str]:
+    """Report which coverage features one executed case actually demonstrates.
+
+    Coverage is verified from the evidence a run produced, not asserted in
+    prose. The panel declares which features must appear; this function knows
+    how to recognise them. Composition counts records per stratum and therefore
+    cannot see a coverage rule going unmet -- that gap is what this closes.
+    """
+    seen: set[str] = set()
+    evidence = out / "STRUCTURE_EVIDENCE.json"
+    residues = out / "RESIDUE_QUALITY.tsv"
+    if not evidence.is_file():
+        return seen
+    ev = json.loads(evidence.read_text(encoding="utf-8"))
+
+    coord = ev.get("coordinate", {})
+    if len(coord.get("chains") or []) > 1:
+        seen.add("multichain_coordinates")
+    if (coord.get("model_count") or 1) > 1:
+        seen.add("multi_model_ensemble")
+    if (ev.get("pae") or {}).get("state") == "evaluated":
+        seen.add("predicted_confidence")
+    for chain in ev.get("chain_summaries") or []:
+        if chain.get("nonstandard_residues"):
+            seen.add("nonstandard_residues")
+        if chain.get("chain_breaks") or chain.get("missing_backbone_residues"):
+            seen.add("missing_residues")
+    if (ev.get("external_validation") or {}).get("state") == "imported":
+        seen.add("official_validation_import")
+
+    if residues.is_file():
+        with residues.open(encoding="utf-8") as fh:
+            for row in csv.DictReader(fh, delimiter="\t"):
+                if (row.get("insertion_code") or "").strip():
+                    seen.add("insertion_codes")
+                if (row.get("altlocs") or "").strip():
+                    seen.add("alternate_locations")
+                if seen >= {"insertion_codes", "alternate_locations"}:
+                    break
+    return seen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -264,6 +318,17 @@ def main(argv: list[str] | None = None) -> int:
 
     passed = sum(1 for c in cases if c["passed"])
     controls_passed = sum(1 for c in controls if c["passed"])
+
+    required_coverage = (semantics.get("coverage_requirements") or {}).get("required_features") or []
+    witnessed: dict[str, list[str]] = {feature: [] for feature in required_coverage}
+    for case in cases + controls:
+        if not case.get("output_dir"):
+            continue
+        for feature in witness_coverage(HERE / case["output_dir"]):
+            if feature in witnessed:
+                witnessed[feature].append(case["record_id"])
+    unmet = sorted(f for f, by in witnessed.items() if not by)
+    coverage_ok = not unmet
     result = {
         "schema_version": "1.0",
         "collection_id": panel.get("panel_id"),
@@ -272,7 +337,12 @@ def main(argv: list[str] | None = None) -> int:
         "scientific_execution_performed": True,
         "case_counts": {"total": len(cases), "passed": passed, "failed": len(cases) - passed},
         "stratum_state": ("passed" if passed == len(cases) and controls_passed == len(controls)
-                          else "failed"),
+                          and coverage_ok else "failed"),
+        "coverage": {"required": sorted(required_coverage),
+                     "unwitnessable": sorted(
+                         ((semantics.get("coverage_requirements") or {}).get("unwitnessable_features") or {})),
+                     "witnessed_by": {f: sorted(by) for f, by in sorted(witnessed.items())},
+                     "unmet": unmet, "passed": coverage_ok},
         "control_counts": {"total": len(controls), "passed": controls_passed},
         "controls": controls,
         "scope_qualified": False,
@@ -293,13 +363,19 @@ def main(argv: list[str] | None = None) -> int:
     print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed, "
           f"{controls_passed}/{len(controls)} controls passed "
           f"[residue_identity={semantics['residue_identity']['mode']}]")
+    if required_coverage:
+        print(f"coverage: {len(required_coverage) - len(unmet)}/{len(required_coverage)} features witnessed"
+              + (f" | UNMET: {', '.join(unmet)}" if unmet else ""))
+    unwitnessable = (semantics.get("coverage_requirements") or {}).get("unwitnessable_features") or {}
+    for name in sorted(unwitnessable):
+        print(f"coverage NOT satisfied (recorded defect): {name}")
     for c in cases + controls:
         if not c["passed"]:
             bad = [k["check"] for k in c["checks"] if k["required"] and not k["passed"]]
             print(f"  FAILED {c['record_id']}: {', '.join(bad)}")
     print(f"strata executed: {', '.join(sorted({c['stratum'] for c in cases if c.get('stratum')}))}")
     print("scope_qualified: false (this runner never qualifies a scope; see the result note)")
-    return 0 if passed == len(cases) and controls_passed == len(controls) else 1
+    return 0 if passed == len(cases) and controls_passed == len(controls) and coverage_ok else 1
 
 
 if __name__ == "__main__":

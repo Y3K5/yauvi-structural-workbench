@@ -1210,7 +1210,70 @@
             "missing_evidence": [
               "provenance"
             ]
-          }
+          },
+          "control_purpose": "fail_closed"
+        },
+        {
+          "record_id": "v2-structqc-coverage-insertion-codes-1IGT",
+          "record_kind": "control_case",
+          "stratum": "x_ray",
+          "split": "control",
+          "pdb_entry_id": "1IGT",
+          "homolog_group": "igg2a_heavy_chain",
+          "artifact": "sources/wwpdb/1IGT.cif",
+          "checksum": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P01863"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1IGT",
+            "description": "Intact IgG2a monoclonal antibody"
+          },
+          "exclusion_rationale": "Insertion-code coverage control. No entry among the sixteen benchmark cases carries an author insertion code, so the panel's insertion-code coverage rule had no witness. Chain B is Kabat-numbered and carries eight (52A, 82A-C, 100H-I among them). Recorded as a control so it satisfies coverage without disturbing the required two-per-stratum-per-split counts.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "structure": "sources/wwpdb/1IGT.cif",
+              "reference_fasta": "sources/uniprot/P01863.fasta",
+              "validation_report": "sources/wwpdb/1igt_validation.xml",
+              "provenance": "provenance/1IGT.provenance.json",
+              "chain": "B"
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 0.987879,
+              "mapped_residues": 326,
+              "reference_length": 330,
+              "coordinate_residues": 444,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 444
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 22.44,
+                "r_free": 0.297,
+                "ramachandran_outliers_percent": 3.67,
+                "resolution_angstrom": 2.8,
+                "rotamer_outliers_percent": 9.76
+              }
+            },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "experimental",
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": []
+          },
+          "control_purpose": "coverage"
         }
       ],
       "gate_semantics": {
@@ -1284,6 +1347,28 @@
           "nmr": {
             "model_index": 0,
             "rationale": "An NMR entry deposits an ensemble; these range from 10 to 20 models. StructQC evaluates one model, so which one is a scientific choice and is declared per case rather than inherited from a CLI default. Model index 0 (the first deposited model) is used uniformly. Ensemble-wide agreement is a separate question this stratum does not test."
+          }
+        },
+        "coverage_requirements": {
+          "mode": "witnessed_by_at_least_one_executed_case",
+          "required_features": [
+            "insertion_codes",
+            "alternate_locations",
+            "missing_residues",
+            "multichain_coordinates",
+            "multi_model_ensemble",
+            "predicted_confidence",
+            "official_validation_import"
+          ],
+          "rationale": "The panel's coverage_rules were prose only. Composition counts records per stratum and split, so a coverage rule could go unmet while the panel reported itself complete -- and insertion codes did exactly that until 1IGT was curated. Each feature is now witnessed from the evidence an executed case produced, and execution fails if any required feature has no witness.",
+          "unwitnessable_features": {
+            "modified_residues": {
+              "declared_by": "the panel's coverage_rules, as 'nonstandard residues'",
+              "status": "NOT SATISFIED - recorded as an open defect, not as met coverage",
+              "why_not_witnessed": "StructQC counts a residue as nonstandard only when its one-letter code is X. A chemically modified residue that maps to its unmodified parent is normalised and never reported. 2V7A chain A contains PTR393 (phosphotyrosine); gemmi sees 271 polymer residues, StructQC reports 270 with nonstandard_residues: 0, and the string PTR appears nowhere in the evidence record, the residue table, or the run manifest.",
+              "why_not_worked_around": "A detector could read the coordinate file directly, but then the panel would claim coverage of a feature the tool under test does not report. Coverage must be witnessed from the evidence the tool produces, or it is not coverage.",
+              "resolution": "Either StructQC reports modified residues explicitly, or the panel's coverage_rules drop the claim. For a coordinate-trust tool, a post-translational modification is exactly what a user needs surfaced before mapping a functional residue, so reporting it is the better fix."
+            }
           }
         }
       }

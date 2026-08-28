@@ -37,16 +37,16 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "63633a3b2f8de6c21b2d0e8773cb468aa94534e0788aed010eac7c5783ac002d",
+      "panel_manifest_sha256": "356a550c76e6a85ac57fe0bccc65fcbac34ca8da781e0cd3b8da0fb9dbf53aa5",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
-      "source_lock_sha256": "4070c5b32e5b35d740146ada8b5518f0f2b757e0d825923b8cdacb602dd5fb97",
+      "source_lock_sha256": "dd28431569bca59ecf68a073d91ae4d1bff9c733a137d5aed1f31f82c2af9723",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "c838fd18aa8dd3594d64d327e795e74427c5963ec01685715fb82148834ed53a",
+      "results_sha256": "a8d85291e925b4bd62c5f092b0b6a462a052133f22187f3095eb0e18458a0586",
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
       "execution_results": "benchmarks/qualification-v2/results/EXECUTION_STATUS.json",
-      "execution_results_sha256": "2dc2bc2c9ef30d1a35df64b5b11a03df222336a90f2c158853aa61293ed394b8",
+      "execution_results_sha256": "2f18019ea10a52dc98dca046048e498b3d91eeebc6b42690abb4a377d6f85e0d",
       "strata_executed": {
         "structure_qc": [
           "x_ray",
@@ -56,7 +56,8 @@
         ]
       },
       "scientific_execution_note": "The StructQC panel is fully composed: all four strata adopted, 16/16 cases and 1/1 control executing and passing. This flag stays false because it reports the whole collection -- five panels (membrane, ABL StateAtlas, site-context, assembly-context, sf-csa) remain unadopted, and no scope has completed the independent second-machine gate.",
-      "acquisition": "benchmarks/qualification-v2/acquire_sources.py"
+      "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
+      "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported."
     }
   },
   "gates": {
