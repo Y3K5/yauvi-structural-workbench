@@ -40,10 +40,26 @@ def test_v2_panel_freezes_all_scopes_strata_and_gates():
 def test_empty_v2_panel_is_blocked_not_vacuously_passed():
     manifest = json.loads((QUALIFICATION / "PANEL_MANIFEST.json").read_text(encoding="utf-8"))
     module = runner_module()
-    summaries = [module.validate_panel(panel)[0] for panel in manifest["panels"]]
-    assert all(summary["state"] == "blocked_panel_incomplete" for summary in summaries)
-    assert all(any(row["missing_count"] > 0 for row in summary["requirements"]) for summary in summaries)
+    pairs = [(panel, module.validate_panel(panel)[0]) for panel in manifest["panels"]]
+
+    # The guard this test exists for: a panel with no adopted records must be
+    # reported blocked with its requirements outstanding, never vacuously passed
+    # because there was nothing to check. Panels that have since been adopted
+    # are held to the opposite standard.
+    empty = [(p, s) for p, s in pairs if not p.get("records")]
+    assert empty, "expected at least one unadopted panel while the collection is incomplete"
+    for panel, summary in empty:
+        assert summary["state"] == "blocked_panel_incomplete", panel["panel_id"]
+        assert any(row["missing_count"] > 0 for row in summary["requirements"]), panel["panel_id"]
+        assert all(row["observed_count"] == 0 for row in summary["requirements"]), panel["panel_id"]
+
+    for panel, summary in ((p, s) for p, s in pairs if p.get("records")):
+        assert not summary["errors"], f"{panel['panel_id']}: {summary['errors']}"
+        assert all(row["passed"] for row in summary["requirements"]), panel["panel_id"]
+
     status = json.loads((QUALIFICATION / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
+    # The collection stays blocked while any panel is unadopted, and the
+    # composition audit never claims scientific execution regardless.
     assert status["overall_state"] == "blocked_panel_incomplete"
     assert status["scientific_execution_performed"] is False
 

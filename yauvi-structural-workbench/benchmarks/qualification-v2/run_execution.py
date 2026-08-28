@@ -72,6 +72,11 @@ def invoke(inv: Mapping[str, Any], exe: str, out: Path):
         cmd += ["--provenance", str(HERE / inv["provenance"])]
     if inv.get("chain"):
         cmd += ["--chain", inv["chain"]]
+    # NMR entries deposit an ensemble. Which model the expectation describes is
+    # a stratum decision, so it is declared per case rather than left to the
+    # CLI default.
+    if inv.get("model") is not None:
+        cmd += ["--model", str(inv["model"])]
     return subprocess.run(cmd, capture_output=True, text=True), out
 
 
@@ -271,10 +276,12 @@ def main(argv: list[str] | None = None) -> int:
         "control_counts": {"total": len(controls), "passed": controls_passed},
         "controls": controls,
         "scope_qualified": False,
+        "strata_executed": sorted({c["stratum"] for c in cases if c.get("stratum")}),
         "scope_qualification_note": (
-            "Executing one stratum qualifies no workflow scope. The StructQC panel also requires the "
-            "cryo_em, nmr, and alphafold strata, and every Mark 1 scope additionally requires "
-            "independent reproduction on a second machine."),
+            "Passing execution is not scope qualification. A Mark 1 scope is qualified only when its "
+            "panel composes, every case and control passes, and the result reproduces independently "
+            "on a second machine. This runner reports execution only; it never sets a qualification "
+            "gate, and scope_qualified is always false here by construction."),
         "runtime": {"python": platform.python_version(), "machine": platform.machine(),
                     "platform": platform.system()},
         "cases": cases,
@@ -290,7 +297,8 @@ def main(argv: list[str] | None = None) -> int:
         if not c["passed"]:
             bad = [k["check"] for k in c["checks"] if k["required"] and not k["passed"]]
             print(f"  FAILED {c['record_id']}: {', '.join(bad)}")
-    print("scope_qualified: false (one stratum of four; second-machine reproduction outstanding)")
+    print(f"strata executed: {', '.join(sorted({c['stratum'] for c in cases if c.get('stratum')}))}")
+    print("scope_qualified: false (this runner never qualifies a scope; see the result note)")
     return 0 if passed == len(cases) and controls_passed == len(controls) else 1
 
 

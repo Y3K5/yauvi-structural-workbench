@@ -722,7 +722,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "path": "qualification-v2/STRATUM_STATUS.tsv"
       }
     ],
-    "missing_records": 106,
+    "missing_records": 98,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
@@ -738,9 +738,9 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "workflow": "conformational_state"
       },
       {
-        "missing_count": 8,
-        "record_count": 8,
-        "state": "blocked_panel_incomplete",
+        "missing_count": 0,
+        "record_count": 16,
+        "state": "ready_for_execution",
         "workflow": "structure_qc"
       },
       {
@@ -795,7 +795,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "structure_qc",
       "external_benchmark": "public_case_passed",
-      "external_benchmark_detail": "v2_x_ray_and_alphafold_strata_adopted_and_passed_cryo_em_and_nmr_unadopted",
+      "external_benchmark_detail": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
       "inputs": [
         {
           "absence_effect": "blocked",

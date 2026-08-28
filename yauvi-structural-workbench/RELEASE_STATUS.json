@@ -15,7 +15,7 @@
   "core_workflows_required": 6,
   "qualification_policy": "all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2_before_local_release_candidate",
   "external_benchmarks": {
-    "structure_qc": "v2_x_ray_and_alphafold_strata_adopted_and_passed_cryo_em_and_nmr_unadopted",
+    "structure_qc": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "membrane_orientation": "beta_barrel_conditionally_qualified_alpha_helical_prototype_v2_panel_unadopted",
     "conformational_state": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
     "functional_site_state": "qualification_v1_public_case_passed_v2_panel_unadopted",
@@ -37,23 +37,25 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "9aad16263ac30b23d3514c4658829ef21378e40d629cf520d06cb65860cd85eb",
+      "panel_manifest_sha256": "63633a3b2f8de6c21b2d0e8773cb468aa94534e0788aed010eac7c5783ac002d",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
-      "source_lock_sha256": "73b721b26fcd000ec21834c77b46f376ec085a3968e307a8080baa40f947b644",
+      "source_lock_sha256": "4070c5b32e5b35d740146ada8b5518f0f2b757e0d825923b8cdacb602dd5fb97",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "998a304f3035143b85fef8a075c377b88f041000f3e3806656412c24bb72c6ca",
+      "results_sha256": "c838fd18aa8dd3594d64d327e795e74427c5963ec01685715fb82148834ed53a",
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
       "execution_results": "benchmarks/qualification-v2/results/EXECUTION_STATUS.json",
-      "execution_results_sha256": "3e459798b24ec84d990095aa059eb896310f69e8b4ab1d14108f06141dd51b6c",
+      "execution_results_sha256": "2dc2bc2c9ef30d1a35df64b5b11a03df222336a90f2c158853aa61293ed394b8",
       "strata_executed": {
         "structure_qc": [
           "x_ray",
+          "cryo_em",
+          "nmr",
           "alphafold"
         ]
       },
-      "scientific_execution_note": "The x_ray and alphafold strata of the StructQC panel execute and pass 8/8 cases and 1/1 control. This flag stays false because it reports the whole collection: StructQC still needs cryo_em and nmr, five other panels are unadopted, and no scope has completed the second-machine gate.",
+      "scientific_execution_note": "The StructQC panel is fully composed: all four strata adopted, 16/16 cases and 1/1 control executing and passing. This flag stays false because it reports the whole collection -- five panels (membrane, ABL StateAtlas, site-context, assembly-context, sf-csa) remain unadopted, and no scope has completed the independent second-machine gate.",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py"
     }
   },
