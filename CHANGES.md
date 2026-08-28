@@ -61,7 +61,7 @@ The generator now scrubs `$HOME` before writing, so the reference reads
   string came from an unrelated synthetic run's capability banner. That banner is
   a genuine recorded artifact and was left in place.
 - **Test counts corrected to this distribution's real numbers.** `BASELINE.json`
-  regenerated from an actual run: **495 passed, 6 deselected, 1 skipped**, 11
+  regenerated from an actual run: **494 passed, 6 deselected, 1 skipped**, 11
   suites, no `apps/yauvi/tests` entry. The stale 524 was updated in
   `JOSS_CHECKLIST.md` and `PREPUBLIC_AUDIT.md`.
 - **The unbacked 471/10/5 cross-platform figure is no longer quoted as evidence.**

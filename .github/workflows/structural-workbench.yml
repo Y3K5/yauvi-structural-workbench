@@ -45,11 +45,12 @@ jobs:
       # than only the first.
       - name: Suite · StructQC
         run: python -m pytest structqc/tests -m "not network and not adapter" --tb=short
-      # Temporary: the MembraneOrient suite fails only on GitHub's Linux
-      # runners, and passes on macOS runners, local macOS arm64, and Docker
-      # linux/amd64 and linux/arm64. Print the fitted geometry so the runner's
-      # own numbers can be compared against the environments that pass.
-      - name: Diagnose membrane fit geometry
+      # Cross-platform determinism record for the membrane scope. Prints the
+      # fitted half-thickness, normal, and zone assignment on every OS and
+      # Python in the matrix, so drift is visible in the log of every run
+      # rather than discovered when a qualification panel disagrees.
+      # Reference values: d = 9.918221 (macOS arm64), 9.914208 (linux/amd64).
+      - name: Record membrane fit geometry
         if: always()
         run: PYTHONPATH="Membrane Orientor/memorient/tests" python tools/diagnose_membrane_fit.py
 

@@ -4,7 +4,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks.",
     "selection": "not network and not adapter",
     "total_deselected": 6,
-    "total_passed": 495
+    "total_passed": 494
   },
   "cases": [
     {

@@ -26,17 +26,18 @@ only after a public repository and independent research use exist.
   demonstrations, six separate public qualification narratives, biological
   context, raw evidence, reviewer quickstart, and a gated publication roadmap.
 - Public cases passed for StructQC, functional-site mapping, AssemblyContext,
-  and SF-CSA; the current Python 3.12.7 reviewer selection reports 524 passed
+  and SF-CSA; the current Python 3.12.7 reviewer selection reports 494 passed
   and 6 network/adapter tests deselected.
 - FreeSASA (version not captured by the runner), Foldseek 10.941cd33, and
   DIAMOND 2.1.11 were invoked in the
   local public qualification run.
 - Apache-2.0 text, citation metadata, contribution/support/security/governance
   documents, paper draft, benchmark plan, and CI definitions.
-- Historical privacy-minimized ZIP install tests passed on macOS arm64 and Linux arm64; each
-  reports 471 passed, 10 transparent skips, 5 network/adapter deselections, and
-  zero failures. These predate Qualification v2 and do not satisfy its required
-  second-machine scientific reproduction.
+- Historical privacy-minimized ZIP install tests were run on macOS arm64 and
+  Linux arm64. No `TEST_RESULT.json` from those runs is committed, and
+  `RELEASE_STATUS.json` records both install matrices as not passed, so no test
+  count from them is quoted here. They predate Qualification v2 and do not
+  satisfy its required second-machine scientific reproduction.
 - The 1,095-word paper compiles with the official Open Journals Inara image and
   its four-page draft rendering has been visually checked.
 
