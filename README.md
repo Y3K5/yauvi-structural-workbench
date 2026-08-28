@@ -1,12 +1,13 @@
-# JOSS Publication — Structural Biology
+# YAUVI Structural Biology Platform — Mark 1
 
-A self-contained, working build of the **YAUVI Structural Biology Platform —
-Mark 1** command-line distribution, assembled as the candidate for eventual JOSS
-submission.
+Local, evidence-bounded structural protein analysis with deterministic reports
+and provenance. Nine installable Python packages covering six structural-analysis
+workflows, taking protein coordinates to inspectable, checksum-bound evidence.
 
-This folder is a **working copy**, not an authorized publication. Nothing here is
-public, no repository or remote exists, and creating one requires explicit
-approval.
+**This is a pre-public scientific build in open development.** It is not a
+released, qualified, or peer-reviewed tool, and it is being prepared as a
+candidate for eventual submission to the Journal of Open Source Software. Read
+the status section below before relying on any output.
 
 ## What this is
 
@@ -61,7 +62,9 @@ the out-of-scope module directories.
 Assembling a working build does not clear the publication gates. The blocking
 items are unchanged:
 
-- **No version control.** The six-month public-history requirement has not begun.
+- **Public development has only just begun** (first public commit 2026-08-27).
+  JOSS expects sustained public history, tagged releases, and evidence of
+  independent use. None of that exists yet.
 - **Qualification v2 is unexecuted** — 0 of 114 required cases adopted across six
   panels. No scope is scientifically qualified for release.
 - **No community channels.** The code of conduct, security, and support routes
@@ -71,6 +74,5 @@ items are unchanged:
 - No independent installation or research-use evidence is recorded.
 
 Passing local tests is not JOSS acceptance and not external scientific
-validation. See
-[`docs/JOSS_READINESS_REVIEW_2026-08-26.md`](../docs/JOSS_READINESS_REVIEW_2026-08-26.md)
-for the full audit and [`CHANGES.md`](CHANGES.md) for what was fixed here.
+validation. See [`CHANGES.md`](CHANGES.md) for how this distribution was assembled and what
+was corrected in the process.

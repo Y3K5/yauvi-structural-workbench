@@ -1,7 +1,7 @@
 # Changes made while assembling this working Mark 1
 
-Every change below was made in this folder only. The source tree under
-`Protein Platform/` was not modified.
+These are the changes made while assembling this distribution from the private
+development tree, recorded so the provenance of the published state is explicit.
 
 ## Boundary
 
