@@ -219,12 +219,18 @@ must mean *the computed identity matches the case's declared expectation*, not
 recorded as a failure. Expression tags behave as predicted and cost nothing —
 4EA9 carries six and still reaches 1.0.
 
-**(c) Exit code 1 is the normal result for real crystal structures.** Three of
-four cases exit 1, driven by chain breaks in the selected chain — disordered
-loops, which nearly every deposited structure has. Only 1OAI, with zero breaks,
-exits 0. The panel must treat exit 1 as an expected scientifically-incomplete
-result carrying its reason, not as failure. An executor that requires exit 0
-would reject almost the entire PDB.
+**(c) Exit code 1 is the normal result here.** All four cases exit 1, because
+no provenance record is supplied and the provenance leg is therefore
+unevaluated. The panel must treat exit 1 as an expected
+scientifically-incomplete result carrying its reason, not as failure; an
+executor requiring exit 0 would reject every case.
+
+An earlier draft of this document attributed the exit code to chain breaks and
+recorded 1OAI as exiting 0. That was a measurement error: the command was piped
+to `tail`, so `$?` reported the exit status of `tail` rather than of `structqc`.
+The executor caught it on its first run. Supplying a provenance record per case
+would exercise the complete path and yield exit 0, and is worth doing before
+adoption.
 
 ### A coverage rule that cannot currently be met
 
@@ -246,6 +252,60 @@ be satisfied by any entry whose modification maps to a standard parent.
 four**: insertion codes (no candidate has any) and nonstandard residues
 (reported as zero). Both need a decision before the x-ray stratum is adopted
 into the frozen manifest.
+
+## 4d. First execution: the x-ray stratum runs and passes
+
+`run_execution.py` executes an adopted stratum and evaluates its gates. It is
+separate from `run_qualification.py`, which audits composition only.
+
+Result: **4/4 x-ray cases pass**, with `residue_identity` in
+`matches_declared_expectation` mode.
+
+Three design choices worth keeping:
+
+1. **Gate semantics live in the panel, not the runner.** The runner reads
+   `gate_semantics` and refuses to run if it is absent, so it cannot quietly
+   reinterpret a frozen gate. Choosing a mode is an adoption decision recorded
+   in data.
+2. **Executing a stratum qualifies nothing.** The result records
+   `scope_qualified: false` unconditionally, because the StructQC panel also
+   needs cryo_em, nmr, and alphafold, and every scope needs second-machine
+   reproduction.
+3. **Checksums are verified before the engine is invoked.** A mismatched
+   artifact fails the case without producing a result.
+
+### The gate-mode question, settled empirically
+
+Running the stratum under both readings decides it:
+
+| `residue_identity` mode | cases passing |
+|---|---|
+| `matches_declared_expectation` | **4/4** |
+| `equals_one` | **2/4** |
+
+Under `equals_one`, both 2V7A **and 8SSN** fail — 2V7A for its declared T315I
+mutation, 8SSN for a single expression-tag mismatch. That reading would
+disqualify half the available x-ray material, including the panel's only
+nonstandard-residue coverage, for correctly reporting differences the
+depositors declared. `matches_declared_expectation` is the defensible mode.
+
+### An error this run caught
+
+The first execution failed 1OAI on its exit code. The cause was a measurement
+mistake in this document's earlier draft, not in the software: the command used
+to record the expectation was piped to `tail`, so `$?` reported `tail`'s exit
+status rather than `structqc`'s. Every case in fact exits 1, because no
+provenance record is supplied. The expectation and §4b have been corrected.
+
+The lesson is worth keeping for the remaining 110 cases: **expectations must be
+recorded by the executor, never transcribed by hand from a terminal.**
+
+### Curation improvement before adoption
+
+All four cases run scientifically incomplete for the same avoidable reason —
+no provenance record. Supplying one per case would exercise the complete path,
+yield exit 0, and make the fail-closed gate test something stronger than a
+uniformly missing leg.
 
 ## 5. Adoption is not execution — the executor does not exist
 

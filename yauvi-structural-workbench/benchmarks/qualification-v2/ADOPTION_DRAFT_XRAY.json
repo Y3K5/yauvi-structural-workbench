@@ -49,7 +49,7 @@
       "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
       "expected_result": {
         "cli_exit_code": 1,
-        "exit_code_reason": "1 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "exit_code_reason": "no provenance record supplied (1 chain break(s) also present); scientifically incomplete, not a failure",
         "invocation": {
           "structure": "sources/wwpdb/4EA9.cif",
           "reference_fasta": "sources/uniprot/O85353.fasta",
@@ -104,8 +104,8 @@
       },
       "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
       "expected_result": {
-        "cli_exit_code": 0,
-        "exit_code_reason": "no chain break in the selected chain",
+        "cli_exit_code": 1,
+        "exit_code_reason": "no provenance record supplied, so provenance is unevaluated; scientifically incomplete, not a failure",
         "invocation": {
           "structure": "sources/wwpdb/1OAI.cif",
           "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
@@ -161,7 +161,7 @@
       "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
       "expected_result": {
         "cli_exit_code": 1,
-        "exit_code_reason": "1 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "exit_code_reason": "no provenance record supplied (1 chain break(s) also present); scientifically incomplete, not a failure",
         "invocation": {
           "structure": "sources/wwpdb/2V7A.cif",
           "reference_fasta": "sources/uniprot/P00519.fasta",
@@ -217,7 +217,7 @@
       "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
       "expected_result": {
         "cli_exit_code": 1,
-        "exit_code_reason": "5 chain break(s) in the selected chain; scientifically incomplete, not a failure",
+        "exit_code_reason": "no provenance record supplied (5 chain break(s) also present); scientifically incomplete, not a failure",
         "invocation": {
           "structure": "sources/wwpdb/8SSN.cif",
           "reference_fasta": "sources/uniprot/P00519.fasta",
@@ -338,5 +338,29 @@
     "date": "2026-08-26",
     "python": "3.12.7",
     "note": "Expectations are measured outputs of the current StructQC, recorded so a future run can be compared against them. They are not independent ground truth."
-  }
+  },
+  "gate_semantics": {
+    "residue_identity": {
+      "mode": "matches_declared_expectation",
+      "tolerance": 1e-06,
+      "alternatives": {
+        "matches_declared_expectation": "The computed identity must equal the value declared for the case. A declared engineered mutation is expected to lower identity, and failing to lower it is the defect.",
+        "equals_one": "Identity must be 1.0 for every case. Disqualifies every structure carrying an engineered mutation, including 2V7A, and with it the panel's only nonstandard-residue coverage."
+      },
+      "chosen_because": "2V7A measures 0.996296, which is exactly 1 - 1/270: the single declared T315I difference and nothing else. Detecting a declared mutation is the behaviour under test, so the gate asserts the measurement matches what the case declares."
+    },
+    "official_metric_import": {
+      "mode": "exact",
+      "required_metrics": [
+        "clashscore",
+        "ramachandran_outliers_percent",
+        "rotamer_outliers_percent"
+      ]
+    },
+    "missing_evidence_behavior": {
+      "mode": "fail_closed",
+      "detail": "Exit 1 is a scientifically-incomplete result carrying its reason, not a failure."
+    }
+  },
+  "curation_note": "Every case currently exits 1 because no provenance record is supplied, so the provenance leg is unevaluated. Supplying a provenance record per case would exercise the complete path and yield exit 0; that is a curation improvement to make before adoption, not a defect."
 }
