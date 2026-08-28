@@ -341,7 +341,15 @@ def _embedded_refit(ca, sc_vec, kd, arom, centroid, ctx, n, c, d, iters: int = 3
             n, c, d = n_new, c_new, d_new
         else:
             break
-    return best[0], best[1], best[2], best[3]
+    # The reported normal gets a deterministic sign. The search itself is
+    # unaffected -- it explores both directions through the hemisphere scan --
+    # but the vector that ends up in an evidence record must not depend on which
+    # eigenvector sign the local LAPACK happened to return.
+    from .geometry import canonical_axis_sign
+    n_final = canonical_axis_sign(best[0], ca - ca.mean(axis=0))
+    if float(np.dot(n_final, best[0])) < 0:
+        return n_final, -best[1], best[2], best[3]
+    return n_final, best[1], best[2], best[3]
 
 
 # --------------------------------------------------------------------------------------

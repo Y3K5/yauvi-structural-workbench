@@ -740,7 +740,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       {
         "missing_count": 0,
         "record_count": 16,
-        "state": "ready_for_execution",
+        "state": "blocked_panel_incomplete",
         "workflow": "structure_qc"
       },
       {

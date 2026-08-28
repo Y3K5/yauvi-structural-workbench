@@ -164,7 +164,8 @@ def principal_axes(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarr
     """Return (centroid, eigvecs, eigvals) of the coordinate covariance.
 
     ``eigvecs`` columns are ordered by *descending* eigenvalue. ``eigvals`` are the matching
-    variances. No sign convention is imposed here (see :func:`canonical_rotation`).
+    variances. No sign convention is imposed here; callers that record or compare an axis must
+    apply :func:`canonical_axis_sign`, because eigenvector signs are solver-dependent.
     """
     coords = np.asarray(coords, dtype=float).reshape(-1, 3)
     centroid = coords.mean(axis=0)
@@ -173,6 +174,29 @@ def principal_axes(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarr
     vals, vecs = np.linalg.eigh(cov)  # ascending
     order = np.argsort(vals)[::-1]
     return centroid, vecs[:, order], vals[order]
+
+
+def canonical_axis_sign(axis: np.ndarray, centred: np.ndarray) -> np.ndarray:
+    """Return ``axis`` with a deterministic, frame-independent sign.
+
+    An eigenvector is defined only up to sign, and LAPACK builds differ in which
+    one they return, so a fitted axis can point either way depending on the
+    machine. The sign is chosen by the skew (third moment) of the projection --
+    an intrinsic property of the point cloud, not of the solver -- with a
+    largest-component fallback when the distribution is too symmetric for skew
+    to decide. This is the same rule :func:`canonical_rotation` applies.
+
+    Downstream sidedness is unaffected either way: the extracellular direction is
+    voted from biological signals rather than read off the axis. What this fixes
+    is that the recorded vector itself reproduces across machines.
+    """
+    axis = np.asarray(axis, dtype=float).reshape(3)
+    proj = np.asarray(centred, dtype=float).reshape(-1, 3) @ axis
+    m3 = float(np.mean(proj ** 3))
+    if abs(m3) > 1e-9:
+        return -axis if m3 < 0 else axis
+    j = int(np.argmax(np.abs(axis)))
+    return -axis if axis[j] < 0 else axis
 
 
 def canonical_rotation(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, dict]:
@@ -190,16 +214,7 @@ def canonical_rotation(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, dict
     # component-sign rule so the choice is still reproducible.
     axes = [vecs[:, i].copy() for i in range(3)]
     for i in (0, 1):
-        proj = X @ axes[i]
-        m3 = float(np.mean(proj ** 3))
-        if abs(m3) > 1e-9:
-            if m3 < 0:
-                axes[i] = -axes[i]
-        else:
-            # deterministic fallback: make the largest-|component| entry positive
-            j = int(np.argmax(np.abs(axes[i])))
-            if axes[i][j] < 0:
-                axes[i] = -axes[i]
+        axes[i] = canonical_axis_sign(axes[i], X)
     # third axis = cross product -> guaranteed right-handed
     axes[2] = np.cross(axes[0], axes[1])
 
