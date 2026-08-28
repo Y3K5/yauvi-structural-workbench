@@ -26,7 +26,7 @@ only after a public repository and independent research use exist.
   demonstrations, six separate public qualification narratives, biological
   context, raw evidence, reviewer quickstart, and a gated publication roadmap.
 - Public cases passed for StructQC, functional-site mapping, AssemblyContext,
-  and SF-CSA; the current Python 3.12.7 reviewer selection reports 494 passed
+  and SF-CSA; the current Python 3.12.7 reviewer selection reports 495 passed
   and 6 network/adapter tests deselected.
 - FreeSASA (version not captured by the runner), Foldseek 10.941cd33, and
   DIAMOND 2.1.11 were invoked in the

@@ -10,7 +10,10 @@ from memorient.contexts import Metric, get_context
 from memorient.membrane import (
     ACC_ANTIBODY,
     ACC_LPS_SHIELDED,
+    INTERFACE_WIDTH,
     ZONE_CORE,
+    ZONE_EC_INTERFACE,
+    ZONE_PERI_INTERFACE,
     ZONE_EXTRACELLULAR,
     ZONE_PERIPLASMIC,
     context_metrics,
@@ -33,39 +36,35 @@ def _fit_and_project(ctx, ec_sign=1):
     return s, fit, proj
 
 
-# Known environment-dependent failure: the deepest periplasmic zone is absent on
-# GitHub's Linux runners, while the same commit passes on GitHub macOS runners,
-# local macOS arm64, and Docker linux/amd64 and linux/arm64 (d = 9.9182 and
-# 9.9142 respectively, all five zones present in each).
-#
-# The fixture is knife-edge rather than the code being wrong. `make_barrel` is
-# asymmetric about the fitted centre: the deep end clears the zone threshold by
-# +15.18 A but the shallow end clears it by only +1.53 A, so a sub-angstrom
-# change in the fitted half-thickness drops the shallow end out of its deep zone
-# entirely. Which zone name disappears also depends on the sign of the fitted
-# normal, and `principal_axes` documents that it imposes no sign convention -
-# eigenvectors are defined only up to sign, and LAPACK builds differ.
-#
-# This does not affect production sidedness. `labeler.py` derives `ec_sign` by
-# voting over biological signals rather than trusting the raw normal, and the
-# full-pipeline test (`test_orientor.py`) passes on every platform. Only this
-# test hardcodes `ec_sign=1`, which no production path does.
-#
-# strict=False because it passes in most environments; the mark records the
-# instability instead of hiding it. Remove it once the fixture is rebuilt with a
-# symmetric barrel, or the assertion is made tolerant of the normal's sign.
-@pytest.mark.xfail(
-    reason="knife-edge fixture: +1.53 A margin on the shallow end, and the "
-           "fitted normal has no sign convention; fails on GitHub Linux runners",
-    strict=False,
-)
 def test_zones_span_the_membrane():
+    """A membrane-spanning barrel is labelled core, both interfaces, and deep zones.
+
+    The deep zones only exist if residues actually lie beyond the interface band,
+    and whether they do is a property of the fixture geometry, not of the code
+    under test. `make_barrel` is deliberately asymmetric (long extracellular
+    loops, short periplasmic turns) to give the side-caller a signal, and the
+    fitted half-thickness co-varies with that geometry, so the shallow end can
+    sit within a couple of angstroms of the threshold. Asserting unconditionally
+    that both deep zones appear tests the fixture's proportions rather than the
+    zone assignment, and it fails on some platforms for that reason.
+
+    So: assert the labelling follows the geometry. Every residue beyond the band
+    must be labelled deep, and at least one side must reach that far in a barrel
+    that spans the membrane.
+    """
     s, fit, proj = _fit_and_project(GN)
     zones = set(proj.zone.tolist())
+
     assert ZONE_CORE in zones
-    # both extracellular and periplasmic zones present in a full barrel
-    assert ZONE_EXTRACELLULAR in zones
-    assert ZONE_PERIPLASMIC in zones
+    assert ZONE_EC_INTERFACE in zones
+    assert ZONE_PERI_INTERFACE in zones
+
+    depth = (s.ca - fit.centroid) @ fit.normal - fit.center
+    limit = fit.half_thickness + INTERFACE_WIDTH
+    # ec_sign=1 here, so ec_depth == depth and the deep zones map onto the signs.
+    assert (depth > limit).any() == (ZONE_EXTRACELLULAR in zones)
+    assert (depth < -limit).any() == (ZONE_PERIPLASMIC in zones)
+    assert ZONE_EXTRACELLULAR in zones or ZONE_PERIPLASMIC in zones
 
 
 def test_core_residues_have_facing():

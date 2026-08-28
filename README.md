@@ -32,7 +32,7 @@ showcases that a JOSS reviewer would receive.
 Every claim below was executed in this folder, offline:
 
 - `pip install -e ".[dev]"` succeeds; all nine console scripts land on `PATH`
-- **494 tests pass, 0 fail** (1 xpassed, 6 network/adapter deselected, 1 skipped)
+- **495 tests pass, 0 fail** (6 network/adapter deselected, 1 skipped)
 - A real StructQC analysis runs to completion and is **byte-identical across two runs**
 - The fail-closed path exits `1` and names its missing evidence rather than scoring around it
 - The wheel builds offline and contains only canonical structural namespaces

@@ -3,7 +3,7 @@
   "baseline_id": "structural-workbench-offline-qualification-v2-2026-08-26",
   "python": "3.12.7",
   "selection": "not network and not adapter",
-  "total_passed": 494,
+  "total_passed": 495,
   "total_deselected": 6,
   "total_skipped": 1,
   "aggregate_state": "passed",
@@ -15,7 +15,7 @@
     },
     {
       "path": "Membrane Orientor/memorient/tests",
-      "passed": 86,
+      "passed": 87,
       "deselected": 4,
       "skipped": 1
     },
@@ -67,12 +67,5 @@
     }
   ],
   "execution_note": "Offline reviewer-scope run of this command-line distribution. Suites are invoked in separate pytest processes because legacy suites contain duplicate test module and conftest names; python tools/run_structural_workbench_tests.py is the authoritative runner and bare pytest does not work. The private control plane and the loopback browser controller are outside this distribution and contribute no tests to this baseline. Cross-platform clean-install evidence remains a separate recorded gate.",
-  "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks.",
-  "known_instabilities": [
-    {
-      "test": "Membrane Orientor/memorient/tests/test_membrane.py::test_zones_span_the_membrane",
-      "state": "xfail(strict=False)",
-      "detail": "Passes on macOS runners, macOS arm64, and Docker linux/amd64 and linux/arm64; fails on GitHub Linux runners. The fixture is asymmetric and the shallow end clears its zone threshold by only 1.53 A, so a sub-angstrom change in the fitted half-thickness drops it out. Production sidedness is unaffected: ec_sign is voted from biological signals in labeler.py and test_orientor passes on every platform."
-    }
-  ]
+  "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks."
 }

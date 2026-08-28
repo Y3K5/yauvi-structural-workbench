@@ -17,7 +17,7 @@ are outside this release.
 ## Fresh software evidence
 
 - Current macOS Python 3.12 workspace and offline dependency set exercised.
-- Current reviewer-scope offline result: **494 passed and 6 network/adapter
+- Current reviewer-scope offline result: **495 passed and 6 network/adapter
   tests deselected** on Python 3.12.7.
 - Canonical module CLIs and SF-CSA deterministic fixture were included in the
   run; suites ran in separate processes to avoid legacy pytest basename
@@ -55,7 +55,7 @@ Software-test success is not external biological validation.
 2. The recorded 655-test baseline mixed 175 unrelated private platform tests
    into the JOSS reviewer count. The clean reviewer/controller baseline is now
    previously recorded as 508 passed, 5 deselected, and 1 skipped. Qualification
-   v2 guards bring the current local reviewer selection to 494 passed and 6
+   v2 guards bring the current local reviewer selection to 495 passed and 6
    deselected.
 3. The build backend rejected the newer bare SPDX license form. The root and
    standalone packages now use backend-compatible Apache-2.0 metadata, the root
