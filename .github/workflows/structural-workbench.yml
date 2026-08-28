@@ -23,14 +23,14 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         python: ["3.10", "3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
           cache: pip
       - name: One-command reviewer installation
         run: python -m pip install ".[dev]"
-      - name: Six canonical CLIs answer describe
+      - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null
           memorient describe > /dev/null
@@ -39,23 +39,40 @@ jobs:
           actstate describe > /dev/null
           assembly-context describe > /dev/null
           sf-csa describe > /dev/null
-      - name: Six standalone suites remain offline and isolated by process
-        run: |
-          python -m pytest structqc/tests -m "not network and not adapter" --tb=short
-          python -m pytest "Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
-          python -m pytest state-atlas/tests -m "not network and not adapter" --tb=short
-          python -m pytest site-context/tests -m "not network and not adapter" --tb=short
-          python -m pytest activity-state/tests -m "not network and not adapter" --tb=short
-          python -m pytest assembly-context/tests -m "not network and not adapter" --tb=short
-          python -m pytest sf-csa/tests -m "not network and not adapter" --tb=short
-          python -m pytest tools/fixtures/sfcsa -m "not network and not adapter" --tb=short
+      # Each suite is its own step so a failure names the suite in the job UI
+      # instead of collapsing into one opaque 'exit code 1'. `if: always()` keeps
+      # the remaining suites running, so one run reports every failure rather
+      # than only the first.
+      - name: Suite · StructQC
+        run: python -m pytest structqc/tests -m "not network and not adapter" --tb=short
+      - name: Suite · MembraneOrient
+        if: always()
+        run: python -m pytest "Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
+      - name: Suite · StateAtlas
+        if: always()
+        run: python -m pytest state-atlas/tests -m "not network and not adapter" --tb=short
+      - name: Suite · SiteContext
+        if: always()
+        run: python -m pytest site-context/tests -m "not network and not adapter" --tb=short
+      - name: Suite · ActState
+        if: always()
+        run: python -m pytest activity-state/tests -m "not network and not adapter" --tb=short
+      - name: Suite · AssemblyContext
+        if: always()
+        run: python -m pytest assembly-context/tests -m "not network and not adapter" --tb=short
+      - name: Suite · SF-CSA
+        if: always()
+        run: python -m pytest sf-csa/tests -m "not network and not adapter" --tb=short
+      - name: Suite · SF-CSA fixture
+        if: always()
+        run: python -m pytest tools/fixtures/sfcsa -m "not network and not adapter" --tb=short
 
   workbench:
     name: Workbench contracts, security, and pre-public materials
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
