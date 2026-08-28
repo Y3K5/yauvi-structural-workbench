@@ -55,13 +55,16 @@ def close(a: Any, b: Any, tol: float) -> bool:
         return a == b
 
 
-def invoke(inv: Mapping[str, Any], exe: str, out: Path):
-    """Run the engine for one case. The single place a case is executed."""
-    if out.exists():
-        shutil.rmtree(out)
+# --- workflow engines -------------------------------------------------------
+# Each panel names a workflow, executed by a different CLI, emitting a different
+# evidence document, judged by different gates. Only those three things vary;
+# acquisition, checksums, expectation recording, controls and coverage are
+# shared. Keeping the variation in one registry is what stops the second panel
+# becoming a second copy of this file.
+
+def _cmd_structure_qc(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
     cmd = [exe, "run", "--structure", str(HERE / inv["structure"]),
-           "--reference-fasta", str(HERE / inv["reference_fasta"]),
-           "--out", str(out)]
+           "--reference-fasta", str(HERE / inv["reference_fasta"]), "--out", str(out)]
     # A predicted model has no wwPDB validation report and does have a PAE
     # matrix; an experimental entry is the other way round. Neither is passed
     # unless the case declares it.
@@ -74,33 +77,65 @@ def invoke(inv: Mapping[str, Any], exe: str, out: Path):
     if inv.get("chain"):
         cmd += ["--chain", inv["chain"]]
     # NMR entries deposit an ensemble. Which model the expectation describes is
-    # a stratum decision, so it is declared per case rather than left to the
-    # CLI default.
+    # a stratum decision, declared per case rather than left to the CLI default.
     if inv.get("model") is not None:
         cmd += ["--model", str(inv["model"])]
+    return cmd
+
+
+def _cmd_functional_site_state(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
+    # site-context consumes StructQC's evidence document, so a case is a
+    # two-stage chain: the upstream run is produced first and referenced here.
+    cmd = [exe, "run", "--manifest", str(HERE / inv["manifest"]),
+           "--structure", str(HERE / inv["structure"]),
+           "--annotations", str(HERE / inv["annotations"]), "--out", str(out)]
+    if inv.get("component_map"):
+        cmd += ["--component-map", str(HERE / inv["component_map"])]
+    if inv.get("pocket_result"):
+        cmd += ["--pocket-result", str(HERE / inv["pocket_result"])]
+    return cmd
+
+
+ENGINES: dict[str, dict[str, Any]] = {
+    "structure_qc": {"cli": "structqc", "evidence": "STRUCTURE_EVIDENCE.json",
+                     "build_cmd": _cmd_structure_qc},
+    "functional_site_state": {"cli": "site-context", "evidence": "SITE_CONTEXT.json",
+                              "build_cmd": _cmd_functional_site_state},
+}
+
+
+def invoke(inv: Mapping[str, Any], exe: str, out: Path, workflow: str = "structure_qc"):
+    """Run the engine for one case. The single place a case is executed.
+
+    A downstream workflow consumes an upstream module's evidence document. That
+    document is regenerated here from the same locked sources rather than being
+    committed, so a case cannot pass against a stale manifest that no longer
+    corresponds to the coordinates in the lock.
+    """
+    if out.exists():
+        shutil.rmtree(out)
+    inv = dict(inv)
+    upstream = inv.pop("upstream", None)
+    if upstream:
+        up_workflow = upstream.get("workflow", "structure_qc")
+        up_exe = shutil.which(ENGINES[up_workflow]["cli"])
+        if up_exe is None:
+            raise RuntimeError(f"{ENGINES[up_workflow]['cli']} is not on PATH")
+        up_out = out / "upstream"
+        up_cmd = ENGINES[up_workflow]["build_cmd"](upstream, up_exe, up_out)
+        up = subprocess.run(up_cmd, capture_output=True, text=True)
+        up_evidence = up_out / ENGINES[up_workflow]["evidence"]
+        if not up_evidence.is_file():
+            return up, out          # downstream cannot run; caller reports it
+        inv["manifest"] = str(up_evidence.relative_to(HERE)) if up_evidence.is_relative_to(HERE) \
+            else str(up_evidence)
+    cmd = ENGINES[workflow]["build_cmd"](inv, exe, out)
     return subprocess.run(cmd, capture_output=True, text=True), out
 
 
-def measure(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
-    """Emit an expectation from an actual run.
-
-    Expectations are recorded by executing, never transcribed by hand. An
-    earlier hand-recorded expectation was wrong because the command used to read
-    it was piped, so the shell reported the pipe's exit status instead of the
-    engine's.
-    """
-    inv = record["expected_result"]["invocation"]
-    proc, out = invoke(inv, exe, out_root / record["record_id"])
-    ev = json.loads((out / "STRUCTURE_EVIDENCE.json").read_text(encoding="utf-8"))
-    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+def _measure_structure_qc(ev, manifest) -> dict[str, Any]:
     c, cs = ev["completeness"], ev["chain_summaries"][0]
-    missing = manifest.get("missing_evidence") or []
     return {
-        "cli_exit_code": proc.returncode,
-        "exit_code_reason": ("complete: every declared evidence leg was supplied"
-                             if not missing else
-                             f"scientifically incomplete, missing: {', '.join(missing)}"),
-        "invocation": inv,
         "residue_identity": {k: c[k] for k in
             ("identity_fraction", "coverage_fraction", "mapped_residues",
              "reference_length", "coordinate_residues", "state")},
@@ -111,7 +146,56 @@ def measure(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, An
         "confidence": ev.get("pae"),
         "provenance_class": (ev.get("provenance") or {}).get("class"),
         "gemmi_coordinate_validation": ev["coordinate"]["parser"]["gemmi_validation"],
+    }
+
+
+def _measure_functional_site_state(ev, manifest) -> dict[str, Any]:
+    sites = ev.get("sites") or []
+    counts: dict[str, int] = {}
+    for s in sites:
+        counts[s["state"]] = counts.get(s["state"], 0) + 1
+    resolved = sum(n for k, n in counts.items() if k in ("role_compatible", "role_mismatch"))
+    return {
+        "site_count": len(sites),
+        "state_counts": dict(sorted(counts.items())),
+        # The per-site vector is the real expectation. Counts alone would hide a
+        # pair of compensating changes leaving two residues silently swapped.
+        "sites": [{"position": s["position"], "chain_id": s.get("chain_id"),
+                   "role": s.get("role"), "state": s["state"],
+                   "observed_residue": s.get("observed_residue"),
+                   "expected_residues": s.get("expected_residues")} for s in sites],
+        "curated_residue_recovery": round(resolved / len(sites), 6) if sites else 0.0,
+        "cofactors": ev.get("cofactors") or [],
+        "observed_heteroatoms": sorted({h.get("component_id") for h in
+                                        (ev.get("observed_heteroatoms") or [])}),
+    }
+
+
+MEASURERS = {"structure_qc": _measure_structure_qc,
+             "functional_site_state": _measure_functional_site_state}
+
+
+def measure(record: Mapping[str, Any], exe: str, out_root: Path,
+            workflow: str = "structure_qc") -> dict[str, Any]:
+    """Emit an expectation from an actual run.
+
+    Expectations are recorded by executing, never transcribed by hand. An
+    earlier hand-recorded expectation was wrong because the command used to read
+    it was piped, so the shell reported the pipe's exit status, not the engine's.
+    """
+    inv = record["expected_result"]["invocation"]
+    proc, out = invoke(inv, exe, out_root / record["record_id"], workflow)
+    ev = json.loads((out / ENGINES[workflow]["evidence"]).read_text(encoding="utf-8"))
+    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+    missing = manifest.get("missing_evidence") or []
+    return {
+        "cli_exit_code": proc.returncode,
+        "exit_code_reason": ("complete: every declared evidence leg was supplied"
+                             if not missing else
+                             f"scientifically incomplete, missing: {', '.join(missing)}"),
+        "invocation": inv,
         "missing_evidence": missing,
+        **MEASURERS[workflow](ev, manifest),
     }
 
 
@@ -177,6 +261,71 @@ def _gates_structure_qc(record, expected, ev, checks) -> bool:
     return True
 
 
+def _gates_functional_site_state(record, expected, ev, checks) -> bool:
+    """Functional-site gate checks.
+
+    The panel declares four gates. Three are thresholds; the fourth -- that a
+    curated residue keeps the state it was recorded with -- is the one that
+    actually catches drift, so it compares the per-site vector rather than the
+    state counts. A pair of compensating changes leaves the counts identical.
+    """
+    fs = record["_gate_semantics"].get("functional_site", {})
+    obs = _measure_functional_site_state(ev, None)
+
+    exp_sites = {(s["position"], s.get("chain_id")): s for s in (expected.get("sites") or [])}
+    obs_sites = {(s["position"], s.get("chain_id")): s for s in obs["sites"]}
+    drifted = sorted(
+        f"{k[1]}:{k[0]} {exp_sites[k]['state']}->{obs_sites.get(k, {}).get('state')}"
+        for k in exp_sites if obs_sites.get(k, {}).get("state") != exp_sites[k]["state"])
+    checks.append({"check": "site_states_match_declared", "required": True,
+                   "expected": "every curated residue in its declared state",
+                   "observed": drifted or "all match", "passed": not drifted})
+
+    checks.append({"check": "site_count_unchanged", "required": True,
+                   "expected": expected.get("site_count"), "observed": obs["site_count"],
+                   "passed": obs["site_count"] == expected.get("site_count")})
+
+    floor = fs.get("unambiguous_curated_residue_recovery_min")
+    if floor is not None:
+        # Recovery is the fraction of curated residues the run could resolve to a
+        # coordinate at all. A stratum built from apo, modified, or incomplete
+        # structures is expected to fall below a floor written for complete ones,
+        # so the floor is applied per stratum rather than panel-wide.
+        exempt = set(fs.get("recovery_floor_exempt_strata") or [])
+        if record["stratum"] in exempt:
+            checks.append({"check": "curated_residue_recovery", "required": False,
+                           "expected": f"floor {floor} not applied to stratum {record['stratum']}",
+                           "observed": obs["curated_residue_recovery"], "passed": True})
+        else:
+            checks.append({"check": "curated_residue_recovery", "required": True,
+                           "expected": f">= {floor}", "observed": obs["curated_residue_recovery"],
+                           "passed": obs["curated_residue_recovery"] >= float(floor)})
+
+    # A false exact mapping is the panel's zero-tolerance failure: a residue
+    # reported compatible whose observed identity is not one the curation expects.
+    false_exact = [s for s in obs["sites"]
+                   if s["state"] == "role_compatible" and s.get("expected_residues")
+                   and s.get("observed_residue") not in s["expected_residues"]]
+    ceiling = int(fs.get("false_exact_mappings_max", 0))
+    checks.append({"check": "false_exact_mappings", "required": True,
+                   "expected": f"<= {ceiling}", "observed": len(false_exact),
+                   "passed": len(false_exact) <= ceiling})
+
+    if fs.get("cofactor_identifier_match") == "exact":
+        checks.append({"check": "cofactor_identifiers_exact", "required": True,
+                       "expected": expected.get("cofactors"), "observed": obs["cofactors"],
+                       "passed": obs["cofactors"] == (expected.get("cofactors") or [])})
+        checks.append({"check": "observed_heteroatoms_exact", "required": True,
+                       "expected": expected.get("observed_heteroatoms"),
+                       "observed": obs["observed_heteroatoms"],
+                       "passed": obs["observed_heteroatoms"] == (expected.get("observed_heteroatoms") or [])})
+    return True
+
+
+GATE_CHECKS = {"structure_qc": _gates_structure_qc,
+               "functional_site_state": _gates_functional_site_state}
+
+
 def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
     expected = record["expected_result"]
     inv = expected["invocation"]
@@ -191,27 +340,29 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
         return {"record_id": record["record_id"], "passed": False, "checks": checks,
                 "note": "artifact missing or checksum-mismatched; engine not invoked"}
 
-    proc, out = invoke(inv, exe, out_root / record["record_id"])
+    workflow = record["_workflow"]
+    proc, out = invoke(inv, exe, out_root / record["record_id"], workflow)
 
     checks.append({"check": "cli_exit_code", "required": True,
                    "expected": expected["cli_exit_code"], "observed": proc.returncode,
                    "passed": proc.returncode == expected["cli_exit_code"]})
 
-    evidence_path = out / "STRUCTURE_EVIDENCE.json"
+    evidence_path = out / ENGINES[workflow]["evidence"]
     if not evidence_path.is_file():
-        checks.append({"check": "evidence_written", "required": True, "expected": "STRUCTURE_EVIDENCE.json",
+        checks.append({"check": "evidence_written", "required": True,
+                       "expected": ENGINES[workflow]["evidence"],
                        "observed": None, "passed": False, "stderr": proc.stderr[-400:]})
         return {"record_id": record["record_id"], "passed": False, "checks": checks}
     ev = json.loads(evidence_path.read_text(encoding="utf-8"))
     manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
 
-    if record["_workflow"] == "structure_qc":
-        if not _gates_structure_qc(record, expected, ev, checks):
-            return {"record_id": record["record_id"], "passed": False, "checks": checks}
-    else:
+    gate_checks = GATE_CHECKS.get(record["_workflow"])
+    if gate_checks is None:
         checks.append({"check": "workflow_gates_declared", "required": True,
                        "expected": f"gate checks for workflow {record['_workflow']}",
                        "observed": None, "passed": False})
+    elif not gate_checks(record, expected, ev, checks):
+        return {"record_id": record["record_id"], "passed": False, "checks": checks}
 
     # --- gate: fail-closed behaviour --------------------------------------
     # Some evidence cannot exist for a stratum: a predicted model has no
@@ -304,25 +455,29 @@ def main(argv: list[str] | None = None) -> int:
                     help="Re-measure every case and write the expectations back into the panel.")
     args = ap.parse_args(argv)
 
-    exe = shutil.which("structqc")
-    if exe is None:
-        print("structqc is not on PATH; install the distribution first", file=sys.stderr)
-        return 1
     panel = json.loads(args.panel.read_text(encoding="utf-8"))
+    cli = ENGINES.get(panel.get("workflow", "structure_qc"), {}).get("cli", "structqc")
+    exe = shutil.which(cli)
+    if exe is None:
+        print(f"{cli} is not on PATH; install the distribution first", file=sys.stderr)
+        return 1
     semantics = panel.get("gate_semantics")
     if not semantics:
         print(f"{args.panel.name} declares no gate_semantics; refusing to assume any", file=sys.stderr)
         return 1
 
     workflow = panel.get("workflow", "structure_qc")
+    workflow = panel.get("workflow", "structure_qc")
     args.out.mkdir(parents=True, exist_ok=True)
 
     if args.record:
         for record in panel["records"] + panel.get("controls", []):
-            record["expected_result"] = measure(record, exe, args.out)
-            print(f"  recorded {record['record_id']}: "
-                  f"exit={record['expected_result']['cli_exit_code']} "
-                  f"identity={record['expected_result']['residue_identity']['identity_fraction']}")
+            record["expected_result"] = measure(record, exe, args.out, workflow)
+            e = record["expected_result"]
+            summary = (f"identity={e['residue_identity']['identity_fraction']}"
+                       if "residue_identity" in e else
+                       f"sites={e.get('site_count')} states={e.get('state_counts')}")
+            print(f"  recorded {record['record_id']}: exit={e['cli_exit_code']} {summary}")
         args.panel.write_text(json.dumps(panel, indent=2) + "\n", encoding="utf-8")
         print(f"wrote measured expectations into {args.panel.name}")
         return 0
@@ -383,7 +538,8 @@ def main(argv: list[str] | None = None) -> int:
         path.write_bytes(canonical(value))
     print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed, "
           f"{controls_passed}/{len(controls)} controls passed "
-          f"[residue_identity={semantics['residue_identity']['mode']}]")
+          + (f"[residue_identity={semantics['residue_identity']['mode']}]"
+             if "residue_identity" in semantics else f"[workflow={workflow}]"))
     if required_coverage:
         print(f"coverage: {len(required_coverage) - len(unmet)}/{len(required_coverage)} features witnessed"
               + (f" | UNMET: {', '.join(unmet)}" if unmet else ""))
