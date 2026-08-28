@@ -54,4 +54,13 @@ def test_v2_source_lock_preserves_v1_as_candidate_only():
     verified = module.verify_source_lock(lock)
     assert lock["prior_collection"]["adoption_state"] == "candidate_only"
     assert verified["prior_collection_checksum_valid"]
-    assert verified["adopted_source_count"] == 0
+    # v1 stays a candidate collection: adopting sources into v2 must never mean
+    # silently reusing v1's artifact tree. This once asserted that nothing was
+    # adopted at all, which was only a proxy for the same intent and stopped
+    # being true when the x_ray stratum was adopted.
+    assert verified["adopted_sources_valid"]
+    assert not any(
+        str(source["artifact"]).startswith("../qualification-v1/")
+        or "qualification-v1" in str(source["artifact"])
+        for source in lock["sources"]
+    ), "v2 must acquire its own artifacts rather than reach into the v1 tree"

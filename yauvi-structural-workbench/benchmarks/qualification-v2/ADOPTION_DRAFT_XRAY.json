@@ -48,13 +48,14 @@
       },
       "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
       "expected_result": {
-        "cli_exit_code": 1,
-        "exit_code_reason": "no provenance record supplied (1 chain break(s) also present); scientifically incomplete, not a failure",
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
         "invocation": {
           "structure": "sources/wwpdb/4EA9.cif",
           "reference_fasta": "sources/uniprot/O85353.fasta",
           "validation_report": "sources/wwpdb/4ea9_validation.xml",
-          "chain": null
+          "chain": null,
+          "provenance": "provenance/4EA9.provenance.json"
         },
         "residue_identity": {
           "identity_fraction": 1.0,
@@ -80,7 +81,8 @@
             "rsrz_outliers_percent": 5.31
           }
         },
-        "gemmi_coordinate_validation": "validated"
+        "gemmi_coordinate_validation": "validated",
+        "missing_evidence": []
       }
     },
     {
@@ -104,13 +106,14 @@
       },
       "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
       "expected_result": {
-        "cli_exit_code": 1,
-        "exit_code_reason": "no provenance record supplied, so provenance is unevaluated; scientifically incomplete, not a failure",
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
         "invocation": {
           "structure": "sources/wwpdb/1OAI.cif",
           "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
           "validation_report": "sources/wwpdb/1oai_validation.xml",
-          "chain": null
+          "chain": null,
+          "provenance": "provenance/1OAI.provenance.json"
         },
         "residue_identity": {
           "identity_fraction": 1.0,
@@ -136,7 +139,8 @@
             "rsrz_outliers_percent": 4.41
           }
         },
-        "gemmi_coordinate_validation": "validated"
+        "gemmi_coordinate_validation": "validated",
+        "missing_evidence": []
       }
     },
     {
@@ -160,13 +164,14 @@
       },
       "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
       "expected_result": {
-        "cli_exit_code": 1,
-        "exit_code_reason": "no provenance record supplied (1 chain break(s) also present); scientifically incomplete, not a failure",
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
         "invocation": {
           "structure": "sources/wwpdb/2V7A.cif",
           "reference_fasta": "sources/uniprot/P00519.fasta",
           "validation_report": "sources/wwpdb/2v7a_validation.xml",
-          "chain": "A"
+          "chain": "A",
+          "provenance": "provenance/2V7A.provenance.json"
         },
         "residue_identity": {
           "identity_fraction": 0.996296,
@@ -192,7 +197,8 @@
             "rsrz_outliers_percent": 3.34
           }
         },
-        "gemmi_coordinate_validation": "validated"
+        "gemmi_coordinate_validation": "validated",
+        "missing_evidence": []
       }
     },
     {
@@ -216,13 +222,14 @@
       },
       "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
       "expected_result": {
-        "cli_exit_code": 1,
-        "exit_code_reason": "no provenance record supplied (5 chain break(s) also present); scientifically incomplete, not a failure",
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
         "invocation": {
           "structure": "sources/wwpdb/8SSN.cif",
           "reference_fasta": "sources/uniprot/P00519.fasta",
           "validation_report": "sources/wwpdb/8ssn_validation.xml",
-          "chain": "A"
+          "chain": "A",
+          "provenance": "provenance/8SSN.provenance.json"
         },
         "residue_identity": {
           "identity_fraction": 0.997619,
@@ -248,7 +255,8 @@
             "rsrz_outliers_percent": 23.7
           }
         },
-        "gemmi_coordinate_validation": "validated"
+        "gemmi_coordinate_validation": "validated",
+        "missing_evidence": []
       }
     }
   ],
@@ -332,6 +340,34 @@
       "url": "https://rest.uniprot.org/uniprotkb/P00519.fasta",
       "license": "CC BY 4.0",
       "sha256": "f28f5df82a7b04e5a51dc63582a0ce7a41459f6c221e8efa24313fe7e550cc12"
+    },
+    {
+      "source_id": "PROVENANCE:4EA9",
+      "provider": "authored for this collection",
+      "artifact": "provenance/4EA9.provenance.json",
+      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "sha256": "RECORDED_AT_ADOPTION"
+    },
+    {
+      "source_id": "PROVENANCE:1OAI",
+      "provider": "authored for this collection",
+      "artifact": "provenance/1OAI.provenance.json",
+      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "sha256": "RECORDED_AT_ADOPTION"
+    },
+    {
+      "source_id": "PROVENANCE:2V7A",
+      "provider": "authored for this collection",
+      "artifact": "provenance/2V7A.provenance.json",
+      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "sha256": "RECORDED_AT_ADOPTION"
+    },
+    {
+      "source_id": "PROVENANCE:8SSN",
+      "provider": "authored for this collection",
+      "artifact": "provenance/8SSN.provenance.json",
+      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "sha256": "RECORDED_AT_ADOPTION"
     }
   ],
   "measured_on": {
@@ -362,5 +398,65 @@
       "detail": "Exit 1 is a scientifically-incomplete result carrying its reason, not a failure."
     }
   },
-  "curation_note": "Every case currently exits 1 because no provenance record is supplied, so the provenance leg is unevaluated. Supplying a provenance record per case would exercise the complete path and yield exit 0; that is a curation improvement to make before adoption, not a defect."
+  "controls": [
+    {
+      "record_id": "v2-structqc-control-undeclared-provenance-1OAI",
+      "record_kind": "control_case",
+      "stratum": "x_ray",
+      "split": "control",
+      "pdb_entry_id": "1OAI",
+      "homolog_group": "tap_uba",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "source_release": {
+        "wwpdb_latest_revision": "2024-05-08",
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "journal": "J.Mol.Biol.",
+        "year": "2003",
+        "doi": "10.1016/S0022-2836(02)01474-2"
+      },
+      "exclusion_rationale": "Undeclared-provenance control required by the panel's coverage rules. Identical to the 1OAI case with the provenance record withheld, so the fail-closed gate is exercised against a deliberately incomplete run rather than against a uniformly complete one.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: provenance",
+        "invocation": {
+          "structure": "sources/wwpdb/1OAI.cif",
+          "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+          "validation_report": "sources/wwpdb/1oai_validation.xml",
+          "chain": null
+        },
+        "residue_identity": {
+          "identity_fraction": 1.0,
+          "coverage_fraction": 0.095315,
+          "mapped_residues": 59,
+          "reference_length": 619,
+          "coordinate_residues": 68,
+          "state": "evaluated"
+        },
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 59
+        },
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.35,
+            "r_free": 0.1762,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.0,
+            "rotamer_outliers_percent": 1.69,
+            "rsrz_outliers_percent": 4.41
+          }
+        },
+        "gemmi_coordinate_validation": "validated",
+        "missing_evidence": [
+          "provenance"
+        ]
+      }
+    }
+  ]
 }

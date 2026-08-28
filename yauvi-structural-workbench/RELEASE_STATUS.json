@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "product": "YAUVI Structural Biology Platform — Mark 1",
+  "product": "YAUVI Structural Biology Platform \u2014 Mark 1",
   "scientific_suite": "YAUVI Structural Workbench",
   "edition": "Mark 1",
   "distribution": "yauvi-structural-workbench",
@@ -15,7 +15,7 @@
   "core_workflows_required": 6,
   "qualification_policy": "all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2_before_local_release_candidate",
   "external_benchmarks": {
-    "structure_qc": "qualification_v1_public_case_passed_v2_panel_unadopted",
+    "structure_qc": "qualification_v1_public_case_passed_v2_x_ray_stratum_adopted_and_passed_other_strata_unadopted",
     "membrane_orientation": "beta_barrel_conditionally_qualified_alpha_helical_prototype_v2_panel_unadopted",
     "conformational_state": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
     "functional_site_state": "qualification_v1_public_case_passed_v2_panel_unadopted",
@@ -27,18 +27,33 @@
       "runner": "benchmarks/qualification-v1/run_qualification.py",
       "source_lock": "benchmarks/qualification-v1/SOURCE_LOCK.json",
       "results": "benchmarks/qualification-v1/results/QUALIFICATION_RESULTS.json",
-      "workflow_counts": {"passed": 4, "partial": 2, "failed": 0, "blocked": 0}
+      "workflow_counts": {
+        "passed": 4,
+        "partial": 2,
+        "failed": 0,
+        "blocked": 0
+      }
     },
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "6ff1d459bfe902129e29fe989b47175dc4a804bb775ac49ba3fb4d90891937d9",
+      "panel_manifest_sha256": "c094e5581274fd5222bc70b34d0d561c0deb32495db35967932f9b367e20b3c8",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
-      "source_lock_sha256": "9e378cff2c16c9f9ca32d975a94cdb271c6acf4e4b849d8f43f4a530c4d13248",
+      "source_lock_sha256": "2f13ae48f37af5c64e4d5ad151bd784419ae0896f9cf96d134294a7c30659efa",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "0ef967908537250a02b816f18c15f77a574ab083f9d28f6c821bdb0ec11a7cf4",
+      "results_sha256": "e783c8e9cda480015b71246a71aa78d855257698a946a49d8f6ca76b6567078a",
       "overall_state": "blocked_panel_incomplete",
-      "scientific_execution_performed": false
+      "scientific_execution_performed": false,
+      "executor": "benchmarks/qualification-v2/run_execution.py",
+      "execution_results": "benchmarks/qualification-v2/results/EXECUTION_STATUS.json",
+      "execution_results_sha256": "bed07e67563cdaf661ccc4417a1dc9fb530bd36f1d34920bd41fd1198bc32d4f",
+      "strata_executed": {
+        "structure_qc": [
+          "x_ray"
+        ]
+      },
+      "scientific_execution_note": "The x_ray stratum of the StructQC panel executes and passes 4/4 cases and 1/1 control. This flag stays false because it reports the whole collection: the StructQC panel still needs cryo_em, nmr, and alphafold, five other panels are unadopted, and no stratum has reproduced on a second machine.",
+      "acquisition": "benchmarks/qualification-v2/acquire_sources.py"
     }
   },
   "gates": {

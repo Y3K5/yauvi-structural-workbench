@@ -1,0 +1,67 @@
+name: Qualification v2 execution
+
+# Executes adopted Qualification v2 strata on every supported platform.
+#
+# The point is cross-environment reproduction. A stratum that passes only on the
+# machine that recorded its expectations is not evidence, so the same locked
+# artifacts are acquired and executed on Linux and macOS across three Pythons.
+#
+# Acquisition uses the network; execution does not. That split is required by
+# `execution_policy.network_access: forbidden` in PANEL_MANIFEST.json -- the
+# engine never reaches a provider, it reads checksum-verified local files.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly, so upstream artifact drift surfaces on its own rather than in review.
+    - cron: "0 7 * * 2"
+
+concurrency:
+  group: qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  execute:
+    name: StructQC x_ray · py${{ matrix.python }} · ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install the distribution
+        run: python -m pip install ".[dev]"
+
+      - name: Acquire the locked artifacts
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: python acquire_sources.py
+
+      - name: Verify every artifact against the frozen source lock
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: python acquire_sources.py --verify-only
+
+      - name: Execute the x_ray stratum offline
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: python run_execution.py
+
+      - name: Panel composition audit still fails closed on the unadopted strata
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          set +e
+          python run_qualification.py
+          code=$?
+          set -e
+          test "$code" -eq 1

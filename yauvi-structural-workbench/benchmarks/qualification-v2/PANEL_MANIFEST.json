@@ -26,10 +26,30 @@
       "workflow": "membrane_orientation",
       "panel_id": "qualification-v2-membrane",
       "requirements": [
-        {"record_kind": "benchmark_case", "stratum": "beta_barrel", "split": "development", "count": 8},
-        {"record_kind": "benchmark_case", "stratum": "beta_barrel", "split": "held_out", "count": 8},
-        {"record_kind": "benchmark_case", "stratum": "alpha_helical", "split": "development", "count": 8},
-        {"record_kind": "benchmark_case", "stratum": "alpha_helical", "split": "held_out", "count": 8}
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "beta_barrel",
+          "split": "development",
+          "count": 8
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "beta_barrel",
+          "split": "held_out",
+          "count": 8
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "alpha_helical",
+          "split": "development",
+          "count": 8
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "alpha_helical",
+          "split": "held_out",
+          "count": 8
+        }
       ],
       "coverage_rules": [
         "Alpha-helical cases must include single-pass, multipass, oligomeric, and insufficient-flank controls.",
@@ -49,10 +69,30 @@
       "workflow": "conformational_state",
       "panel_id": "qualification-v2-abl-state-atlas",
       "requirements": [
-        {"record_kind": "reference", "stratum": "active", "split": "reference", "count": 2},
-        {"record_kind": "reference", "stratum": "inactive", "split": "reference", "count": 4},
-        {"record_kind": "benchmark_case", "stratum": "active", "split": "held_out", "count": 4},
-        {"record_kind": "benchmark_case", "stratum": "inactive", "split": "held_out", "count": 8}
+        {
+          "record_kind": "reference",
+          "stratum": "active",
+          "split": "reference",
+          "count": 2
+        },
+        {
+          "record_kind": "reference",
+          "stratum": "inactive",
+          "split": "reference",
+          "count": 4
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "active",
+          "split": "held_out",
+          "count": 4
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "inactive",
+          "split": "held_out",
+          "count": 8
+        }
       ],
       "coverage_rules": [
         "Reference and held-out records must cover at least eight distinct PDB entries.",
@@ -71,14 +111,54 @@
       "workflow": "structure_qc",
       "panel_id": "qualification-v2-structqc",
       "requirements": [
-        {"record_kind": "benchmark_case", "stratum": "x_ray", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "x_ray", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "cryo_em", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "cryo_em", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "nmr", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "nmr", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "alphafold", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "alphafold", "split": "held_out", "count": 2}
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "cryo_em",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "cryo_em",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "nmr",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "nmr",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "held_out",
+          "count": 2
+        }
       ],
       "coverage_rules": [
         "The panel covers insertion codes, alternate locations, missing residues, nonstandard residues, multichain coordinates, pLDDT, PAE, and experiment-specific wwPDB validation.",
@@ -89,20 +169,377 @@
         "official_metric_import": "exact",
         "missing_evidence_behavior": "fail_closed"
       },
-      "records": []
+      "records": [
+        {
+          "record_id": "v2-structqc-xray-dev-4EA9",
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "development",
+          "pdb_entry_id": "4EA9",
+          "homolog_group": "gdp_perosamine_nat",
+          "artifact": "sources/wwpdb/4EA9.cif",
+          "checksum": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88",
+          "source_release": {
+            "wwpdb_latest_revision": "2023-09-13",
+            "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "journal": "Biochemistry",
+            "year": "2012",
+            "doi": "10.1021/bi300197h"
+          },
+          "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "structure": "sources/wwpdb/4EA9.cif",
+              "reference_fasta": "sources/uniprot/O85353.fasta",
+              "validation_report": "sources/wwpdb/4ea9_validation.xml",
+              "chain": null,
+              "provenance": "provenance/4EA9.provenance.json"
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 0.962791,
+              "mapped_residues": 207,
+              "reference_length": 215,
+              "coordinate_residues": 207,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 1,
+              "missing_backbone_residues": 0,
+              "residues": 207
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 4.01,
+                "r_free": 0.1487,
+                "ramachandran_outliers_percent": 0.0,
+                "resolution_angstrom": 0.9,
+                "rotamer_outliers_percent": 2.76,
+                "rsrz_outliers_percent": 5.31
+              }
+            },
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": []
+          }
+        },
+        {
+          "record_id": "v2-structqc-xray-dev-1OAI",
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "development",
+          "pdb_entry_id": "1OAI",
+          "homolog_group": "tap_uba",
+          "artifact": "sources/wwpdb/1OAI.cif",
+          "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+          "source_release": {
+            "wwpdb_latest_revision": "2024-05-08",
+            "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "journal": "J.Mol.Biol.",
+            "year": "2003",
+            "doi": "10.1016/S0022-2836(02)01474-2"
+          },
+          "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "structure": "sources/wwpdb/1OAI.cif",
+              "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+              "validation_report": "sources/wwpdb/1oai_validation.xml",
+              "chain": null,
+              "provenance": "provenance/1OAI.provenance.json"
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 0.095315,
+              "mapped_residues": 59,
+              "reference_length": 619,
+              "coordinate_residues": 68,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 59
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 13.35,
+                "r_free": 0.1762,
+                "ramachandran_outliers_percent": 0.0,
+                "resolution_angstrom": 1.0,
+                "rotamer_outliers_percent": 1.69,
+                "rsrz_outliers_percent": 4.41
+              }
+            },
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": []
+          }
+        },
+        {
+          "record_id": "v2-structqc-xray-held-2V7A",
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "held_out",
+          "pdb_entry_id": "2V7A",
+          "homolog_group": "abl1_kinase",
+          "artifact": "sources/wwpdb/2V7A.cif",
+          "checksum": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3",
+          "source_release": {
+            "wwpdb_latest_revision": "2024-11-06",
+            "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "journal": "Cancer Res.",
+            "year": "2007",
+            "doi": "10.1158/0008-5472.CAN-07-1825"
+          },
+          "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "structure": "sources/wwpdb/2V7A.cif",
+              "reference_fasta": "sources/uniprot/P00519.fasta",
+              "validation_report": "sources/wwpdb/2v7a_validation.xml",
+              "chain": "A",
+              "provenance": "provenance/2V7A.provenance.json"
+            },
+            "residue_identity": {
+              "identity_fraction": 0.996296,
+              "coverage_fraction": 0.238938,
+              "mapped_residues": 270,
+              "reference_length": 1130,
+              "coordinate_residues": 270,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 1,
+              "missing_backbone_residues": 1,
+              "residues": 270
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 5.54,
+                "r_free": 0.2338,
+                "ramachandran_outliers_percent": 0.0,
+                "resolution_angstrom": 2.5,
+                "rotamer_outliers_percent": 5.12,
+                "rsrz_outliers_percent": 3.34
+              }
+            },
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": []
+          }
+        },
+        {
+          "record_id": "v2-structqc-xray-held-8SSN",
+          "record_kind": "benchmark_case",
+          "stratum": "x_ray",
+          "split": "held_out",
+          "pdb_entry_id": "8SSN",
+          "homolog_group": "abl1_kinase",
+          "artifact": "sources/wwpdb/8SSN.cif",
+          "checksum": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537",
+          "source_release": {
+            "wwpdb_latest_revision": "2023-09-06",
+            "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "journal": "Proc.Natl.Acad.Sci.USA",
+            "year": "2023",
+            "doi": "10.1073/pnas.2304611120"
+          },
+          "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "structure": "sources/wwpdb/8SSN.cif",
+              "reference_fasta": "sources/uniprot/P00519.fasta",
+              "validation_report": "sources/wwpdb/8ssn_validation.xml",
+              "chain": "A",
+              "provenance": "provenance/8SSN.provenance.json"
+            },
+            "residue_identity": {
+              "identity_fraction": 0.997619,
+              "coverage_fraction": 0.371681,
+              "mapped_residues": 420,
+              "reference_length": 1130,
+              "coordinate_residues": 420,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 5,
+              "missing_backbone_residues": 0,
+              "residues": 420
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 13.76,
+                "r_free": 0.3507,
+                "ramachandran_outliers_percent": 0.13,
+                "resolution_angstrom": 2.86,
+                "rotamer_outliers_percent": 2.41,
+                "rsrz_outliers_percent": 23.7
+              }
+            },
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": []
+          }
+        }
+      ],
+      "controls": [
+        {
+          "record_id": "v2-structqc-control-undeclared-provenance-1OAI",
+          "record_kind": "control_case",
+          "stratum": "x_ray",
+          "split": "control",
+          "pdb_entry_id": "1OAI",
+          "homolog_group": "tap_uba",
+          "artifact": "sources/wwpdb/1OAI.cif",
+          "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+          "source_release": {
+            "wwpdb_latest_revision": "2024-05-08",
+            "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock"
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "journal": "J.Mol.Biol.",
+            "year": "2003",
+            "doi": "10.1016/S0022-2836(02)01474-2"
+          },
+          "exclusion_rationale": "Undeclared-provenance control required by the panel's coverage rules. Identical to the 1OAI case with the provenance record withheld, so the fail-closed gate is exercised against a deliberately incomplete run rather than against a uniformly complete one.",
+          "expected_result": {
+            "cli_exit_code": 1,
+            "exit_code_reason": "scientifically incomplete, missing: provenance",
+            "invocation": {
+              "structure": "sources/wwpdb/1OAI.cif",
+              "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+              "validation_report": "sources/wwpdb/1oai_validation.xml",
+              "chain": null
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 0.095315,
+              "mapped_residues": 59,
+              "reference_length": 619,
+              "coordinate_residues": 68,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 59
+            },
+            "official_metric_import": {
+              "state": "imported",
+              "values": {
+                "clashscore": 13.35,
+                "r_free": 0.1762,
+                "ramachandran_outliers_percent": 0.0,
+                "resolution_angstrom": 1.0,
+                "rotamer_outliers_percent": 1.69,
+                "rsrz_outliers_percent": 4.41
+              }
+            },
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": [
+              "provenance"
+            ]
+          }
+        }
+      ],
+      "gate_semantics": {
+        "residue_identity": {
+          "mode": "matches_declared_expectation",
+          "tolerance": 1e-06,
+          "alternatives": {
+            "matches_declared_expectation": "The computed identity must equal the value declared for the case. A declared engineered mutation is expected to lower identity, and failing to lower it is the defect.",
+            "equals_one": "Identity must be 1.0 for every case. Disqualifies every structure carrying an engineered mutation, including 2V7A, and with it the panel's only nonstandard-residue coverage."
+          },
+          "chosen_because": "2V7A measures 0.996296, which is exactly 1 - 1/270: the single declared T315I difference and nothing else. Detecting a declared mutation is the behaviour under test, so the gate asserts the measurement matches what the case declares."
+        },
+        "official_metric_import": {
+          "mode": "exact",
+          "required_metrics": [
+            "clashscore",
+            "ramachandran_outliers_percent",
+            "rotamer_outliers_percent"
+          ]
+        },
+        "missing_evidence_behavior": {
+          "mode": "fail_closed",
+          "detail": "Exit 1 is a scientifically-incomplete result carrying its reason, not a failure."
+        }
+      }
     },
     {
       "workflow": "functional_site_state",
       "panel_id": "qualification-v2-site-context",
       "requirements": [
-        {"record_kind": "benchmark_case", "stratum": "acid_base", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "acid_base", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "nucleophile_or_covalent", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "nucleophile_or_covalent", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "metal_or_cofactor", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "metal_or_cofactor", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "apo_modified_or_incomplete", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "apo_modified_or_incomplete", "split": "held_out", "count": 2}
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "acid_base",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "acid_base",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "nucleophile_or_covalent",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "nucleophile_or_covalent",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "metal_or_cofactor",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "metal_or_cofactor",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "apo_modified_or_incomplete",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "apo_modified_or_incomplete",
+          "split": "held_out",
+          "count": 2
+        }
       ],
       "coverage_rules": [
         "Every catalytic residue and role is frozen from a cited M-CSA release before execution.",
@@ -120,14 +557,54 @@
       "workflow": "assembly_interface",
       "panel_id": "qualification-v2-assembly-context",
       "requirements": [
-        {"record_kind": "benchmark_case", "stratum": "homodimer", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "homodimer", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "heterooligomer", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "heterooligomer", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "tetramer", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "tetramer", "split": "held_out", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "higher_order", "split": "development", "count": 2},
-        {"record_kind": "benchmark_case", "stratum": "higher_order", "split": "held_out", "count": 2}
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "held_out",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "development",
+          "count": 2
+        },
+        {
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "held_out",
+          "count": 2
+        }
       ],
       "coverage_rules": [
         "Operator expansion and stoichiometry are compared with deposited mmCIF metadata.",
@@ -144,10 +621,30 @@
       "workflow": "sf_csa",
       "panel_id": "qualification-v2-sf-csa",
       "requirements": [
-        {"record_kind": "relationship_judgment", "stratum": "exact", "split": "curator_frozen", "count": 4},
-        {"record_kind": "relationship_judgment", "stratum": "homologous_superfamily", "split": "curator_frozen", "count": 4},
-        {"record_kind": "relationship_judgment", "stratum": "fold_analogy", "split": "curator_frozen", "count": 4},
-        {"record_kind": "relationship_judgment", "stratum": "unrelated", "split": "curator_frozen", "count": 4}
+        {
+          "record_kind": "relationship_judgment",
+          "stratum": "exact",
+          "split": "curator_frozen",
+          "count": 4
+        },
+        {
+          "record_kind": "relationship_judgment",
+          "stratum": "homologous_superfamily",
+          "split": "curator_frozen",
+          "count": 4
+        },
+        {
+          "record_kind": "relationship_judgment",
+          "stratum": "fold_analogy",
+          "split": "curator_frozen",
+          "count": 4
+        },
+        {
+          "record_kind": "relationship_judgment",
+          "stratum": "unrelated",
+          "split": "curator_frozen",
+          "count": 4
+        }
       ],
       "coverage_rules": [
         "Exactly four unrelated protein families are represented, with one independently curated judgment in each relationship stratum per family.",

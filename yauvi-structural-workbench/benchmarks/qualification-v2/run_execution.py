@@ -54,6 +54,53 @@ def close(a: Any, b: Any, tol: float) -> bool:
         return a == b
 
 
+def invoke(inv: Mapping[str, Any], exe: str, out: Path):
+    """Run the engine for one case. The single place a case is executed."""
+    if out.exists():
+        shutil.rmtree(out)
+    cmd = [exe, "run", "--structure", str(HERE / inv["structure"]),
+           "--reference-fasta", str(HERE / inv["reference_fasta"]),
+           "--validation-report", str(HERE / inv["validation_report"]),
+           "--out", str(out)]
+    if inv.get("provenance"):
+        cmd += ["--provenance", str(HERE / inv["provenance"])]
+    if inv.get("chain"):
+        cmd += ["--chain", inv["chain"]]
+    return subprocess.run(cmd, capture_output=True, text=True), out
+
+
+def measure(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
+    """Emit an expectation from an actual run.
+
+    Expectations are recorded by executing, never transcribed by hand. An
+    earlier hand-recorded expectation was wrong because the command used to read
+    it was piped, so the shell reported the pipe's exit status instead of the
+    engine's.
+    """
+    inv = record["expected_result"]["invocation"]
+    proc, out = invoke(inv, exe, out_root / record["record_id"])
+    ev = json.loads((out / "STRUCTURE_EVIDENCE.json").read_text(encoding="utf-8"))
+    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+    c, cs = ev["completeness"], ev["chain_summaries"][0]
+    missing = manifest.get("missing_evidence") or []
+    return {
+        "cli_exit_code": proc.returncode,
+        "exit_code_reason": ("complete: every declared evidence leg was supplied"
+                             if not missing else
+                             f"scientifically incomplete, missing: {', '.join(missing)}"),
+        "invocation": inv,
+        "residue_identity": {k: c[k] for k in
+            ("identity_fraction", "coverage_fraction", "mapped_residues",
+             "reference_length", "coordinate_residues", "state")},
+        "chain_summary": {k: cs[k] for k in
+            ("chain_breaks", "missing_backbone_residues", "residues")},
+        "official_metric_import": {"state": ev["external_validation"]["state"],
+                                   "values": ev["external_validation"]["metrics"]},
+        "gemmi_coordinate_validation": ev["coordinate"]["parser"]["gemmi_validation"],
+        "missing_evidence": missing,
+    }
+
+
 def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
     expected = record["expected_result"]
     inv = expected["invocation"]
@@ -68,16 +115,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
         return {"record_id": record["record_id"], "passed": False, "checks": checks,
                 "note": "artifact missing or checksum-mismatched; engine not invoked"}
 
-    out = out_root / record["record_id"]
-    if out.exists():
-        shutil.rmtree(out)
-    cmd = [exe, "run", "--structure", str(HERE / inv["structure"]),
-           "--reference-fasta", str(HERE / inv["reference_fasta"]),
-           "--validation-report", str(HERE / inv["validation_report"]),
-           "--out", str(out)]
-    if inv.get("chain"):
-        cmd += ["--chain", inv["chain"]]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    proc, out = invoke(inv, exe, out_root / record["record_id"])
 
     checks.append({"check": "cli_exit_code", "required": True,
                    "expected": expected["cli_exit_code"], "observed": proc.returncode,
@@ -144,6 +182,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--panel", type=Path, default=HERE / "ADOPTION_DRAFT_XRAY.json")
     ap.add_argument("--out", type=Path, default=RESULTS / "execution")
+    ap.add_argument("--record", action="store_true",
+                    help="Re-measure every case and write the expectations back into the panel.")
     args = ap.parse_args(argv)
 
     exe = shutil.which("structqc")
@@ -157,12 +197,28 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     args.out.mkdir(parents=True, exist_ok=True)
+
+    if args.record:
+        for record in panel["records"] + panel.get("controls", []):
+            record["expected_result"] = measure(record, exe, args.out)
+            print(f"  recorded {record['record_id']}: "
+                  f"exit={record['expected_result']['cli_exit_code']} "
+                  f"identity={record['expected_result']['residue_identity']['identity_fraction']}")
+        args.panel.write_text(json.dumps(panel, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote measured expectations into {args.panel.name}")
+        return 0
+
     cases = []
     for record in panel["records"]:
-        record = {**record, "_gate_semantics": semantics}
-        cases.append(run_case(record, exe, args.out))
+        cases.append(run_case({**record, "_gate_semantics": semantics}, exe, args.out))
+    # Controls are not counted toward the panel's required case counts. They
+    # exist so a gate that would otherwise be trivially satisfied is exercised
+    # against a deliberately incomplete run.
+    controls = [run_case({**r, "_gate_semantics": semantics}, exe, args.out)
+                for r in panel.get("controls", [])]
 
     passed = sum(1 for c in cases if c["passed"])
+    controls_passed = sum(1 for c in controls if c["passed"])
     result = {
         "schema_version": "1.0",
         "collection_id": panel.get("panel_id"),
@@ -170,7 +226,10 @@ def main(argv: list[str] | None = None) -> int:
         "gate_semantics": semantics,
         "scientific_execution_performed": True,
         "case_counts": {"total": len(cases), "passed": passed, "failed": len(cases) - passed},
-        "stratum_state": "passed" if passed == len(cases) else "failed",
+        "stratum_state": ("passed" if passed == len(cases) and controls_passed == len(controls)
+                          else "failed"),
+        "control_counts": {"total": len(controls), "passed": controls_passed},
+        "controls": controls,
         "scope_qualified": False,
         "scope_qualification_note": (
             "Executing one stratum qualifies no workflow scope. The StructQC panel also requires the "
@@ -184,14 +243,15 @@ def main(argv: list[str] | None = None) -> int:
         path = RESULTS / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(canonical(value))
-    print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed "
+    print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed, "
+          f"{controls_passed}/{len(controls)} controls passed "
           f"[residue_identity={semantics['residue_identity']['mode']}]")
-    for c in cases:
+    for c in cases + controls:
         if not c["passed"]:
             bad = [k["check"] for k in c["checks"] if k["required"] and not k["passed"]]
             print(f"  FAILED {c['record_id']}: {', '.join(bad)}")
     print("scope_qualified: false (one stratum of four; second-machine reproduction outstanding)")
-    return 0 if passed == len(cases) else 1
+    return 0 if passed == len(cases) and controls_passed == len(controls) else 1
 
 
 if __name__ == "__main__":
