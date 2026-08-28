@@ -115,41 +115,19 @@ def measure(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, An
     }
 
 
-def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
-    expected = record["expected_result"]
-    inv = expected["invocation"]
-    checks: list[dict[str, Any]] = []
+def _gates_structure_qc(record, expected, ev, checks) -> bool:
+    """StructQC gate checks. Returns False if the case cannot be judged further.
 
-    artifact = HERE / record["artifact"]
-    observed_digest = sha256(artifact) if artifact.is_file() else None
-    checks.append({"check": "source_artifact_checksum", "required": True,
-                   "expected": record["checksum"], "observed": observed_digest,
-                   "passed": observed_digest == record["checksum"]})
-    if observed_digest != record["checksum"]:
-        return {"record_id": record["record_id"], "passed": False, "checks": checks,
-                "note": "artifact missing or checksum-mismatched; engine not invoked"}
-
-    proc, out = invoke(inv, exe, out_root / record["record_id"])
-
-    checks.append({"check": "cli_exit_code", "required": True,
-                   "expected": expected["cli_exit_code"], "observed": proc.returncode,
-                   "passed": proc.returncode == expected["cli_exit_code"]})
-
-    evidence_path = out / "STRUCTURE_EVIDENCE.json"
-    if not evidence_path.is_file():
-        checks.append({"check": "evidence_written", "required": True, "expected": "STRUCTURE_EVIDENCE.json",
-                       "observed": None, "passed": False, "stderr": proc.stderr[-400:]})
-        return {"record_id": record["record_id"], "passed": False, "checks": checks}
-    ev = json.loads(evidence_path.read_text(encoding="utf-8"))
-    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
-
+    Lifted verbatim from run_case so a second workflow can be added without this
+    file growing a second copy of the shared harness. Behaviour is unchanged.
+    """
+    gates = record["_gate_semantics"]
     checks.append({"check": "gemmi_coordinate_validation", "required": True,
                    "expected": expected["gemmi_coordinate_validation"],
                    "observed": ev["coordinate"]["parser"]["gemmi_validation"],
                    "passed": ev["coordinate"]["parser"]["gemmi_validation"] == expected["gemmi_coordinate_validation"]})
 
     # --- gate: residue identity -------------------------------------------
-    gates = record["_gate_semantics"]
     ri_mode = gates["residue_identity"]["mode"]
     tol = float(gates["residue_identity"].get("tolerance", 1e-6))
     obs_c, exp_c = ev["completeness"], expected["residue_identity"]
@@ -196,11 +174,52 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
         checks.append({"check": f"confidence.{field}", "required": True, "expected": exp_v,
                        "observed": obs_v, "passed": obs_v is not None and close(obs_v, exp_v, tol)})
 
+    return True
+
+
+def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
+    expected = record["expected_result"]
+    inv = expected["invocation"]
+    checks: list[dict[str, Any]] = []
+
+    artifact = HERE / record["artifact"]
+    observed_digest = sha256(artifact) if artifact.is_file() else None
+    checks.append({"check": "source_artifact_checksum", "required": True,
+                   "expected": record["checksum"], "observed": observed_digest,
+                   "passed": observed_digest == record["checksum"]})
+    if observed_digest != record["checksum"]:
+        return {"record_id": record["record_id"], "passed": False, "checks": checks,
+                "note": "artifact missing or checksum-mismatched; engine not invoked"}
+
+    proc, out = invoke(inv, exe, out_root / record["record_id"])
+
+    checks.append({"check": "cli_exit_code", "required": True,
+                   "expected": expected["cli_exit_code"], "observed": proc.returncode,
+                   "passed": proc.returncode == expected["cli_exit_code"]})
+
+    evidence_path = out / "STRUCTURE_EVIDENCE.json"
+    if not evidence_path.is_file():
+        checks.append({"check": "evidence_written", "required": True, "expected": "STRUCTURE_EVIDENCE.json",
+                       "observed": None, "passed": False, "stderr": proc.stderr[-400:]})
+        return {"record_id": record["record_id"], "passed": False, "checks": checks}
+    ev = json.loads(evidence_path.read_text(encoding="utf-8"))
+    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+
+    if record["_workflow"] == "structure_qc":
+        if not _gates_structure_qc(record, expected, ev, checks):
+            return {"record_id": record["record_id"], "passed": False, "checks": checks}
+    else:
+        checks.append({"check": "workflow_gates_declared", "required": True,
+                       "expected": f"gate checks for workflow {record['_workflow']}",
+                       "observed": None, "passed": False})
+
     # --- gate: fail-closed behaviour --------------------------------------
     # Some evidence cannot exist for a stratum: a predicted model has no
     # community geometry validation, and reporting it missing is correct rather
     # than a failure. The stratum declares what is legitimately absent; anything
     # else appearing in the missing list is a change that must be noticed.
+    gates = record["_gate_semantics"]
+    stratum = record["stratum"]
     missing = sorted(manifest.get("missing_evidence") or [])
     if record["record_kind"] == "control_case":
         # Controls have declared purposes. A fail-closed control exists to be
@@ -295,6 +314,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{args.panel.name} declares no gate_semantics; refusing to assume any", file=sys.stderr)
         return 1
 
+    workflow = panel.get("workflow", "structure_qc")
     args.out.mkdir(parents=True, exist_ok=True)
 
     if args.record:
@@ -309,11 +329,12 @@ def main(argv: list[str] | None = None) -> int:
 
     cases = []
     for record in panel["records"]:
-        cases.append(run_case({**record, "_gate_semantics": semantics}, exe, args.out))
+        cases.append(run_case({**record, "_gate_semantics": semantics,
+                               "_workflow": workflow}, exe, args.out))
     # Controls are not counted toward the panel's required case counts. They
     # exist so a gate that would otherwise be trivially satisfied is exercised
     # against a deliberately incomplete run.
-    controls = [run_case({**r, "_gate_semantics": semantics}, exe, args.out)
+    controls = [run_case({**r, "_gate_semantics": semantics, "_workflow": workflow}, exe, args.out)
                 for r in panel.get("controls", [])]
 
     passed = sum(1 for c in cases if c["passed"])
