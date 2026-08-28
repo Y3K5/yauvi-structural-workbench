@@ -367,6 +367,63 @@ one reference structure per entry, so alternative crystal forms must be found
 through RCSB by UniProt accession and then tested for unresolved catalytic
 residues. That is the outstanding work for this panel.
 
+## 4f. The site-context panel: all sixteen cases selected
+
+Every case below was probed end to end -- StructQC then site-context -- before
+selection. Nothing here is chosen from a description.
+
+| stratum | development | held_out |
+|---|---|---|
+| `acid_base` | 1B73, 1OTH | 1QPR, 1RR6 |
+| `nucleophile_or_covalent` | 1BTL, 1WHS | 1NZY, 1NBA |
+| `metal_or_cofactor` | 1NIA, 5ICD | 1QUM, 1DO8 |
+| `apo_modified_or_incomplete` | 1ALG, 1DNC | 4JDW, 2JDW |
+
+Fourteen distinct UniProt accessions. Two are shared within a stratum and split
+-- P00390 across 1ALG/1DNC, both development; P50440 across 4JDW/2JDW, both
+held_out -- so no homolog group straddles the two splits.
+
+### The fourth stratum had to be found, not looked up
+
+The first three strata are mechanism classes and come straight out of M-CSA.
+`apo_modified_or_incomplete` is a property of the **structure**, and no M-CSA
+reference structure supplies one: all eighteen candidates probed resolve 100%
+`role_compatible`, because reference structures are chosen complete and holo.
+The M-CSA API exposes exactly one structure per entry, so alternatives were
+found through RCSB by UniProt accession and then executed to see what they
+actually do. Each of the four is a different kind of incompleteness:
+
+- **2JDW - apo.** Coverage 0.851, identity 1.000, and **zero heteroatoms**. The
+  same protein as 4JDW without its bound arginine. Every curated residue is
+  present; what is missing is the ligand.
+- **4JDW - engineered substitution.** A C407A mutant. site-context reports
+  `role_mismatch` at 407: the curated catalytic cysteine is not there as curated.
+- **1DNC - chemically modified residue.** Carries FAD, GSH, and **CSD** -- an
+  oxidised cysteine at position 107. site-context reports `unresolved_mapping`
+  rather than silently accepting a standard cysteine.
+- **1ALG - incomplete.** Coverage 0.046: a 24-residue fragment of a 522-residue
+  protein. All five curated residues report `unresolved_mapping`.
+
+### 1DNC is worth noting against the StructQC defect
+
+The `modified_residues` coverage rule is recorded as unwitnessable in the
+StructQC panel because StructQC normalises a modified residue to its parent --
+2V7A's PTR393 is reported as an ordinary tyrosine and never surfaced.
+
+site-context does not do this. Given the same class of input it reports
+`unresolved_mapping` and declines to claim a mapping it cannot support. Two
+modules in the same suite treat the same situation differently, and the more
+conservative behaviour is the one already shipping. That is an argument for
+fixing StructQC rather than relaxing the rule.
+
+### Rejected candidates, and why
+
+1FQG (E164N), 4ZNB (C181S), 2NQ9 (Y72A) and 4K1G (H69A) are all clean modified
+cases, and all were rejected: each is an alternative structure of a protein
+already used in another stratum -- P62593 with 1BTL, P25910 with 1ZNB, P0A6C1
+with 1QUM. Adopting them would have put one homolog group in two strata and
+constrained the split assignment of both.
+
 ## 5. Adoption is not execution — the executor does not exist
 
 `run_qualification.py` is a **composition audit only**: it validates that records
