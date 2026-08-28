@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import http.client
 import sys
 import time
 import urllib.error
@@ -51,13 +52,20 @@ def fetch(url: str, dest: Path, attempts: int = 4) -> None:
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "yauvi-qualification/2.0"})
             with urllib.request.urlopen(req, timeout=180) as r:
+                declared = r.headers.get("Content-Length")
                 data = r.read()
+            if declared is not None and len(data) != int(declared):
+                raise http.client.IncompleteRead(data, int(declared) - len(data))
             if url.endswith(".gz") and not dest.name.endswith(".gz"):
                 import gzip
                 data = gzip.decompress(data)
             dest.write_bytes(data)
             return
-        except (urllib.error.URLError, OSError, EOFError) as exc:
+        except (urllib.error.URLError, http.client.HTTPException, OSError, EOFError) as exc:
+            # http.client.IncompleteRead derives from HTTPException, not from
+            # URLError or OSError, so it escapes the obvious except clause and a
+            # truncated download reads as a hard failure. Providers truncate
+            # under load often enough that this is the common retry case.
             last = exc
             if attempt < attempts:
                 time.sleep(2 ** attempt)

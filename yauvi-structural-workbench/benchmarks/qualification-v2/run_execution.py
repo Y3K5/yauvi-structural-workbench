@@ -60,8 +60,14 @@ def invoke(inv: Mapping[str, Any], exe: str, out: Path):
         shutil.rmtree(out)
     cmd = [exe, "run", "--structure", str(HERE / inv["structure"]),
            "--reference-fasta", str(HERE / inv["reference_fasta"]),
-           "--validation-report", str(HERE / inv["validation_report"]),
            "--out", str(out)]
+    # A predicted model has no wwPDB validation report and does have a PAE
+    # matrix; an experimental entry is the other way round. Neither is passed
+    # unless the case declares it.
+    if inv.get("validation_report"):
+        cmd += ["--validation-report", str(HERE / inv["validation_report"])]
+    if inv.get("pae"):
+        cmd += ["--pae", str(HERE / inv["pae"])]
     if inv.get("provenance"):
         cmd += ["--provenance", str(HERE / inv["provenance"])]
     if inv.get("chain"):
@@ -96,6 +102,8 @@ def measure(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, An
             ("chain_breaks", "missing_backbone_residues", "residues")},
         "official_metric_import": {"state": ev["external_validation"]["state"],
                                    "values": ev["external_validation"]["metrics"]},
+        "confidence": ev.get("pae"),
+        "provenance_class": (ev.get("provenance") or {}).get("class"),
         "gemmi_coordinate_validation": ev["coordinate"]["parser"]["gemmi_validation"],
         "missing_evidence": missing,
     }
@@ -153,25 +161,57 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
                        "passed": close(obs_c[field], exp_c[field], tol)})
 
     # --- gate: official metric import -------------------------------------
+    # What counts as the official metric set depends on the stratum. An
+    # experimental entry has a wwPDB validation report; a predicted model has no
+    # such report and carries pLDDT and PAE instead. A single global metric list
+    # cannot describe both.
+    stratum = record["stratum"]
+    metric_spec = gates["official_metric_import"]["by_stratum"].get(stratum)
+    if metric_spec is None:
+        checks.append({"check": "official_metric_import.stratum_declared", "required": True,
+                       "expected": f"gate_semantics for stratum {stratum}", "observed": None,
+                       "passed": False})
+        return {"record_id": record["record_id"], "passed": False, "checks": checks}
+
     exp_m = expected["official_metric_import"]
     obs_ev = ev["external_validation"]
     checks.append({"check": "official_validation_state", "required": True,
                    "expected": exp_m["state"], "observed": obs_ev.get("state"),
                    "passed": obs_ev.get("state") == exp_m["state"]})
     obs_metrics = obs_ev.get("metrics") or {}
-    for name in gates["official_metric_import"]["required_metrics"]:
+    for name in metric_spec.get("required_metrics", []):
         exp_v = (exp_m.get("values") or {}).get(name)
         checks.append({"check": f"metric.{name}", "required": True, "expected": exp_v,
                        "observed": obs_metrics.get(name),
                        "passed": name in obs_metrics and close(obs_metrics[name], exp_v, tol)})
+    for field in metric_spec.get("required_confidence", []):
+        exp_v = (expected.get("confidence") or {}).get(field)
+        obs_v = (ev.get("pae") or {}).get(field)
+        checks.append({"check": f"confidence.{field}", "required": True, "expected": exp_v,
+                       "observed": obs_v, "passed": obs_v is not None and close(obs_v, exp_v, tol)})
 
     # --- gate: fail-closed behaviour --------------------------------------
-    missing = manifest.get("missing_evidence") or []
-    fail_closed_ok = (proc.returncode == 0) if not missing else (proc.returncode == 1)
-    checks.append({"check": "missing_evidence_fail_closed", "required": True,
-                   "expected": "exit 1 when evidence is missing, 0 otherwise",
-                   "observed": {"exit_code": proc.returncode, "missing_evidence": missing},
-                   "passed": fail_closed_ok})
+    # Some evidence cannot exist for a stratum: a predicted model has no
+    # community geometry validation, and reporting it missing is correct rather
+    # than a failure. The stratum declares what is legitimately absent; anything
+    # else appearing in the missing list is a change that must be noticed.
+    missing = sorted(manifest.get("missing_evidence") or [])
+    if record["record_kind"] == "control_case":
+        # A control exists to be incomplete: withholding evidence is its whole
+        # point, so it is held to its own recorded expectation rather than to
+        # the stratum's, which describes complete cases.
+        checks.append({"check": "control_reports_withheld_evidence", "required": True,
+                       "expected": "a non-empty missing-evidence list",
+                       "observed": missing, "passed": bool(missing)})
+    else:
+        expected_missing = sorted(
+            gates["missing_evidence_behavior"]["expected_missing_by_stratum"].get(stratum, []))
+        checks.append({"check": "missing_evidence_matches_stratum_expectation", "required": True,
+                       "expected": expected_missing, "observed": missing,
+                       "passed": missing == expected_missing})
+    checks.append({"check": "missing_evidence_recorded_unchanged", "required": True,
+                   "expected": sorted(expected.get("missing_evidence") or []), "observed": missing,
+                   "passed": missing == sorted(expected.get("missing_evidence") or [])})
 
     return {"record_id": record["record_id"], "pdb_entry_id": record["pdb_entry_id"],
             "stratum": record["stratum"], "split": record["split"],

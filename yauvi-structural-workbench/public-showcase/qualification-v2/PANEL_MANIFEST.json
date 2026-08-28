@@ -224,6 +224,11 @@
                 "rsrz_outliers_percent": 5.31
               }
             },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "experimental",
             "gemmi_coordinate_validation": "validated",
             "missing_evidence": []
           }
@@ -282,6 +287,11 @@
                 "rsrz_outliers_percent": 4.41
               }
             },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "experimental",
             "gemmi_coordinate_validation": "validated",
             "missing_evidence": []
           }
@@ -340,6 +350,11 @@
                 "rsrz_outliers_percent": 3.34
               }
             },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "experimental",
             "gemmi_coordinate_validation": "validated",
             "missing_evidence": []
           }
@@ -398,8 +413,257 @@
                 "rsrz_outliers_percent": 23.7
               }
             },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "experimental",
             "gemmi_coordinate_validation": "validated",
             "missing_evidence": []
+          }
+        },
+        {
+          "record_id": "v2-structqc-alphafold-dev-P00698",
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "development",
+          "pdb_entry_id": "AF-P00698-F1",
+          "homolog_group": "lysozyme_c",
+          "artifact": "sources/alphafold/AF-P00698-F1-model_v6.cif",
+          "checksum": "09a298fac7b7ef96e9c1ea5690811e713021c2e3a89e239ae7218e4cc658a82c",
+          "source_release": {
+            "alphafold_db_version": "v6",
+            "uniprot_accession": "P00698"
+          },
+          "license": "CC-BY-4.0 (AlphaFold DB)",
+          "citation": {
+            "database": "AlphaFold Protein Structure Database",
+            "version": "v6",
+            "entry": "AF-P00698-F1",
+            "description": "Lysozyme C (Gallus gallus)"
+          },
+          "exclusion_rationale": "Small, fully-resolved single domain: the clean predicted-model control, exact reference mapping.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+            "invocation": {
+              "structure": "sources/alphafold/AF-P00698-F1-model_v6.cif",
+              "reference_fasta": "sources/uniprot/P00698.fasta",
+              "provenance": "provenance/P00698.provenance.json",
+              "pae": "sources/alphafold/AF-P00698-F1-predicted_aligned_error_v6.json",
+              "chain": null
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 1.0,
+              "mapped_residues": 147,
+              "reference_length": 147,
+              "coordinate_residues": 147,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 147
+            },
+            "official_metric_import": {
+              "state": "missing",
+              "values": {}
+            },
+            "confidence": {
+              "max_angstrom": 31.0,
+              "mean_angstrom": 5.8036,
+              "size": 147,
+              "state": "evaluated"
+            },
+            "provenance_class": "predicted",
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": [
+              "community_geometry_validation"
+            ]
+          }
+        },
+        {
+          "record_id": "v2-structqc-alphafold-dev-P01308",
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "development",
+          "pdb_entry_id": "AF-P01308-F1",
+          "homolog_group": "insulin",
+          "artifact": "sources/alphafold/AF-P01308-F1-model_v6.cif",
+          "checksum": "0d71181346ce6d218d681417e849d3cc6f7b04dfd11fa85702b2984da2b81b14",
+          "source_release": {
+            "alphafold_db_version": "v6",
+            "uniprot_accession": "P01308"
+          },
+          "license": "CC-BY-4.0 (AlphaFold DB)",
+          "citation": {
+            "database": "AlphaFold Protein Structure Database",
+            "version": "v6",
+            "entry": "AF-P01308-F1",
+            "description": "Insulin (Homo sapiens)"
+          },
+          "exclusion_rationale": "Precursor modelled as one chain while the mature hormone is processed into two, so coverage and confidence differ across the sequence.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+            "invocation": {
+              "structure": "sources/alphafold/AF-P01308-F1-model_v6.cif",
+              "reference_fasta": "sources/uniprot/P01308.fasta",
+              "provenance": "provenance/P01308.provenance.json",
+              "pae": "sources/alphafold/AF-P01308-F1-predicted_aligned_error_v6.json",
+              "chain": null
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 1.0,
+              "mapped_residues": 110,
+              "reference_length": 110,
+              "coordinate_residues": 110,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 110
+            },
+            "official_metric_import": {
+              "state": "missing",
+              "values": {}
+            },
+            "confidence": {
+              "max_angstrom": 31.0,
+              "mean_angstrom": 22.010744,
+              "size": 110,
+              "state": "evaluated"
+            },
+            "provenance_class": "predicted",
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": [
+              "community_geometry_validation"
+            ]
+          }
+        },
+        {
+          "record_id": "v2-structqc-alphafold-held-P69905",
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "held_out",
+          "pdb_entry_id": "AF-P69905-F1",
+          "homolog_group": "globin",
+          "artifact": "sources/alphafold/AF-P69905-F1-model_v6.cif",
+          "checksum": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230",
+          "source_release": {
+            "alphafold_db_version": "v6",
+            "uniprot_accession": "P69905"
+          },
+          "license": "CC-BY-4.0 (AlphaFold DB)",
+          "citation": {
+            "database": "AlphaFold Protein Structure Database",
+            "version": "v6",
+            "entry": "AF-P69905-F1",
+            "description": "Hemoglobin subunit alpha (Homo sapiens)"
+          },
+          "exclusion_rationale": "Carried over from the qualification v1 collection, the only predicted model already curated.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+            "invocation": {
+              "structure": "sources/alphafold/AF-P69905-F1-model_v6.cif",
+              "reference_fasta": "sources/uniprot/P69905.fasta",
+              "provenance": "provenance/P69905.provenance.json",
+              "pae": "sources/alphafold/AF-P69905-F1-predicted_aligned_error_v6.json",
+              "chain": null
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 1.0,
+              "mapped_residues": 142,
+              "reference_length": 142,
+              "coordinate_residues": 142,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 142
+            },
+            "official_metric_import": {
+              "state": "missing",
+              "values": {}
+            },
+            "confidence": {
+              "max_angstrom": 28.0,
+              "mean_angstrom": 2.061545,
+              "size": 142,
+              "state": "evaluated"
+            },
+            "provenance_class": "predicted",
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": [
+              "community_geometry_validation"
+            ]
+          }
+        },
+        {
+          "record_id": "v2-structqc-alphafold-held-P61769",
+          "record_kind": "benchmark_case",
+          "stratum": "alphafold",
+          "split": "held_out",
+          "pdb_entry_id": "AF-P61769-F1",
+          "homolog_group": "beta2_microglobulin",
+          "artifact": "sources/alphafold/AF-P61769-F1-model_v6.cif",
+          "checksum": "e9cc02e9271d5c12504fc679af0faeab6c4bccd0e291694748c255f30a1e2b30",
+          "source_release": {
+            "alphafold_db_version": "v6",
+            "uniprot_accession": "P61769"
+          },
+          "license": "CC-BY-4.0 (AlphaFold DB)",
+          "citation": {
+            "database": "AlphaFold Protein Structure Database",
+            "version": "v6",
+            "entry": "AF-P61769-F1",
+            "description": "Beta-2-microglobulin (Homo sapiens)"
+          },
+          "exclusion_rationale": "Immunoglobulin fold with a flexible terminus, so per-residue confidence is not uniform.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+            "invocation": {
+              "structure": "sources/alphafold/AF-P61769-F1-model_v6.cif",
+              "reference_fasta": "sources/uniprot/P61769.fasta",
+              "provenance": "provenance/P61769.provenance.json",
+              "pae": "sources/alphafold/AF-P61769-F1-predicted_aligned_error_v6.json",
+              "chain": null
+            },
+            "residue_identity": {
+              "identity_fraction": 1.0,
+              "coverage_fraction": 1.0,
+              "mapped_residues": 119,
+              "reference_length": 119,
+              "coordinate_residues": 119,
+              "state": "evaluated"
+            },
+            "chain_summary": {
+              "chain_breaks": 0,
+              "missing_backbone_residues": 0,
+              "residues": 119
+            },
+            "official_metric_import": {
+              "state": "missing",
+              "values": {}
+            },
+            "confidence": {
+              "max_angstrom": 31.0,
+              "mean_angstrom": 6.795,
+              "size": 119,
+              "state": "evaluated"
+            },
+            "provenance_class": "predicted",
+            "gemmi_coordinate_validation": "validated",
+            "missing_evidence": [
+              "community_geometry_validation"
+            ]
           }
         }
       ],
@@ -457,6 +721,11 @@
                 "rsrz_outliers_percent": 4.41
               }
             },
+            "confidence": {
+              "detail": "no PAE supplied",
+              "state": "unevaluated"
+            },
+            "provenance_class": "unknown",
             "gemmi_coordinate_validation": "validated",
             "missing_evidence": [
               "provenance"
@@ -476,14 +745,37 @@
         },
         "official_metric_import": {
           "mode": "exact",
-          "required_metrics": [
-            "clashscore",
-            "ramachandran_outliers_percent",
-            "rotamer_outliers_percent"
-          ]
+          "by_stratum": {
+            "x_ray": {
+              "evidence_source": "wwpdb_validation_report",
+              "required_metrics": [
+                "clashscore",
+                "ramachandran_outliers_percent",
+                "rotamer_outliers_percent"
+              ]
+            },
+            "alphafold": {
+              "evidence_source": "alphafold_db_confidence",
+              "required_metrics": [],
+              "required_confidence": [
+                "state",
+                "mean_angstrom",
+                "max_angstrom",
+                "size"
+              ],
+              "note": "No wwPDB validation report exists for a predicted model. The official confidence evidence is pLDDT in the B-factor column plus the PAE matrix, so the gate checks those instead of geometry-validation metrics."
+            }
+          }
         },
         "missing_evidence_behavior": {
           "mode": "fail_closed",
+          "expected_missing_by_stratum": {
+            "x_ray": [],
+            "alphafold": [
+              "community_geometry_validation"
+            ]
+          },
+          "rule": "The run's missing-evidence list must equal the stratum's declared expectation. Evidence that cannot exist for a stratum is declared, not silently tolerated; anything else appearing there is a change that must be noticed.",
           "detail": "Exit 1 is a scientifically-incomplete result carrying its reason, not a failure."
         }
       }
