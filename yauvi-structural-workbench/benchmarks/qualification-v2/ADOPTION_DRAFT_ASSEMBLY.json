@@ -3,26 +3,47 @@
   "draft_state": "not_adopted",
   "panel_id": "qualification-v2-assembly-context",
   "workflow": "assembly_interface",
-  "stratum": "pilot",
+  "stratum": "all_four_assembly_strata",
   "policy": "A pilot. Nothing adopted; PANEL_MANIFEST.json unchanged.",
   "gate_semantics": {
     "assembly_interface": {
       "operator_copy_stoichiometry": "exact",
       "freesasa_relative_tolerance": 0.001,
       "freesasa_absolute_tolerance_A2": 1.0,
-      "note": "The SASA gate is checked against the FreeSASA command line, not against the module's own earlier output. assembly-context records only that FreeSASA was 'available_invoked' with no version, so the executor captures the version and treats it as part of the expectation: a tolerance against a reference implementation is meaningless without knowing which build produced the reference."
+      "note": "The SASA gate is checked against the FreeSASA command line, not against the module's own earlier output. assembly-context records only that FreeSASA was 'available_invoked' with no version, so the executor captures the version and treats it as part of the expectation: a tolerance against a reference implementation is meaningless without knowing which build produced the reference.",
+      "stratum_definition": {
+        "homodimer": "exactly two polymer chains with one distinct sequence",
+        "heterooligomer": "two or three polymer chains with more than one distinct sequence",
+        "tetramer": "exactly four polymer chains, whether homo- or heteromeric",
+        "higher_order": "more than four polymer chains",
+        "note": "The four strata overlap unless the boundary is stated: 1QUM is four chains of four distinct entities and satisfies both 'tetramer' and 'heterooligomer' by their plain reading. Chain count is taken as decisive above two, so a four-chain complex is a tetramer regardless of composition, and heterooligomer covers the small mixed complexes that chain count alone would not distinguish."
+      },
+      "freesasa_processability": {
+        "policy": "Cases are selected from structures FreeSASA can process, and which those are is determined by running it.",
+        "excluded": {
+          "5ICD": "FreeSASA aborts with an internal assertion on atomic radii.",
+          "1NZY": "same assertion",
+          "1JDW": "same assertion"
+        },
+        "note": "The failure is not simply 'contains ligands': 1QPR carries MN, PHT and PPC and processes cleanly, while 5ICD (ICT, MG) and 1NZY (BCA, CA, EDO, PO4) abort. assembly-context exits 2 and reports the failure rather than emitting a surface number, which is the correct behaviour and is why the panel can exclude these rather than silently mis-measure them."
+      }
     },
     "missing_evidence_behavior": {
       "mode": "fail_closed",
       "expected_missing_by_stratum": {
-        "tetramer": []
+        "homodimer": [],
+        "heterooligomer": [],
+        "tetramer": [],
+        "higher_order": []
       },
       "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated."
     },
     "coverage_requirements": {
       "mode": "witnessed_by_at_least_one_executed_case",
       "required_features": [
+        "dimeric_assembly",
         "tetrameric_assembly",
+        "higher_order_assembly",
         "stoichiometry_complete",
         "buried_surface_observed",
         "residue_contacts_observed"
@@ -32,25 +53,552 @@
   },
   "records": [
     {
+      "record_id": "v2-assembly-homodimer-dev-1MKB",
+      "record_kind": "benchmark_case",
+      "stratum": "homodimer",
+      "split": "development",
+      "pdb_entry_id": "1MKB",
+      "homolog_group": "fabA_dehydratase",
+      "artifact": "sources/wwpdb/1MKB.cif",
+      "checksum": "0981ce9a2184f26ed17af1b8b8f863ccd32c446dca8e2eed68e20400c8b7c2d0",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0A6Q3",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1MKB"
+      },
+      "exclusion_rationale": "FabA dehydratase homodimer. Replaces 5ICD, which FreeSASA cannot process.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1MKB.cif",
+            "reference_fasta": "sources/uniprot/P0A6Q3.fasta",
+            "provenance": "provenance/1MKB.provenance.json",
+            "chain": "A"
+          },
+          "isolated": "sources/wwpdb/1MKB.cif",
+          "assembly": "sources/wwpdb/1MKB-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 8654.983762,
+          "subject_assembly_sasa_A2": 7043.073197,
+          "buried_sasa_A2": 1611.910565
+        },
+        "residue_contacts": 64,
+        "interfaces": 227,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-homodimer-dev-1QPR",
+      "record_kind": "benchmark_case",
+      "stratum": "homodimer",
+      "split": "development",
+      "pdb_entry_id": "1QPR",
+      "homolog_group": "p9wjj7_1qpr",
+      "artifact": "sources/wwpdb/1QPR.cif",
+      "checksum": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P9WJJ7",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1QPR"
+      },
+      "exclusion_rationale": "Nicotinate-nucleotide diphosphorylase homodimer.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1QPR.cif",
+            "reference_fasta": "sources/uniprot/P9WJJ7.fasta",
+            "provenance": "provenance/1QPR.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1qpr_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1QPR.cif",
+          "assembly": "sources/wwpdb/1QPR-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 12863.022891,
+          "subject_assembly_sasa_A2": 10254.31185,
+          "buried_sasa_A2": 2608.711041
+        },
+        "residue_contacts": 97,
+        "interfaces": 329,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-homodimer-held-2GH5",
+      "record_kind": "benchmark_case",
+      "stratum": "homodimer",
+      "split": "held_out",
+      "pdb_entry_id": "2GH5",
+      "homolog_group": "p00390_2gh5",
+      "artifact": "sources/wwpdb/2GH5.cif",
+      "checksum": "80c209c14014f515f68456a9accd6004328b60fee6fe7c9f9b6642d95b090d49",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P00390",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:2GH5"
+      },
+      "exclusion_rationale": "Glutathione reductase homodimer, FAD-bound.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/2GH5.cif",
+            "reference_fasta": "sources/uniprot/P00390.fasta",
+            "provenance": "provenance/2GH5.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/2gh5_validation.xml"
+          },
+          "isolated": "sources/wwpdb/2GH5.cif",
+          "assembly": "sources/wwpdb/2GH5-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 22625.933531,
+          "subject_assembly_sasa_A2": 19398.636202,
+          "buried_sasa_A2": 3227.29733
+        },
+        "residue_contacts": 157,
+        "interfaces": 555,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-homodimer-held-1D4A",
+      "record_kind": "benchmark_case",
+      "stratum": "homodimer",
+      "split": "held_out",
+      "pdb_entry_id": "1D4A",
+      "homolog_group": "p15559_1d4a",
+      "artifact": "sources/wwpdb/1D4A.cif",
+      "checksum": "db5cab3bb28f05c251fe4253d4b2ab5fe89c40ddb2aa01d26747b5d3eba1befd",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P15559",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1D4A"
+      },
+      "exclusion_rationale": "NQO1 homodimer.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1D4A.cif",
+            "reference_fasta": "sources/uniprot/P15559.fasta",
+            "provenance": "provenance/1D4A.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1d4a_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1D4A.cif",
+          "assembly": "sources/wwpdb/1D4A-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,C"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "C"
+          ],
+          "chains_observed": [
+            "A",
+            "C"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 13679.425813,
+          "subject_assembly_sasa_A2": 10944.939267,
+          "buried_sasa_A2": 2734.486546
+        },
+        "residue_contacts": 114,
+        "interfaces": 389,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-heterooligomer-dev-1OAI",
+      "record_kind": "benchmark_case",
+      "stratum": "heterooligomer",
+      "split": "development",
+      "pdb_entry_id": "1OAI",
+      "homolog_group": "q9ubu9_1oai",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "Q9UBU9",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1OAI"
+      },
+      "exclusion_rationale": "Tap UBA domain bound to an FxFG nucleoporin peptide: a protein-peptide heterodimer whose partner is far smaller than the subject.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1OAI.cif",
+            "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+            "provenance": "provenance/1OAI.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1oai_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1OAI.cif",
+          "assembly": "sources/wwpdb/1OAI-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 4288.712495,
+          "subject_assembly_sasa_A2": 3943.796701,
+          "buried_sasa_A2": 344.915795
+        },
+        "residue_contacts": 23,
+        "interfaces": 62,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-heterooligomer-dev-6M0J",
+      "record_kind": "benchmark_case",
+      "stratum": "heterooligomer",
+      "split": "development",
+      "pdb_entry_id": "6M0J",
+      "homolog_group": "q9byf1_6m0j",
+      "artifact": "sources/wwpdb/6M0J.cif",
+      "checksum": "ec1bbd3e64524f4ec91803781fb065bc8bb7559a67b60fcc2bfb5a08dae3cba6",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "Q9BYF1",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:6M0J"
+      },
+      "exclusion_rationale": "SARS-CoV-2 spike receptor-binding domain bound to ACE2.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/6M0J.cif",
+            "reference_fasta": "sources/uniprot/Q9BYF1.fasta",
+            "provenance": "provenance/6M0J.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/6m0j_validation.xml"
+          },
+          "isolated": "sources/wwpdb/6M0J.cif",
+          "assembly": "sources/wwpdb/6M0J-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,E"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "E"
+          ],
+          "chains_observed": [
+            "A",
+            "E"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 25726.276564,
+          "subject_assembly_sasa_A2": 24892.79064,
+          "buried_sasa_A2": 833.485925
+        },
+        "residue_contacts": 22,
+        "interfaces": 56,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-heterooligomer-held-1YCR",
+      "record_kind": "benchmark_case",
+      "stratum": "heterooligomer",
+      "split": "held_out",
+      "pdb_entry_id": "1YCR",
+      "homolog_group": "q00987_1ycr",
+      "artifact": "sources/wwpdb/1YCR.cif",
+      "checksum": "03f62994ea1ff55d98c0d9d835b706319e523367fce56d9deb51b850c83e47a8",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "Q00987",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1YCR"
+      },
+      "exclusion_rationale": "MDM2 bound to a p53 transactivation peptide.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1YCR.cif",
+            "reference_fasta": "sources/uniprot/Q00987.fasta",
+            "provenance": "provenance/1YCR.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1ycr_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1YCR.cif",
+          "assembly": "sources/wwpdb/1YCR-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 5285.298079,
+          "subject_assembly_sasa_A2": 4623.396221,
+          "buried_sasa_A2": 661.901859
+        },
+        "residue_contacts": 24,
+        "interfaces": 48,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-heterooligomer-held-1A22",
+      "record_kind": "benchmark_case",
+      "stratum": "heterooligomer",
+      "split": "held_out",
+      "pdb_entry_id": "1A22",
+      "homolog_group": "p01241_1a22",
+      "artifact": "sources/wwpdb/1A22.cif",
+      "checksum": "ce576fa6b09cf179e85abba617059323e268a88c3799c2b85e5b76bd6757bf07",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P01241",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 2
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1A22"
+      },
+      "exclusion_rationale": "Human growth hormone bound to its receptor.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1A22.cif",
+            "reference_fasta": "sources/uniprot/P01241.fasta",
+            "provenance": "provenance/1A22.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1a22_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1A22.cif",
+          "assembly": "sources/wwpdb/1A22-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B"
+          ],
+          "chains_observed": [
+            "A",
+            "B"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 9872.366803,
+          "subject_assembly_sasa_A2": 8551.063865,
+          "buried_sasa_A2": 1321.302938
+        },
+        "residue_contacts": 45,
+        "interfaces": 143,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
       "record_id": "v2-assembly-tetramer-dev-4HHB",
       "record_kind": "benchmark_case",
       "stratum": "tetramer",
       "split": "development",
       "pdb_entry_id": "4HHB",
-      "homolog_group": "haemoglobin",
+      "homolog_group": "p69905_4hhb",
       "artifact": "sources/wwpdb/4HHB.cif",
       "checksum": "2d3ca1bf21ddff35af2e2bc5d331720f7bfc46a16c4829ea3ec1b41062d5f5a6",
       "source_release": {
         "provider": "wwPDB/RCSB PDB",
         "uniprot_accession": "P69905",
-        "assembly": "biological assembly 1"
+        "assembly": "biological assembly 1",
+        "assembly_chains": 4
       },
       "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
       "citation": {
-        "entry": "PDB:4HHB",
-        "description": "Human deoxyhaemoglobin, A2B2 tetramer"
+        "entry": "PDB:4HHB"
       },
-      "exclusion_rationale": "The qualification v1 assembly case, retained. An A2B2 tetramer whose subject chain buries a measurable surface, so the FreeSASA agreement gate has something to compare rather than a zero.",
+      "exclusion_rationale": "Human deoxyhaemoglobin, the qualification v1 assembly case, retained.",
       "expected_result": {
         "cli_exit_code": 0,
         "exit_code_reason": "complete: every declared evidence leg was supplied",
@@ -59,9 +607,9 @@
             "workflow": "structure_qc",
             "structure": "sources/wwpdb/4HHB.cif",
             "reference_fasta": "sources/uniprot/P69905.fasta",
-            "validation_report": "sources/wwpdb/4hhb_validation.xml",
             "provenance": "provenance/4HHB.provenance.json",
-            "chain": "A"
+            "chain": "A",
+            "validation_report": "sources/wwpdb/4hhb_validation.xml"
           },
           "isolated": "sources/wwpdb/4HHB.cif",
           "assembly": "sources/wwpdb/4HHB-assembly1.cif",
@@ -100,7 +648,1131 @@
         },
         "freesasa_version": "FreeSASA 2.1.3"
       }
+    },
+    {
+      "record_id": "v2-assembly-tetramer-dev-6CVM",
+      "record_kind": "benchmark_case",
+      "stratum": "tetramer",
+      "split": "development",
+      "pdb_entry_id": "6CVM",
+      "homolog_group": "p00722_6cvm",
+      "artifact": "sources/wwpdb/6CVM.cif",
+      "checksum": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P00722",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 4
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:6CVM"
+      },
+      "exclusion_rationale": "Beta-galactosidase homotetramer, 1021 residues per chain.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/6CVM.cif",
+            "reference_fasta": "sources/uniprot/P00722.fasta",
+            "provenance": "provenance/6CVM.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/6cvm_validation.xml"
+          },
+          "isolated": "sources/wwpdb/6CVM.cif",
+          "assembly": "sources/wwpdb/6CVM-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 38369.304903,
+          "subject_assembly_sasa_A2": 33855.565182,
+          "buried_sasa_A2": 4513.73972
+        },
+        "residue_contacts": 300,
+        "interfaces": 968,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-tetramer-held-1DO8",
+      "record_kind": "benchmark_case",
+      "stratum": "tetramer",
+      "split": "held_out",
+      "pdb_entry_id": "1DO8",
+      "homolog_group": "p23368_1do8",
+      "artifact": "sources/wwpdb/1DO8.cif",
+      "checksum": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P23368",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 4
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1DO8"
+      },
+      "exclusion_rationale": "Malic enzyme homotetramer.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1DO8.cif",
+            "reference_fasta": "sources/uniprot/P23368.fasta",
+            "provenance": "provenance/1DO8.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1do8_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1DO8.cif",
+          "assembly": "sources/wwpdb/1DO8-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 24410.244119,
+          "subject_assembly_sasa_A2": 20749.478538,
+          "buried_sasa_A2": 3660.765581
+        },
+        "residue_contacts": 149,
+        "interfaces": 492,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-tetramer-held-1IGT",
+      "record_kind": "benchmark_case",
+      "stratum": "tetramer",
+      "split": "held_out",
+      "pdb_entry_id": "1IGT",
+      "homolog_group": "p01863_1igt",
+      "artifact": "sources/wwpdb/1IGT.cif",
+      "checksum": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P01863",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 4
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1IGT"
+      },
+      "exclusion_rationale": "Intact IgG2a: a heterotetramer of two heavy and two light chains.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1IGT.cif",
+            "reference_fasta": "sources/uniprot/P01863.fasta",
+            "provenance": "provenance/1IGT.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1igt_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1IGT.cif",
+          "assembly": "sources/wwpdb/1IGT-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 11504.284206,
+          "subject_assembly_sasa_A2": 9341.276672,
+          "buried_sasa_A2": 2163.007533
+        },
+        "residue_contacts": 53,
+        "interfaces": 132,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-higher_order-dev-1HTO",
+      "record_kind": "benchmark_case",
+      "stratum": "higher_order",
+      "split": "development",
+      "pdb_entry_id": "1HTO",
+      "homolog_group": "glutamine_synthetase_1hto",
+      "artifact": "sources/wwpdb/1HTO.cif",
+      "checksum": "6d8219384abd7f4249f7227e57374c92c221b1a6f3318bb9613198ba4d2c5691",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0A1P6",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 12
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1HTO"
+      },
+      "exclusion_rationale": "Glutamine synthetase dodecamer. Replaces 1NZY, which FreeSASA cannot process.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1HTO.cif",
+            "reference_fasta": "sources/uniprot/P0A1P6.fasta",
+            "provenance": "provenance/1HTO.provenance.json",
+            "chain": "A"
+          },
+          "isolated": "sources/wwpdb/1HTO.cif",
+          "assembly": "sources/wwpdb/1HTO-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 22572.907475,
+          "subject_assembly_sasa_A2": 15401.593679,
+          "buried_sasa_A2": 7171.313796
+        },
+        "residue_contacts": 272,
+        "interfaces": 1094,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-higher_order-dev-2BL2",
+      "record_kind": "benchmark_case",
+      "stratum": "higher_order",
+      "split": "development",
+      "pdb_entry_id": "2BL2",
+      "homolog_group": "p43457_2bl2",
+      "artifact": "sources/wwpdb/2BL2.cif",
+      "checksum": "da49e61df1720769358cdfc4d7bb72734a31c7d0993d5204b328b0c1cab6bd5e",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P43457",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 10
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:2BL2"
+      },
+      "exclusion_rationale": "V-type sodium ATPase K-ring, ten copies.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/2BL2.cif",
+            "reference_fasta": "sources/uniprot/P43457.fasta",
+            "provenance": "provenance/2BL2.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/2bl2_validation.xml"
+          },
+          "isolated": "sources/wwpdb/2BL2.cif",
+          "assembly": "sources/wwpdb/2BL2-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D,E,F,G,H,I,J"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 8197.09916,
+          "subject_assembly_sasa_A2": 4787.009646,
+          "buried_sasa_A2": 3410.089514
+        },
+        "residue_contacts": 113,
+        "interfaces": 354,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-higher_order-held-1AON",
+      "record_kind": "benchmark_case",
+      "stratum": "higher_order",
+      "split": "held_out",
+      "pdb_entry_id": "1AON",
+      "homolog_group": "p0a6f5_1aon",
+      "artifact": "sources/wwpdb/1AON.cif",
+      "checksum": "6b202f340ffb9a1924d5315ce9e837e02cee1dbd745df675be76f6d4e1b8e66f",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0A6F5",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 21
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:1AON"
+      },
+      "exclusion_rationale": "GroEL-GroES chaperonin, twenty-one chains across two entities.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1AON.cif",
+            "reference_fasta": "sources/uniprot/P0A6F5.fasta",
+            "provenance": "provenance/1AON.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/1aon_validation.xml"
+          },
+          "isolated": "sources/wwpdb/1AON.cif",
+          "assembly": "sources/wwpdb/1AON-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 23736.880303,
+          "subject_assembly_sasa_A2": 19989.710407,
+          "buried_sasa_A2": 3747.169896
+        },
+        "residue_contacts": 91,
+        "interfaces": 224,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    },
+    {
+      "record_id": "v2-assembly-higher_order-held-2GLS",
+      "record_kind": "benchmark_case",
+      "stratum": "higher_order",
+      "split": "held_out",
+      "pdb_entry_id": "2GLS",
+      "homolog_group": "p0a1p6_2gls",
+      "artifact": "sources/wwpdb/2GLS.cif",
+      "checksum": "0204f30070717d3e4c54516d3268f162cba4a1833a7acabf4f5d1ce91443ef9c",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0A1P6",
+        "assembly": "biological assembly 1",
+        "assembly_chains": 12
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:2GLS"
+      },
+      "exclusion_rationale": "Glutamine synthetase dodecamer.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/2GLS.cif",
+            "reference_fasta": "sources/uniprot/P0A1P6.fasta",
+            "provenance": "provenance/2GLS.provenance.json",
+            "chain": "A",
+            "validation_report": "sources/wwpdb/2gls_validation.xml"
+          },
+          "isolated": "sources/wwpdb/2GLS.cif",
+          "assembly": "sources/wwpdb/2GLS-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 21254.861727,
+          "subject_assembly_sasa_A2": 15410.573595,
+          "buried_sasa_A2": 5844.288131
+        },
+        "residue_contacts": 135,
+        "interfaces": 434,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
     }
   ],
-  "source_lock_additions": []
+  "source_lock_additions": [
+    {
+      "source_id": "PDB:1MKB",
+      "artifact": "sources/wwpdb/1MKB.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0981ce9a2184f26ed17af1b8b8f863ccd32c446dca8e2eed68e20400c8b7c2d0",
+      "url": "https://files.rcsb.org/download/1MKB.cif"
+    },
+    {
+      "source_id": "PDB:1MKB:assembly1",
+      "artifact": "sources/wwpdb/1MKB-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8cd8eee47af11b5233648c51a0a47351647e0a75b48afd90c13fe9ddb1e53378",
+      "url": "https://files.rcsb.org/download/1MKB-assembly1.cif"
+    },
+    {
+      "source_id": "UNIPROT:P0A6Q3",
+      "artifact": "sources/uniprot/P0A6Q3.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "5948101dfcc44e4eab825d230d8f6cf2727d2fb338b39172cb195cd5107f25d3",
+      "url": "https://rest.uniprot.org/uniprotkb/P0A6Q3.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1MKB",
+      "artifact": "provenance/1MKB.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "66879a702f66e19fdac8e1e2a8b9375ddc2112b900715f0d7cca8cf20a7e7ca8",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1QPR",
+      "artifact": "sources/wwpdb/1QPR.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+      "url": "https://files.rcsb.org/download/1QPR.cif"
+    },
+    {
+      "source_id": "PDB:1QPR:assembly1",
+      "artifact": "sources/wwpdb/1QPR-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8379df6cf5690a1949c7eabcc9108de122e4e7aa20f9b50ed40974ccd749d618",
+      "url": "https://files.rcsb.org/download/1QPR-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1QPR:validation_xml",
+      "artifact": "sources/wwpdb/1qpr_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "69ac5419a0361fac90d995689368e3125612dec8411dc74628967f85b95816be",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/qp/1qpr/1qpr_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P9WJJ7",
+      "artifact": "sources/uniprot/P9WJJ7.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "175fb4a4144b34971430a4ec96b95efbbc42b86e42246e6ad6f3f7e017e53217",
+      "url": "https://rest.uniprot.org/uniprotkb/P9WJJ7.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1QPR",
+      "artifact": "provenance/1QPR.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "78621c0ed8868ae206cbb21fcf029480298a474594d18792bd5a597c04083da9",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:2GH5",
+      "artifact": "sources/wwpdb/2GH5.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "80c209c14014f515f68456a9accd6004328b60fee6fe7c9f9b6642d95b090d49",
+      "url": "https://files.rcsb.org/download/2GH5.cif"
+    },
+    {
+      "source_id": "PDB:2GH5:assembly1",
+      "artifact": "sources/wwpdb/2GH5-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "dbc5a472f74759eb9acbb04249e705da9118cf9910b2780f2054764e736d7bb8",
+      "url": "https://files.rcsb.org/download/2GH5-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:2GH5:validation_xml",
+      "artifact": "sources/wwpdb/2gh5_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "5785b73643135f497d47fd8b31dcd4f4268c5b268381343242060deb8e6b5a5e",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/gh/2gh5/2gh5_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P00390",
+      "artifact": "sources/uniprot/P00390.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "97aab49cdc3cbfc6bfe4e25c85f02522c928f9290ad3adae35bdc80ca99f983a",
+      "url": "https://rest.uniprot.org/uniprotkb/P00390.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:2GH5",
+      "artifact": "provenance/2GH5.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "7f73ef0326b2268b254942dad23b5b1e4254e320f313388a0a1b75c95281c586",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1D4A",
+      "artifact": "sources/wwpdb/1D4A.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "db5cab3bb28f05c251fe4253d4b2ab5fe89c40ddb2aa01d26747b5d3eba1befd",
+      "url": "https://files.rcsb.org/download/1D4A.cif"
+    },
+    {
+      "source_id": "PDB:1D4A:assembly1",
+      "artifact": "sources/wwpdb/1D4A-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "52611328ca4b1b90abc9c77ace0859e9f84ecb13616b4e14a639b8a08328de8e",
+      "url": "https://files.rcsb.org/download/1D4A-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1D4A:validation_xml",
+      "artifact": "sources/wwpdb/1d4a_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ce98c925a5ba76fc01b951128ef56b68f9c004626439aaf19f6f42b3df7b47eb",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/d4/1d4a/1d4a_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P15559",
+      "artifact": "sources/uniprot/P15559.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "1a3a2642886e6b84bf6e8b840fccd5f68650b7139ef63de4fdf8b95d64f4bd65",
+      "url": "https://rest.uniprot.org/uniprotkb/P15559.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1D4A",
+      "artifact": "provenance/1D4A.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "a2fbe3e57e5867e86de9fb6646fe89282f7a58f09316d41d95cd69ed0004bfc8",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1OAI",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "url": "https://files.rcsb.org/download/1OAI.cif"
+    },
+    {
+      "source_id": "PDB:1OAI:assembly1",
+      "artifact": "sources/wwpdb/1OAI-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "3f8c5fde351d8b8d12eb67472e1cf365fe0406043ced46a6f91e57ed93555963",
+      "url": "https://files.rcsb.org/download/1OAI-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1OAI:validation_xml",
+      "artifact": "sources/wwpdb/1oai_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9729a302dd8f5906c7d6e420d1c4fcc43eb9911ebf17de0a45064270179f3d9c",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/oa/1oai/1oai_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:Q9UBU9",
+      "artifact": "sources/uniprot/Q9UBU9.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "09b7f1c360bdf8208a8fc9236db5dae4144da78763ccfe0e7b5f37ef8e085102",
+      "url": "https://rest.uniprot.org/uniprotkb/Q9UBU9.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1OAI",
+      "artifact": "provenance/1OAI.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "6a6b492ba0cb84a0254edea8c4ca1887727945574381e01cd7d3754fa9361c48",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:6M0J",
+      "artifact": "sources/wwpdb/6M0J.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ec1bbd3e64524f4ec91803781fb065bc8bb7559a67b60fcc2bfb5a08dae3cba6",
+      "url": "https://files.rcsb.org/download/6M0J.cif"
+    },
+    {
+      "source_id": "PDB:6M0J:assembly1",
+      "artifact": "sources/wwpdb/6M0J-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0d4cbcca0a79d91ae0dadf767fe58150e282d5f93d5087ae4190176a9ff52ece",
+      "url": "https://files.rcsb.org/download/6M0J-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:6M0J:validation_xml",
+      "artifact": "sources/wwpdb/6m0j_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "3be8d251a3a707381f11806092d1c5ea9c71ece2afdb634b81a9e0b88b3ed9e8",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/m0/6m0j/6m0j_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:Q9BYF1",
+      "artifact": "sources/uniprot/Q9BYF1.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "38942bf4976d224439a21044572f3b1d51fee6571ebd08eb02c7aa26f525b8f3",
+      "url": "https://rest.uniprot.org/uniprotkb/Q9BYF1.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:6M0J",
+      "artifact": "provenance/6M0J.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "c595eb8d3fbbba15d77fc07bc446b3cf5c654fa06756787af5511472739d3525",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1YCR",
+      "artifact": "sources/wwpdb/1YCR.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "03f62994ea1ff55d98c0d9d835b706319e523367fce56d9deb51b850c83e47a8",
+      "url": "https://files.rcsb.org/download/1YCR.cif"
+    },
+    {
+      "source_id": "PDB:1YCR:assembly1",
+      "artifact": "sources/wwpdb/1YCR-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8b27f46f04c69d4adc8ecf426d5a2e44c862cc03f56f40717ab130c84f0d08d7",
+      "url": "https://files.rcsb.org/download/1YCR-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1YCR:validation_xml",
+      "artifact": "sources/wwpdb/1ycr_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "23b95967bfcf1f2e82308279e9de29b33601013428dc8493ba963a61be6a094a",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/yc/1ycr/1ycr_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:Q00987",
+      "artifact": "sources/uniprot/Q00987.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "75573e90db2ef66e0acb952bd29883e8f04c98d5828405fc4fe8368420fd0496",
+      "url": "https://rest.uniprot.org/uniprotkb/Q00987.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1YCR",
+      "artifact": "provenance/1YCR.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "f2e72bb3681b95f218cbe4ffd1188f2a7d94fee6e02389c8722b78065e4ead5f",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1A22",
+      "artifact": "sources/wwpdb/1A22.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ce576fa6b09cf179e85abba617059323e268a88c3799c2b85e5b76bd6757bf07",
+      "url": "https://files.rcsb.org/download/1A22.cif"
+    },
+    {
+      "source_id": "PDB:1A22:assembly1",
+      "artifact": "sources/wwpdb/1A22-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8349715f28dfc70d90bb1888fc8ae489f518ce6e132dba1017b1cd8bc7d24772",
+      "url": "https://files.rcsb.org/download/1A22-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1A22:validation_xml",
+      "artifact": "sources/wwpdb/1a22_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "67553029406fb8d75849db1df01a5f0c1fad044f58c9f2c8e83a31efb586eab2",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/a2/1a22/1a22_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P01241",
+      "artifact": "sources/uniprot/P01241.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "202d6305401b2a0f433c61afa464f057622eb1462f19ef66303e606283f83d02",
+      "url": "https://rest.uniprot.org/uniprotkb/P01241.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1A22",
+      "artifact": "provenance/1A22.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "6076da57cc08d457722d010b476c2cf419632e731ff45bcc30ce1179a9c1ef79",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:4HHB",
+      "artifact": "sources/wwpdb/4HHB.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2d3ca1bf21ddff35af2e2bc5d331720f7bfc46a16c4829ea3ec1b41062d5f5a6",
+      "url": "https://files.rcsb.org/download/4HHB.cif"
+    },
+    {
+      "source_id": "PDB:4HHB:assembly1",
+      "artifact": "sources/wwpdb/4HHB-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "54c2b76cd6f009f0902f11a28162eccb71dd24375e00481639a2d2ec55a2e6e2",
+      "url": "https://files.rcsb.org/download/4HHB-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:4HHB:validation_xml",
+      "artifact": "sources/wwpdb/4hhb_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "64276be45934ea869828229bd6ae0a11246087b226a26a6aad467574fabe4ff6",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/hh/4hhb/4hhb_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P69905",
+      "artifact": "sources/uniprot/P69905.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "aecc3cb75f840f242f6b4489d501384d0c50cf0d61a8dab5a1dab81a80aa4bae",
+      "url": "https://rest.uniprot.org/uniprotkb/P69905.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:4HHB",
+      "artifact": "provenance/4HHB.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "776823a72963bcc043cca0a550763e5712d7e5c0c0cf07a2aa2b6898eb861389",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:6CVM",
+      "artifact": "sources/wwpdb/6CVM.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d",
+      "url": "https://files.rcsb.org/download/6CVM.cif"
+    },
+    {
+      "source_id": "PDB:6CVM:assembly1",
+      "artifact": "sources/wwpdb/6CVM-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "86f78778c940be1c549ebd8c8b9a1915eadbf8965be8dab916eca96379c83eca",
+      "url": "https://files.rcsb.org/download/6CVM-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:6CVM:validation_xml",
+      "artifact": "sources/wwpdb/6cvm_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0a08598357855f2b985488a5508c82b0cfc7e4c6a822c7bb12312dde12024ad3",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/cv/6cvm/6cvm_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P00722",
+      "artifact": "sources/uniprot/P00722.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "6eaf4eb59b178dc946fcd9f50fdcfbec9d1b49b53bc8d849a402c3a0405830eb",
+      "url": "https://rest.uniprot.org/uniprotkb/P00722.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:6CVM",
+      "artifact": "provenance/6CVM.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "ae6cdc595129904cc8caa3bb1102db5018103bc0c6bc56af3f6faee0131dd3fa",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1DO8",
+      "artifact": "sources/wwpdb/1DO8.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+      "url": "https://files.rcsb.org/download/1DO8.cif"
+    },
+    {
+      "source_id": "PDB:1DO8:assembly1",
+      "artifact": "sources/wwpdb/1DO8-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "327dacf006b184a1fb0f238f30f167fa4b59dc0e6222800ac4c41d267dd04d67",
+      "url": "https://files.rcsb.org/download/1DO8-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1DO8:validation_xml",
+      "artifact": "sources/wwpdb/1do8_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "16605eadefa7669aa320c6f7ec73579e883253bfc4c57518ef1a8bc5d5957b6b",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/do/1do8/1do8_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P23368",
+      "artifact": "sources/uniprot/P23368.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "18fdc5718b8ef3865425029f6cc010ab608a12ee4ad0f83eec2bbda8c060f719",
+      "url": "https://rest.uniprot.org/uniprotkb/P23368.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1DO8",
+      "artifact": "provenance/1DO8.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "73e92bd34715b1be2f7bba074140f6f24e777f3fd34b09c387bbe06a54757652",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1IGT",
+      "artifact": "sources/wwpdb/1IGT.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+      "url": "https://files.rcsb.org/download/1IGT.cif"
+    },
+    {
+      "source_id": "PDB:1IGT:assembly1",
+      "artifact": "sources/wwpdb/1IGT-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d7daf95fe9fe0adba386bbcc2cecf6915d571fc6381ad8a3179547547feb3bef",
+      "url": "https://files.rcsb.org/download/1IGT-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1IGT:validation_xml",
+      "artifact": "sources/wwpdb/1igt_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "4f3a39bfd23518ffe9fe6072c3fcafc69ccfdbfe36f8bc9b527c616da54eeda8",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ig/1igt/1igt_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P01863",
+      "artifact": "sources/uniprot/P01863.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "cdc71e4129ec5762e63d4c5e7b5c8aac127333b5ba185341699ef415d7e06e94",
+      "url": "https://rest.uniprot.org/uniprotkb/P01863.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1IGT",
+      "artifact": "provenance/1IGT.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "739f570e3d8f3e328c1933110ab7f8247452dfd5f6848ffcf9e6039ce7e814fb",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1HTO",
+      "artifact": "sources/wwpdb/1HTO.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "6d8219384abd7f4249f7227e57374c92c221b1a6f3318bb9613198ba4d2c5691",
+      "url": "https://files.rcsb.org/download/1HTO.cif"
+    },
+    {
+      "source_id": "PDB:1HTO:assembly1",
+      "artifact": "sources/wwpdb/1HTO-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0a7a11095bcf518a7b9f5a0ade9ac62682c6aedb3fff8c3355835698be6c13f6",
+      "url": "https://files.rcsb.org/download/1HTO-assembly1.cif"
+    },
+    {
+      "source_id": "UNIPROT:P0A1P6",
+      "artifact": "sources/uniprot/P0A1P6.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "2457a3414917456d1aa2e95a9c1a73383874edee18a9e2d831a103d463f109a9",
+      "url": "https://rest.uniprot.org/uniprotkb/P0A1P6.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1HTO",
+      "artifact": "provenance/1HTO.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "4cc9f018bc74ba77b3a8183ea4f1204df29214a3a10739dd447a02f77b6330bf",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:2BL2",
+      "artifact": "sources/wwpdb/2BL2.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "da49e61df1720769358cdfc4d7bb72734a31c7d0993d5204b328b0c1cab6bd5e",
+      "url": "https://files.rcsb.org/download/2BL2.cif"
+    },
+    {
+      "source_id": "PDB:2BL2:assembly1",
+      "artifact": "sources/wwpdb/2BL2-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "c48770d9b460240228fe3c988579e6230a03d6c810c55506fa0ed7a023fe3e8e",
+      "url": "https://files.rcsb.org/download/2BL2-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:2BL2:validation_xml",
+      "artifact": "sources/wwpdb/2bl2_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "cad0fd7b69c9d587d8ac28fccd6b89c0cfaf8f1ef4a5300826cdcdd2ca004861",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/bl/2bl2/2bl2_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P43457",
+      "artifact": "sources/uniprot/P43457.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "fc800efd43193c3c8ed992e7eb28b52d554c87bbf5fe35b6d5fd2cbac42c3e6c",
+      "url": "https://rest.uniprot.org/uniprotkb/P43457.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:2BL2",
+      "artifact": "provenance/2BL2.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "bc379dc4ec993d4c29023efa65ebdad86805920413ad9b7166376eb4b6c5787b",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:1AON",
+      "artifact": "sources/wwpdb/1AON.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "6b202f340ffb9a1924d5315ce9e837e02cee1dbd745df675be76f6d4e1b8e66f",
+      "url": "https://files.rcsb.org/download/1AON.cif"
+    },
+    {
+      "source_id": "PDB:1AON:assembly1",
+      "artifact": "sources/wwpdb/1AON-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "db4ec8cf9db3fb205c9555d811a3e2e512965e3f86a7d53db0c0470da40e109d",
+      "url": "https://files.rcsb.org/download/1AON-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:1AON:validation_xml",
+      "artifact": "sources/wwpdb/1aon_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "50c9000dda3296f8b986d092d5afb20afcadc84cd72a94655e238138bc2ffd77",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ao/1aon/1aon_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P0A6F5",
+      "artifact": "sources/uniprot/P0A6F5.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "9128f2dfe8fa0b868466295100b686f03cd9542185de44708b0f4367ce1ff7bf",
+      "url": "https://rest.uniprot.org/uniprotkb/P0A6F5.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1AON",
+      "artifact": "provenance/1AON.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "45febb9cc380297186fe9ed4e047479c2948302cfa986300c7112ca1a610d5e8",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:2GLS",
+      "artifact": "sources/wwpdb/2GLS.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0204f30070717d3e4c54516d3268f162cba4a1833a7acabf4f5d1ce91443ef9c",
+      "url": "https://files.rcsb.org/download/2GLS.cif"
+    },
+    {
+      "source_id": "PDB:2GLS:assembly1",
+      "artifact": "sources/wwpdb/2GLS-assembly1.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "40ef012cc62733752783cbf82910642bfaba911721db583968df049b84c35ed4",
+      "url": "https://files.rcsb.org/download/2GLS-assembly1.cif"
+    },
+    {
+      "source_id": "PDB:2GLS:validation_xml",
+      "artifact": "sources/wwpdb/2gls_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "a993b071cd126db8acdc260ed70c242d2d4b290f9a60ffa249db4cc87498334c",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/gl/2gls/2gls_validation.xml.gz"
+    },
+    {
+      "source_id": "PROVENANCE:2GLS",
+      "artifact": "provenance/2GLS.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "75e6e0ca21f5447f7e87d5f499c3d4772731e63e4c62e6ea9c1e7b6a1c992f13",
+      "acquisition": "committed_in_repository"
+    }
+  ]
 }

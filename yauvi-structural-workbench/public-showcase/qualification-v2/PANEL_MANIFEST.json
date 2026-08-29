@@ -3637,7 +3637,1220 @@
         "freesasa_relative_tolerance": 0.001,
         "freesasa_absolute_tolerance_A2": 1.0
       },
-      "records": []
+      "records": [
+        {
+          "record_id": "v2-assembly-homodimer-dev-1MKB",
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "development",
+          "pdb_entry_id": "1MKB",
+          "homolog_group": "fabA_dehydratase",
+          "artifact": "sources/wwpdb/1MKB.cif",
+          "checksum": "0981ce9a2184f26ed17af1b8b8f863ccd32c446dca8e2eed68e20400c8b7c2d0",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P0A6Q3",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1MKB"
+          },
+          "exclusion_rationale": "FabA dehydratase homodimer. Replaces 5ICD, which FreeSASA cannot process.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1MKB.cif",
+                "reference_fasta": "sources/uniprot/P0A6Q3.fasta",
+                "provenance": "provenance/1MKB.provenance.json",
+                "chain": "A"
+              },
+              "isolated": "sources/wwpdb/1MKB.cif",
+              "assembly": "sources/wwpdb/1MKB-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 8654.983762,
+              "subject_assembly_sasa_A2": 7043.073197,
+              "buried_sasa_A2": 1611.910565
+            },
+            "residue_contacts": 64,
+            "interfaces": 227,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-homodimer-dev-1QPR",
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "development",
+          "pdb_entry_id": "1QPR",
+          "homolog_group": "p9wjj7_1qpr",
+          "artifact": "sources/wwpdb/1QPR.cif",
+          "checksum": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P9WJJ7",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1QPR"
+          },
+          "exclusion_rationale": "Nicotinate-nucleotide diphosphorylase homodimer.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1QPR.cif",
+                "reference_fasta": "sources/uniprot/P9WJJ7.fasta",
+                "provenance": "provenance/1QPR.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1qpr_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1QPR.cif",
+              "assembly": "sources/wwpdb/1QPR-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 12863.022891,
+              "subject_assembly_sasa_A2": 10254.31185,
+              "buried_sasa_A2": 2608.711041
+            },
+            "residue_contacts": 97,
+            "interfaces": 329,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-homodimer-held-2GH5",
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "held_out",
+          "pdb_entry_id": "2GH5",
+          "homolog_group": "p00390_2gh5",
+          "artifact": "sources/wwpdb/2GH5.cif",
+          "checksum": "80c209c14014f515f68456a9accd6004328b60fee6fe7c9f9b6642d95b090d49",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P00390",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:2GH5"
+          },
+          "exclusion_rationale": "Glutathione reductase homodimer, FAD-bound.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/2GH5.cif",
+                "reference_fasta": "sources/uniprot/P00390.fasta",
+                "provenance": "provenance/2GH5.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/2gh5_validation.xml"
+              },
+              "isolated": "sources/wwpdb/2GH5.cif",
+              "assembly": "sources/wwpdb/2GH5-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 22625.933531,
+              "subject_assembly_sasa_A2": 19398.636202,
+              "buried_sasa_A2": 3227.29733
+            },
+            "residue_contacts": 157,
+            "interfaces": 555,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-homodimer-held-1D4A",
+          "record_kind": "benchmark_case",
+          "stratum": "homodimer",
+          "split": "held_out",
+          "pdb_entry_id": "1D4A",
+          "homolog_group": "p15559_1d4a",
+          "artifact": "sources/wwpdb/1D4A.cif",
+          "checksum": "db5cab3bb28f05c251fe4253d4b2ab5fe89c40ddb2aa01d26747b5d3eba1befd",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P15559",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1D4A"
+          },
+          "exclusion_rationale": "NQO1 homodimer.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1D4A.cif",
+                "reference_fasta": "sources/uniprot/P15559.fasta",
+                "provenance": "provenance/1D4A.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1d4a_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1D4A.cif",
+              "assembly": "sources/wwpdb/1D4A-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,C"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "C"
+              ],
+              "chains_observed": [
+                "A",
+                "C"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 13679.425813,
+              "subject_assembly_sasa_A2": 10944.939267,
+              "buried_sasa_A2": 2734.486546
+            },
+            "residue_contacts": 114,
+            "interfaces": 389,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-heterooligomer-dev-1OAI",
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "development",
+          "pdb_entry_id": "1OAI",
+          "homolog_group": "q9ubu9_1oai",
+          "artifact": "sources/wwpdb/1OAI.cif",
+          "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "Q9UBU9",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1OAI"
+          },
+          "exclusion_rationale": "Tap UBA domain bound to an FxFG nucleoporin peptide: a protein-peptide heterodimer whose partner is far smaller than the subject.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1OAI.cif",
+                "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+                "provenance": "provenance/1OAI.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1oai_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1OAI.cif",
+              "assembly": "sources/wwpdb/1OAI-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 4288.712495,
+              "subject_assembly_sasa_A2": 3943.796701,
+              "buried_sasa_A2": 344.915795
+            },
+            "residue_contacts": 23,
+            "interfaces": 62,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-heterooligomer-dev-6M0J",
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "development",
+          "pdb_entry_id": "6M0J",
+          "homolog_group": "q9byf1_6m0j",
+          "artifact": "sources/wwpdb/6M0J.cif",
+          "checksum": "ec1bbd3e64524f4ec91803781fb065bc8bb7559a67b60fcc2bfb5a08dae3cba6",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "Q9BYF1",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:6M0J"
+          },
+          "exclusion_rationale": "SARS-CoV-2 spike receptor-binding domain bound to ACE2.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/6M0J.cif",
+                "reference_fasta": "sources/uniprot/Q9BYF1.fasta",
+                "provenance": "provenance/6M0J.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/6m0j_validation.xml"
+              },
+              "isolated": "sources/wwpdb/6M0J.cif",
+              "assembly": "sources/wwpdb/6M0J-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,E"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "E"
+              ],
+              "chains_observed": [
+                "A",
+                "E"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 25726.276564,
+              "subject_assembly_sasa_A2": 24892.79064,
+              "buried_sasa_A2": 833.485925
+            },
+            "residue_contacts": 22,
+            "interfaces": 56,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-heterooligomer-held-1YCR",
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "held_out",
+          "pdb_entry_id": "1YCR",
+          "homolog_group": "q00987_1ycr",
+          "artifact": "sources/wwpdb/1YCR.cif",
+          "checksum": "03f62994ea1ff55d98c0d9d835b706319e523367fce56d9deb51b850c83e47a8",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "Q00987",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1YCR"
+          },
+          "exclusion_rationale": "MDM2 bound to a p53 transactivation peptide.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1YCR.cif",
+                "reference_fasta": "sources/uniprot/Q00987.fasta",
+                "provenance": "provenance/1YCR.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1ycr_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1YCR.cif",
+              "assembly": "sources/wwpdb/1YCR-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 5285.298079,
+              "subject_assembly_sasa_A2": 4623.396221,
+              "buried_sasa_A2": 661.901859
+            },
+            "residue_contacts": 24,
+            "interfaces": 48,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-heterooligomer-held-1A22",
+          "record_kind": "benchmark_case",
+          "stratum": "heterooligomer",
+          "split": "held_out",
+          "pdb_entry_id": "1A22",
+          "homolog_group": "p01241_1a22",
+          "artifact": "sources/wwpdb/1A22.cif",
+          "checksum": "ce576fa6b09cf179e85abba617059323e268a88c3799c2b85e5b76bd6757bf07",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P01241",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 2
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1A22"
+          },
+          "exclusion_rationale": "Human growth hormone bound to its receptor.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1A22.cif",
+                "reference_fasta": "sources/uniprot/P01241.fasta",
+                "provenance": "provenance/1A22.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1a22_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1A22.cif",
+              "assembly": "sources/wwpdb/1A22-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B"
+              ],
+              "chains_observed": [
+                "A",
+                "B"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 9872.366803,
+              "subject_assembly_sasa_A2": 8551.063865,
+              "buried_sasa_A2": 1321.302938
+            },
+            "residue_contacts": 45,
+            "interfaces": 143,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-tetramer-dev-4HHB",
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "development",
+          "pdb_entry_id": "4HHB",
+          "homolog_group": "p69905_4hhb",
+          "artifact": "sources/wwpdb/4HHB.cif",
+          "checksum": "2d3ca1bf21ddff35af2e2bc5d331720f7bfc46a16c4829ea3ec1b41062d5f5a6",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P69905",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 4
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:4HHB"
+          },
+          "exclusion_rationale": "Human deoxyhaemoglobin, the qualification v1 assembly case, retained.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/4HHB.cif",
+                "reference_fasta": "sources/uniprot/P69905.fasta",
+                "provenance": "provenance/4HHB.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/4hhb_validation.xml"
+              },
+              "isolated": "sources/wwpdb/4HHB.cif",
+              "assembly": "sources/wwpdb/4HHB-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 7843.187793,
+              "subject_assembly_sasa_A2": 6083.185108,
+              "buried_sasa_A2": 1760.002685
+            },
+            "residue_contacts": 67,
+            "interfaces": 201,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-tetramer-dev-6CVM",
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "development",
+          "pdb_entry_id": "6CVM",
+          "homolog_group": "p00722_6cvm",
+          "artifact": "sources/wwpdb/6CVM.cif",
+          "checksum": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P00722",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 4
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:6CVM"
+          },
+          "exclusion_rationale": "Beta-galactosidase homotetramer, 1021 residues per chain.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/6CVM.cif",
+                "reference_fasta": "sources/uniprot/P00722.fasta",
+                "provenance": "provenance/6CVM.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/6cvm_validation.xml"
+              },
+              "isolated": "sources/wwpdb/6CVM.cif",
+              "assembly": "sources/wwpdb/6CVM-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 38369.304903,
+              "subject_assembly_sasa_A2": 33855.565182,
+              "buried_sasa_A2": 4513.73972
+            },
+            "residue_contacts": 300,
+            "interfaces": 968,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-tetramer-held-1DO8",
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "held_out",
+          "pdb_entry_id": "1DO8",
+          "homolog_group": "p23368_1do8",
+          "artifact": "sources/wwpdb/1DO8.cif",
+          "checksum": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P23368",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 4
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1DO8"
+          },
+          "exclusion_rationale": "Malic enzyme homotetramer.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1DO8.cif",
+                "reference_fasta": "sources/uniprot/P23368.fasta",
+                "provenance": "provenance/1DO8.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1do8_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1DO8.cif",
+              "assembly": "sources/wwpdb/1DO8-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 24410.244119,
+              "subject_assembly_sasa_A2": 20749.478538,
+              "buried_sasa_A2": 3660.765581
+            },
+            "residue_contacts": 149,
+            "interfaces": 492,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-tetramer-held-1IGT",
+          "record_kind": "benchmark_case",
+          "stratum": "tetramer",
+          "split": "held_out",
+          "pdb_entry_id": "1IGT",
+          "homolog_group": "p01863_1igt",
+          "artifact": "sources/wwpdb/1IGT.cif",
+          "checksum": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P01863",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 4
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1IGT"
+          },
+          "exclusion_rationale": "Intact IgG2a: a heterotetramer of two heavy and two light chains.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1IGT.cif",
+                "reference_fasta": "sources/uniprot/P01863.fasta",
+                "provenance": "provenance/1IGT.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1igt_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1IGT.cif",
+              "assembly": "sources/wwpdb/1IGT-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 11504.284206,
+              "subject_assembly_sasa_A2": 9341.276672,
+              "buried_sasa_A2": 2163.007533
+            },
+            "residue_contacts": 53,
+            "interfaces": 132,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-higher_order-dev-1HTO",
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "development",
+          "pdb_entry_id": "1HTO",
+          "homolog_group": "glutamine_synthetase_1hto",
+          "artifact": "sources/wwpdb/1HTO.cif",
+          "checksum": "6d8219384abd7f4249f7227e57374c92c221b1a6f3318bb9613198ba4d2c5691",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P0A1P6",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 12
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1HTO"
+          },
+          "exclusion_rationale": "Glutamine synthetase dodecamer. Replaces 1NZY, which FreeSASA cannot process.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1HTO.cif",
+                "reference_fasta": "sources/uniprot/P0A1P6.fasta",
+                "provenance": "provenance/1HTO.provenance.json",
+                "chain": "A"
+              },
+              "isolated": "sources/wwpdb/1HTO.cif",
+              "assembly": "sources/wwpdb/1HTO-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 22572.907475,
+              "subject_assembly_sasa_A2": 15401.593679,
+              "buried_sasa_A2": 7171.313796
+            },
+            "residue_contacts": 272,
+            "interfaces": 1094,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-higher_order-dev-2BL2",
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "development",
+          "pdb_entry_id": "2BL2",
+          "homolog_group": "p43457_2bl2",
+          "artifact": "sources/wwpdb/2BL2.cif",
+          "checksum": "da49e61df1720769358cdfc4d7bb72734a31c7d0993d5204b328b0c1cab6bd5e",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P43457",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 10
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:2BL2"
+          },
+          "exclusion_rationale": "V-type sodium ATPase K-ring, ten copies.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/2BL2.cif",
+                "reference_fasta": "sources/uniprot/P43457.fasta",
+                "provenance": "provenance/2BL2.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/2bl2_validation.xml"
+              },
+              "isolated": "sources/wwpdb/2BL2.cif",
+              "assembly": "sources/wwpdb/2BL2-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D,E,F,G,H,I,J"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 8197.09916,
+              "subject_assembly_sasa_A2": 4787.009646,
+              "buried_sasa_A2": 3410.089514
+            },
+            "residue_contacts": 113,
+            "interfaces": 354,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-higher_order-held-1AON",
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "held_out",
+          "pdb_entry_id": "1AON",
+          "homolog_group": "p0a6f5_1aon",
+          "artifact": "sources/wwpdb/1AON.cif",
+          "checksum": "6b202f340ffb9a1924d5315ce9e837e02cee1dbd745df675be76f6d4e1b8e66f",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P0A6F5",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 21
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:1AON"
+          },
+          "exclusion_rationale": "GroEL-GroES chaperonin, twenty-one chains across two entities.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/1AON.cif",
+                "reference_fasta": "sources/uniprot/P0A6F5.fasta",
+                "provenance": "provenance/1AON.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/1aon_validation.xml"
+              },
+              "isolated": "sources/wwpdb/1AON.cif",
+              "assembly": "sources/wwpdb/1AON-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 23736.880303,
+              "subject_assembly_sasa_A2": 19989.710407,
+              "buried_sasa_A2": 3747.169896
+            },
+            "residue_contacts": 91,
+            "interfaces": 224,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        },
+        {
+          "record_id": "v2-assembly-higher_order-held-2GLS",
+          "record_kind": "benchmark_case",
+          "stratum": "higher_order",
+          "split": "held_out",
+          "pdb_entry_id": "2GLS",
+          "homolog_group": "p0a1p6_2gls",
+          "artifact": "sources/wwpdb/2GLS.cif",
+          "checksum": "0204f30070717d3e4c54516d3268f162cba4a1833a7acabf4f5d1ce91443ef9c",
+          "source_release": {
+            "provider": "wwPDB/RCSB PDB",
+            "uniprot_accession": "P0A1P6",
+            "assembly": "biological assembly 1",
+            "assembly_chains": 12
+          },
+          "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+          "citation": {
+            "entry": "PDB:2GLS"
+          },
+          "exclusion_rationale": "Glutamine synthetase dodecamer.",
+          "expected_result": {
+            "cli_exit_code": 0,
+            "exit_code_reason": "complete: every declared evidence leg was supplied",
+            "invocation": {
+              "upstream": {
+                "workflow": "structure_qc",
+                "structure": "sources/wwpdb/2GLS.cif",
+                "reference_fasta": "sources/uniprot/P0A1P6.fasta",
+                "provenance": "provenance/2GLS.provenance.json",
+                "chain": "A",
+                "validation_report": "sources/wwpdb/2gls_validation.xml"
+              },
+              "isolated": "sources/wwpdb/2GLS.cif",
+              "assembly": "sources/wwpdb/2GLS-assembly1.cif",
+              "subject_chain": "A",
+              "relationship": "exact_protein",
+              "expected_chains": "A,B,C,D,E,F,G,H,I,J,K,L"
+            },
+            "missing_evidence": [],
+            "stoichiometry": {
+              "chains_expected": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L"
+              ],
+              "chains_observed": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L"
+              ],
+              "complete": true,
+              "lower_bound": false
+            },
+            "surface": {
+              "subject_isolated_sasa_A2": 21254.861727,
+              "subject_assembly_sasa_A2": 15410.573595,
+              "buried_sasa_A2": 5844.288131
+            },
+            "residue_contacts": 135,
+            "interfaces": 434,
+            "methods": {
+              "contact_cutoff_A": 5.0,
+              "contact_geometry": "scipy_ckdtree",
+              "sasa": "freesasa_lee_richards_default_single_thread"
+            },
+            "freesasa_version": "FreeSASA 2.1.3"
+          }
+        }
+      ],
+      "gate_semantics": {
+        "assembly_interface": {
+          "operator_copy_stoichiometry": "exact",
+          "freesasa_relative_tolerance": 0.001,
+          "freesasa_absolute_tolerance_A2": 1.0,
+          "note": "The SASA gate is checked against the FreeSASA command line, not against the module's own earlier output. assembly-context records only that FreeSASA was 'available_invoked' with no version, so the executor captures the version and treats it as part of the expectation: a tolerance against a reference implementation is meaningless without knowing which build produced the reference.",
+          "stratum_definition": {
+            "homodimer": "exactly two polymer chains with one distinct sequence",
+            "heterooligomer": "two or three polymer chains with more than one distinct sequence",
+            "tetramer": "exactly four polymer chains, whether homo- or heteromeric",
+            "higher_order": "more than four polymer chains",
+            "note": "The four strata overlap unless the boundary is stated: 1QUM is four chains of four distinct entities and satisfies both 'tetramer' and 'heterooligomer' by their plain reading. Chain count is taken as decisive above two, so a four-chain complex is a tetramer regardless of composition, and heterooligomer covers the small mixed complexes that chain count alone would not distinguish."
+          },
+          "freesasa_processability": {
+            "policy": "Cases are selected from structures FreeSASA can process, and which those are is determined by running it.",
+            "excluded": {
+              "5ICD": "FreeSASA aborts with an internal assertion on atomic radii.",
+              "1NZY": "same assertion",
+              "1JDW": "same assertion"
+            },
+            "note": "The failure is not simply 'contains ligands': 1QPR carries MN, PHT and PPC and processes cleanly, while 5ICD (ICT, MG) and 1NZY (BCA, CA, EDO, PO4) abort. assembly-context exits 2 and reports the failure rather than emitting a surface number, which is the correct behaviour and is why the panel can exclude these rather than silently mis-measure them."
+          }
+        },
+        "missing_evidence_behavior": {
+          "mode": "fail_closed",
+          "expected_missing_by_stratum": {
+            "homodimer": [],
+            "heterooligomer": [],
+            "tetramer": [],
+            "higher_order": []
+          },
+          "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated."
+        },
+        "coverage_requirements": {
+          "mode": "witnessed_by_at_least_one_executed_case",
+          "required_features": [
+            "dimeric_assembly",
+            "tetrameric_assembly",
+            "higher_order_assembly",
+            "stoichiometry_complete",
+            "buried_surface_observed",
+            "residue_contacts_observed"
+          ],
+          "rationale": "Pilot coverage; extended when the remaining strata are curated."
+        }
+      }
     },
     {
       "workflow": "sf_csa",

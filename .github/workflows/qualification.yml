@@ -45,6 +45,19 @@ jobs:
       - name: Install the distribution
         run: python -m pip install ".[dev]"
 
+      # The assembly panel's gate compares the module's surface areas against
+      # the FreeSASA command line, so the binary has to be present. Its version
+      # is recorded as part of each expectation, and a runner installing a
+      # different build will fail the version check rather than drift quietly.
+      - name: Install FreeSASA
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq freesasa
+          else
+            brew install freesasa
+          fi
+          freesasa --version | head -1
+
       - name: Acquire the locked artifacts
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python acquire_sources.py
@@ -56,6 +69,13 @@ jobs:
       - name: Execute the StructQC panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python run_execution.py
+
+      - name: Execute the assembly-interface panel offline
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          python run_execution.py \
+            --panel ADOPTION_DRAFT_ASSEMBLY.json \
+            --out results/execution-assembly
 
       - name: Execute the functional-site panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
