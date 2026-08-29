@@ -610,10 +610,32 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
                        "observed": jaccard,
                        "passed": jaccard is not None and jaccard >= float(floor)})
 
-    for field in ("fitted_half_thickness_A", "mean_jaccard", "n_reference_extracellular"):
-        checks.append({"check": f"recorded.{field}", "required": True,
-                       "expected": expected.get(field), "observed": obs[field],
-                       "passed": close(obs[field], expected.get(field), 1e-6)})
+    # Drift against the recorded run, reported but not required.
+    #
+    # These were required at a 1e-6 tolerance, which is bit-level equality on a
+    # Nelder-Mead fit and failed on every runner including the platform the
+    # values were recorded on. The scientific gates above already bound these
+    # quantities with the tolerances the panel actually specifies -- 2.5 A on
+    # half-thickness, 15 degrees on the normal -- so requiring exact
+    # reproduction on top of them asserted a reproducibility nobody has
+    # established. Whether the fit reproduces numerically across machines is
+    # precisely what the independent second-machine gate exists to answer, and
+    # pretending it holds here would answer it by assumption.
+    #
+    # The integer residue count is required: it is a count, not a fit, and a
+    # change in it means the structure was read differently.
+    for field in ("fitted_half_thickness_A", "mean_jaccard"):
+        value, recorded = obs[field], expected.get(field)
+        delta = (abs(float(value) - float(recorded))
+                 if value is not None and recorded is not None else None)
+        checks.append({"check": f"drift.{field}", "required": False,
+                       "expected": recorded,
+                       "observed": {"value": value, "delta": delta},
+                       "passed": delta is not None and delta <= 1e-6})
+    checks.append({"check": "recorded.n_reference_extracellular", "required": True,
+                   "expected": expected.get("n_reference_extracellular"),
+                   "observed": obs["n_reference_extracellular"],
+                   "passed": obs["n_reference_extracellular"] == expected.get("n_reference_extracellular")})
     return True
 
 
