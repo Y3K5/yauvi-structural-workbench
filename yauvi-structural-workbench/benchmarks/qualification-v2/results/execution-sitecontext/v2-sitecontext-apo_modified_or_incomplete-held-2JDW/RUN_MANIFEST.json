@@ -1,0 +1,35 @@
+{
+  "input_sha256": {
+    "annotations": "70a7a8bb53c253107e424b894d1ab3d3991f61e877ca0bb2f9900f2cd6c31970",
+    "component_map": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "structure": "ce268ce28caf802c9e5c6bc19aaee1759b48ee49eeedfc8ada8aa105b4c331f7",
+    "structure_evidence_manifest": "d9e36ab5638b9123c98e109961c7c9e1ca57f0eb79aa8af5cc1f69c9013fbcdb"
+  },
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "optional_runtimes": {
+    "fpocket": "not_available",
+    "p2rank": "not_available"
+  },
+  "outputs": [
+    "SITE_CONTEXT.json",
+    "SITE_RESIDUES.tsv",
+    "POCKETS.tsv",
+    "SITE_LAYER.json"
+  ],
+  "parameters": {
+    "annotation_sites": 5,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "runtime_versions": {
+    "biopython": "1.87",
+    "numpy": "1.26.4",
+    "python": "3.12.7",
+    "scipy": "1.14.1"
+  },
+  "schema_version": "1.0",
+  "version": "0.1.0"
+}

@@ -1,0 +1,2044 @@
+{
+  "assembly": {
+    "chains_expected": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "chains_observed": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "complete": true,
+    "file_name": "1IGT-assembly1.cif",
+    "lower_bound": false,
+    "metadata": {
+      "assembly_id": null,
+      "asym_ids": [],
+      "format": "mmcif",
+      "operator_application": {
+        "chain_copies": [
+          {
+            "copy_chain_id": "A",
+            "copy_index": 1,
+            "source_chain_id": "A"
+          },
+          {
+            "copy_chain_id": "B",
+            "copy_index": 1,
+            "source_chain_id": "B"
+          },
+          {
+            "copy_chain_id": "C",
+            "copy_index": 1,
+            "source_chain_id": "C"
+          },
+          {
+            "copy_chain_id": "D",
+            "copy_index": 1,
+            "source_chain_id": "D"
+          },
+          {
+            "copy_chain_id": "E",
+            "copy_index": 1,
+            "source_chain_id": "E"
+          },
+          {
+            "copy_chain_id": "F",
+            "copy_index": 1,
+            "source_chain_id": "F"
+          }
+        ],
+        "observed_atom_count_before": 12956,
+        "observed_chain_count_before": 6,
+        "operator_backend": "gemmi",
+        "operator_state": "not_declared",
+        "requested_assembly_id": null
+      },
+      "operator_expressions": []
+    }
+  },
+  "assembly_sha256": "d7daf95fe9fe0adba386bbcc2cecf6915d571fc6381ad8a3179547547feb3bef",
+  "config": {
+    "assembly_id": null,
+    "chains_expected": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "contact_cutoff_A": 5.0,
+    "relationship": "exact_protein",
+    "resolved_subject_chain": "A",
+    "subject_chain": "A"
+  },
+  "coordinate_sha256": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+  "input_sha256": {
+    "assembly": "d7daf95fe9fe0adba386bbcc2cecf6915d571fc6381ad8a3179547547feb3bef",
+    "isolated": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+    "structure_evidence_manifest": "70de8591207a83bd9f253fe705b2a35b32b35becfd03b04a3d232916f2ed995b"
+  },
+  "interfaces": [
+    {
+      "minimum_distance_A": 4.242937,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ASP",
+      "partner_resseq": 61,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASP",
+      "subject_resseq": 1
+    },
+    {
+      "minimum_distance_A": 3.598055,
+      "partner_chain": "B",
+      "partner_icode": "H",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TRP",
+      "subject_resseq": 32
+    },
+    {
+      "minimum_distance_A": 3.584428,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 34
+    },
+    {
+      "minimum_distance_A": 3.864345,
+      "partner_chain": "B",
+      "partner_icode": "J",
+      "partner_resname": "ALA",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 34
+    },
+    {
+      "minimum_distance_A": 3.582808,
+      "partner_chain": "B",
+      "partner_icode": "J",
+      "partner_resname": "ALA",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 36
+    },
+    {
+      "minimum_distance_A": 2.851656,
+      "partner_chain": "B",
+      "partner_icode": "K",
+      "partner_resname": "MET",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 36
+    },
+    {
+      "minimum_distance_A": 3.673673,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 36
+    },
+    {
+      "minimum_distance_A": 2.762787,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLN",
+      "partner_resseq": 39,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 38
+    },
+    {
+      "minimum_distance_A": 4.943349,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 43,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 38
+    },
+    {
+      "minimum_distance_A": 3.879526,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 91,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 38
+    },
+    {
+      "minimum_distance_A": 3.860769,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 91,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 43
+    },
+    {
+      "minimum_distance_A": 3.756493,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 43
+    },
+    {
+      "minimum_distance_A": 3.558805,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 104,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 43
+    },
+    {
+      "minimum_distance_A": 3.590077,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLN",
+      "partner_resseq": 105,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 43
+    },
+    {
+      "minimum_distance_A": 4.57154,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 91,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 44
+    },
+    {
+      "minimum_distance_A": 3.214522,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 44
+    },
+    {
+      "minimum_distance_A": 4.742065,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LYS",
+      "subject_resseq": 45
+    },
+    {
+      "minimum_distance_A": 4.057045,
+      "partner_chain": "B",
+      "partner_icode": "J",
+      "partner_resname": "ALA",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 46
+    },
+    {
+      "minimum_distance_A": 3.275465,
+      "partner_chain": "B",
+      "partner_icode": "K",
+      "partner_resname": "MET",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 46
+    },
+    {
+      "minimum_distance_A": 3.665042,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ASP",
+      "partner_resseq": 101,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 46
+    },
+    {
+      "minimum_distance_A": 4.636433,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 46
+    },
+    {
+      "minimum_distance_A": 4.09204,
+      "partner_chain": "B",
+      "partner_icode": "H",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 49
+    },
+    {
+      "minimum_distance_A": 4.258276,
+      "partner_chain": "B",
+      "partner_icode": "J",
+      "partner_resname": "ALA",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 49
+    },
+    {
+      "minimum_distance_A": 3.745384,
+      "partner_chain": "B",
+      "partner_icode": "H",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LYS",
+      "subject_resseq": 50
+    },
+    {
+      "minimum_distance_A": 4.117656,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ASP",
+      "partner_resseq": 101,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "HIS",
+      "subject_resseq": 55
+    },
+    {
+      "minimum_distance_A": 3.238019,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLN",
+      "partner_resseq": 39,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 87
+    },
+    {
+      "minimum_distance_A": 3.182508,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 43,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 87
+    },
+    {
+      "minimum_distance_A": 3.509553,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 45,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 87
+    },
+    {
+      "minimum_distance_A": 4.078271,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 89
+    },
+    {
+      "minimum_distance_A": 4.085873,
+      "partner_chain": "B",
+      "partner_icode": "J",
+      "partner_resname": "ALA",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 89
+    },
+    {
+      "minimum_distance_A": 3.936204,
+      "partner_chain": "B",
+      "partner_icode": "K",
+      "partner_resname": "MET",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 89
+    },
+    {
+      "minimum_distance_A": 2.806956,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLY",
+      "subject_resseq": 91
+    },
+    {
+      "minimum_distance_A": 4.644722,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 92
+    },
+    {
+      "minimum_distance_A": 3.701494,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 35,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 94
+    },
+    {
+      "minimum_distance_A": 3.431511,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 47,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 94
+    },
+    {
+      "minimum_distance_A": 3.253725,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 50,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 94
+    },
+    {
+      "minimum_distance_A": 3.338346,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 58,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 94
+    },
+    {
+      "minimum_distance_A": 3.090295,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TYR",
+      "subject_resseq": 94
+    },
+    {
+      "minimum_distance_A": 3.589889,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 47,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 95
+    },
+    {
+      "minimum_distance_A": 4.346071,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 58,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 95
+    },
+    {
+      "minimum_distance_A": 4.167428,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 60,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 95
+    },
+    {
+      "minimum_distance_A": 4.888747,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ASP",
+      "partner_resseq": 61,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 95
+    },
+    {
+      "minimum_distance_A": 3.926675,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 35,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 96
+    },
+    {
+      "minimum_distance_A": 3.047394,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 47,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 96
+    },
+    {
+      "minimum_distance_A": 4.067077,
+      "partner_chain": "B",
+      "partner_icode": "I",
+      "partner_resname": "TYR",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 96
+    },
+    {
+      "minimum_distance_A": 3.990214,
+      "partner_chain": "B",
+      "partner_icode": "K",
+      "partner_resname": "MET",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 96
+    },
+    {
+      "minimum_distance_A": 4.934721,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 44,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 97
+    },
+    {
+      "minimum_distance_A": 4.026511,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 37,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 2.903349,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 44,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 3.685888,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 45,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 4.308877,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLU",
+      "partner_resseq": 46,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 4.056657,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 47,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 4.198716,
+      "partner_chain": "B",
+      "partner_icode": "K",
+      "partner_resname": "MET",
+      "partner_resseq": 100,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 4.281437,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TRP",
+      "partner_resseq": 103,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 98
+    },
+    {
+      "minimum_distance_A": 3.986735,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 44,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLY",
+      "subject_resseq": 99
+    },
+    {
+      "minimum_distance_A": 3.218997,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 44,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLY",
+      "subject_resseq": 100
+    },
+    {
+      "minimum_distance_A": 4.821579,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 139,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 114
+    },
+    {
+      "minimum_distance_A": 3.100613,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 139,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 116
+    },
+    {
+      "minimum_distance_A": 4.977536,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 126,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 117
+    },
+    {
+      "minimum_distance_A": 3.576947,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 127,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ILE",
+      "subject_resseq": 117
+    },
+    {
+      "minimum_distance_A": 2.974029,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 124,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 2.904693,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ALA",
+      "partner_resseq": 125,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 3.600708,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 126,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 3.343395,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 139,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 3.869031,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 140,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 4.319772,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 141,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 4.224228,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 118
+    },
+    {
+      "minimum_distance_A": 3.780838,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 124,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 119
+    },
+    {
+      "minimum_distance_A": 4.562762,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ALA",
+      "partner_resseq": 125,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 119
+    },
+    {
+      "minimum_distance_A": 4.786262,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 126,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 119
+    },
+    {
+      "minimum_distance_A": 3.724227,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 127,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 119
+    },
+    {
+      "minimum_distance_A": 2.862146,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 119
+    },
+    {
+      "minimum_distance_A": 2.712686,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PRO",
+      "subject_resseq": 120
+    },
+    {
+      "minimum_distance_A": 3.205265,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 122,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 121
+    },
+    {
+      "minimum_distance_A": 3.710635,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 123,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 121
+    },
+    {
+      "minimum_distance_A": 3.71143,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 121
+    },
+    {
+      "minimum_distance_A": 4.5921,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 122
+    },
+    {
+      "minimum_distance_A": 4.300026,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 122,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 123
+    },
+    {
+      "minimum_distance_A": 3.68892,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 123,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 123
+    },
+    {
+      "minimum_distance_A": 3.26299,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 221,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 123
+    },
+    {
+      "minimum_distance_A": 3.522866,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 122,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 124
+    },
+    {
+      "minimum_distance_A": 4.911574,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 143,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 124
+    },
+    {
+      "minimum_distance_A": 4.497965,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 145,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLN",
+      "subject_resseq": 124
+    },
+    {
+      "minimum_distance_A": 3.72558,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "TYR",
+      "partner_resseq": 122,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 127
+    },
+    {
+      "minimum_distance_A": 3.878895,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 143,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 131
+    },
+    {
+      "minimum_distance_A": 4.278979,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 145,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 131
+    },
+    {
+      "minimum_distance_A": 4.521716,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 124,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "VAL",
+      "subject_resseq": 133
+    },
+    {
+      "minimum_distance_A": 3.988512,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 143,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "VAL",
+      "subject_resseq": 133
+    },
+    {
+      "minimum_distance_A": 4.600314,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 139,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 4.159523,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 140,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 3.948927,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 141,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 4.992397,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "CYS",
+      "partner_resseq": 142,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 3.923224,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 3.843875,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "SER",
+      "partner_resseq": 188,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 3.828804,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "SER",
+      "partner_resseq": 189,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 3.36954,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "SER",
+      "partner_resseq": 190,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 135
+    },
+    {
+      "minimum_distance_A": 4.21276,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 139,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 137
+    },
+    {
+      "minimum_distance_A": 4.145552,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "HIS",
+      "partner_resseq": 172,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 137
+    },
+    {
+      "minimum_distance_A": 3.781137,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 137
+    },
+    {
+      "minimum_distance_A": 3.239481,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "SER",
+      "partner_resseq": 190,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 137
+    },
+    {
+      "minimum_distance_A": 4.20238,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 192,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 137
+    },
+    {
+      "minimum_distance_A": 2.989931,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "HIS",
+      "partner_resseq": 172,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 138
+    },
+    {
+      "minimum_distance_A": 4.722982,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 177,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 160
+    },
+    {
+      "minimum_distance_A": 4.141587,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLN",
+      "partner_resseq": 179,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 160
+    },
+    {
+      "minimum_distance_A": 3.800562,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 186,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LEU",
+      "subject_resseq": 160
+    },
+    {
+      "minimum_distance_A": 4.082725,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 177,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "ASN",
+      "subject_resseq": 161
+    },
+    {
+      "minimum_distance_A": 3.638506,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 162
+    },
+    {
+      "minimum_distance_A": 3.01601,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 175,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 162
+    },
+    {
+      "minimum_distance_A": 4.093641,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 177,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 162
+    },
+    {
+      "minimum_distance_A": 4.741609,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TRP",
+      "subject_resseq": 163
+    },
+    {
+      "minimum_distance_A": 3.212158,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 175,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "TRP",
+      "subject_resseq": 163
+    },
+    {
+      "minimum_distance_A": 4.832982,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "HIS",
+      "partner_resseq": 172,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 164
+    },
+    {
+      "minimum_distance_A": 3.683028,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 173,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 164
+    },
+    {
+      "minimum_distance_A": 3.717512,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 164
+    },
+    {
+      "minimum_distance_A": 3.928052,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 175,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 164
+    },
+    {
+      "minimum_distance_A": 2.927493,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "HIS",
+      "partner_resseq": 172,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 174
+    },
+    {
+      "minimum_distance_A": 3.656248,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 174
+    },
+    {
+      "minimum_distance_A": 3.391565,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "MET",
+      "subject_resseq": 175
+    },
+    {
+      "minimum_distance_A": 3.675505,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PHE",
+      "partner_resseq": 174,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 176
+    },
+    {
+      "minimum_distance_A": 2.66836,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "SER",
+      "partner_resseq": 188,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "SER",
+      "subject_resseq": 176
+    },
+    {
+      "minimum_distance_A": 4.308728,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LEU",
+      "partner_resseq": 143,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 178
+    },
+    {
+      "minimum_distance_A": 3.877101,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "LYS",
+      "partner_resseq": 145,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "THR",
+      "subject_resseq": 180
+    },
+    {
+      "minimum_distance_A": 3.70846,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 133,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "LYS",
+      "subject_resseq": 207
+    },
+    {
+      "minimum_distance_A": 3.908624,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "VAL",
+      "partner_resseq": 127,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "PHE",
+      "subject_resseq": 209
+    },
+    {
+      "minimum_distance_A": 3.833453,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "CYS",
+      "partner_resseq": 128,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 213
+    },
+    {
+      "minimum_distance_A": 4.074093,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 230,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 213
+    },
+    {
+      "minimum_distance_A": 2.84907,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 231,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "GLU",
+      "subject_resseq": 213
+    },
+    {
+      "minimum_distance_A": 2.037554,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "CYS",
+      "partner_resseq": 128,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "CYS",
+      "subject_resseq": 214
+    },
+    {
+      "minimum_distance_A": 3.391266,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "ARG",
+      "partner_resseq": 228,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "CYS",
+      "subject_resseq": 214
+    },
+    {
+      "minimum_distance_A": 3.620315,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "GLY",
+      "partner_resseq": 229,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "CYS",
+      "subject_resseq": 214
+    },
+    {
+      "minimum_distance_A": 4.246788,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "PRO",
+      "partner_resseq": 230,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "CYS",
+      "subject_resseq": 214
+    },
+    {
+      "minimum_distance_A": 4.042007,
+      "partner_chain": "B",
+      "partner_icode": "",
+      "partner_resname": "THR",
+      "partner_resseq": 231,
+      "subject_chain": "A",
+      "subject_icode": "",
+      "subject_resname": "CYS",
+      "subject_resseq": 214
+    }
+  ],
+  "limitations": [
+    "Assembly geometry from one coordinate state is not native surface exposure.",
+    "A homolog assembly transfers architecture, not residue identity.",
+    "Incomplete assemblies make contacts and burial lower bounds."
+  ],
+  "methods": {
+    "contact_cutoff_A": 5.0,
+    "contact_geometry": "scipy_ckdtree",
+    "sasa": "freesasa_lee_richards_default_single_thread"
+  },
+  "module_id": "assembly_context",
+  "reference": {
+    "assembly_id": null,
+    "id": "",
+    "relationship": "exact_protein"
+  },
+  "residue_contacts": [
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ASP"
+    },
+    {
+      "auth_seq_id": 32,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TRP"
+    },
+    {
+      "auth_seq_id": 34,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 36,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TYR"
+    },
+    {
+      "auth_seq_id": 38,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLN"
+    },
+    {
+      "auth_seq_id": 43,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ILE"
+    },
+    {
+      "auth_seq_id": 44,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PRO"
+    },
+    {
+      "auth_seq_id": 45,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LYS"
+    },
+    {
+      "auth_seq_id": 46,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LEU"
+    },
+    {
+      "auth_seq_id": 49,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TYR"
+    },
+    {
+      "auth_seq_id": 50,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LYS"
+    },
+    {
+      "auth_seq_id": 55,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "HIS"
+    },
+    {
+      "auth_seq_id": 87,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TYR"
+    },
+    {
+      "auth_seq_id": 89,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLN"
+    },
+    {
+      "auth_seq_id": 91,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLY"
+    },
+    {
+      "auth_seq_id": 92,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLN"
+    },
+    {
+      "auth_seq_id": 94,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TYR"
+    },
+    {
+      "auth_seq_id": 95,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PRO"
+    },
+    {
+      "auth_seq_id": 96,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LEU"
+    },
+    {
+      "auth_seq_id": 97,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "THR"
+    },
+    {
+      "auth_seq_id": 98,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PHE"
+    },
+    {
+      "auth_seq_id": 99,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLY"
+    },
+    {
+      "auth_seq_id": 100,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLY"
+    },
+    {
+      "auth_seq_id": 114,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "THR"
+    },
+    {
+      "auth_seq_id": 116,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 117,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ILE"
+    },
+    {
+      "auth_seq_id": 118,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PHE"
+    },
+    {
+      "auth_seq_id": 119,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PRO"
+    },
+    {
+      "auth_seq_id": 120,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PRO"
+    },
+    {
+      "auth_seq_id": 121,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 122,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 123,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLU"
+    },
+    {
+      "auth_seq_id": 124,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLN"
+    },
+    {
+      "auth_seq_id": 127,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 131,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 133,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "VAL"
+    },
+    {
+      "auth_seq_id": 135,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PHE"
+    },
+    {
+      "auth_seq_id": 137,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ASN"
+    },
+    {
+      "auth_seq_id": 138,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ASN"
+    },
+    {
+      "auth_seq_id": 160,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LEU"
+    },
+    {
+      "auth_seq_id": 161,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "ASN"
+    },
+    {
+      "auth_seq_id": 162,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 163,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "TRP"
+    },
+    {
+      "auth_seq_id": 164,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "THR"
+    },
+    {
+      "auth_seq_id": 174,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 175,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "MET"
+    },
+    {
+      "auth_seq_id": 176,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "SER"
+    },
+    {
+      "auth_seq_id": 178,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "THR"
+    },
+    {
+      "auth_seq_id": 180,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "THR"
+    },
+    {
+      "auth_seq_id": 207,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "LYS"
+    },
+    {
+      "auth_seq_id": 209,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "PHE"
+    },
+    {
+      "auth_seq_id": 213,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "GLU"
+    },
+    {
+      "auth_seq_id": 214,
+      "chain_id": "A",
+      "insertion_code": "",
+      "partner_chains": [
+        "B"
+      ],
+      "resname": "CYS"
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "P01863"
+  },
+  "surface": {
+    "buried_sasa_A2": 2163.007533,
+    "subject_assembly_sasa_A2": 9341.276672,
+    "subject_isolated_sasa_A2": 11504.284206
+  }
+}

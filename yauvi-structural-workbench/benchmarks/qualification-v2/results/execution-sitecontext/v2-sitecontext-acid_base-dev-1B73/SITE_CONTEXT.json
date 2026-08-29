@@ -1,0 +1,134 @@
+{
+  "cofactors": [],
+  "config": {
+    "annotation_sites": 6,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "fd4141ee024b29a065aebd583ea7641844c6724d0128bc402eb4ed44be00dffc",
+  "input_sha256": {
+    "annotations": "ef9f5f4cc3e36afa5e9e70674a3341710f090f4249c927b1c91fd176e4e8bc66",
+    "component_map": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "structure": "fd4141ee024b29a065aebd583ea7641844c6724d0128bc402eb4ed44be00dffc",
+    "structure_evidence_manifest": "8530d146ec6527d3004d9ec397b70b7d1a3ff8e3e5ec181b18cb003945ebc025"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 25.255049,
+    "pair_count": 15,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "activator, electrostatic stabiliser, hydrogen bond acceptor, hydrogen bond donor, proton acceptor",
+      "auth_seq_id": 7,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role acid_base",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "D",
+      "position": 7,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor, increase basicity",
+      "auth_seq_id": 8,
+      "chain_id": "A",
+      "detail": "observed S; expected one of S for declared role unspecified",
+      "expected_residues": [
+        "S"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "S",
+      "position": 8,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, electrostatic stabiliser, hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor",
+      "auth_seq_id": 70,
+      "chain_id": "A",
+      "detail": "observed C; expected one of C for declared role acid_base",
+      "expected_residues": [
+        "C"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "C",
+      "position": 70,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, electrostatic stabiliser, hydrogen bond acceptor, hydrogen bond donor, increase basicity, proton donor",
+      "auth_seq_id": 147,
+      "chain_id": "A",
+      "detail": "observed E; expected one of E for declared role acid_base",
+      "expected_residues": [
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "E",
+      "position": 147,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, hydrogen bond acceptor, proton acceptor, proton donor",
+      "auth_seq_id": 178,
+      "chain_id": "A",
+      "detail": "observed C; expected one of C for declared role acid_base",
+      "expected_residues": [
+        "C"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "C",
+      "position": 178,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 180,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role unspecified",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [],
+      "observed_residue": "H",
+      "position": 180,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "P56868"
+  }
+}

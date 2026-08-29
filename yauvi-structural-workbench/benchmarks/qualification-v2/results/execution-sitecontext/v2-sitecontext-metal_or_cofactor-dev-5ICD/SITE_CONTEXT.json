@@ -1,0 +1,182 @@
+{
+  "cofactors": [
+    {
+      "chebi": "CHEBI:18420",
+      "component_id": "",
+      "detail": "observed component(s): MG",
+      "name": "Mg(2+)",
+      "state": "observed_match"
+    },
+    {
+      "chebi": "CHEBI:29035",
+      "component_id": "",
+      "detail": "expected component(s) not present: MN",
+      "name": "Mn(2+)",
+      "state": "not_observed"
+    }
+  ],
+  "config": {
+    "annotation_sites": 4,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "2743bffee86fbe414d6f21f69260e622e440f7c3de30f3b0c1194b0515354c62",
+  "input_sha256": {
+    "annotations": "a4ec47d24cf9cc6e78537d0ab3efbe6c2b633eec7886b9dd8ab3d12e1fb1a9ad",
+    "component_map": "5ec3a668e3b84c077ff0a31f1aa1932dd6d4cb7af998595376a5c29a61201ace",
+    "structure": "2743bffee86fbe414d6f21f69260e622e440f7c3de30f3b0c1194b0515354c62",
+    "structure_evidence_manifest": "7c60d3e77ee574f02514b7ac40ee359e912b829d6787be72f7d0d9e068e4d588"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 417,
+      "chain_id": "A",
+      "component_id": "MG",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 418,
+      "chain_id": "A",
+      "component_id": "ICT",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 19.721244,
+    "pair_count": 6,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor, proton acceptor, proton donor, proton relay",
+      "auth_seq_id": 160,
+      "chain_id": "A",
+      "detail": "observed Y; expected one of Y for declared role acid_base",
+      "expected_residues": [
+        "Y"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 418,
+          "chain_id": "A",
+          "component_id": "ICT",
+          "distance_A": 2.806927
+        },
+        {
+          "auth_seq_id": 417,
+          "chain_id": "A",
+          "component_id": "MG",
+          "distance_A": 5.434841
+        }
+      ],
+      "observed_residue": "Y",
+      "position": 160,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, proton acceptor, proton donor, proton relay",
+      "auth_seq_id": 230,
+      "chain_id": "A",
+      "detail": "observed K; expected one of K for declared role acid_base",
+      "expected_residues": [
+        "K"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 418,
+          "chain_id": "A",
+          "component_id": "ICT",
+          "distance_A": 17.446733
+        },
+        {
+          "auth_seq_id": 417,
+          "chain_id": "A",
+          "component_id": "MG",
+          "distance_A": 17.498877
+        }
+      ],
+      "observed_residue": "K",
+      "position": 230,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, proton acceptor, proton donor",
+      "auth_seq_id": 283,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role acid_base",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 417,
+          "chain_id": "A",
+          "component_id": "MG",
+          "distance_A": 17.130121
+        },
+        {
+          "auth_seq_id": 418,
+          "chain_id": "A",
+          "component_id": "ICT",
+          "distance_A": 18.341394
+        }
+      ],
+      "observed_residue": "D",
+      "position": 283,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 307,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role metal_ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 417,
+          "chain_id": "A",
+          "component_id": "MG",
+          "distance_A": 2.096743
+        },
+        {
+          "auth_seq_id": 418,
+          "chain_id": "A",
+          "component_id": "ICT",
+          "distance_A": 2.923717
+        }
+      ],
+      "observed_residue": "D",
+      "position": 307,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    }
+  ],
+  "subject": {
+    "id": "P08200"
+  }
+}

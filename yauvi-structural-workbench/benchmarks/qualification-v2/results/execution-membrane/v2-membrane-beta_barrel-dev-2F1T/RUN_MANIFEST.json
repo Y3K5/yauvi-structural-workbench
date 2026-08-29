@@ -1,0 +1,28 @@
+{
+  "input_sha256": {
+    "structure": "5c73309d90ac9bdb1d9539fc2e1780887a2b53e2c6dc0f22fc9068f7fbd2ac31"
+  },
+  "limitations": [
+    "Modeled orientation and coordinate accessibility do not prove native intact-cell exposure."
+  ],
+  "missing_evidence": [
+    "external_opm_ppm_benchmark_adoption"
+  ],
+  "module_id": "membrane_orientation",
+  "outputs": [
+    "MEMBRANE_ORIENTATION.json",
+    "ORIENTED_STRUCTURE.pdb",
+    "MEMBRANE_LAYER.json",
+    "MEMBRANE_ORIENTATION.pml",
+    "RESIDUE_ORIENTATION.tsv"
+  ],
+  "parameters": {
+    "chain": "all",
+    "context": "gram_negative_om"
+  },
+  "runtime_versions": {
+    "python": "3.12.7"
+  },
+  "schema_version": "1.0",
+  "version": "0.3.0"
+}

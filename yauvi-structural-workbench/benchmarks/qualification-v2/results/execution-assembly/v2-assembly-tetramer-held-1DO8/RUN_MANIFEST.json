@@ -1,0 +1,39 @@
+{
+  "input_sha256": {
+    "assembly": "327dacf006b184a1fb0f238f30f167fa4b59dc0e6222800ac4c41d267dd04d67",
+    "isolated": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+    "structure_evidence_manifest": "ca7bd3b38acc4e60cf254a5dea4821293049608b080ad711702af8ca5c03f482"
+  },
+  "missing_evidence": [],
+  "module_id": "assembly_context",
+  "optional_runtimes": {
+    "freesasa": "available_invoked",
+    "gemmi": "available_not_required"
+  },
+  "outputs": [
+    "ASSEMBLY_CONTEXT.json",
+    "INTERFACES.tsv",
+    "ASSEMBLY_LAYER.json"
+  ],
+  "parameters": {
+    "assembly_id": null,
+    "chains_expected": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "contact_cutoff_A": 5.0,
+    "relationship": "exact_protein",
+    "resolved_subject_chain": "A",
+    "subject_chain": "A"
+  },
+  "runtime_versions": {
+    "biopython": "1.87",
+    "numpy": "1.26.4",
+    "python": "3.12.7",
+    "scipy": "1.14.1"
+  },
+  "schema_version": "1.0",
+  "version": "0.1.0"
+}

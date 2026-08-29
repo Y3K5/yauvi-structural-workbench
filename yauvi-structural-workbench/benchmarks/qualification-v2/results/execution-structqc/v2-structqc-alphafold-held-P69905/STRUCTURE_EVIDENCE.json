@@ -1,0 +1,2919 @@
+{
+  "chain_summaries": [
+    {
+      "chain_breaks": 0,
+      "chain_id": "A",
+      "missing_backbone_residues": 0,
+      "nonstandard_residues": 0,
+      "residues": 142,
+      "sequence": "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR"
+    }
+  ],
+  "completeness": {
+    "coordinate_residues": 142,
+    "coverage_fraction": 1.0,
+    "identity_fraction": 1.0,
+    "mapped_residues": 142,
+    "reference_length": 142,
+    "state": "evaluated"
+  },
+  "coordinate": {
+    "assemblies": [],
+    "chains": [
+      "A"
+    ],
+    "file_name": "AF-P69905-F1-model_v6.cif",
+    "format": "mmcif",
+    "model_count": 1,
+    "parser": {
+      "coordinate_analysis": "biopython",
+      "gemmi_validation": "validated",
+      "gemmi_version": "0.7.5"
+    },
+    "selected_chain": null,
+    "selected_model": 0,
+    "sha256": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230"
+  },
+  "external_validation": {
+    "limitations": [
+      "No wwPDB, MolProbity, or Phenix validation report was supplied."
+    ],
+    "metrics": {},
+    "state": "missing"
+  },
+  "input_sha256": {
+    "pae": "8febd18c33b7fca831d47a50ada4157464cf60082658074a97b2a97eed12b977",
+    "provenance": "6f476a50f3910755e54eedb2006eaa685479478642e3796055465f786cb0387d",
+    "reference_sequence": "14725a10598943a7aa719eed7d24c7fee599192a6c63c75b051ee6f156341242",
+    "structure": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230"
+  },
+  "limitations": [
+    "Coordinate quality does not establish native conformation or biological function.",
+    "Unknown provenance remains unknown; filename/header hints cannot certify experiment.",
+    "Completeness is unevaluated without a reference sequence."
+  ],
+  "module_id": "structure_quality",
+  "pae": {
+    "max_angstrom": 28.0,
+    "mean_angstrom": 2.061545,
+    "size": 142,
+    "state": "evaluated"
+  },
+  "provenance": {
+    "class": "predicted",
+    "confidence_encoding": "plddt_in_bfactor",
+    "method": "AlphaFold Protein Structure Database v6",
+    "source_id": "AF-P69905-F1"
+  },
+  "reference": {
+    "id": "P69905",
+    "sequence_supplied": true
+  },
+  "residues": [
+    {
+      "altlocs": [],
+      "auth_seq_id": 1,
+      "ca_xyz": [
+        2.296,
+        10.344,
+        14.712
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 1,
+      "mean_b_factor": 65.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "M",
+      "plddt": 65.38,
+      "resname": "MET",
+      "sequence_index": 1
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 2,
+      "ca_xyz": [
+        0.139,
+        7.746,
+        16.584999
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 2,
+      "mean_b_factor": 91.12,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 91.12,
+      "resname": "VAL",
+      "sequence_index": 2
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 3,
+      "ca_xyz": [
+        -3.207,
+        6.745,
+        14.984
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 3,
+      "mean_b_factor": 97.94,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 97.94,
+      "resname": "LEU",
+      "sequence_index": 3
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 4,
+      "ca_xyz": [
+        -6.226,
+        7.505,
+        17.211
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 4,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.5,
+      "resname": "SER",
+      "sequence_index": 4
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 5,
+      "ca_xyz": [
+        -9.026,
+        4.888,
+        17.627001
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 5,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.5,
+      "resname": "PRO",
+      "sequence_index": 5
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 6,
+      "ca_xyz": [
+        -11.108,
+        7.026,
+        15.197
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 6,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.56,
+      "resname": "ALA",
+      "sequence_index": 6
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 7,
+      "ca_xyz": [
+        -8.243,
+        7.034,
+        12.628
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 7,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.81,
+      "resname": "ASP",
+      "sequence_index": 7
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 8,
+      "ca_xyz": [
+        -7.954,
+        3.209,
+        12.826
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 8,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.69,
+      "resname": "LYS",
+      "sequence_index": 8
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 9,
+      "ca_xyz": [
+        -11.75,
+        2.889,
+        12.299
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 9,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.69,
+      "resname": "THR",
+      "sequence_index": 9
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 10,
+      "ca_xyz": [
+        -11.674,
+        5.284,
+        9.295
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 10,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "N",
+      "plddt": 98.75,
+      "resname": "ASN",
+      "sequence_index": 10
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 11,
+      "ca_xyz": [
+        -8.689,
+        3.424,
+        7.717
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 11,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.69,
+      "resname": "VAL",
+      "sequence_index": 11
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 12,
+      "ca_xyz": [
+        -10.326,
+        -0.03,
+        8.211
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 12,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.62,
+      "resname": "LYS",
+      "sequence_index": 12
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 13,
+      "ca_xyz": [
+        -13.686,
+        1.222,
+        6.839
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 13,
+      "mean_b_factor": 98.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.38,
+      "resname": "ALA",
+      "sequence_index": 13
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 14,
+      "ca_xyz": [
+        -12.111,
+        2.848,
+        3.729
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 14,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.44,
+      "resname": "ALA",
+      "sequence_index": 14
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 15,
+      "ca_xyz": [
+        -9.781,
+        -0.152,
+        3.086
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 15,
+      "mean_b_factor": 98.19,
+      "missing_backbone_atoms": [],
+      "one_letter": "W",
+      "plddt": 98.19,
+      "resname": "TRP",
+      "sequence_index": 15
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 16,
+      "ca_xyz": [
+        -12.765,
+        -2.54,
+        3.478
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 16,
+      "mean_b_factor": 98.06,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 98.06,
+      "resname": "GLY",
+      "sequence_index": 16
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 17,
+      "ca_xyz": [
+        -14.391,
+        -0.635,
+        0.529
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 17,
+      "mean_b_factor": 97.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 97.88,
+      "resname": "LYS",
+      "sequence_index": 17
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 18,
+      "ca_xyz": [
+        -11.231,
+        -1.046,
+        -1.596
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 18,
+      "mean_b_factor": 97.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 97.69,
+      "resname": "VAL",
+      "sequence_index": 18
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 19,
+      "ca_xyz": [
+        -11.825,
+        -4.815,
+        -1.167
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 19,
+      "mean_b_factor": 94.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 94.88,
+      "resname": "GLY",
+      "sequence_index": 19
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 20,
+      "ca_xyz": [
+        -10.864,
+        -6.979,
+        -4.185
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 20,
+      "mean_b_factor": 96.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 96.38,
+      "resname": "ALA",
+      "sequence_index": 20
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 21,
+      "ca_xyz": [
+        -9.812,
+        -3.849,
+        -6.21
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 21,
+      "mean_b_factor": 97.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 97.88,
+      "resname": "HIS",
+      "sequence_index": 21
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 22,
+      "ca_xyz": [
+        -6.755,
+        -3.311,
+        -3.923
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 22,
+      "mean_b_factor": 97.25,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 97.25,
+      "resname": "ALA",
+      "sequence_index": 22
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 23,
+      "ca_xyz": [
+        -4.374,
+        -4.734,
+        -6.59
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 23,
+      "mean_b_factor": 97.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 97.0,
+      "resname": "GLY",
+      "sequence_index": 23
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 24,
+      "ca_xyz": [
+        -5.931,
+        -2.606,
+        -9.395
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 24,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "E",
+      "plddt": 98.44,
+      "resname": "GLU",
+      "sequence_index": 24
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 25,
+      "ca_xyz": [
+        -5.71,
+        0.602,
+        -7.296
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 25,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "Y",
+      "plddt": 98.75,
+      "resname": "TYR",
+      "sequence_index": 25
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 26,
+      "ca_xyz": [
+        -2.105,
+        -0.325,
+        -6.371
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 26,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 98.69,
+      "resname": "GLY",
+      "sequence_index": 26
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 27,
+      "ca_xyz": [
+        -1.251,
+        -0.43,
+        -10.117
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 27,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.81,
+      "resname": "ALA",
+      "sequence_index": 27
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 28,
+      "ca_xyz": [
+        -3.09,
+        2.877,
+        -10.809
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 28,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "E",
+      "plddt": 98.88,
+      "resname": "GLU",
+      "sequence_index": 28
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 29,
+      "ca_xyz": [
+        -1.238,
+        4.598,
+        -7.913
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 29,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.88,
+      "resname": "ALA",
+      "sequence_index": 29
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 30,
+      "ca_xyz": [
+        2.129,
+        3.407,
+        -9.365
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 30,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.88,
+      "resname": "LEU",
+      "sequence_index": 30
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 31,
+      "ca_xyz": [
+        1.169,
+        4.643,
+        -12.871
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 31,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "E",
+      "plddt": 98.88,
+      "resname": "GLU",
+      "sequence_index": 31
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 32,
+      "ca_xyz": [
+        0.141,
+        8.06,
+        -11.389
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 32,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "R",
+      "plddt": 98.88,
+      "resname": "ARG",
+      "sequence_index": 32
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 33,
+      "ca_xyz": [
+        3.501,
+        8.183,
+        -9.524
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 33,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "M",
+      "plddt": 98.88,
+      "resname": "MET",
+      "sequence_index": 33
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 34,
+      "ca_xyz": [
+        5.591,
+        7.345,
+        -12.647
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 34,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.81,
+      "resname": "PHE",
+      "sequence_index": 34
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 35,
+      "ca_xyz": [
+        3.772,
+        10.011,
+        -14.734
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 35,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.75,
+      "resname": "LEU",
+      "sequence_index": 35
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 36,
+      "ca_xyz": [
+        3.537,
+        12.82,
+        -12.094
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 36,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.81,
+      "resname": "SER",
+      "sequence_index": 36
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 37,
+      "ca_xyz": [
+        6.979,
+        12.183,
+        -10.486
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 37,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.75,
+      "resname": "PHE",
+      "sequence_index": 37
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 38,
+      "ca_xyz": [
+        9.305,
+        10.906,
+        -13.267
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 38,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.56,
+      "resname": "PRO",
+      "sequence_index": 38
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 39,
+      "ca_xyz": [
+        12.395,
+        10.698,
+        -10.958
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 39,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.69,
+      "resname": "THR",
+      "sequence_index": 39
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 40,
+      "ca_xyz": [
+        10.711,
+        7.67,
+        -9.246
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 40,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.75,
+      "resname": "THR",
+      "sequence_index": 40
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 41,
+      "ca_xyz": [
+        11.153,
+        5.664,
+        -12.527
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 41,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.69,
+      "resname": "LYS",
+      "sequence_index": 41
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 42,
+      "ca_xyz": [
+        14.926,
+        5.459,
+        -11.753
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 42,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.56,
+      "resname": "THR",
+      "sequence_index": 42
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 43,
+      "ca_xyz": [
+        14.141,
+        2.663,
+        -9.204
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 43,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "Y",
+      "plddt": 98.69,
+      "resname": "TYR",
+      "sequence_index": 43
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 44,
+      "ca_xyz": [
+        12.501,
+        0.526,
+        -11.977
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 44,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.62,
+      "resname": "PHE",
+      "sequence_index": 44
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 45,
+      "ca_xyz": [
+        14.991,
+        0.445,
+        -14.97
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 45,
+      "mean_b_factor": 98.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.38,
+      "resname": "PRO",
+      "sequence_index": 45
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 46,
+      "ca_xyz": [
+        14.137,
+        -3.298,
+        -15.382
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 46,
+      "mean_b_factor": 98.25,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.25,
+      "resname": "HIS",
+      "sequence_index": 46
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 47,
+      "ca_xyz": [
+        10.345,
+        -2.738,
+        -15.808
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 47,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.5,
+      "resname": "PHE",
+      "sequence_index": 47
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 48,
+      "ca_xyz": [
+        8.172,
+        -2.094,
+        -18.782
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 48,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.75,
+      "resname": "ASP",
+      "sequence_index": 48
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 49,
+      "ca_xyz": [
+        6.505,
+        1.12,
+        -17.474001
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 49,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.75,
+      "resname": "LEU",
+      "sequence_index": 49
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 50,
+      "ca_xyz": [
+        4.015,
+        1.43,
+        -20.386999
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 50,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.5,
+      "resname": "SER",
+      "sequence_index": 50
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 51,
+      "ca_xyz": [
+        0.277,
+        1.75,
+        -19.666
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 51,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.56,
+      "resname": "HIS",
+      "sequence_index": 51
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 52,
+      "ca_xyz": [
+        -1.261,
+        -1.653,
+        -18.823
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 52,
+      "mean_b_factor": 97.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 97.69,
+      "resname": "GLY",
+      "sequence_index": 52
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 53,
+      "ca_xyz": [
+        2.169,
+        -3.351,
+        -18.191
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 53,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.69,
+      "resname": "SER",
+      "sequence_index": 53
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 54,
+      "ca_xyz": [
+        1.892,
+        -6.728,
+        -16.431
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 54,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.75,
+      "resname": "ALA",
+      "sequence_index": 54
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 55,
+      "ca_xyz": [
+        5.017,
+        -5.841,
+        -14.347
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 55,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "Q",
+      "plddt": 98.81,
+      "resname": "GLN",
+      "sequence_index": 55
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 56,
+      "ca_xyz": [
+        3.345,
+        -2.627,
+        -13.031
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 56,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.81,
+      "resname": "VAL",
+      "sequence_index": 56
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 57,
+      "ca_xyz": [
+        0.085,
+        -4.565,
+        -12.302
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 57,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.81,
+      "resname": "LYS",
+      "sequence_index": 57
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 58,
+      "ca_xyz": [
+        1.96,
+        -7.417,
+        -10.563
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 58,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 98.75,
+      "resname": "GLY",
+      "sequence_index": 58
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 59,
+      "ca_xyz": [
+        3.953,
+        -4.907,
+        -8.46
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 59,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.75,
+      "resname": "HIS",
+      "sequence_index": 59
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 60,
+      "ca_xyz": [
+        0.794,
+        -2.844,
+        -7.663
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 60,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "G",
+      "plddt": 98.75,
+      "resname": "GLY",
+      "sequence_index": 60
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 61,
+      "ca_xyz": [
+        -0.756,
+        -6.082,
+        -6.272
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 61,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.69,
+      "resname": "LYS",
+      "sequence_index": 61
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 62,
+      "ca_xyz": [
+        2.325,
+        -6.629,
+        -3.995
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 62,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.75,
+      "resname": "LYS",
+      "sequence_index": 62
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 63,
+      "ca_xyz": [
+        2.133,
+        -3.014,
+        -2.681
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 63,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.56,
+      "resname": "VAL",
+      "sequence_index": 63
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 64,
+      "ca_xyz": [
+        -1.637,
+        -3.357,
+        -2.085
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 64,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.56,
+      "resname": "ALA",
+      "sequence_index": 64
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 65,
+      "ca_xyz": [
+        -1.171,
+        -6.718,
+        -0.259
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 65,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.69,
+      "resname": "ASP",
+      "sequence_index": 65
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 66,
+      "ca_xyz": [
+        1.505,
+        -5.106,
+        1.985
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 66,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 66
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 67,
+      "ca_xyz": [
+        -0.923,
+        -2.227,
+        2.793
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 67,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.69,
+      "resname": "LEU",
+      "sequence_index": 67
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 68,
+      "ca_xyz": [
+        -3.694,
+        -4.813,
+        3.478
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 68,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.62,
+      "resname": "THR",
+      "sequence_index": 68
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 69,
+      "ca_xyz": [
+        -1.305,
+        -6.504,
+        5.951
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 69,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "N",
+      "plddt": 98.69,
+      "resname": "ASN",
+      "sequence_index": 69
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 70,
+      "ca_xyz": [
+        -0.499,
+        -3.083,
+        7.527
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 70,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 70
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 71,
+      "ca_xyz": [
+        -4.278,
+        -2.34,
+        7.972
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 71,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.56,
+      "resname": "VAL",
+      "sequence_index": 71
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 72,
+      "ca_xyz": [
+        -4.812,
+        -5.802,
+        9.568
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 72,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.44,
+      "resname": "ALA",
+      "sequence_index": 72
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 73,
+      "ca_xyz": [
+        -1.811,
+        -5.173,
+        11.91
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 73,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.5,
+      "resname": "HIS",
+      "sequence_index": 73
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 74,
+      "ca_xyz": [
+        -2.415,
+        -1.393,
+        12.454
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 74,
+      "mean_b_factor": 98.19,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.19,
+      "resname": "VAL",
+      "sequence_index": 74
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 75,
+      "ca_xyz": [
+        -1.385,
+        -1.819,
+        16.149
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 75,
+      "mean_b_factor": 97.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 97.88,
+      "resname": "ASP",
+      "sequence_index": 75
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 76,
+      "ca_xyz": [
+        1.812,
+        -3.883,
+        15.282
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 76,
+      "mean_b_factor": 98.19,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.19,
+      "resname": "ASP",
+      "sequence_index": 76
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 77,
+      "ca_xyz": [
+        2.998,
+        -2.409,
+        11.92
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 77,
+      "mean_b_factor": 98.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "M",
+      "plddt": 98.38,
+      "resname": "MET",
+      "sequence_index": 77
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 78,
+      "ca_xyz": [
+        6.8,
+        -2.534,
+        12.774
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 78,
+      "mean_b_factor": 98.31,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.31,
+      "resname": "PRO",
+      "sequence_index": 78
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 79,
+      "ca_xyz": [
+        6.727,
+        -6.338,
+        13.183
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 79,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "N",
+      "plddt": 98.44,
+      "resname": "ASN",
+      "sequence_index": 79
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 80,
+      "ca_xyz": [
+        4.216,
+        -6.962,
+        10.329
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 80,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 80
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 81,
+      "ca_xyz": [
+        6.382,
+        -4.877,
+        7.891
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 81,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.62,
+      "resname": "LEU",
+      "sequence_index": 81
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 82,
+      "ca_xyz": [
+        9.855,
+        -5.761,
+        9.351
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 82,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.44,
+      "resname": "SER",
+      "sequence_index": 82
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 83,
+      "ca_xyz": [
+        11.013,
+        -7.772,
+        6.282
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 83,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.56,
+      "resname": "ALA",
+      "sequence_index": 83
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 84,
+      "ca_xyz": [
+        9.832,
+        -4.966,
+        3.922
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 84,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.62,
+      "resname": "LEU",
+      "sequence_index": 84
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 85,
+      "ca_xyz": [
+        11.753,
+        -2.392,
+        6.031
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 85,
+      "mean_b_factor": 98.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.38,
+      "resname": "SER",
+      "sequence_index": 85
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 86,
+      "ca_xyz": [
+        14.902,
+        -4.599,
+        5.69
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 86,
+      "mean_b_factor": 98.38,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.38,
+      "resname": "ASP",
+      "sequence_index": 86
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 87,
+      "ca_xyz": [
+        14.325,
+        -4.974,
+        1.916
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 87,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.56,
+      "resname": "LEU",
+      "sequence_index": 87
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 88,
+      "ca_xyz": [
+        13.924,
+        -1.197,
+        1.358
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 88,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.5,
+      "resname": "HIS",
+      "sequence_index": 88
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 89,
+      "ca_xyz": [
+        16.742001,
+        -0.123,
+        3.737
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 89,
+      "mean_b_factor": 97.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 97.44,
+      "resname": "ALA",
+      "sequence_index": 89
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 90,
+      "ca_xyz": [
+        19.482,
+        -2.647,
+        2.891
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 90,
+      "mean_b_factor": 97.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 97.44,
+      "resname": "HIS",
+      "sequence_index": 90
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 91,
+      "ca_xyz": [
+        18.808001,
+        -3.799,
+        -0.735
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 91,
+      "mean_b_factor": 97.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 97.44,
+      "resname": "LYS",
+      "sequence_index": 91
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 92,
+      "ca_xyz": [
+        16.561001,
+        -1.36,
+        -2.652
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 92,
+      "mean_b_factor": 97.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 97.5,
+      "resname": "LEU",
+      "sequence_index": 92
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 93,
+      "ca_xyz": [
+        17.837999,
+        1.839,
+        -0.894
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 93,
+      "mean_b_factor": 96.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "R",
+      "plddt": 96.69,
+      "resname": "ARG",
+      "sequence_index": 93
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 94,
+      "ca_xyz": [
+        14.795,
+        3.877,
+        -2.036
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 94,
+      "mean_b_factor": 97.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 97.81,
+      "resname": "VAL",
+      "sequence_index": 94
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 95,
+      "ca_xyz": [
+        15.279,
+        7.509,
+        -0.909
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 95,
+      "mean_b_factor": 98.25,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.25,
+      "resname": "ASP",
+      "sequence_index": 95
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 96,
+      "ca_xyz": [
+        12.803,
+        8.215,
+        2.003
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 96,
+      "mean_b_factor": 98.19,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.19,
+      "resname": "PRO",
+      "sequence_index": 96
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 97,
+      "ca_xyz": [
+        11.27,
+        11.162,
+        0.019
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 97,
+      "mean_b_factor": 98.0,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.0,
+      "resname": "VAL",
+      "sequence_index": 97
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 98,
+      "ca_xyz": [
+        9.716,
+        8.781,
+        -2.584
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 98,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "N",
+      "plddt": 98.5,
+      "resname": "ASN",
+      "sequence_index": 98
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 99,
+      "ca_xyz": [
+        7.431,
+        7.114,
+        0.03
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 99,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.56,
+      "resname": "PHE",
+      "sequence_index": 99
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 100,
+      "ca_xyz": [
+        5.625,
+        10.506,
+        0.365
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 100,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.44,
+      "resname": "LYS",
+      "sequence_index": 100
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 101,
+      "ca_xyz": [
+        5.131,
+        10.646,
+        -3.444
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 101,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.81,
+      "resname": "LEU",
+      "sequence_index": 101
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 102,
+      "ca_xyz": [
+        3.604,
+        7.134,
+        -3.593
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 102,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.88,
+      "resname": "LEU",
+      "sequence_index": 102
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 103,
+      "ca_xyz": [
+        1.472,
+        7.895,
+        -0.476
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 103,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.81,
+      "resname": "SER",
+      "sequence_index": 103
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 104,
+      "ca_xyz": [
+        0.083,
+        10.989,
+        -2.264
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 104,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.88,
+      "resname": "HIS",
+      "sequence_index": 104
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 105,
+      "ca_xyz": [
+        -0.696,
+        8.974,
+        -5.463
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 105,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "C",
+      "plddt": 98.88,
+      "resname": "CYS",
+      "sequence_index": 105
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 106,
+      "ca_xyz": [
+        -2.468,
+        6.346,
+        -3.276
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 106,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.88,
+      "resname": "LEU",
+      "sequence_index": 106
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 107,
+      "ca_xyz": [
+        -4.633,
+        9.11,
+        -1.677
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 107,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.81,
+      "resname": "LEU",
+      "sequence_index": 107
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 108,
+      "ca_xyz": [
+        -5.497,
+        10.496,
+        -5.174
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 108,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.81,
+      "resname": "VAL",
+      "sequence_index": 108
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 109,
+      "ca_xyz": [
+        -6.403,
+        6.952,
+        -6.364
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 109,
+      "mean_b_factor": 98.88,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.88,
+      "resname": "THR",
+      "sequence_index": 109
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 110,
+      "ca_xyz": [
+        -8.596,
+        6.331,
+        -3.274
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 110,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.62,
+      "resname": "LEU",
+      "sequence_index": 110
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 111,
+      "ca_xyz": [
+        -10.304,
+        9.749,
+        -3.719
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 111,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.69,
+      "resname": "ALA",
+      "sequence_index": 111
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 112,
+      "ca_xyz": [
+        -11.154,
+        8.892,
+        -7.377
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 112,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 112
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 113,
+      "ca_xyz": [
+        -12.706,
+        5.484,
+        -6.449
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 113,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.62,
+      "resname": "HIS",
+      "sequence_index": 113
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 114,
+      "ca_xyz": [
+        -14.336,
+        6.29,
+        -3.041
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 114,
+      "mean_b_factor": 97.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 97.75,
+      "resname": "LEU",
+      "sequence_index": 114
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 115,
+      "ca_xyz": [
+        -16.422001,
+        9.472,
+        -3.759
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 115,
+      "mean_b_factor": 96.06,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 96.06,
+      "resname": "PRO",
+      "sequence_index": 115
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 116,
+      "ca_xyz": [
+        -18.790001,
+        8.817,
+        -0.791
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 116,
+      "mean_b_factor": 97.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 97.75,
+      "resname": "ALA",
+      "sequence_index": 116
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 117,
+      "ca_xyz": [
+        -16.214001,
+        7.455,
+        1.724
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 117,
+      "mean_b_factor": 97.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "E",
+      "plddt": 97.62,
+      "resname": "GLU",
+      "sequence_index": 117
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 118,
+      "ca_xyz": [
+        -13.332,
+        9.945,
+        0.976
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 118,
+      "mean_b_factor": 98.06,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.06,
+      "resname": "PHE",
+      "sequence_index": 118
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 119,
+      "ca_xyz": [
+        -14.612,
+        12.535,
+        3.505
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 119,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.69,
+      "resname": "THR",
+      "sequence_index": 119
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 120,
+      "ca_xyz": [
+        -12.212,
+        15.1,
+        5.134
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 120,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "P",
+      "plddt": 98.81,
+      "resname": "PRO",
+      "sequence_index": 120
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 121,
+      "ca_xyz": [
+        -12.02,
+        12.927,
+        8.304
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 121,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 121
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 122,
+      "ca_xyz": [
+        -11.23,
+        9.73,
+        6.302
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 122,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.69,
+      "resname": "VAL",
+      "sequence_index": 122
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 123,
+      "ca_xyz": [
+        -8.662,
+        11.644,
+        4.18
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 123,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "H",
+      "plddt": 98.81,
+      "resname": "HIS",
+      "sequence_index": 123
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 124,
+      "ca_xyz": [
+        -6.851,
+        12.927,
+        7.322
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 124,
+      "mean_b_factor": 98.62,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.62,
+      "resname": "ALA",
+      "sequence_index": 124
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 125,
+      "ca_xyz": [
+        -6.843,
+        9.381,
+        8.829
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 125,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.75,
+      "resname": "SER",
+      "sequence_index": 125
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 126,
+      "ca_xyz": [
+        -5.54,
+        7.765,
+        5.572
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 126,
+      "mean_b_factor": 98.75,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.75,
+      "resname": "LEU",
+      "sequence_index": 126
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 127,
+      "ca_xyz": [
+        -2.738,
+        10.393,
+        5.233
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 127,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "D",
+      "plddt": 98.81,
+      "resname": "ASP",
+      "sequence_index": 127
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 128,
+      "ca_xyz": [
+        -1.663,
+        9.739,
+        8.88
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 128,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 98.69,
+      "resname": "LYS",
+      "sequence_index": 128
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 129,
+      "ca_xyz": [
+        -1.765,
+        5.957,
+        8.224
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 129,
+      "mean_b_factor": 98.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "F",
+      "plddt": 98.81,
+      "resname": "PHE",
+      "sequence_index": 129
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 130,
+      "ca_xyz": [
+        0.356,
+        6.158,
+        5.018
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 130,
+      "mean_b_factor": 98.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.69,
+      "resname": "LEU",
+      "sequence_index": 130
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 131,
+      "ca_xyz": [
+        2.836,
+        8.497,
+        6.793
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 131,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "A",
+      "plddt": 98.5,
+      "resname": "ALA",
+      "sequence_index": 131
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 132,
+      "ca_xyz": [
+        3.06,
+        5.88,
+        9.623
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 132,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.44,
+      "resname": "SER",
+      "sequence_index": 132
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 133,
+      "ca_xyz": [
+        3.65,
+        3.039,
+        7.083
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 133,
+      "mean_b_factor": 98.56,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.56,
+      "resname": "VAL",
+      "sequence_index": 133
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 134,
+      "ca_xyz": [
+        6.341,
+        5.238,
+        5.42
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 134,
+      "mean_b_factor": 98.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 98.44,
+      "resname": "SER",
+      "sequence_index": 134
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 135,
+      "ca_xyz": [
+        7.989,
+        5.811,
+        8.859
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 135,
+      "mean_b_factor": 98.06,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.06,
+      "resname": "THR",
+      "sequence_index": 135
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 136,
+      "ca_xyz": [
+        8.062,
+        2.015,
+        9.503
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 136,
+      "mean_b_factor": 98.25,
+      "missing_backbone_atoms": [],
+      "one_letter": "V",
+      "plddt": 98.25,
+      "resname": "VAL",
+      "sequence_index": 136
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 137,
+      "ca_xyz": [
+        9.529,
+        1.22,
+        6.033
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 137,
+      "mean_b_factor": 98.5,
+      "missing_backbone_atoms": [],
+      "one_letter": "L",
+      "plddt": 98.5,
+      "resname": "LEU",
+      "sequence_index": 137
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 138,
+      "ca_xyz": [
+        12.278,
+        3.893,
+        6.508
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 138,
+      "mean_b_factor": 98.19,
+      "missing_backbone_atoms": [],
+      "one_letter": "T",
+      "plddt": 98.19,
+      "resname": "THR",
+      "sequence_index": 138
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 139,
+      "ca_xyz": [
+        13.035,
+        3.066,
+        10.206
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 139,
+      "mean_b_factor": 97.69,
+      "missing_backbone_atoms": [],
+      "one_letter": "S",
+      "plddt": 97.69,
+      "resname": "SER",
+      "sequence_index": 139
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 140,
+      "ca_xyz": [
+        16.139999,
+        0.879,
+        9.414
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 140,
+      "mean_b_factor": 97.81,
+      "missing_backbone_atoms": [],
+      "one_letter": "K",
+      "plddt": 97.81,
+      "resname": "LYS",
+      "sequence_index": 140
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 141,
+      "ca_xyz": [
+        17.92,
+        3.271,
+        6.974
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 141,
+      "mean_b_factor": 96.44,
+      "missing_backbone_atoms": [],
+      "one_letter": "Y",
+      "plddt": 96.44,
+      "resname": "TYR",
+      "sequence_index": 141
+    },
+    {
+      "altlocs": [],
+      "auth_seq_id": 142,
+      "ca_xyz": [
+        20.299,
+        4.584,
+        9.719
+      ],
+      "chain_id": "A",
+      "entity_id": "1",
+      "insertion_code": "",
+      "label_asym_id": "A",
+      "label_seq_id": 142,
+      "mean_b_factor": 92.25,
+      "missing_backbone_atoms": [],
+      "one_letter": "R",
+      "plddt": 92.25,
+      "resname": "ARG",
+      "sequence_index": 142
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "id": "P69905"
+  },
+  "warnings": []
+}

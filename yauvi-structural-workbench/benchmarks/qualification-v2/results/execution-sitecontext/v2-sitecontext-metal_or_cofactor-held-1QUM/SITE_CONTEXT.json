@@ -1,0 +1,529 @@
+{
+  "cofactors": [
+    {
+      "chebi": "CHEBI:29105",
+      "component_id": "",
+      "detail": "observed component(s): ZN",
+      "name": "Zn(2+)",
+      "state": "observed_match"
+    },
+    {
+      "chebi": "CHEBI:29035",
+      "component_id": "",
+      "detail": "expected component(s) not present: MN",
+      "name": "Mn(2+)",
+      "state": "not_observed"
+    }
+  ],
+  "config": {
+    "annotation_sites": 11,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "8ef91fa5ce01aef925052a0df8c0198620407657bc0cd2408f4bd5d71e157dce",
+  "input_sha256": {
+    "annotations": "86c90b7258888bfeb5c11cdc4ceeeecae8f0304aee97c85c4013dbec290ea75a",
+    "component_map": "db3edbb615a14b88dcc11ba89f3155f158b0f67007bc95e9a7837e2fbcf8918f",
+    "structure": "8ef91fa5ce01aef925052a0df8c0198620407657bc0cd2408f4bd5d71e157dce",
+    "structure_evidence_manifest": "09b9b2942583f25f46b57add90a49f7d260246aef92d4acaa1145b495271fee7"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 907,
+      "chain_id": "C",
+      "component_id": "3DR",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 301,
+      "chain_id": "A",
+      "component_id": "ZN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 302,
+      "chain_id": "A",
+      "component_id": "ZN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 303,
+      "chain_id": "A",
+      "component_id": "ZN",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 20.477958,
+    "pair_count": 55,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "transition state stabiliser",
+      "auth_seq_id": 37,
+      "chain_id": "A",
+      "detail": "observed R; expected one of R for declared role unspecified",
+      "expected_residues": [
+        "R"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 7.331727
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 12.011051
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 12.071028
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 14.060199
+        }
+      ],
+      "observed_residue": "R",
+      "position": 37,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 69,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role metal_ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.056283
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.194572
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 5.364425
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 7.467413
+        }
+      ],
+      "observed_residue": "H",
+      "position": 69,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "transition state stabiliser",
+      "auth_seq_id": 72,
+      "chain_id": "A",
+      "detail": "observed Y; expected one of Y for declared role unspecified",
+      "expected_residues": [
+        "Y"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.112629
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 5.49685
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 7.100263
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 7.876135
+        }
+      ],
+      "observed_residue": "Y",
+      "position": 72,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 109,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role metal_ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 1.938744
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.180128
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 5.307262
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 6.240398
+        }
+      ],
+      "observed_residue": "H",
+      "position": 109,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 145,
+      "chain_id": "A",
+      "detail": "observed E; expected one of E for declared role metal_ligand",
+      "expected_residues": [
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.003226
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.20829
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.129008
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.95576
+        }
+      ],
+      "observed_residue": "E",
+      "position": 145,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 179,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role metal_ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.147556
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.343975
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.001201
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 5.733772
+        }
+      ],
+      "observed_residue": "D",
+      "position": 179,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 182,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role metal_ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.06802
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 2.940335
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 3.495156
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.873401
+        }
+      ],
+      "observed_residue": "H",
+      "position": 182,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 216,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role metal_ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.303265
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.490357
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.064476
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 6.40297
+        }
+      ],
+      "observed_residue": "H",
+      "position": 216,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 229,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role metal_ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.208499
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 4.252323
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 6.17275
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 6.690647
+        }
+      ],
+      "observed_residue": "D",
+      "position": 229,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 231,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role metal_ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.161563
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 3.242578
+        },
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.460614
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 6.867409
+        }
+      ],
+      "observed_residue": "H",
+      "position": 231,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    },
+    {
+      "annotation_detail": "metal ligand",
+      "auth_seq_id": 261,
+      "chain_id": "A",
+      "detail": "observed E; expected one of E for declared role metal_ligand",
+      "expected_residues": [
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 303,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 2.253429
+        },
+        {
+          "auth_seq_id": 907,
+          "chain_id": "C",
+          "component_id": "3DR",
+          "distance_A": 2.933179
+        },
+        {
+          "auth_seq_id": 301,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.630579
+        },
+        {
+          "auth_seq_id": 302,
+          "chain_id": "A",
+          "component_id": "ZN",
+          "distance_A": 4.752973
+        }
+      ],
+      "observed_residue": "E",
+      "position": 261,
+      "role": "metal_ligand",
+      "state": "role_compatible",
+      "type": "metal_ligand"
+    }
+  ],
+  "subject": {
+    "id": "P0A6C1"
+  }
+}

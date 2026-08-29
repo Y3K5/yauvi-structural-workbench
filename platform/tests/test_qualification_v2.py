@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 
@@ -60,11 +61,24 @@ def test_empty_v2_panel_is_blocked_not_vacuously_passed():
     # first. Filtering that one error class is what keeps this test honest
     # offline instead of quietly requiring a warm working copy.
     artifact_error = "source artifact is missing or checksum-mismatched"
+    shortfall = re.compile(r"requires \d+, observed \d+$")
     for panel, summary in ((p, s) for p, s in pairs if p.get("records")):
-        composition_errors = [e for e in summary["errors"] if artifact_error not in e]
+        # A panel may be adopted a stratum at a time. The membrane panel carries
+        # its release-blocking beta_barrel stratum while alpha_helical is still
+        # outstanding, so "has records" no longer implies "fully composed" and a
+        # shortfall on an unadopted stratum is expected rather than a defect.
+        composition_errors = [e for e in summary["errors"]
+                              if artifact_error not in e and not shortfall.search(e)]
         assert not composition_errors, f"{panel['panel_id']}: {composition_errors}"
-        assert all(row["passed"] for row in summary["requirements"]), panel["panel_id"]
-        assert all(row["observed_count"] == row["count"] for row in summary["requirements"])
+
+        # What must hold in every case: a requirement is either fully met or
+        # untouched. A partially filled requirement would mean a stratum was
+        # adopted half-way, which no split is allowed to be.
+        for row in summary["requirements"]:
+            assert row["observed_count"] in (0, row["count"]), (
+                f"{panel['panel_id']}: {row['stratum']}/{row['split']} is partially adopted "
+                f"({row['observed_count']} of {row['count']})")
+        assert any(row["passed"] for row in summary["requirements"]), panel["panel_id"]
 
     status = json.loads((QUALIFICATION / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
     # The collection stays blocked while any panel is unadopted, and the

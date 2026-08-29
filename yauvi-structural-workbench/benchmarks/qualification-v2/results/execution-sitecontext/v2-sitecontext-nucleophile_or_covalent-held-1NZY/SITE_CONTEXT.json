@@ -1,0 +1,375 @@
+{
+  "cofactors": [],
+  "config": {
+    "annotation_sites": 6,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "af2d43a8bb512605dcd67693a5b0e60c704d64d7a4a35cff3d64a42f21e3c98d",
+  "input_sha256": {
+    "annotations": "fcfa077338b305d181393a63102d24a1d32748bad1c467d81683841bfb07eea6",
+    "component_map": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "structure": "af2d43a8bb512605dcd67693a5b0e60c704d64d7a4a35cff3d64a42f21e3c98d",
+    "structure_evidence_manifest": "b950ba0a6378d3f508710698112d47a52c4404b9d503aa7cb65fe668e5801856"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 271,
+      "chain_id": "A",
+      "component_id": "CA",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 272,
+      "chain_id": "A",
+      "component_id": "BCA",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 271,
+      "chain_id": "B",
+      "component_id": "CA",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 902,
+      "chain_id": "B",
+      "component_id": "PO4",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 272,
+      "chain_id": "B",
+      "component_id": "BCA",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 900,
+      "chain_id": "B",
+      "component_id": "EDO",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 901,
+      "chain_id": "B",
+      "component_id": "EDO",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 271,
+      "chain_id": "C",
+      "component_id": "CA",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 272,
+      "chain_id": "C",
+      "component_id": "BCA",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 15.572726,
+    "pair_count": 15,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 64,
+      "chain_id": "A",
+      "detail": "observed F; expected one of F for declared role unspecified",
+      "expected_residues": [
+        "F"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 2.775334
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 20.995193
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 22.558411
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 29.667547
+        },
+        {
+          "auth_seq_id": 902,
+          "chain_id": "B",
+          "component_id": "PO4",
+          "distance_A": 40.489525
+        }
+      ],
+      "observed_residue": "F",
+      "position": 64,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, hydrogen bond acceptor",
+      "auth_seq_id": 86,
+      "chain_id": "A",
+      "detail": "observed A; expected one of A for declared role unspecified",
+      "expected_residues": [
+        "A"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 4.310905
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 24.314869
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 28.438799
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 28.909115
+        },
+        {
+          "auth_seq_id": 272,
+          "chain_id": "C",
+          "component_id": "BCA",
+          "distance_A": 39.239021
+        }
+      ],
+      "observed_residue": "A",
+      "position": 86,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor",
+      "auth_seq_id": 90,
+      "chain_id": "A",
+      "detail": "observed H; expected one of H for declared role acid_base",
+      "expected_residues": [
+        "H"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 3.990651
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 22.772203
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 23.100533
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 29.445606
+        },
+        {
+          "auth_seq_id": 272,
+          "chain_id": "C",
+          "component_id": "BCA",
+          "distance_A": 33.304241
+        }
+      ],
+      "observed_residue": "H",
+      "position": 90,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 114,
+      "chain_id": "A",
+      "detail": "observed G; expected one of G for declared role unspecified",
+      "expected_residues": [
+        "G"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 2.736634
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 21.82439
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 23.770363
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 23.848557
+        },
+        {
+          "auth_seq_id": 272,
+          "chain_id": "C",
+          "component_id": "BCA",
+          "distance_A": 35.145439
+        }
+      ],
+      "observed_residue": "G",
+      "position": 114,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 137,
+      "chain_id": "A",
+      "detail": "observed W; expected one of W for declared role unspecified",
+      "expected_residues": [
+        "W"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 3.24061
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 13.53045
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 16.906687
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 28.26029
+        },
+        {
+          "auth_seq_id": 902,
+          "chain_id": "B",
+          "component_id": "PO4",
+          "distance_A": 31.982872
+        }
+      ],
+      "observed_residue": "W",
+      "position": 137,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "covalently attached, electrofuge, electrophile, hydrogen bond acceptor, hydrogen bond donor, nucleophile, proton acceptor, proton donor",
+      "auth_seq_id": 145,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role nucleophile",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 272,
+          "chain_id": "A",
+          "component_id": "BCA",
+          "distance_A": 2.346421
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "B",
+          "component_id": "CA",
+          "distance_A": 17.834871
+        },
+        {
+          "auth_seq_id": 900,
+          "chain_id": "B",
+          "component_id": "EDO",
+          "distance_A": 25.326853
+        },
+        {
+          "auth_seq_id": 271,
+          "chain_id": "A",
+          "component_id": "CA",
+          "distance_A": 27.469765
+        },
+        {
+          "auth_seq_id": 272,
+          "chain_id": "B",
+          "component_id": "BCA",
+          "distance_A": 35.245556
+        }
+      ],
+      "observed_residue": "D",
+      "position": 145,
+      "role": "nucleophile",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "A5JTM5"
+  }
+}

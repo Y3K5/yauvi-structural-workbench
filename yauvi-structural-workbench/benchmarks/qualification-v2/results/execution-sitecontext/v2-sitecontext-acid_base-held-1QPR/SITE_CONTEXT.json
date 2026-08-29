@@ -1,0 +1,371 @@
+{
+  "cofactors": [],
+  "config": {
+    "annotation_sites": 4,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+  "input_sha256": {
+    "annotations": "2c8666e1b49d830440f0103b6ce34a3b9494cfdfa8513987c476162a0cde0625",
+    "component_map": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "structure": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+    "structure_evidence_manifest": "93b8fd2c4f45a683663a465047cb61c6a8071aaf522ff1386e8687dad804bf52"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 286,
+      "chain_id": "A",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "A",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "A",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "A",
+      "component_id": "PPC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "B",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "B",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "B",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "B",
+      "component_id": "PPC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "C",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "C",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "C",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "C",
+      "component_id": "PPC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "D",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "D",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "D",
+      "component_id": "PPC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "D",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "E",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "E",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "E",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "E",
+      "component_id": "PPC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "F",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "F",
+      "component_id": "MN",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "F",
+      "component_id": "PHT",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "F",
+      "component_id": "PPC",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 16.05681,
+    "pair_count": 6,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "electrostatic stabiliser, repulsive charge-charge interaction, steric role",
+      "auth_seq_id": 140,
+      "chain_id": "A",
+      "detail": "observed K; expected one of K for declared role unspecified",
+      "expected_residues": [
+        "K"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 288,
+          "chain_id": "A",
+          "component_id": "PPC",
+          "distance_A": 2.968499
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "A",
+          "component_id": "PHT",
+          "distance_A": 3.74672
+        },
+        {
+          "auth_seq_id": 286,
+          "chain_id": "B",
+          "component_id": "MN",
+          "distance_A": 4.444229
+        },
+        {
+          "auth_seq_id": 287,
+          "chain_id": "A",
+          "component_id": "MN",
+          "distance_A": 6.252121
+        },
+        {
+          "auth_seq_id": 288,
+          "chain_id": "B",
+          "component_id": "PPC",
+          "distance_A": 21.842894
+        }
+      ],
+      "observed_residue": "K",
+      "position": 140,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, proton acceptor, proton donor",
+      "auth_seq_id": 172,
+      "chain_id": "A",
+      "detail": "observed K; expected one of K for declared role acid_base",
+      "expected_residues": [
+        "K"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 1,
+          "chain_id": "A",
+          "component_id": "PHT",
+          "distance_A": 2.747655
+        },
+        {
+          "auth_seq_id": 288,
+          "chain_id": "A",
+          "component_id": "PPC",
+          "distance_A": 3.545266
+        },
+        {
+          "auth_seq_id": 287,
+          "chain_id": "A",
+          "component_id": "MN",
+          "distance_A": 4.931241
+        },
+        {
+          "auth_seq_id": 286,
+          "chain_id": "B",
+          "component_id": "MN",
+          "distance_A": 9.082624
+        },
+        {
+          "auth_seq_id": 288,
+          "chain_id": "D",
+          "component_id": "PPC",
+          "distance_A": 23.13657
+        }
+      ],
+      "observed_residue": "K",
+      "position": 172,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, proton acceptor, proton donor",
+      "auth_seq_id": 201,
+      "chain_id": "A",
+      "detail": "observed E; expected one of E for declared role acid_base",
+      "expected_residues": [
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 288,
+          "chain_id": "A",
+          "component_id": "PPC",
+          "distance_A": 2.856042
+        },
+        {
+          "auth_seq_id": 287,
+          "chain_id": "A",
+          "component_id": "MN",
+          "distance_A": 3.646365
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "A",
+          "component_id": "PHT",
+          "distance_A": 5.926197
+        },
+        {
+          "auth_seq_id": 286,
+          "chain_id": "B",
+          "component_id": "MN",
+          "distance_A": 8.637515
+        },
+        {
+          "auth_seq_id": 288,
+          "chain_id": "D",
+          "component_id": "PPC",
+          "distance_A": 19.351551
+        }
+      ],
+      "observed_residue": "E",
+      "position": 201,
+      "role": "acid_base",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser",
+      "auth_seq_id": 222,
+      "chain_id": "A",
+      "detail": "observed D; expected one of D for declared role unspecified",
+      "expected_residues": [
+        "D"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 288,
+          "chain_id": "A",
+          "component_id": "PPC",
+          "distance_A": 2.681997
+        },
+        {
+          "auth_seq_id": 287,
+          "chain_id": "A",
+          "component_id": "MN",
+          "distance_A": 3.476869
+        },
+        {
+          "auth_seq_id": 286,
+          "chain_id": "B",
+          "component_id": "MN",
+          "distance_A": 6.154482
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "A",
+          "component_id": "PHT",
+          "distance_A": 7.672403
+        },
+        {
+          "auth_seq_id": 288,
+          "chain_id": "D",
+          "component_id": "PPC",
+          "distance_A": 14.548295
+        }
+      ],
+      "observed_residue": "D",
+      "position": 222,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "P9WJJ7"
+  }
+}

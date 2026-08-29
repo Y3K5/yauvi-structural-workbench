@@ -722,12 +722,12 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "path": "qualification-v2/STRATUM_STATUS.tsv"
       }
     ],
-    "missing_records": 66,
+    "missing_records": 50,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
-        "missing_count": 32,
-        "record_count": 0,
+        "missing_count": 16,
+        "record_count": 16,
         "state": "blocked_panel_incomplete",
         "workflow": "membrane_orientation"
       },
@@ -897,7 +897,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "membrane_orientation",
       "external_benchmark": "partial_public_case",
-      "external_benchmark_detail": "beta_barrel_conditionally_qualified_alpha_helical_prototype_v2_panel_unadopted",
+      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_passed_alpha_helical_unadopted_and_non_blocking",
       "inputs": [
         {
           "absence_effect": "blocked",

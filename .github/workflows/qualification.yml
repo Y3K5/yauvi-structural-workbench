@@ -30,6 +30,7 @@ jobs:
   execute:
     name: Adopted panels · py${{ matrix.python }} · ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -71,7 +72,7 @@ jobs:
 
       - name: Execute the StructQC panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
-        run: python run_execution.py
+        run: python run_execution.py --out results/execution-structqc
 
       - name: Execute the assembly-interface panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
@@ -79,6 +80,15 @@ jobs:
           python run_execution.py \
             --panel ADOPTION_DRAFT_ASSEMBLY.json \
             --out results/execution-assembly
+
+      # The membrane panel is the slowest: memorient runs a rotation series per
+      # case, so sixteen cases take roughly six minutes on top of the others.
+      - name: Execute the membrane panel offline
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          python run_execution.py \
+            --panel ADOPTION_DRAFT_MEMBRANE.json \
+            --out results/execution-membrane
 
       - name: Execute the functional-site panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2

@@ -1,0 +1,234 @@
+{
+  "cofactors": [],
+  "config": {
+    "annotation_sites": 3,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "8069857ca19cfbad6ed8554032e5e26204fdb57be9889b4d8e17826451c27e47",
+  "input_sha256": {
+    "annotations": "6748b7d3104d908bca8b8588f222fd7fc744d23d84b71f8171d873e2cd84a0a7",
+    "component_map": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "structure": "8069857ca19cfbad6ed8554032e5e26204fdb57be9889b4d8e17826451c27e47",
+    "structure_evidence_manifest": "ac406911ed33fbcb1015b7706ef6d54e350ce51ad166be15173d0024a2cf0582"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 1131,
+      "chain_id": "A",
+      "component_id": "NAG",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 450,
+      "chain_id": "A",
+      "component_id": "GOL",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 460,
+      "chain_id": "A",
+      "component_id": "ACY",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 461,
+      "chain_id": "B",
+      "component_id": "ACY",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "C",
+      "component_id": "NAG",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "C",
+      "component_id": "FUC",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 3,
+      "chain_id": "C",
+      "component_id": "NAG",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1,
+      "chain_id": "D",
+      "component_id": "NAG",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 2,
+      "chain_id": "D",
+      "component_id": "NAG",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 7.093056,
+    "pair_count": 3,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 53,
+      "chain_id": "A",
+      "detail": "observed G; expected one of G for declared role unspecified",
+      "expected_residues": [
+        "G"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 460,
+          "chain_id": "A",
+          "component_id": "ACY",
+          "distance_A": 3.896167
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 18.099239
+        },
+        {
+          "auth_seq_id": 1131,
+          "chain_id": "A",
+          "component_id": "NAG",
+          "distance_A": 19.116552
+        },
+        {
+          "auth_seq_id": 2,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 21.704767
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "C",
+          "component_id": "NAG",
+          "distance_A": 23.481293
+        }
+      ],
+      "observed_residue": "G",
+      "position": 62,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "covalently attached, hydrogen bond acceptor, hydrogen bond donor, nucleofuge, nucleophile, proton acceptor, proton donor",
+      "auth_seq_id": 146,
+      "chain_id": "A",
+      "detail": "observed S; expected one of S for declared role nucleophile",
+      "expected_residues": [
+        "S"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 460,
+          "chain_id": "A",
+          "component_id": "ACY",
+          "distance_A": 3.275683
+        },
+        {
+          "auth_seq_id": 1131,
+          "chain_id": "A",
+          "component_id": "NAG",
+          "distance_A": 19.940178
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 22.173477
+        },
+        {
+          "auth_seq_id": 2,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 25.242619
+        },
+        {
+          "auth_seq_id": 461,
+          "chain_id": "B",
+          "component_id": "ACY",
+          "distance_A": 26.063288
+        }
+      ],
+      "observed_residue": "S",
+      "position": 158,
+      "role": "nucleophile",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 147,
+      "chain_id": "A",
+      "detail": "observed Y; expected one of Y for declared role unspecified",
+      "expected_residues": [
+        "Y"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 460,
+          "chain_id": "A",
+          "component_id": "ACY",
+          "distance_A": 5.833141
+        },
+        {
+          "auth_seq_id": 1131,
+          "chain_id": "A",
+          "component_id": "NAG",
+          "distance_A": 13.543486
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 21.579412
+        },
+        {
+          "auth_seq_id": 1,
+          "chain_id": "C",
+          "component_id": "NAG",
+          "distance_A": 23.380711
+        },
+        {
+          "auth_seq_id": 2,
+          "chain_id": "D",
+          "component_id": "NAG",
+          "distance_A": 25.614059
+        }
+      ],
+      "observed_residue": "Y",
+      "position": 159,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "P08819"
+  }
+}

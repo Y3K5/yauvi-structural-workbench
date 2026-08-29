@@ -27,6 +27,7 @@ import hashlib
 import json
 import platform
 import shutil
+import re
 import subprocess
 import sys
 import tempfile
@@ -192,6 +193,36 @@ def standalone_sasa(structure: Path, chain: str, whole_assembly: bool) -> float 
         return None
 
 
+def _cmd_membrane_orientation(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
+    # `memorient run` is used rather than `orient`: both emit the validation
+    # block carrying the rotation series this panel gates on, but `run` also
+    # writes the RUN_MANIFEST.json the shared harness reads.
+    cmd = [exe, "run", "--structure", str(at(inv["structure"])), "--out", str(out)]
+    if inv.get("context"):
+        cmd += ["--context", str(inv["context"])]
+    if inv.get("chain"):
+        cmd += ["--chain", str(inv["chain"])]
+    if inv.get("topology_evidence"):
+        cmd += ["--topology-evidence", str(at(inv["topology_evidence"]))]
+    return cmd
+
+
+def opm_half_thickness(path: Path) -> float | None:
+    """The reference half-thickness an OPM file carries in its own header.
+
+    OPM distributes structures already rotated so the bilayer normal is Z, and
+    records the half-thickness it fitted as a REMARK. That is the independent
+    quantity this panel compares against; reading it from the file keeps the
+    reference and the coordinates from drifting apart.
+    """
+    try:
+        head = path.read_text(errors="ignore")[:8000]
+    except OSError:
+        return None
+    match = re.search(r"1/2 of bilayer thickness:\s*([0-9.]+)", head)
+    return float(match.group(1)) if match else None
+
+
 ENGINES: dict[str, dict[str, Any]] = {
     "structure_qc": {"cli": "structqc", "evidence": "STRUCTURE_EVIDENCE.json",
                      "build_cmd": _cmd_structure_qc},
@@ -199,6 +230,8 @@ ENGINES: dict[str, dict[str, Any]] = {
                               "build_cmd": _cmd_functional_site_state},
     "assembly_interface": {"cli": "assembly-context", "evidence": "ASSEMBLY_CONTEXT.json",
                            "build_cmd": _cmd_assembly_interface},
+    "membrane_orientation": {"cli": "memorient", "evidence": "MEMBRANE_ORIENTATION.json",
+                             "build_cmd": _cmd_membrane_orientation},
 }
 
 
@@ -285,7 +318,28 @@ def _measure_assembly_interface(ev, manifest) -> dict[str, Any]:
     }
 
 
+def _measure_membrane_orientation(ev, manifest) -> dict[str, Any]:
+    summary = ev.get("summary") or {}
+    validation = ev.get("validation") or {}
+    errors = validation.get("normal_angle_errors_deg") or []
+    return {
+        "scope_id": summary.get("scope_id"),
+        "fitted_half_thickness_A": summary.get("half_thickness"),
+        "normal_angle_errors_deg": errors,
+        "mean_unsigned_normal_error_deg": round(sum(errors)/len(errors), 6) if errors else None,
+        "max_unsigned_normal_error_deg": round(max(errors), 6) if errors else None,
+        "normal_drift_deg": round(max(errors)-min(errors), 6) if errors else None,
+        "mean_jaccard": validation.get("mean_jaccard"),
+        "embedded_jaccards": validation.get("embedded_jaccards"),
+        "n_reference_extracellular": validation.get("n_reference_extracellular"),
+        "extracellular_comparison_state": validation.get("extracellular_comparison_state"),
+        "n_embedded": summary.get("n_embedded"),
+        "delta_kd": summary.get("delta_kd"),
+    }
+
+
 MEASURERS = {"structure_qc": _measure_structure_qc,
+             "membrane_orientation": _measure_membrane_orientation,
              "assembly_interface": _measure_assembly_interface,
              "functional_site_state": _measure_functional_site_state}
 
@@ -501,7 +555,70 @@ def _gates_assembly_interface(record, expected, ev, checks) -> bool:
     return True
 
 
+def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
+    """Membrane-orientation gate checks.
+
+    The module's own ``validation.passed`` is deliberately not used. It applies
+    its ``normal_threshold_deg`` of 1.0 to the *angle error*, so 1BXW at 6.19
+    degrees is reported as not placed. The panel's 1.0 degree gate is on the
+    *drift across rotations*, which for the same case is 0.015 degrees. Same
+    number, different quantity: the panel asks whether the fitted normal is
+    reproducible under rotation, not whether it matches OPM to within a degree.
+    The gates are therefore computed here from the reported arrays.
+    """
+    mo = record["_gate_semantics"].get("membrane_orientation", {})
+    obs = _measure_membrane_orientation(ev, None)
+
+    checks.append({"check": "scope_id", "required": True,
+                   "expected": expected.get("scope_id"), "observed": obs["scope_id"],
+                   "passed": obs["scope_id"] == expected.get("scope_id")})
+
+    reference = record.get("opm_half_thickness_A")
+    fitted = obs["fitted_half_thickness_A"]
+    limit = mo.get("mean_half_thickness_error_A_max")
+    if reference is not None and fitted is not None and limit is not None:
+        error = abs(float(fitted) - float(reference))
+        checks.append({"check": "half_thickness_error_A", "required": True,
+                       "expected": f"<= {limit} vs OPM {reference}",
+                       "observed": round(error, 6), "passed": error <= float(limit)})
+
+    for key, field in (("mean_unsigned_normal_error_deg_max", "mean_unsigned_normal_error_deg"),
+                       ("per_case_unsigned_normal_error_deg_max", "max_unsigned_normal_error_deg"),
+                       ("normal_drift_across_20_rotations_deg_max", "normal_drift_deg")):
+        limit = mo.get(key)
+        value = obs[field]
+        if limit is None:
+            continue
+        checks.append({"check": field, "required": True, "expected": f"<= {limit}",
+                       "observed": value,
+                       "passed": value is not None and value <= float(limit)})
+
+    # "Non-vacuous" is the load-bearing word: a Jaccard computed over an empty
+    # reference set is 1.0 and means nothing, so the comparison must have been
+    # evaluated against a non-empty extracellular set before the floor applies.
+    floor = mo.get("non_vacuous_residue_jaccard_min")
+    if floor is not None:
+        n_ec = obs["n_reference_extracellular"] or 0
+        evaluated = obs["extracellular_comparison_state"] == "evaluated"
+        minimum = int(mo.get("minimum_reference_extracellular_residues", 1))
+        jaccard = obs["mean_jaccard"]
+        checks.append({"check": "extracellular_comparison_non_vacuous", "required": True,
+                       "expected": f"evaluated with at least {minimum} reference residues",
+                       "observed": {"state": obs["extracellular_comparison_state"], "n": n_ec},
+                       "passed": evaluated and n_ec >= minimum})
+        checks.append({"check": "residue_jaccard", "required": True, "expected": f">= {floor}",
+                       "observed": jaccard,
+                       "passed": jaccard is not None and jaccard >= float(floor)})
+
+    for field in ("fitted_half_thickness_A", "mean_jaccard", "n_reference_extracellular"):
+        checks.append({"check": f"recorded.{field}", "required": True,
+                       "expected": expected.get(field), "observed": obs[field],
+                       "passed": close(obs[field], expected.get(field), 1e-6)})
+    return True
+
+
 GATE_CHECKS = {"structure_qc": _gates_structure_qc,
+               "membrane_orientation": _gates_membrane_orientation,
                "assembly_interface": _gates_assembly_interface,
                "functional_site_state": _gates_functional_site_state}
 
@@ -688,7 +805,31 @@ def _witness_assembly_interface(out: Path) -> set[str]:
     return seen
 
 
+def _witness_membrane_orientation(out: Path) -> set[str]:
+    seen: set[str] = set()
+    evidence = out / "MEMBRANE_ORIENTATION.json"
+    if not evidence.is_file():
+        return seen
+    ev = json.loads(evidence.read_text(encoding="utf-8"))
+    s, v = ev.get("summary") or {}, ev.get("validation") or {}
+    if s.get("scope_id") == "beta_barrel":
+        seen.add("beta_barrel_scope")
+    if v.get("extracellular_comparison_state") == "evaluated":
+        seen.add("extracellular_comparison_evaluated")
+    errors = v.get("normal_angle_errors_deg") or []
+    if errors:
+        seen.add("rotation_series_recorded")
+        if max(errors) > 1.0:
+            seen.add("non_trivial_normal_error")   # a case the fit does not recover exactly
+    if (s.get("n_embedded") or 0) > 0:
+        seen.add("embedded_residues_identified")
+    if (s.get("delta_kd") or 0) > 0:
+        seen.add("lipid_pore_gap_positive")
+    return seen
+
+
 WITNESSES = {"structure_qc": _witness_structure_qc,
+             "membrane_orientation": _witness_membrane_orientation,
              "assembly_interface": _witness_assembly_interface,
              "functional_site_state": _witness_functional_site_state}
 
@@ -783,12 +924,15 @@ def main(argv: list[str] | None = None) -> int:
                     "platform": platform.system()},
         "cases": cases,
     }
-    # One results document per collection. A single fixed filename meant the
-    # second panel executed silently overwrote the first panel's evidence, which
-    # is the kind of loss that is only noticed when someone looks for a result
-    # that used to be there.
-    collection = str(panel.get("panel_id") or "qualification-v2")
-    path = RESULTS / f"EXECUTION_STATUS_{collection}.json"
+    # The results document lives with the run that produced it.
+    #
+    # Keying the filename on the panel id was not enough. It separates different
+    # panels, but two runs of the *same* panel -- a canonical one and a variant
+    # pointed at a different --out -- still wrote to one path, so an adversarial
+    # run silently replaced the real membrane evidence with its own failures.
+    # Writing beside the case outputs makes each execution self-contained and
+    # removes the collision rather than narrowing it.
+    path = args.out / "EXECUTION_STATUS.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(canonical(result))
     print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed, "

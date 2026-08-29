@@ -1,0 +1,245 @@
+{
+  "cofactors": [
+    {
+      "chebi": "CHEBI:57692",
+      "component_id": "",
+      "detail": "observed component(s): FAD",
+      "name": "FAD",
+      "state": "observed_match"
+    }
+  ],
+  "config": {
+    "annotation_sites": 5,
+    "component_map_supplied": true,
+    "pocket_methods": []
+  },
+  "coordinate_sha256": "0253204f534b474c4c3a7edbe0a08e3180d37338d1d7ab7e3c4b0a5946a4ac87",
+  "input_sha256": {
+    "annotations": "c64692c674f335a0274b96274daa4ec422b574a409968a5e700dc464d337f0f0",
+    "component_map": "9f6cc4c755eac5ac4861e5fdc0e6434c5fa6f6d8e3c14da8871b7b5991fda0b0",
+    "structure": "0253204f534b474c4c3a7edbe0a08e3180d37338d1d7ab7e3c4b0a5946a4ac87",
+    "structure_evidence_manifest": "fded95540df13ae669d3aa911d40e936ddf868cf9c9e4fa472315282868d69c3"
+  },
+  "limitations": [
+    "Annotated roles, observed ligands, geometry, and predicted pockets are separate evidence legs.",
+    "Pocket scores are method-specific and are not a druggability score.",
+    "Coordinate proximity does not establish catalysis, occupancy, affinity, or function."
+  ],
+  "missing_evidence": [
+    "pocket_results"
+  ],
+  "module_id": "site_context",
+  "observed_heteroatoms": [
+    {
+      "auth_seq_id": 63,
+      "chain_id": "A",
+      "component_id": "CSD",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1030,
+      "chain_id": "A",
+      "component_id": "PO4",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 499,
+      "chain_id": "A",
+      "component_id": "FAD",
+      "insertion_code": ""
+    },
+    {
+      "auth_seq_id": 1029,
+      "chain_id": "A",
+      "component_id": "GSH",
+      "insertion_code": ""
+    }
+  ],
+  "pockets": [],
+  "schema_version": "1.0",
+  "site_geometry": {
+    "interpretation": "descriptive geometry; no universal catalytic threshold applied",
+    "maximum_separation_A": 15.432552,
+    "pair_count": 6,
+    "representative": "CA"
+  },
+  "sites": [
+    {
+      "annotation_detail": "electrofuge, electrophile, nucleofuge, nucleophile",
+      "auth_seq_id": 58,
+      "chain_id": "A",
+      "detail": "observed C; expected one of C for declared role nucleophile",
+      "expected_residues": [
+        "C"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 1029,
+          "chain_id": "A",
+          "component_id": "GSH",
+          "distance_A": 2.087766
+        },
+        {
+          "auth_seq_id": 63,
+          "chain_id": "A",
+          "component_id": "CSD",
+          "distance_A": 3.408255
+        },
+        {
+          "auth_seq_id": 499,
+          "chain_id": "A",
+          "component_id": "FAD",
+          "distance_A": 3.717333
+        },
+        {
+          "auth_seq_id": 1030,
+          "chain_id": "A",
+          "component_id": "PO4",
+          "distance_A": 22.574812
+        }
+      ],
+      "observed_residue": "C",
+      "position": 102,
+      "role": "nucleophile",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "detail": "expected one coordinate mapping, found 0",
+      "expected_residues": [
+        "C"
+      ],
+      "position": 107,
+      "role": "nucleophile",
+      "state": "unresolved_mapping",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, electrostatic stabiliser, hydrogen bond donor",
+      "auth_seq_id": 66,
+      "chain_id": "A",
+      "detail": "observed K; expected one of K for declared role unspecified",
+      "expected_residues": [
+        "K"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 499,
+          "chain_id": "A",
+          "component_id": "FAD",
+          "distance_A": 2.801445
+        },
+        {
+          "auth_seq_id": 63,
+          "chain_id": "A",
+          "component_id": "CSD",
+          "distance_A": 3.434769
+        },
+        {
+          "auth_seq_id": 1029,
+          "chain_id": "A",
+          "component_id": "GSH",
+          "distance_A": 9.673531
+        },
+        {
+          "auth_seq_id": 1030,
+          "chain_id": "A",
+          "component_id": "PO4",
+          "distance_A": 17.109493
+        }
+      ],
+      "observed_residue": "K",
+      "position": 110,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator",
+      "auth_seq_id": 197,
+      "chain_id": "A",
+      "detail": "observed Y; expected one of Y for declared role unspecified",
+      "expected_residues": [
+        "Y"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 499,
+          "chain_id": "A",
+          "component_id": "FAD",
+          "distance_A": 3.110274
+        },
+        {
+          "auth_seq_id": 63,
+          "chain_id": "A",
+          "component_id": "CSD",
+          "distance_A": 6.415134
+        },
+        {
+          "auth_seq_id": 1030,
+          "chain_id": "A",
+          "component_id": "PO4",
+          "distance_A": 8.155517
+        },
+        {
+          "auth_seq_id": 1029,
+          "chain_id": "A",
+          "component_id": "GSH",
+          "distance_A": 12.309903
+        }
+      ],
+      "observed_residue": "Y",
+      "position": 241,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    },
+    {
+      "annotation_detail": "activator, electrostatic stabiliser, hydrogen bond acceptor",
+      "auth_seq_id": 201,
+      "chain_id": "A",
+      "detail": "observed E; expected one of E for declared role unspecified",
+      "expected_residues": [
+        "E"
+      ],
+      "insertion_code": "",
+      "nearest_heteroatoms": [
+        {
+          "auth_seq_id": 499,
+          "chain_id": "A",
+          "component_id": "FAD",
+          "distance_A": 4.66222
+        },
+        {
+          "auth_seq_id": 63,
+          "chain_id": "A",
+          "component_id": "CSD",
+          "distance_A": 7.301069
+        },
+        {
+          "auth_seq_id": 1030,
+          "chain_id": "A",
+          "component_id": "PO4",
+          "distance_A": 12.682659
+        },
+        {
+          "auth_seq_id": 1029,
+          "chain_id": "A",
+          "component_id": "GSH",
+          "distance_A": 13.371248
+        }
+      ],
+      "observed_residue": "E",
+      "position": 245,
+      "role": "unspecified",
+      "state": "role_compatible",
+      "type": "active_site"
+    }
+  ],
+  "subject": {
+    "id": "P00390"
+  }
+}

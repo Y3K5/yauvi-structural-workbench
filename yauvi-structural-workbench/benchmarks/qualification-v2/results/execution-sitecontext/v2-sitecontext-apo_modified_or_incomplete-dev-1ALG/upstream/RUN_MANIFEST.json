@@ -1,0 +1,35 @@
+{
+  "input_sha256": {
+    "external_validation": "9ab2bc344f790ad639117683b128b2fab69e56e10a31420ddf10de8e768fc110",
+    "provenance": "c0fbed407edd8ca27253c95bc6a5fe7aafbde97bb7d10c689c74ae204cbf79ec",
+    "reference_sequence": "814d7e6114e40802ecf4cea971d5d98de724ce7451f094ffdee525c1371e301c",
+    "structure": "ece3c33189710ba74b7c9e11c56902628c44b886339ddbc3cdd8a41843442d9b"
+  },
+  "missing_evidence": [],
+  "module_id": "structure_quality",
+  "optional_runtimes": {
+    "gemmi": "available_invoked",
+    "mkdssp": "not_available"
+  },
+  "outputs": [
+    "STRUCTURE_EVIDENCE.json",
+    "RESIDUE_QUALITY.tsv",
+    "STRUCTURE_LAYER.json"
+  ],
+  "parameters": {
+    "confidence_encoding": "b_factor_is_adp",
+    "external_validation_state": "imported",
+    "pae_state": "unevaluated",
+    "provenance_class": "experimental",
+    "reference_sequence_supplied": true,
+    "selected_chain": "A",
+    "selected_model": 0
+  },
+  "runtime_versions": {
+    "biopython": "1.87",
+    "numpy": "1.26.4",
+    "python": "3.12.7"
+  },
+  "schema_version": "1.0",
+  "version": "0.1.0"
+}
