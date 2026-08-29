@@ -45,8 +45,14 @@
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
-      "execution_results": "benchmarks/qualification-v2/results/EXECUTION_STATUS.json",
-      "execution_results_sha256": "2f18019ea10a52dc98dca046048e498b3d91eeebc6b42690abb4a377d6f85e0d",
+      "execution_results": {
+        "structure_qc": "benchmarks/qualification-v2/results/EXECUTION_STATUS_qualification-v2-structqc.json",
+        "functional_site_state": "benchmarks/qualification-v2/results/EXECUTION_STATUS_qualification-v2-site-context.json"
+      },
+      "execution_results_sha256": {
+        "structure_qc": "2f18019ea10a52dc98dca046048e498b3d91eeebc6b42690abb4a377d6f85e0d",
+        "functional_site_state": "cf2f42276187e40f6ef9fda72c1af8f83d8f623b1b9fc37feea03fc257e8e838"
+      },
       "strata_executed": {
         "structure_qc": [
           "x_ray",
@@ -57,7 +63,8 @@
       },
       "scientific_execution_note": "The StructQC panel is fully composed: all four strata adopted, 16/16 cases and 1/1 control executing and passing. This flag stays false because it reports the whole collection -- five panels (membrane, ABL StateAtlas, site-context, assembly-context, sf-csa) remain unadopted, and no scope has completed the independent second-machine gate.",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
-      "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported."
+      "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
+      "results_note": "One results document per collection. A single fixed filename meant the second panel executed overwrote the first panel's evidence."
     }
   },
   "gates": {

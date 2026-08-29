@@ -34,6 +34,33 @@
         ]
       },
       "rule": "No pocket predictor is run, so every case reports pocket_results missing. Declared per stratum so the absence is stated, not tolerated."
+    },
+    "coverage_requirements": {
+      "mode": "witnessed_by_at_least_one_executed_case",
+      "required_features": [
+        "curated_residue_resolved",
+        "curated_residue_unresolved",
+        "metal_ligand_role",
+        "declared_cofactor_observed",
+        "declared_cofactor_absent",
+        "declared_cofactor_unmappable",
+        "missing_evidence_reported"
+      ],
+      "rationale": "The panel's coverage_rules were prose, and composition counts records per stratum and split, so a rule could go unmet while the panel reported itself complete. That is exactly how insertion codes hid in the StructQC panel. Each feature is witnessed from the evidence an executed case produced, and execution fails if any required feature has no witness.",
+      "unwitnessable_features": {
+        "curated_residue_substituted": {
+          "declared_by": "the panel's coverage_rules, as modified controls",
+          "status": "NOT SATISFIED - recorded rather than claimed",
+          "why_not_witnessed": "A role_mismatch needs a structure whose curated residue is substituted. The four found (1FQG E164N, 4ZNB C181S, 2NQ9 Y72A, 4K1G H69A) are each alternative structures of proteins already used in other strata, so adopting one would put a single homolog group in two strata.",
+          "resolution": "Curate a substituted structure of a protein not otherwise in the panel."
+        },
+        "curated_residue_missing_coordinates": {
+          "declared_by": "the panel's coverage_rules, as incomplete controls",
+          "status": "NOT SATISFIED - recorded rather than claimed",
+          "why_not_witnessed": "1ALG's curated residues fall outside the modelled fragment entirely, so site-context reports unresolved_mapping. missing_coordinates needs a residue inside the reference map but disordered in the coordinates.",
+          "resolution": "Curate a structure with a disordered catalytic residue."
+        }
+      }
     }
   },
   "records": [
@@ -1050,7 +1077,590 @@
           "OXL"
         ]
       }
+    },
+    {
+      "record_id": "v2-sitecontext-nucleophile_or_covalent-dev-1BTL",
+      "record_kind": "benchmark_case",
+      "stratum": "nucleophile_or_covalent",
+      "split": "development",
+      "pdb_entry_id": "1BTL",
+      "homolog_group": "beta_lactamase_class_a",
+      "artifact": "sources/wwpdb/1BTL.cif",
+      "checksum": "932981534e5dd6abcdd02271935e055c74dff16486c991cd610c16c95b5a2b82",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P62593",
+        "annotation_source": "M-CSA:2",
+        "cofactor_source": "UniProt:P62593 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1BTL",
+        "mcsa": "M-CSA:2"
+      },
+      "exclusion_rationale": "Serine beta-lactamase: the catalytic serine attacks the beta-lactam carbonyl to form an acyl-enzyme.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1BTL.cif",
+            "reference_fasta": "sources/uniprot/P62593.fasta",
+            "validation_report": "sources/wwpdb/1btl_validation.xml",
+            "provenance": "provenance/1BTL.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1BTL.cif",
+          "annotations": "sources/mcsa/MCSA-2.annotations.json",
+          "component_map": "sources/mcsa/MCSA-2.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 7,
+        "state_counts": {
+          "role_compatible": 7
+        },
+        "sites": [
+          {
+            "position": 68,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 68,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 71,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 128,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 164,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          },
+          {
+            "position": 232,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 235,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "A",
+            "expected_residues": [
+              "A"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "SO4"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-nucleophile_or_covalent-dev-1WHS",
+      "record_kind": "benchmark_case",
+      "stratum": "nucleophile_or_covalent",
+      "split": "development",
+      "pdb_entry_id": "1WHS",
+      "homolog_group": "carboxypeptidase_d",
+      "artifact": "sources/wwpdb/1WHS.cif",
+      "checksum": "8069857ca19cfbad6ed8554032e5e26204fdb57be9889b4d8e17826451c27e47",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P08819",
+        "annotation_source": "M-CSA:5",
+        "cofactor_source": "UniProt:P08819 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1WHS",
+        "mcsa": "M-CSA:5"
+      },
+      "exclusion_rationale": "Serine carboxypeptidase with a three-residue curated site, the smallest in the panel.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1WHS.cif",
+            "reference_fasta": "sources/uniprot/P08819.fasta",
+            "validation_report": "sources/wwpdb/1whs_validation.xml",
+            "provenance": "provenance/1WHS.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1WHS.cif",
+          "annotations": "sources/mcsa/MCSA-5.annotations.json",
+          "component_map": "sources/mcsa/MCSA-5.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 3,
+        "state_counts": {
+          "role_compatible": 3
+        },
+        "sites": [
+          {
+            "position": 62,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "G",
+            "expected_residues": [
+              "G"
+            ]
+          },
+          {
+            "position": 158,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 159,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "ACY",
+          "FUC",
+          "GOL",
+          "NAG"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-nucleophile_or_covalent-held-1NZY",
+      "record_kind": "benchmark_case",
+      "stratum": "nucleophile_or_covalent",
+      "split": "held_out",
+      "pdb_entry_id": "1NZY",
+      "homolog_group": "chlorobenzoyl_coa_dehalogenase",
+      "artifact": "sources/wwpdb/1NZY.cif",
+      "checksum": "af2d43a8bb512605dcd67693a5b0e60c704d64d7a4a35cff3d64a42f21e3c98d",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "A5JTM5",
+        "annotation_source": "M-CSA:24",
+        "cofactor_source": "UniProt:A5JTM5 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1NZY",
+        "mcsa": "M-CSA:24"
+      },
+      "exclusion_rationale": "Aspartate nucleophile forming a Meisenheimer/arylated intermediate rather than a serine acyl-enzyme.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1NZY.cif",
+            "reference_fasta": "sources/uniprot/A5JTM5.fasta",
+            "validation_report": "sources/wwpdb/1nzy_validation.xml",
+            "provenance": "provenance/1NZY.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1NZY.cif",
+          "annotations": "sources/mcsa/MCSA-24.annotations.json",
+          "component_map": "sources/mcsa/MCSA-24.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 6,
+        "state_counts": {
+          "role_compatible": 6
+        },
+        "sites": [
+          {
+            "position": 64,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "F",
+            "expected_residues": [
+              "F"
+            ]
+          },
+          {
+            "position": 86,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "A",
+            "expected_residues": [
+              "A"
+            ]
+          },
+          {
+            "position": 90,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 114,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "G",
+            "expected_residues": [
+              "G"
+            ]
+          },
+          {
+            "position": 137,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "W",
+            "expected_residues": [
+              "W"
+            ]
+          },
+          {
+            "position": 145,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "BCA",
+          "CA",
+          "EDO",
+          "PO4"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-nucleophile_or_covalent-held-1NBA",
+      "record_kind": "benchmark_case",
+      "stratum": "nucleophile_or_covalent",
+      "split": "held_out",
+      "pdb_entry_id": "1NBA",
+      "homolog_group": "carbamoylsarcosine_amidase",
+      "artifact": "sources/wwpdb/1NBA.cif",
+      "checksum": "2583e192b8e5e1c37babf77291b089c5e7712cddf09bc0f438c4f9caefcda4b7",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P32400",
+        "annotation_source": "M-CSA:25",
+        "cofactor_source": "UniProt:P32400 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1NBA",
+        "mcsa": "M-CSA:25"
+      },
+      "exclusion_rationale": "Cysteine amidase: a thiol nucleophile, so the stratum covers Ser, Asp and Cys nucleophiles.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1NBA.cif",
+            "reference_fasta": "sources/uniprot/P32400.fasta",
+            "validation_report": "sources/wwpdb/1nba_validation.xml",
+            "provenance": "provenance/1NBA.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1NBA.cif",
+          "annotations": "sources/mcsa/MCSA-25.annotations.json",
+          "component_map": "sources/mcsa/MCSA-25.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 5,
+        "state_counts": {
+          "role_compatible": 5
+        },
+        "sites": [
+          {
+            "position": 51,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 144,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 172,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "A",
+            "expected_residues": [
+              "A"
+            ]
+          },
+          {
+            "position": 173,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "T",
+            "expected_residues": [
+              "T"
+            ]
+          },
+          {
+            "position": 177,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_compatible",
+            "observed_residue": "C",
+            "expected_residues": [
+              "C"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:16189",
+            "component_id": "",
+            "detail": "no exact component id or mapped ChEBI identity was supplied",
+            "name": "sulfate",
+            "state": "unresolved"
+          }
+        ],
+        "observed_heteroatoms": [
+          "SO4"
+        ]
+      }
     }
   ],
-  "source_lock_additions": []
+  "source_lock_additions": [],
+  "controls": [
+    {
+      "record_id": "v2-sitecontext-control-unmapped-cofactor-1NIA",
+      "record_kind": "control_case",
+      "stratum": "metal_or_cofactor",
+      "split": "control",
+      "pdb_entry_id": "1NIA",
+      "homolog_group": "nitrite_reductase_cu",
+      "artifact": "sources/wwpdb/1NIA.cif",
+      "checksum": "783eb91b7b4a4115f974f53304dd48568f6ab53366d5399176d8037883b1a086",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P25006",
+        "annotation_source": "M-CSA:4",
+        "cofactor_source": "UniProt:P25006 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1NIA",
+        "mcsa": "M-CSA:4"
+      },
+      "exclusion_rationale": "Fail-closed control. Identical to the 1NIA case with the ChEBI-to-component map withheld. Without the join, site-context cannot decide whether a declared Cu(2+) corresponds to the CU in the coordinates, and must report the cofactor unresolved rather than guessing a match it cannot support. Recorded as a control so it exercises that refusal without disturbing the required two-per-stratum-per-split counts.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1NIA.cif",
+            "reference_fasta": "sources/uniprot/P25006.fasta",
+            "validation_report": "sources/wwpdb/1nia_validation.xml",
+            "provenance": "provenance/1NIA.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1NIA.cif",
+          "annotations": "sources/mcsa/MCSA-4.annotations.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 7,
+        "state_counts": {
+          "role_compatible": 7
+        },
+        "sites": [
+          {
+            "position": 133,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 136,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 138,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 173,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 174,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "C",
+            "expected_residues": [
+              "C"
+            ]
+          },
+          {
+            "position": 183,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 188,
+            "chain_id": "A",
+            "role": "metal_ligand",
+            "state": "role_compatible",
+            "observed_residue": "M",
+            "expected_residues": [
+              "M"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:49552",
+            "component_id": "",
+            "detail": "no exact component id or mapped ChEBI identity was supplied",
+            "name": "Cu(+)",
+            "state": "unresolved"
+          },
+          {
+            "chebi": "CHEBI:29036",
+            "component_id": "",
+            "detail": "no exact component id or mapped ChEBI identity was supplied",
+            "name": "Cu(2+)",
+            "state": "unresolved"
+          },
+          {
+            "chebi": "CHEBI:57692",
+            "component_id": "",
+            "detail": "no exact component id or mapped ChEBI identity was supplied",
+            "name": "FAD",
+            "state": "unresolved"
+          }
+        ],
+        "observed_heteroatoms": [
+          "CU"
+        ]
+      },
+      "control_purpose": "fail_closed"
+    }
+  ]
 }

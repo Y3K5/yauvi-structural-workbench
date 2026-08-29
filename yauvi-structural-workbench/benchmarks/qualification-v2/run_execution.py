@@ -405,7 +405,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
             "passed": all(c["passed"] for c in checks if c["required"]), "checks": checks}
 
 
-def witness_coverage(out: Path) -> set[str]:
+def _witness_structure_qc(out: Path) -> set[str]:
     """Report which coverage features one executed case actually demonstrates.
 
     Coverage is verified from the evidence a run produced, not asserted in
@@ -445,6 +445,49 @@ def witness_coverage(out: Path) -> set[str]:
                 if seen >= {"insertion_codes", "alternate_locations"}:
                     break
     return seen
+
+
+def _witness_functional_site_state(out: Path) -> set[str]:
+    """Coverage features one executed functional-site case demonstrates."""
+    seen: set[str] = set()
+    evidence = out / "SITE_CONTEXT.json"
+    manifest = out / "RUN_MANIFEST.json"
+    if not evidence.is_file():
+        return seen
+    ev = json.loads(evidence.read_text(encoding="utf-8"))
+
+    states = {s.get("state") for s in ev.get("sites") or []}
+    if "role_compatible" in states:
+        seen.add("curated_residue_resolved")
+    if "role_mismatch" in states:
+        seen.add("curated_residue_substituted")
+    if "unresolved_mapping" in states:
+        seen.add("curated_residue_unresolved")
+    if {"not_observed", "missing_coordinates"} & states:
+        seen.add("curated_residue_missing_coordinates")
+    if any(s.get("role") == "metal_ligand" for s in ev.get("sites") or []):
+        seen.add("metal_ligand_role")
+
+    cofactors = {c.get("state") for c in ev.get("cofactors") or []}
+    if "observed_match" in cofactors:
+        seen.add("declared_cofactor_observed")
+    if "not_observed" in cofactors:
+        seen.add("declared_cofactor_absent")
+    if "unresolved" in cofactors:
+        seen.add("declared_cofactor_unmappable")
+
+    if manifest.is_file() and (json.loads(manifest.read_text(encoding="utf-8")).get("missing_evidence") or []):
+        seen.add("missing_evidence_reported")
+    return seen
+
+
+WITNESSES = {"structure_qc": _witness_structure_qc,
+             "functional_site_state": _witness_functional_site_state}
+
+
+def witness_coverage(out: Path, workflow: str = "structure_qc") -> set[str]:
+    """Dispatch to the witness for the workflow that produced this evidence."""
+    return WITNESSES[workflow](out)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -500,7 +543,7 @@ def main(argv: list[str] | None = None) -> int:
     for case in cases + controls:
         if not case.get("output_dir"):
             continue
-        for feature in witness_coverage(HERE / case["output_dir"]):
+        for feature in witness_coverage(HERE / case["output_dir"], workflow):
             if feature in witnessed:
                 witnessed[feature].append(case["record_id"])
     unmet = sorted(f for f, by in witnessed.items() if not by)
@@ -532,10 +575,14 @@ def main(argv: list[str] | None = None) -> int:
                     "platform": platform.system()},
         "cases": cases,
     }
-    for name, value in (("EXECUTION_STATUS.json", result),):
-        path = RESULTS / name
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(canonical(value))
+    # One results document per collection. A single fixed filename meant the
+    # second panel executed silently overwrote the first panel's evidence, which
+    # is the kind of loss that is only noticed when someone looks for a result
+    # that used to be there.
+    collection = str(panel.get("panel_id") or "qualification-v2")
+    path = RESULTS / f"EXECUTION_STATUS_{collection}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(canonical(result))
     print(f"{panel.get('stratum')} stratum: {passed}/{len(cases)} cases passed, "
           f"{controls_passed}/{len(controls)} controls passed "
           + (f"[residue_identity={semantics['residue_identity']['mode']}]"
