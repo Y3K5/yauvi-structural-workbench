@@ -424,6 +424,49 @@ already used in another stratum -- P62593 with 1BTL, P25910 with 1ZNB, P0A6C1
 with 1QUM. Adopting them would have put one homolog group in two strata and
 constrained the split assignment of both.
 
+## 4g. The assembly panel: an external binary is a scientific dependency
+
+The assembly-interface panel is the first to depend on something outside Python.
+Its gate compares the module's surface areas against the FreeSASA command line,
+and the panel's coverage rule asks for a **checksum-pinned** standalone
+calculation, so which FreeSASA produced the comparison is part of the evidence.
+
+`assembly-context` invokes FreeSASA and records only `available_invoked`, with
+no version anywhere in its output. The executor captures it instead and treats
+it as part of the expectation.
+
+### Installing "freesasa" is not pinning it
+
+Installing the distribution package on each platform passed on all three macOS
+runners and failed on all three Ubuntu runners. Homebrew and apt ship different
+versions, and older builds lack the `--cif` reader this panel needs, so the
+comparison implementation was not the same across the matrix -- which is exactly
+what the coverage rule forbids. CI now builds FreeSASA 2.1.3 from source and
+asserts that build is the one on PATH before any case runs.
+
+The gate caught this on the first run rather than letting two platforms disagree
+quietly, which is the argument for recording the version rather than trusting
+that a binary called `freesasa` is interchangeable with another.
+
+### FreeSASA cannot process every structure
+
+Three curated candidates abort with an internal assertion on atomic radii:
+5ICD (ICT, MG), 1NZY (BCA, CA, EDO, PO4) and 1JDW. It is not simply "contains
+ligands" -- 1QPR carries MN, PHT and PPC and processes cleanly.
+
+`assembly-context` exits 2 and reports the failure rather than emitting a
+surface number, which is why those three could be excluded from the panel rather
+than silently mis-measured. 1MKB and 1HTO replaced two of them, and the
+exclusions are recorded in the panel's gate semantics with the evidence.
+
+### The strata overlapped until the boundary was stated
+
+`homodimer`, `heterooligomer`, `tetramer` and `higher_order` are not disjoint by
+their plain reading: 1QUM is four chains of four distinct entities and satisfies
+both `tetramer` and `heterooligomer`. Chain count is now decisive above two -- a
+four-chain complex is a tetramer whatever its composition -- with the reasoning
+recorded in the panel rather than left to whoever curates next.
+
 ## 5. Adoption is not execution — the executor does not exist
 
 `run_qualification.py` is a **composition audit only**: it validates that records
