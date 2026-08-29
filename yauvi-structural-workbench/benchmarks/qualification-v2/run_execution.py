@@ -967,6 +967,26 @@ def main(argv: list[str] | None = None) -> int:
     unwitnessable = (semantics.get("coverage_requirements") or {}).get("unwitnessable_features") or {}
     for name in sorted(unwitnessable):
         print(f"coverage NOT satisfied (recorded defect): {name}")
+
+    # Informational drift, printed because stdout is the only place it survives.
+    # The evidence file is written into the runner's workspace and destroyed
+    # with it, so a delta that is never printed is a measurement nobody can
+    # read. These are not gates -- see the membrane drift note above -- but the
+    # spread across machines is the first evidence anyone has about whether the
+    # fit reproduces, and that question is what the independent second-machine
+    # gate exists to answer. It belongs in the log of every run that produced it.
+    drift: dict[str, list[float]] = {}
+    for c in cases + controls:
+        for k in c["checks"]:
+            if k["check"].startswith("drift.") and not k["required"]:
+                delta = (k["observed"] or {}).get("delta")
+                if delta is not None:
+                    drift.setdefault(k["check"], []).append(float(delta))
+    for check_name in sorted(drift):
+        deltas = sorted(drift[check_name])
+        print(f"{check_name}: max {deltas[-1]:.3e}, median "
+              f"{deltas[len(deltas) // 2]:.3e}, over {len(deltas)} cases")
+
     for c in cases + controls:
         if not c["passed"]:
             bad = [k["check"] for k in c["checks"] if k["required"] and not k["passed"]]
