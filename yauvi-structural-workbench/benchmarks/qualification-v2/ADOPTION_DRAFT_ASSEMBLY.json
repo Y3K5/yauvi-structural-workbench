@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "draft_state": "not_adopted",
+  "panel_id": "qualification-v2-assembly-context",
+  "workflow": "assembly_interface",
+  "stratum": "pilot",
+  "policy": "A pilot. Nothing adopted; PANEL_MANIFEST.json unchanged.",
+  "gate_semantics": {
+    "assembly_interface": {
+      "operator_copy_stoichiometry": "exact",
+      "freesasa_relative_tolerance": 0.001,
+      "freesasa_absolute_tolerance_A2": 1.0,
+      "note": "The SASA gate is checked against the FreeSASA command line, not against the module's own earlier output. assembly-context records only that FreeSASA was 'available_invoked' with no version, so the executor captures the version and treats it as part of the expectation: a tolerance against a reference implementation is meaningless without knowing which build produced the reference."
+    },
+    "missing_evidence_behavior": {
+      "mode": "fail_closed",
+      "expected_missing_by_stratum": {
+        "tetramer": []
+      },
+      "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated."
+    },
+    "coverage_requirements": {
+      "mode": "witnessed_by_at_least_one_executed_case",
+      "required_features": [
+        "tetrameric_assembly",
+        "stoichiometry_complete",
+        "buried_surface_observed",
+        "residue_contacts_observed"
+      ],
+      "rationale": "Pilot coverage; extended when the remaining strata are curated."
+    }
+  },
+  "records": [
+    {
+      "record_id": "v2-assembly-tetramer-dev-4HHB",
+      "record_kind": "benchmark_case",
+      "stratum": "tetramer",
+      "split": "development",
+      "pdb_entry_id": "4HHB",
+      "homolog_group": "haemoglobin",
+      "artifact": "sources/wwpdb/4HHB.cif",
+      "checksum": "2d3ca1bf21ddff35af2e2bc5d331720f7bfc46a16c4829ea3ec1b41062d5f5a6",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P69905",
+        "assembly": "biological assembly 1"
+      },
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "citation": {
+        "entry": "PDB:4HHB",
+        "description": "Human deoxyhaemoglobin, A2B2 tetramer"
+      },
+      "exclusion_rationale": "The qualification v1 assembly case, retained. An A2B2 tetramer whose subject chain buries a measurable surface, so the FreeSASA agreement gate has something to compare rather than a zero.",
+      "expected_result": {
+        "cli_exit_code": 0,
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/4HHB.cif",
+            "reference_fasta": "sources/uniprot/P69905.fasta",
+            "validation_report": "sources/wwpdb/4hhb_validation.xml",
+            "provenance": "provenance/4HHB.provenance.json",
+            "chain": "A"
+          },
+          "isolated": "sources/wwpdb/4HHB.cif",
+          "assembly": "sources/wwpdb/4HHB-assembly1.cif",
+          "subject_chain": "A",
+          "relationship": "exact_protein",
+          "expected_chains": "A,B,C,D"
+        },
+        "missing_evidence": [],
+        "stoichiometry": {
+          "chains_expected": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "chains_observed": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "complete": true,
+          "lower_bound": false
+        },
+        "surface": {
+          "subject_isolated_sasa_A2": 7843.187793,
+          "subject_assembly_sasa_A2": 6083.185108,
+          "buried_sasa_A2": 1760.002685
+        },
+        "residue_contacts": 67,
+        "interfaces": 201,
+        "methods": {
+          "contact_cutoff_A": 5.0,
+          "contact_geometry": "scipy_ckdtree",
+          "sasa": "freesasa_lee_richards_default_single_thread"
+        },
+        "freesasa_version": "FreeSASA 2.1.3"
+      }
+    }
+  ],
+  "source_lock_additions": []
+}

@@ -62,18 +62,31 @@ def close(a: Any, b: Any, tol: float) -> bool:
 # shared. Keeping the variation in one registry is what stops the second panel
 # becoming a second copy of this file.
 
+def at(reference: Any) -> Path:
+    """Resolve a path a case declares.
+
+    Panel paths are relative to this directory, but a chained upstream run
+    contributes an absolute path, and --out may be given relative to whatever
+    directory the runner was invoked from. Joining every path to HERE produced a
+    doubled path when the two conventions met, so absolute paths pass through
+    untouched.
+    """
+    path = Path(str(reference))
+    return path if path.is_absolute() else HERE / path
+
+
 def _cmd_structure_qc(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
-    cmd = [exe, "run", "--structure", str(HERE / inv["structure"]),
-           "--reference-fasta", str(HERE / inv["reference_fasta"]), "--out", str(out)]
+    cmd = [exe, "run", "--structure", str(at(inv["structure"])),
+           "--reference-fasta", str(at(inv["reference_fasta"])), "--out", str(out)]
     # A predicted model has no wwPDB validation report and does have a PAE
     # matrix; an experimental entry is the other way round. Neither is passed
     # unless the case declares it.
     if inv.get("validation_report"):
-        cmd += ["--validation-report", str(HERE / inv["validation_report"])]
+        cmd += ["--validation-report", str(at(inv["validation_report"]))]
     if inv.get("pae"):
-        cmd += ["--pae", str(HERE / inv["pae"])]
+        cmd += ["--pae", str(at(inv["pae"]))]
     if inv.get("provenance"):
-        cmd += ["--provenance", str(HERE / inv["provenance"])]
+        cmd += ["--provenance", str(at(inv["provenance"]))]
     if inv.get("chain"):
         cmd += ["--chain", inv["chain"]]
     # NMR entries deposit an ensemble. Which model the expectation describes is
@@ -86,14 +99,87 @@ def _cmd_structure_qc(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
 def _cmd_functional_site_state(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
     # site-context consumes StructQC's evidence document, so a case is a
     # two-stage chain: the upstream run is produced first and referenced here.
-    cmd = [exe, "run", "--manifest", str(HERE / inv["manifest"]),
-           "--structure", str(HERE / inv["structure"]),
-           "--annotations", str(HERE / inv["annotations"]), "--out", str(out)]
+    cmd = [exe, "run", "--manifest", str(at(inv["manifest"])),
+           "--structure", str(at(inv["structure"])),
+           "--annotations", str(at(inv["annotations"])), "--out", str(out)]
     if inv.get("component_map"):
-        cmd += ["--component-map", str(HERE / inv["component_map"])]
+        cmd += ["--component-map", str(at(inv["component_map"]))]
     if inv.get("pocket_result"):
-        cmd += ["--pocket-result", str(HERE / inv["pocket_result"])]
+        cmd += ["--pocket-result", str(at(inv["pocket_result"]))]
     return cmd
+
+
+def _cmd_assembly_interface(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
+    # Like site-context, this consumes StructQC's evidence; it additionally needs
+    # both the isolated coordinates and the biological assembly, because the
+    # quantity under test is how much of the subject chain the assembly buries.
+    cmd = [exe, "run", "--manifest", str(at(inv["manifest"])),
+           "--isolated", str(at(inv["isolated"])),
+           "--assembly", str(at(inv["assembly"])),
+           "--subject-chain", str(inv["subject_chain"]),
+           "--relationship", str(inv.get("relationship", "exact_protein")),
+           "--out", str(out)]
+    if inv.get("expected_chains"):
+        cmd += ["--expected-chains", str(inv["expected_chains"])]
+    if inv.get("assembly_id"):
+        cmd += ["--assembly-id", str(inv["assembly_id"])]
+    if inv.get("reference_id"):
+        cmd += ["--reference-id", str(inv["reference_id"])]
+    return cmd
+
+
+def freesasa_version() -> str | None:
+    """The FreeSASA build actually on PATH.
+
+    assembly-context invokes FreeSASA but records only 'available_invoked', with
+    no version anywhere in its evidence. A panel whose gate is a 0.001 relative
+    tolerance against a reference implementation cannot leave which
+    implementation unrecorded, so the executor captures it.
+    """
+    exe = shutil.which("freesasa")
+    if exe is None:
+        return None
+    try:
+        out = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    first = (out.stdout or out.stderr).strip().splitlines()
+    return first[0].strip() if first else None
+
+
+def standalone_sasa(structure: Path, chain: str, whole_assembly: bool) -> float | None:
+    """Subject-chain SASA from the FreeSASA CLI, independent of the module.
+
+    Two different questions need two different invocations. The isolated value
+    is the chain on its own, which is a chain group. The assembly value is that
+    same chain *within* the complex, so the whole file is computed and the
+    subject chain's residues summed -- extracting the chain first would silently
+    give the isolated number again.
+    """
+    exe = shutil.which("freesasa")
+    if exe is None:
+        return None
+    args = [exe, "--cif", str(structure)]
+    args += ["--format=seq"] if whole_assembly else [f"--chain-groups={chain}"]
+    try:
+        run = subprocess.run(args, capture_output=True, text=True, timeout=600)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if whole_assembly:
+        total = 0.0
+        found = False
+        for line in run.stdout.splitlines():
+            parts = line.split()
+            if len(parts) >= 4 and parts[0] == "SEQ" and parts[1] == chain:
+                try:
+                    total += float(parts[-1]); found = True
+                except ValueError:
+                    continue
+        return round(total, 6) if found else None
+    # chain-groups prints the whole input first, then each group; take the last
+    totals = [float(l.split(":")[1]) for l in run.stdout.splitlines()
+              if l.strip().startswith("Total")]
+    return round(totals[-1], 6) if totals else None
 
 
 ENGINES: dict[str, dict[str, Any]] = {
@@ -101,6 +187,8 @@ ENGINES: dict[str, dict[str, Any]] = {
                      "build_cmd": _cmd_structure_qc},
     "functional_site_state": {"cli": "site-context", "evidence": "SITE_CONTEXT.json",
                               "build_cmd": _cmd_functional_site_state},
+    "assembly_interface": {"cli": "assembly-context", "evidence": "ASSEMBLY_CONTEXT.json",
+                           "build_cmd": _cmd_assembly_interface},
 }
 
 
@@ -127,8 +215,7 @@ def invoke(inv: Mapping[str, Any], exe: str, out: Path, workflow: str = "structu
         up_evidence = up_out / ENGINES[up_workflow]["evidence"]
         if not up_evidence.is_file():
             return up, out          # downstream cannot run; caller reports it
-        inv["manifest"] = str(up_evidence.relative_to(HERE)) if up_evidence.is_relative_to(HERE) \
-            else str(up_evidence)
+        inv["manifest"] = str(up_evidence.resolve())
     cmd = ENGINES[workflow]["build_cmd"](inv, exe, out)
     return subprocess.run(cmd, capture_output=True, text=True), out
 
@@ -171,7 +258,25 @@ def _measure_functional_site_state(ev, manifest) -> dict[str, Any]:
     }
 
 
+def _measure_assembly_interface(ev, manifest) -> dict[str, Any]:
+    assembly = ev.get("assembly") or {}
+    surface = ev.get("surface") or {}
+    return {
+        "stoichiometry": {k: assembly.get(k) for k in
+                          ("chains_expected", "chains_observed", "complete", "lower_bound")},
+        "surface": {k: surface.get(k) for k in
+                    ("subject_isolated_sasa_A2", "subject_assembly_sasa_A2", "buried_sasa_A2")},
+        "residue_contacts": len(ev.get("residue_contacts") or []),
+        "interfaces": len(ev.get("interfaces") or []),
+        "methods": ev.get("methods"),
+        # Recorded by the executor, not by the module: assembly-context reports
+        # only that FreeSASA was "available_invoked".
+        "freesasa_version": freesasa_version(),
+    }
+
+
 MEASURERS = {"structure_qc": _measure_structure_qc,
+             "assembly_interface": _measure_assembly_interface,
              "functional_site_state": _measure_functional_site_state}
 
 
@@ -322,7 +427,64 @@ def _gates_functional_site_state(record, expected, ev, checks) -> bool:
     return True
 
 
+def _gates_assembly_interface(record, expected, ev, checks) -> bool:
+    """Assembly-interface gate checks.
+
+    The panel's gates are exact stoichiometry and a SASA agreement tolerance.
+    The second is only meaningful if something independent produces the
+    comparison value, so the buried-surface numbers are checked against the
+    FreeSASA command line rather than against the module's own previous output.
+    """
+    ai = record["_gate_semantics"].get("assembly_interface", {})
+    obs = _measure_assembly_interface(ev, None)
+    inv = expected["invocation"]
+
+    if ai.get("operator_copy_stoichiometry") == "exact":
+        exp_st, obs_st = expected.get("stoichiometry") or {}, obs["stoichiometry"]
+        for field in ("chains_expected", "chains_observed", "complete"):
+            checks.append({"check": f"stoichiometry.{field}", "required": True,
+                           "expected": exp_st.get(field), "observed": obs_st.get(field),
+                           "passed": obs_st.get(field) == exp_st.get(field)})
+
+    exp_sf, obs_sf = expected.get("surface") or {}, obs["surface"]
+    for field in ("subject_isolated_sasa_A2", "subject_assembly_sasa_A2", "buried_sasa_A2"):
+        checks.append({"check": f"surface.{field}", "required": True,
+                       "expected": exp_sf.get(field), "observed": obs_sf.get(field),
+                       "passed": close(obs_sf.get(field), exp_sf.get(field), 1e-6)})
+
+    # The version is part of the evidence: a tolerance against a reference
+    # implementation is meaningless without knowing which build produced it.
+    checks.append({"check": "freesasa_version_recorded", "required": True,
+                   "expected": expected.get("freesasa_version"),
+                   "observed": obs["freesasa_version"],
+                   "passed": bool(obs["freesasa_version"])
+                             and obs["freesasa_version"] == expected.get("freesasa_version")})
+
+    rel = float(ai.get("freesasa_relative_tolerance", 0.001))
+    abs_tol = float(ai.get("freesasa_absolute_tolerance_A2", 1.0))
+    chain = str(inv["subject_chain"])
+    for field, path, whole in (
+            ("subject_isolated_sasa_A2", at(inv["isolated"]), False),
+            ("subject_assembly_sasa_A2", at(inv["assembly"]), True)):
+        reference = standalone_sasa(path, chain, whole)
+        module_value = obs_sf.get(field)
+        if reference is None or module_value is None:
+            checks.append({"check": f"freesasa_agreement.{field}", "required": True,
+                           "expected": "a standalone FreeSASA value",
+                           "observed": None, "passed": False})
+            continue
+        delta = abs(float(module_value) - reference)
+        ok = delta <= abs_tol and (delta / reference if reference else 0.0) <= rel
+        checks.append({"check": f"freesasa_agreement.{field}", "required": True,
+                       "expected": f"within {rel} relative and {abs_tol} A2 of standalone FreeSASA",
+                       "observed": {"module": module_value, "standalone": reference,
+                                    "delta_A2": round(delta, 6)},
+                       "passed": ok})
+    return True
+
+
 GATE_CHECKS = {"structure_qc": _gates_structure_qc,
+               "assembly_interface": _gates_assembly_interface,
                "functional_site_state": _gates_functional_site_state}
 
 
@@ -331,7 +493,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
     inv = expected["invocation"]
     checks: list[dict[str, Any]] = []
 
-    artifact = HERE / record["artifact"]
+    artifact = at(record["artifact"])
     observed_digest = sha256(artifact) if artifact.is_file() else None
     checks.append({"check": "source_artifact_checksum", "required": True,
                    "expected": record["checksum"], "observed": observed_digest,
@@ -401,7 +563,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
 
     return {"record_id": record["record_id"], "pdb_entry_id": record["pdb_entry_id"],
             "stratum": record["stratum"], "split": record["split"],
-            "output_dir": str(out.relative_to(HERE)) if out.is_relative_to(HERE) else str(out),
+            "output_dir": str(out.resolve()),
             "passed": all(c["passed"] for c in checks if c["required"]), "checks": checks}
 
 
@@ -481,7 +643,35 @@ def _witness_functional_site_state(out: Path) -> set[str]:
     return seen
 
 
+def _witness_assembly_interface(out: Path) -> set[str]:
+    seen: set[str] = set()
+    evidence = out / "ASSEMBLY_CONTEXT.json"
+    if not evidence.is_file():
+        return seen
+    ev = json.loads(evidence.read_text(encoding="utf-8"))
+    assembly, surface = ev.get("assembly") or {}, ev.get("surface") or {}
+    chains = assembly.get("chains_observed") or []
+    if len(chains) == 2:
+        seen.add("dimeric_assembly")
+    if len(chains) == 4:
+        seen.add("tetrameric_assembly")
+    if len(chains) > 4:
+        seen.add("higher_order_assembly")
+    if len(set(chains)) != len(chains):
+        seen.add("repeated_chain_ids")
+    if assembly.get("complete"):
+        seen.add("stoichiometry_complete")
+    if assembly.get("lower_bound"):
+        seen.add("stoichiometry_lower_bound")
+    if (surface.get("buried_sasa_A2") or 0) > 0:
+        seen.add("buried_surface_observed")
+    if ev.get("residue_contacts"):
+        seen.add("residue_contacts_observed")
+    return seen
+
+
 WITNESSES = {"structure_qc": _witness_structure_qc,
+             "assembly_interface": _witness_assembly_interface,
              "functional_site_state": _witness_functional_site_state}
 
 
@@ -543,7 +733,7 @@ def main(argv: list[str] | None = None) -> int:
     for case in cases + controls:
         if not case.get("output_dir"):
             continue
-        for feature in witness_coverage(HERE / case["output_dir"], workflow):
+        for feature in witness_coverage(at(case["output_dir"]), workflow):
             if feature in witnessed:
                 witnessed[feature].append(case["record_id"])
     unmet = sorted(f for f, by in witnessed.items() if not by)
