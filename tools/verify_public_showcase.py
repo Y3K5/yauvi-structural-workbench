@@ -84,12 +84,57 @@ def main() -> int:
     if len(qualification_cases) != 6:
         fail("six public qualification narratives are required")
     qualification_v2 = data.get("qualification_v2", {})
-    if qualification_v2.get("overall_state") != "blocked_panel_incomplete":
-        fail("Qualification v2 missing-panel block is not visible")
-    if qualification_v2.get("scientific_execution_performed") is not False:
-        fail("Qualification v2 incorrectly implies scientific execution")
-    if int(qualification_v2.get("missing_records", 0)) <= 0:
+    # These were pinned to the frozen values "blocked_panel_incomplete" and
+    # scientific_execution_performed is False. That guarded honestly against
+    # over-claiming while nothing had executed, but it also fixed the showcase
+    # to a state the project has since moved past, and it would have failed on
+    # the day the last panel is adopted and the audit correctly reports a
+    # composed panel. The check is now consistency with the evidence: the
+    # showcase must say exactly what the executed results and the composition
+    # audit say, and must never claim a qualified scope.
+    v2_status = json.loads((ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+                            / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
+    summary = json.loads((ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+                          / "results" / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
+    if qualification_v2.get("overall_state") != v2_status["overall_state"]:
+        fail("Qualification v2 composition state drifted from the audit")
+    execution = qualification_v2.get("scientific_execution", {})
+    for field in ("panels_executed", "panels_total", "cases_passed", "cases_required",
+                  "every_executed_panel_passed", "workflows_executed", "workflows_not_executed",
+                  "all_release_blocking_scopes_qualified", "second_machine_reproduction"):
+        if execution.get(field) != summary[field]:
+            fail(f"showcase execution field '{field}' drifted from EXECUTION_SUMMARY.json")
+    if qualification_v2.get("scientific_execution_performed") != summary["scientific_execution_performed"]:
+        fail("showcase execution flag drifted from the executed evidence")
+    # The gate that must never close from generated data.
+    if execution.get("all_release_blocking_scopes_qualified") is not False:
+        fail("public showcase claims Qualification v2 scopes are qualified")
+    if execution.get("second_machine_reproduction") != "not_recorded":
+        fail("public showcase claims an independent second-machine reproduction")
+    if not str(execution.get("scope_qualification_note", "")).strip():
+        fail("execution counts are published without the note that bounds them")
+    if int(qualification_v2.get("missing_records", 0)) <= 0 and summary["cases_passed"] >= summary["cases_required"]:
         fail("Qualification v2 missing-record count is not visible")
+
+    # RELEASE_STATUS.json records a sha256 beside every evidence document it
+    # cites, and until now nothing compared them to the files. The membrane
+    # result was rewritten by the drift change and its recorded digest went
+    # stale in the public repository without any check noticing, which is the
+    # whole point of recording a digest. Verify the chain it claims.
+    workbench = ROOT / "yauvi-structural-workbench"
+    v2_evidence = release["qualification_evidence"]["current_v2"]
+    digests = [
+        (v2_evidence["panel_manifest"], v2_evidence["panel_manifest_sha256"]),
+        (v2_evidence["source_lock"], v2_evidence["source_lock_sha256"]),
+        (v2_evidence["results"], v2_evidence["results_sha256"]),
+        (v2_evidence["execution_summary"], v2_evidence["execution_summary_sha256"]),
+    ] + [
+        (path, v2_evidence["execution_results_sha256"][workflow])
+        for workflow, path in sorted(v2_evidence["execution_results"].items())
+    ]
+    for relative, recorded in digests:
+        if digest(workbench / relative) != recorded:
+            fail(f"RELEASE_STATUS.json records a stale digest for {relative}")
     case_statuses = {item.get("analysis_type"): item.get("status") for item in qualification_cases}
     expected_statuses = {
         "structure_qc": "passed", "membrane_orientation": "partial",

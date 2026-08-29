@@ -97,20 +97,31 @@ jobs:
           python -m pytest sources/tests -m "not network and not adapter" --tb=short
       - name: Showcase bundle parses without a network build
         run: node --check yauvi-structural-workbench/public-showcase/app.js
-      - name: Qualification v2 fails closed until public cases are adopted
+      - name: Qualification v2 never claims a qualified scope
         run: |
           set +e
           python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
           qualification_code=$?
           set -e
-          test "$qualification_code" -eq 1
-          python - <<'PY'
+          python - "$qualification_code" <<'PY'
           import json
+          import sys
           from pathlib import Path
-          path = Path("yauvi-structural-workbench/benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json")
-          result = json.loads(path.read_text(encoding="utf-8"))
-          assert result["overall_state"] == "blocked_panel_incomplete"
-          assert result["scientific_execution_performed"] is False
+          results = Path("yauvi-structural-workbench/benchmarks/qualification-v2/results")
+          audit = json.loads((results / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
+          # This asserted a bare exit 1 and the literal string
+          # "blocked_panel_incomplete". Both are true today and both stop being
+          # true the day the last panel is adopted -- the audit would correctly
+          # report a composed panel and exit 0, and this gate would fail at the
+          # exact moment the project reached its milestone. Assert the contract
+          # instead: the exit code reports composition, and nothing here may
+          # claim a qualified scope.
+          expected = 0 if audit["panel_composition_ready"] else 1
+          assert int(sys.argv[1]) == expected, f"exit {sys.argv[1]} disagrees with panel_composition_ready"
+          assert audit["scientific_execution_performed"] is False, "the composition audit must not report execution"
+          summary = json.loads((results / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
+          assert summary["all_release_blocking_scopes_qualified"] is False
+          assert summary["second_machine_reproduction"] == "not_recorded"
           PY
       - name: Public showcase and five human use cases reproduce byte-for-byte
         run: |

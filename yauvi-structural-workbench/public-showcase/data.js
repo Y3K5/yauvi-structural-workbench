@@ -397,7 +397,8 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "The SF-CSA public case verifies orchestration and evidence boundaries with test doubles; it does not benchmark real alignments.",
     "Synthetic demonstrations do not externally qualify a workflow; independent public cases are displayed separately.",
     "Four passing public cases do not establish workflow-general accuracy, and the two partial cases remain release blockers.",
-    "Qualification v2 freezes the expanded panels and remains blocked until source-locked public cases are adopted and executed."
+    "Qualification v2 freezes the expanded panels and remains blocked until source-locked public cases are adopted and executed.",
+    "Four of six Qualification v2 panels have executed and passed. Executed panels passing is not scope qualification: two panels are unadopted, membrane covers only its beta_barrel stratum, and no scope has reproduced on an independent second machine."
   ],
   "non_claims": [
     "Structural resemblance is not biochemical activity.",
@@ -720,56 +721,145 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       {
         "label": "V2 stratum gaps",
         "path": "qualification-v2/STRATUM_STATUS.tsv"
+      },
+      {
+        "label": "V2 execution summary",
+        "path": "qualification-v2/EXECUTION_SUMMARY.json"
       }
     ],
     "missing_records": 50,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
+        "execution_state": "passed",
         "missing_count": 16,
         "record_count": 16,
         "state": "blocked_panel_incomplete",
         "workflow": "membrane_orientation"
       },
       {
+        "execution_state": "not_executed",
         "missing_count": 18,
         "record_count": 0,
         "state": "blocked_panel_incomplete",
         "workflow": "conformational_state"
       },
       {
+        "execution_state": "passed",
         "missing_count": 0,
         "record_count": 16,
         "state": "ready_for_execution",
         "workflow": "structure_qc"
       },
       {
+        "execution_state": "passed",
         "missing_count": 0,
         "record_count": 16,
         "state": "ready_for_execution",
         "workflow": "functional_site_state"
       },
       {
+        "execution_state": "passed",
         "missing_count": 0,
         "record_count": 16,
         "state": "ready_for_execution",
         "workflow": "assembly_interface"
       },
       {
+        "execution_state": "not_executed",
         "missing_count": 16,
         "record_count": 0,
         "state": "blocked_panel_incomplete",
         "workflow": "sf_csa"
       }
     ],
-    "scientific_execution_performed": false
+    "scientific_execution": {
+      "all_release_blocking_scopes_qualified": false,
+      "cases_passed": 64,
+      "cases_required": 114,
+      "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 16/32 with 6/6, covering the release-blocking beta_barrel stratum only. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "every_executed_panel_passed": true,
+      "panels": [
+        {
+          "cases_adopted": 16,
+          "cases_passed": 16,
+          "cases_required": 16,
+          "controls_passed": 0,
+          "controls_total": 0,
+          "coverage_required": 6,
+          "coverage_unwitnessable": [],
+          "coverage_witnessed": 6,
+          "stratum_scope": "all_four_assembly_strata",
+          "stratum_state": "passed",
+          "workflow": "assembly_interface"
+        },
+        {
+          "cases_adopted": 16,
+          "cases_passed": 16,
+          "cases_required": 32,
+          "controls_passed": 0,
+          "controls_total": 0,
+          "coverage_required": 6,
+          "coverage_unwitnessable": [],
+          "coverage_witnessed": 6,
+          "stratum_scope": "beta_barrel",
+          "stratum_state": "passed",
+          "workflow": "membrane_orientation"
+        },
+        {
+          "cases_adopted": 16,
+          "cases_passed": 16,
+          "cases_required": 16,
+          "controls_passed": 1,
+          "controls_total": 1,
+          "coverage_required": 8,
+          "coverage_unwitnessable": [
+            "curated_residue_missing_coordinates"
+          ],
+          "coverage_witnessed": 8,
+          "stratum_scope": "all_four_site_context_strata",
+          "stratum_state": "passed",
+          "workflow": "functional_site_state"
+        },
+        {
+          "cases_adopted": 16,
+          "cases_passed": 16,
+          "cases_required": 16,
+          "controls_passed": 2,
+          "controls_total": 2,
+          "coverage_required": 7,
+          "coverage_unwitnessable": [
+            "modified_residues"
+          ],
+          "coverage_witnessed": 7,
+          "stratum_scope": "all_four_structqc_strata",
+          "stratum_state": "passed",
+          "workflow": "structure_qc"
+        }
+      ],
+      "panels_executed": 4,
+      "panels_total": 6,
+      "scope_qualification_note": "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. This summary reports execution only. 2 of 6 panels are unadopted and no second-machine reproduction is recorded, so no scope is qualified.",
+      "second_machine_reproduction": "not_recorded",
+      "workflows_executed": [
+        "assembly_interface",
+        "functional_site_state",
+        "membrane_orientation",
+        "structure_qc"
+      ],
+      "workflows_not_executed": [
+        "conformational_state",
+        "sf_csa"
+      ]
+    },
+    "scientific_execution_performed": true
   },
   "release": {
     "publication_authorized": false,
     "release_candidate": false,
     "release_state": "pre_public_preparation",
     "submission_eligible": false,
-    "version_control": "missing"
+    "version_control": "public_git_repository"
   },
   "reviewer_files": [
     {

@@ -97,6 +97,20 @@ jobs:
             --panel ADOPTION_DRAFT_SITECONTEXT.json \
             --out results/execution-sitecontext
 
+      # Reduce this runner's four results to one readable document. On CI this
+      # is the interesting artifact: the panels just executed on a machine that
+      # did not record the expectations, so the drift deltas it carries are the
+      # first cross-machine measurement of the membrane fit's stability.
+      #
+      # if: always() because a failing panel is exactly when this is worth
+      # having. Without it the summary is skipped on the runs that need
+      # explaining and the uploaded artifact carries no overview. The script
+      # exits 1 when an executed panel failed, so the job stays red.
+      - name: Summarize the executed evidence
+        if: always()
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: python summarize_execution.py
+
       # The evidence, not just the exit code. Every recorded check -- including
       # the membrane drift deltas, which are informational and therefore cannot
       # be inferred from a green run -- lives in the EXECUTION_STATUS.json files
@@ -111,11 +125,23 @@ jobs:
           path: yauvi-structural-workbench/benchmarks/qualification-v2/results/
           retention-days: 90
 
-      - name: Composition audit still fails closed on the unadopted panels
+      # Asserted a bare exit 1, which pins CI to an incomplete panel and breaks
+      # on the day the last one is adopted. The exit code reports composition,
+      # so compare it to the composition state the audit itself recorded.
+      - name: Composition audit agrees with its own recorded state
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: |
           set +e
           python run_qualification.py
           code=$?
           set -e
-          test "$code" -eq 1
+          python - "$code" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          audit = json.loads(Path("results/QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
+          expected = 0 if audit["panel_composition_ready"] else 1
+          assert int(sys.argv[1]) == expected, f"exit {sys.argv[1]} disagrees with panel_composition_ready"
+          summary = json.loads(Path("results/EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
+          assert summary["all_release_blocking_scopes_qualified"] is False
+          PY

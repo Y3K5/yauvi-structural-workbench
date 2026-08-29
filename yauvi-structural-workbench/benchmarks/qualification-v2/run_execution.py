@@ -57,6 +57,24 @@ def close(a: Any, b: Any, tol: float) -> bool:
         return a == b
 
 
+def drift_deltas(records: Any) -> dict[str, list[float]]:
+    """Collect every informational ``drift.*`` delta, keyed by check name.
+
+    Drift checks are recorded and never required, so a run can pass with a
+    delta nobody looked at. This is the one place that reads them back out,
+    shared by the runner's own summary line and by ``summarize_execution.py``,
+    so the two can never disagree about what a run measured.
+    """
+    deltas: dict[str, list[float]] = {}
+    for record in records:
+        for check in record["checks"]:
+            if check["check"].startswith("drift.") and not check["required"]:
+                delta = (check["observed"] or {}).get("delta")
+                if delta is not None:
+                    deltas.setdefault(check["check"], []).append(float(delta))
+    return {name: sorted(values) for name, values in sorted(deltas.items())}
+
+
 # --- workflow engines -------------------------------------------------------
 # Each panel names a workflow, executed by a different CLI, emitting a different
 # evidence document, judged by different gates. Only those three things vary;
@@ -975,15 +993,7 @@ def main(argv: list[str] | None = None) -> int:
     # spread across machines is the first evidence anyone has about whether the
     # fit reproduces, and that question is what the independent second-machine
     # gate exists to answer. It belongs in the log of every run that produced it.
-    drift: dict[str, list[float]] = {}
-    for c in cases + controls:
-        for k in c["checks"]:
-            if k["check"].startswith("drift.") and not k["required"]:
-                delta = (k["observed"] or {}).get("delta")
-                if delta is not None:
-                    drift.setdefault(k["check"], []).append(float(delta))
-    for check_name in sorted(drift):
-        deltas = sorted(drift[check_name])
+    for check_name, deltas in drift_deltas(cases + controls).items():
         print(f"{check_name}: max {deltas[-1]:.3e}, median "
               f"{deltas[len(deltas) // 2]:.3e}, over {len(deltas)} cases")
 

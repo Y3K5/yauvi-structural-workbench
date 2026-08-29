@@ -397,6 +397,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     qualification_v2_manifest_path = qualification_v2_root / "PANEL_MANIFEST.json"
     qualification_v2_report_path = qualification_v2_root / "results" / "QUALIFICATION_REPORT.html"
     qualification_v2_strata_path = qualification_v2_root / "results" / "STRATUM_STATUS.tsv"
+    execution_summary_path = qualification_v2_root / "results" / "EXECUTION_SUMMARY.json"
     reviewer_quickstart_path = ROOT / "yauvi-structural-workbench" / "docs" / "reviewer-quickstart.md"
     paper_path = ROOT / "yauvi-structural-workbench" / "paper" / "paper.md"
     joss_checklist_path = ROOT / "yauvi-structural-workbench" / "JOSS_CHECKLIST.md"
@@ -406,6 +407,10 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     roadmap = load(roadmap_path)
     qualification = load(qualification_results_path)
     qualification_v2 = load(qualification_v2_status_path)
+    execution_summary = load(execution_summary_path)
+    executed_states = {
+        panel["workflow"]: panel["stratum_state"] for panel in execution_summary["panels"]
+    }
     sys.path.insert(0, str(ROOT / "platform" / "src"))
     try:
         from yauvi_platform.structural_workbench.store import analysis_definitions, tool_readiness
@@ -542,6 +547,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
         (qualification_v2_manifest_path, "qualification-v2/PANEL_MANIFEST.json"),
         (qualification_v2_report_path, "qualification-v2/QUALIFICATION_REPORT.html"),
         (qualification_v2_strata_path, "qualification-v2/STRATUM_STATUS.tsv"),
+        (execution_summary_path, "qualification-v2/EXECUTION_SUMMARY.json"),
         (reviewer_quickstart_path, "reviewer/REVIEWER_QUICKSTART.md"),
         (roadmap_path, "reviewer/JOSS_PUBLICATION_ROADMAP.json"),
         (paper_path, "reviewer/PAPER_PREVIEW.md"),
@@ -597,7 +603,42 @@ def build_public_showcase(technical_output: Path, public_output: Path,
         "qualification_v2": {
             "collection_id": qualification_v2["collection_id"],
             "overall_state": qualification_v2["overall_state"],
-            "scientific_execution_performed": qualification_v2["scientific_execution_performed"],
+            # The composition audit reports its own scope and hardcodes this
+            # false; on its own it reads as "nothing has been executed", which
+            # stopped being true once four panels executed. The executed
+            # evidence answers the same question directly, so the flag now
+            # comes from there and travels with the note that bounds it.
+            "scientific_execution_performed": execution_summary["scientific_execution_performed"],
+            "scientific_execution": {
+                "panels_executed": execution_summary["panels_executed"],
+                "panels_total": execution_summary["panels_total"],
+                "cases_passed": execution_summary["cases_passed"],
+                "cases_required": execution_summary["cases_required"],
+                "every_executed_panel_passed": execution_summary["every_executed_panel_passed"],
+                "workflows_executed": execution_summary["workflows_executed"],
+                "workflows_not_executed": execution_summary["workflows_not_executed"],
+                "all_release_blocking_scopes_qualified":
+                    execution_summary["all_release_blocking_scopes_qualified"],
+                "second_machine_reproduction": execution_summary["second_machine_reproduction"],
+                "scope_qualification_note": execution_summary["scope_qualification_note"],
+                "collection_note": release["qualification_evidence"]["current_v2"]["scientific_execution_note"],
+                "panels": [
+                    {
+                        "workflow": panel["workflow"],
+                        "stratum_scope": panel["stratum_scope"],
+                        "stratum_state": panel["stratum_state"],
+                        "cases_adopted": panel["cases_adopted"],
+                        "cases_required": panel["cases_required"],
+                        "cases_passed": panel["cases"]["passed"],
+                        "controls_passed": panel["controls"]["passed"],
+                        "controls_total": panel["controls"]["total"],
+                        "coverage_witnessed": panel["coverage"]["witnessed"],
+                        "coverage_required": panel["coverage"]["required"],
+                        "coverage_unwitnessable": panel["coverage"]["unwitnessable"],
+                    }
+                    for panel in execution_summary["panels"]
+                ],
+            },
             "missing_records": sum(
                 requirement["missing_count"]
                 for panel in qualification_v2["panels"]
@@ -608,6 +649,10 @@ def build_public_showcase(technical_output: Path, public_output: Path,
                     "workflow": panel["workflow"], "state": panel["state"],
                     "record_count": panel["record_count"],
                     "missing_count": sum(row["missing_count"] for row in panel["requirements"]),
+                    # "state" is the composition audit's word: ready_for_execution
+                    # means composed, not run. Carrying the executed state beside
+                    # it stops the two panel lists reading as a contradiction.
+                    "execution_state": executed_states.get(panel["workflow"], "not_executed"),
                 }
                 for panel in qualification_v2["panels"]
             ],
@@ -616,6 +661,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
                 {"label": "Qualification v2 status", "path": "qualification-v2/QUALIFICATION_V2_STATUS.json"},
                 {"label": "Printable v2 audit", "path": "qualification-v2/QUALIFICATION_REPORT.html"},
                 {"label": "V2 stratum gaps", "path": "qualification-v2/STRATUM_STATUS.tsv"},
+                {"label": "V2 execution summary", "path": "qualification-v2/EXECUTION_SUMMARY.json"},
             ],
         },
         "publication_roadmap": roadmap,
@@ -638,6 +684,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
             "Synthetic demonstrations do not externally qualify a workflow; independent public cases are displayed separately.",
             "Four passing public cases do not establish workflow-general accuracy, and the two partial cases remain release blockers.",
             "Qualification v2 freezes the expanded panels and remains blocked until source-locked public cases are adopted and executed.",
+            "Four of six Qualification v2 panels have executed and passed. Executed panels passing is not scope qualification: two panels are unadopted, membrane covers only its beta_barrel stratum, and no scope has reproduced on an independent second machine.",
         ],
     }
     write_text(public_output / "data.js", "window.YAUVI_PUBLIC_SHOWCASE = " + canonical(payload).rstrip() + ";\n")
@@ -662,6 +709,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
             "SOURCE_LOCK.json": sha256(source_lock_path),
             "QUALIFICATION_V2_STATUS.json": sha256(qualification_v2_status_path),
             "QUALIFICATION_V2_PANEL_MANIFEST.json": sha256(qualification_v2_manifest_path),
+            "EXECUTION_SUMMARY.json": sha256(execution_summary_path),
             "analysis_definitions": sha256_text(canonical(definitions)),
         },
         "generated_sha256": {
