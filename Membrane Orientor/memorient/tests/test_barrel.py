@@ -87,3 +87,34 @@ def test_real_omp_classifies_barrel():
     cls = classify_membrane_protein(s, GN)
     assert cls.label == "barrel"
     assert cls.fit.half_thickness < 18.0
+
+
+@pytest.mark.xfail(
+    reason=(
+        "fit_membrane is not rotation-equivariant. A membrane normal is a property of the "
+        "structure, so rotating the input and rotating the answer back must agree with the "
+        "unrotated fit. It does not: on OPM barrels the back-rotated normal moves by up to "
+        "16 degrees, and rotated fits frequently score HIGHER than the unrotated one, so the "
+        "unrotated fit is not finding the global optimum either. Isolated to the coarse "
+        "candidate scan -- polish and the embedded re-fit do not introduce it, and raising "
+        "n_scan from 80 to 400 makes it worse rather than better, so it is not sampling "
+        "density. This is a correctness defect affecting every orientation the module "
+        "reports, not only the qualification cases where it is visible; the cross-machine "
+        "disagreement in Qualification v2 (1QD6 differing by 8.39 degrees between x86_64 and "
+        "arm64 while passing every gate) is a symptom of it. "
+        "test_fit_normal_tracks_input_rotation above covers the same property at a 15 degree "
+        "tolerance, which is wider than the defect, which is why this went unnoticed. "
+        "Recorded 2026-08-29."
+    ),
+    strict=True,
+)
+def test_fit_membrane_is_rotation_equivariant():
+    """Rotating the structure must rotate the fitted normal, and change nothing else."""
+    s = make_barrel(n_strands=12, strand_len=10, seed=0)
+    base = fit_membrane(s, GN)
+    for seed in range(5):
+        R = random_rotation(seed)
+        fit = fit_membrane(s.transformed(R), GN)
+        # Compare in the original frame; a normal equals its negation, so the
+        # angle is undirected.
+        assert _axis_angle(R.T @ fit.normal, base.normal) < 0.5
