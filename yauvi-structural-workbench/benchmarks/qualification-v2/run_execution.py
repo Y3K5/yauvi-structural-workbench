@@ -95,6 +95,23 @@ def at(reference: Any) -> Path:
     return path if path.is_absolute() else HERE / path
 
 
+def panel_relative(path: Path) -> str:
+    """Record where a case wrote, without recording whose machine wrote it.
+
+    `at()` resolves a relative path against this directory, so a panel-relative
+    string round-trips through the coverage pass unchanged. An absolute one puts
+    a home directory into evidence that is published to a public repository, and
+    is useless to a reviewer who cannot resolve it anyway. Paths outside the
+    panel keep their absolute form, because there is nothing else to say about
+    them.
+    """
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(HERE))
+    except ValueError:
+        return str(resolved)
+
+
 def _cmd_structure_qc(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
     cmd = [exe, "run", "--structure", str(at(inv["structure"])),
            "--reference-fasta", str(at(inv["reference_fasta"])), "--out", str(out)]
@@ -748,7 +765,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
 
     return {"record_id": record["record_id"], "pdb_entry_id": record["pdb_entry_id"],
             "stratum": record["stratum"], "split": record["split"],
-            "output_dir": str(out.resolve()),
+            "output_dir": panel_relative(out),
             "passed": all(c["passed"] for c in checks if c["required"]), "checks": checks}
 
 

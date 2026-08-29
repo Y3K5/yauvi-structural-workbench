@@ -13,7 +13,7 @@ what organism it is looking at.
 
 The split also matters for what may be published: the target dictionaries are
 private campaign material, and keeping them out of source is the same severance
-that `redvax.construct.pg_tf_panel` -> `panel` performed for construct assembly.
+an upstream construct-assembly module performs for the same reason.
 
 Spec shape (JSON or YAML-free JSON; see `examples/campaign_spec.json`):
 

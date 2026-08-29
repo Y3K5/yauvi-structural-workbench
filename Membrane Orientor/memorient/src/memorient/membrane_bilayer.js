@@ -4,13 +4,13 @@
  * Every viewer we own inlines THIS file at build time; none of them link to it at
  * runtime, because each generated page has to stay self-contained and file://-safe.
  *
- * Consumers (kept byte-identical by sync_membrane_bilayer.py --check):
- *   - memorient           src/memorient/viz.py            -> oriented.html
- *   - TDVax-YAUVI portal  yauvi/assets/membrane-bilayer.js -> Targets view
- *   - Triple Vax portal   src/redvax/viz/build_membrane_portal.py -> Membrane Atlas
+ * Consumer in this distribution:
+ *   - memorient  src/memorient/viz.py  -> oriented.html
  *
- * Do not edit a vendored copy. Edit this file, then run:
- *   python3 sync_membrane_bilayer.py
+ * Two further viewers outside this distribution vendor a byte-identical copy and
+ * are kept in step by a checker that does not ship with it. If you are reading
+ * this in the public repository, this file is the canonical one and the only
+ * copy you need. Do not edit a vendored copy.
  */
 
 /* membrane-bilayer.js — one way to draw a membrane, for every 3Dmol viewer we own.
@@ -20,12 +20,11 @@
  * protein's own footprint cut out, so the barrel stays readable THROUGH the membrane
  * instead of sitting behind a tinted box.
  *
- * Written as a module because the same drawing exists in three viewers — this portal,
- * memorient's oriented.html generator, and the Triple Vax membrane portal — and they had
- * begun to drift. It is deliberately free of any YAUVI assumption:
+ * Written as a module because the same drawing exists in three viewers and they had
+ * begun to drift. It is deliberately free of any caller-specific assumption:
  *
- *   - `axis` picks the membrane normal, so a Y-normal viewer (Triple Vax) and a Z-normal
- *     viewer (this portal, memorient) share one implementation.
+ *   - `axis` picks the membrane normal, so a Y-normal viewer and a Z-normal viewer
+ *     share one implementation.
  *   - `leaflets` is a list, so a symmetric bilayer, an asymmetric OM with a separate LPS
  *     band, or a single anchor plane are all the same call with different data.
  *   - `haze` is optional: it reads well on a dark background and shows as a pale

@@ -274,7 +274,7 @@ for (const r of colors) {{
   if (r.extracellular) v.addStyle({{resi:r.resid}}, {{stick:{{color:r.color,radius:0.2}}}});
 }}
 // The bilayer is drawn by the shared MembraneBilayer module (inlined above), so this
-// page, the TDVax-YAUVI Targets view and the Triple Vax portal cannot drift apart.
+// page and the viewers that vendor this module cannot drift apart.
 // +Z is extracellular by the orientor convention, so the leaflets are z-planes.
 if (slab) {{
   MembraneBilayer.draw(v, {{
@@ -308,8 +308,8 @@ def _bilayer_js() -> str:
     """The shared membrane module's source, for inlining into a generated page.
 
     Read from disk rather than embedded as a Python string so there is exactly one copy to
-    edit; ``sync_membrane_bilayer.py --check`` keeps the vendored copies in the other two
-    projects byte-identical to this one.
+    edit. Viewers outside this distribution vendor a byte-identical copy; this file is the
+    canonical source for all of them.
     """
     from pathlib import Path
     return (Path(__file__).with_name("membrane_bilayer.js")).read_text(encoding="utf-8")
