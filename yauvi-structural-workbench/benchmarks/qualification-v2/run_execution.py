@@ -997,10 +997,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{check_name}: max {deltas[-1]:.3e}, median "
               f"{deltas[len(deltas) // 2]:.3e}, over {len(deltas)} cases")
 
+    # Names alone are not diagnosable. A gate that fails cross-machine is
+    # exactly the case where the evidence file is on a runner nobody can reach,
+    # so the log has to carry the numbers: which check, what it wanted, what it
+    # got. Anything less means reading the failure requires credentials.
     for c in cases + controls:
         if not c["passed"]:
-            bad = [k["check"] for k in c["checks"] if k["required"] and not k["passed"]]
-            print(f"  FAILED {c['record_id']}: {', '.join(bad)}")
+            print(f"  FAILED {c['record_id']}:")
+            for k in c["checks"]:
+                if k["required"] and not k["passed"]:
+                    print(f"    {k['check']}: expected {k['expected']!r}, observed {k['observed']!r}")
     print(f"strata executed: {', '.join(sorted({c['stratum'] for c in cases if c.get('stratum')}))}")
     print("scope_qualified: false (this runner never qualifies a scope; see the result note)")
     return 0 if passed == len(cases) and controls_passed == len(controls) and coverage_ok else 1

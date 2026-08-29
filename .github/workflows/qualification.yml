@@ -119,7 +119,7 @@ jobs:
       # figures are the reason this matrix exists.
       - name: Upload the execution evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: execution-evidence-py${{ matrix.python }}-${{ matrix.os }}
           path: yauvi-structural-workbench/benchmarks/qualification-v2/results/
