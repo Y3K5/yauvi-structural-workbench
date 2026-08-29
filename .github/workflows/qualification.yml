@@ -67,14 +67,17 @@ jobs:
         run: python acquire_sources.py
 
       - name: Verify every artifact against the frozen source lock
+        id: sources
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python acquire_sources.py --verify-only
 
       - name: Execute the StructQC panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python run_execution.py --out results/execution-structqc
 
       - name: Execute the assembly-interface panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: |
           python run_execution.py \
@@ -84,6 +87,7 @@ jobs:
       # The membrane panel is the slowest: memorient runs a rotation series per
       # case, so sixteen cases take roughly six minutes on top of the others.
       - name: Execute the membrane panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: |
           python run_execution.py \
@@ -91,6 +95,7 @@ jobs:
             --out results/execution-membrane
 
       - name: Execute the functional-site panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: |
           python run_execution.py \

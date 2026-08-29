@@ -101,7 +101,8 @@ def main() -> int:
     execution = qualification_v2.get("scientific_execution", {})
     for field in ("panels_executed", "panels_total", "cases_passed", "cases_required",
                   "every_executed_panel_passed", "workflows_executed", "workflows_not_executed",
-                  "all_release_blocking_scopes_qualified", "second_machine_reproduction"):
+                  "all_release_blocking_scopes_qualified", "second_machine_reproduction",
+                  "recorded_on", "counts_are_single_machine"):
         if execution.get(field) != summary[field]:
             fail(f"showcase execution field '{field}' drifted from EXECUTION_SUMMARY.json")
     if qualification_v2.get("scientific_execution_performed") != summary["scientific_execution_performed"]:

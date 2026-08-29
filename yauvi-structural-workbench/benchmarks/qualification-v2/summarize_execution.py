@@ -19,11 +19,15 @@ What this file may not do, deliberately:
   panels are unadopted and no second-machine run is recorded, so
   `all_release_blocking_scopes_qualified` is false here by construction, the
   same way `scope_qualified` is false in every execution result it reads.
-* It records nothing machine-specific. Each result carries a `runtime` block
-  and absolute `output_dir` paths; both are real provenance and both belong to
-  the run that produced them, not to a summary the showcase commits. Including
-  either would make a generated artifact differ per machine, which the
-  reviewer gate's byte-for-byte rebuild would then fail on -- correctly.
+* It records no absolute paths. Each case carries an `output_dir` naming the
+  machine that ran it; that is provenance belonging to the run, not to a
+  summary the showcase commits, and embedding it would leak a home directory
+  into a public artifact.
+* It *does* record the interpreter the counts came from. These totals are one
+  machine's result. The membrane stratum passes 16/16 here and 9-10/16 on CI's
+  runners, so publishing "64 cases passed" without naming the recorder would
+  overstate what has been established -- and the recorder is an x86_64 build
+  under Rosetta on arm64 hardware, which matches neither CI platform.
 
 Usage:  python summarize_execution.py
 Exit:   0 every executed panel passed, 1 one did not or its evidence is unreadable.
@@ -109,6 +113,16 @@ def main() -> int:
         workflow, required = panels[panel_id]
         summaries.append(panel_summary(status, workflow, required))
 
+    # One entry per distinct interpreter across the results. Normally one; more
+    # than one means the results were not all produced by the same run and the
+    # totals should not be read as a single measurement.
+    runtimes = sorted({
+        json.dumps(json.loads((directory / "EXECUTION_STATUS.json").read_text(encoding="utf-8"))
+                   .get("runtime", {}), sort_keys=True)
+        for directory in sorted(RESULTS.glob("execution-*"))
+        if (directory / "EXECUTION_STATUS.json").is_file()
+    })
+
     executed = {summary["workflow"] for summary in summaries}
     blocking = {scope.split(":", 1)[0] for scope in manifest["release_blocking_scopes"]}
     cases_passed = sum(summary["cases"].get("passed", 0) for summary in summaries)
@@ -129,6 +143,8 @@ def main() -> int:
         # The two gates this file must never be able to close.
         "all_release_blocking_scopes_qualified": False,
         "second_machine_reproduction": "not_recorded",
+        "recorded_on": [json.loads(runtime) for runtime in runtimes],
+        "counts_are_single_machine": len(runtimes) == 1,
         "scope_qualification_note": (
             "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only "
             "when its panel composes in full, every case and control passes, and the result "
@@ -143,7 +159,10 @@ def main() -> int:
     (RESULTS / "EXECUTION_SUMMARY.json").write_bytes(canonical(result))
 
     print(f"{len(summaries)}/{len(panels)} panels executed, "
-          f"{cases_passed}/{cases_required} cases passed")
+          f"{cases_passed}/{cases_required} cases passed"
+          + (f" on {result['recorded_on'][0].get('platform')}/"
+             f"{result['recorded_on'][0].get('machine')}"
+             f" py{result['recorded_on'][0].get('python')}" if len(runtimes) == 1 else ""))
     for summary in summaries:
         counts = summary["cases"]
         print(f"  {summary['workflow']}: {counts.get('passed', 0)}/{counts.get('total', 0)} cases"

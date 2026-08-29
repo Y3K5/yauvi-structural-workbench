@@ -778,6 +778,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "cases_passed": 64,
       "cases_required": 114,
       "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 16/32 with 6/6, covering the release-blocking beta_barrel stratum only. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "counts_are_single_machine": true,
       "every_executed_panel_passed": true,
       "panels": [
         {
@@ -839,6 +840,13 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       ],
       "panels_executed": 4,
       "panels_total": 6,
+      "recorded_on": [
+        {
+          "machine": "x86_64",
+          "platform": "Darwin",
+          "python": "3.12.7"
+        }
+      ],
       "scope_qualification_note": "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. This summary reports execution only. 2 of 6 panels are unadopted and no second-machine reproduction is recorded, so no scope is qualified.",
       "second_machine_reproduction": "not_recorded",
       "workflows_executed": [

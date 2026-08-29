@@ -620,6 +620,11 @@ def build_public_showcase(technical_output: Path, public_output: Path,
                 "all_release_blocking_scopes_qualified":
                     execution_summary["all_release_blocking_scopes_qualified"],
                 "second_machine_reproduction": execution_summary["second_machine_reproduction"],
+                # The counts above are one machine's result. Publishing them
+                # without saying so would overstate what has been established:
+                # the membrane stratum passes here and fails on CI's runners.
+                "recorded_on": execution_summary["recorded_on"],
+                "counts_are_single_machine": execution_summary["counts_are_single_machine"],
                 "scope_qualification_note": execution_summary["scope_qualification_note"],
                 "collection_note": release["qualification_evidence"]["current_v2"]["scientific_execution_note"],
                 "panels": [

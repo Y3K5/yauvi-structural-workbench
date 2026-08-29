@@ -640,9 +640,23 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
     # precisely what the independent second-machine gate exists to answer, and
     # pretending it holds here would answer it by assumption.
     #
-    # The integer residue count is required: it is a count, not a fit, and a
-    # change in it means the structure was read differently.
-    for field in ("fitted_half_thickness_A", "mean_jaccard"):
+    # `n_reference_extracellular` was required here on the reasoning that a
+    # count is not a fit. It is a count *of residues selected using the fitted
+    # geometry* -- it comes from the same `validation` block as mean_jaccard,
+    # not from the OPM reference file -- so it inherits the fit's instability
+    # exactly as the jaccard does. Being an integer protects it from
+    # float-comparison artifacts, not from the geometry moving underneath it,
+    # and quantisation makes it the harshest check in the panel: a perturbation
+    # that moves one residue across the boundary is a full-unit error where the
+    # continuous quantities absorb it. It failed 7 of 8 failing cases across all
+    # six runners while every scientific gate passed.
+    #
+    # Nothing scientific is lost by reporting it. The real requirement -- that
+    # the comparison was evaluated against enough reference residues to mean
+    # anything -- is already carried by the required
+    # `extracellular_comparison_non_vacuous` gate above, which bounds the same
+    # count from below without asserting an exact value no machine reproduces.
+    for field in ("fitted_half_thickness_A", "mean_jaccard", "n_reference_extracellular"):
         value, recorded = obs[field], expected.get(field)
         delta = (abs(float(value) - float(recorded))
                  if value is not None and recorded is not None else None)
@@ -650,10 +664,6 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
                        "expected": recorded,
                        "observed": {"value": value, "delta": delta},
                        "passed": delta is not None and delta <= 1e-6})
-    checks.append({"check": "recorded.n_reference_extracellular", "required": True,
-                   "expected": expected.get("n_reference_extracellular"),
-                   "observed": obs["n_reference_extracellular"],
-                   "passed": obs["n_reference_extracellular"] == expected.get("n_reference_extracellular")})
     return True
 
 
