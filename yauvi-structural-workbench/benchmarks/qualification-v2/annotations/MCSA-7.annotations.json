@@ -1,0 +1,83 @@
+{
+  "component_map": {
+    "CHEBI:18420": [
+      "MG"
+    ],
+    "CHEBI:29035": [
+      "MN"
+    ]
+  },
+  "declared_cofactors": [
+    {
+      "chebi": "CHEBI:18420",
+      "component_id": "",
+      "name": "Mg(2+)",
+      "source": "UniProt:P08200 COFACTOR"
+    },
+    {
+      "chebi": "CHEBI:29035",
+      "component_id": "",
+      "name": "Mn(2+)",
+      "source": "UniProt:P08200 COFACTOR"
+    }
+  ],
+  "provenance": {
+    "cofactor_note": "Cofactors are declared from UniProt's COFACTOR annotation, not read off the coordinate file, so an apo structure fails the gate instead of satisfying it vacuously. ChEBI identities are joined to PDB component ids through an explicit table; anything unmapped is listed in unmapped_chebi rather than dropped.",
+    "ec": [
+      "1.1.1.42"
+    ],
+    "entry": "M-CSA:7",
+    "enzyme": "isocitrate dehydrogenase (NADP+)",
+    "reference_chain": "A",
+    "reference_pdb": "5ICD",
+    "reference_uniprot": "P08200",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "metal_or_cofactor",
+    "unmapped_chebi": [],
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/7/"
+  },
+  "sites": [
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor, proton acceptor, proton donor, proton relay",
+      "expected_residues": [
+        "Y"
+      ],
+      "pdb_auth_resid": 160,
+      "position": 160,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, proton acceptor, proton donor, proton relay",
+      "expected_residues": [
+        "K"
+      ],
+      "pdb_auth_resid": 230,
+      "position": 230,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, proton acceptor, proton donor",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 283,
+      "position": 283,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 307,
+      "position": 307,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    }
+  ]
+}

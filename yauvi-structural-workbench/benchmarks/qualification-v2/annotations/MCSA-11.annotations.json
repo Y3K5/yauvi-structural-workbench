@@ -1,0 +1,153 @@
+{
+  "component_map": {
+    "CHEBI:29035": [
+      "MN"
+    ],
+    "CHEBI:29105": [
+      "ZN"
+    ]
+  },
+  "declared_cofactors": [
+    {
+      "chebi": "CHEBI:29105",
+      "component_id": "",
+      "name": "Zn(2+)",
+      "source": "UniProt:P0A6C1 COFACTOR"
+    },
+    {
+      "chebi": "CHEBI:29035",
+      "component_id": "",
+      "name": "Mn(2+)",
+      "source": "UniProt:P0A6C1 COFACTOR"
+    }
+  ],
+  "provenance": {
+    "cofactor_note": "Cofactors are declared from UniProt's COFACTOR annotation, not read off the coordinate file, so an apo structure fails the gate instead of satisfying it vacuously. ChEBI identities are joined to PDB component ids through an explicit table; anything unmapped is listed in unmapped_chebi rather than dropped.",
+    "ec": [
+      "3.1.21.2"
+    ],
+    "entry": "M-CSA:11",
+    "enzyme": "deoxyribonuclease IV (phage-T4-induced)",
+    "reference_chain": "A",
+    "reference_pdb": "1QUM",
+    "reference_uniprot": "P0A6C1",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "metal_or_cofactor",
+    "unmapped_chebi": [],
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/11/"
+  },
+  "sites": [
+    {
+      "detail": "transition state stabiliser",
+      "expected_residues": [
+        "R"
+      ],
+      "pdb_auth_resid": 37,
+      "position": 37,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 69,
+      "position": 69,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "transition state stabiliser",
+      "expected_residues": [
+        "Y"
+      ],
+      "pdb_auth_resid": 72,
+      "position": 72,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 109,
+      "position": 109,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "E"
+      ],
+      "pdb_auth_resid": 145,
+      "position": 145,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 179,
+      "position": 179,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 182,
+      "position": 182,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 216,
+      "position": 216,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 229,
+      "position": 229,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 231,
+      "position": 231,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "E"
+      ],
+      "pdb_auth_resid": 261,
+      "position": 261,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "declared_cofactors": [],
+  "provenance": {
+    "ec": [
+      "4.2.1.59"
+    ],
+    "entry": "M-CSA:10",
+    "enzyme": "3-hydroxydecanoyl-[acyl-carrier-protein] dehydratase",
+    "reference_chain": "A",
+    "reference_pdb": "1MKB",
+    "reference_uniprot": "P0A6Q3",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "acid_base",
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/10/"
+  },
+  "sites": [
+    {
+      "detail": "hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 70,
+      "position": 71,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "activator, electrostatic stabiliser, hydrogen bond acceptor",
+      "expected_residues": [
+        "V"
+      ],
+      "pdb_auth_resid": 76,
+      "position": 77,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "G"
+      ],
+      "pdb_auth_resid": 79,
+      "position": 80,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "C"
+      ],
+      "pdb_auth_resid": 80,
+      "position": 81,
+      "role": "unspecified",
+      "type": "active_site"
+    }
+  ]
+}

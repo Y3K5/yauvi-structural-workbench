@@ -9,92 +9,305 @@
   },
   "sources": [
     {
-      "source_id": "PDB:4EA9",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/4EA9.cif",
-      "url": "https://files.rcsb.org/download/4EA9.cif",
-      "sha256": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88"
-    },
-    {
-      "source_id": "PDB:1OAI",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1OAI.cif",
-      "url": "https://files.rcsb.org/download/1OAI.cif",
-      "sha256": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c"
-    },
-    {
-      "source_id": "PDB:2V7A",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/2V7A.cif",
-      "url": "https://files.rcsb.org/download/2V7A.cif",
-      "sha256": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3"
-    },
-    {
-      "source_id": "PDB:8SSN",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/8SSN.cif",
-      "url": "https://files.rcsb.org/download/8SSN.cif",
-      "sha256": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537"
-    },
-    {
-      "source_id": "PDB:4EA9:validation_xml",
-      "provider": "wwPDB validation reports",
-      "artifact": "sources/wwpdb/4ea9_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ea/4ea9/4ea9_validation.xml.gz",
-      "sha256": "6931194705ae471bc6100de52c54cf561faac661cc027e2eba84107afd5a3243"
-    },
-    {
-      "source_id": "PDB:1OAI:validation_xml",
-      "provider": "wwPDB validation reports",
-      "artifact": "sources/wwpdb/1oai_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/oa/1oai/1oai_validation.xml.gz",
-      "sha256": "9729a302dd8f5906c7d6e420d1c4fcc43eb9911ebf17de0a45064270179f3d9c"
-    },
-    {
-      "source_id": "PDB:2V7A:validation_xml",
-      "provider": "wwPDB validation reports",
-      "artifact": "sources/wwpdb/2v7a_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/v7/2v7a/2v7a_validation.xml.gz",
-      "sha256": "94615a492e788bf9cf09d50aa5e4266e12935758cbde11b948d66d1c58e5d68e"
-    },
-    {
-      "source_id": "PDB:8SSN:validation_xml",
-      "provider": "wwPDB validation reports",
-      "artifact": "sources/wwpdb/8ssn_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ss/8ssn/8ssn_validation.xml.gz",
-      "sha256": "b1aea92dfba264c7e324b07a3f813db7a8a6d9861a4e0db1bca1b47f15a5d15f"
-    },
-    {
-      "source_id": "UNIPROT:O85353",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/O85353.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/O85353.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "6cbe0e1924c1ca4573e4a968cf680df863f128ff585e45971184ba0b4f108a58"
-    },
-    {
-      "source_id": "UNIPROT:Q9UBU9",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/Q9UBU9.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/Q9UBU9.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "09b7f1c360bdf8208a8fc9236db5dae4144da78763ccfe0e7b5f37ef8e085102"
-    },
-    {
-      "source_id": "UNIPROT:P00519",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P00519.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P00519.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "f28f5df82a7b04e5a51dc63582a0ce7a41459f6c221e8efa24313fe7e550cc12"
-    },
-    {
-      "source_id": "PROVENANCE:4EA9",
-      "provider": "authored for this collection",
-      "artifact": "provenance/4EA9.provenance.json",
-      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "source_id": "MCSA:1:annotations",
+      "artifact": "annotations/MCSA-1.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "5ef514775ac9e0072554d7ba602dee00c7e7f5993229f4b764999efada95a563",
       "acquisition": "committed_in_repository",
-      "sha256": "6c58ad14e7bf0779dab88f731184c06268dc9e8ea97f58a654442e5f102ce972"
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:1:component_map",
+      "artifact": "annotations/MCSA-1.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:11:annotations",
+      "artifact": "annotations/MCSA-11.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "d8908965351ff5824ed40334af8e57b4af49850de23061df486ee8a54b3fbde7",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:11:component_map",
+      "artifact": "annotations/MCSA-11.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "cb92bdfa573598d7ec97961137e9f62886ff2e77cc2888e52e120637dce6fb11",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:12:annotations",
+      "artifact": "annotations/MCSA-12.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "08234ea1592d98eb3449eee69673696bced0258e3d48fa03a27918b4fb5b4b07",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:12:component_map",
+      "artifact": "annotations/MCSA-12.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:17:annotations",
+      "artifact": "annotations/MCSA-17.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "35248e5c56c8f762b6edb7bf9ecfc29a8cad4d34f4eb7ffaf014e608b43d5ba2",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:17:component_map",
+      "artifact": "annotations/MCSA-17.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:18:annotations",
+      "artifact": "annotations/MCSA-18.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "c1af2b1ffb74d11bc5dea343c9b50a63f518fb3618ae227d8e563af3952198c6",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:18:component_map",
+      "artifact": "annotations/MCSA-18.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:2:annotations",
+      "artifact": "annotations/MCSA-2.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "a05b0b4a20ef8c8bd9399ada544ae922e61a20a9300d008b5e8032c511bcd55b",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:2:component_map",
+      "artifact": "annotations/MCSA-2.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:21:annotations",
+      "artifact": "annotations/MCSA-21.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "e1b73268035b24191b5a71758e8d10d63435f6d856fbca177712ca5564d061e2",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:21:component_map",
+      "artifact": "annotations/MCSA-21.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "fc2d5c3a27a6e9831f73e73e5c9c5369d6537c9acd949742223c72bfc2bffb83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:24:annotations",
+      "artifact": "annotations/MCSA-24.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "2511b38614b1e200ee78cc282f32ac65b24b05983445ae2843faa47407877e83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:24:component_map",
+      "artifact": "annotations/MCSA-24.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:25:annotations",
+      "artifact": "annotations/MCSA-25.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "76074a2f1c4cb70f4e5073819fb8355fff0c9c779a52d50d57ed3c7d9aebc91d",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:25:component_map",
+      "artifact": "annotations/MCSA-25.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:4:annotations",
+      "artifact": "annotations/MCSA-4.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "2eb3013daa813629f2fbd6fc577db244d9e8884fd3dadd38c38a07a2da930b71",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:4:component_map",
+      "artifact": "annotations/MCSA-4.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ce5cbe030e65492c977964d90251ec860919fc049225cde95e19413c674d4251",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:5:annotations",
+      "artifact": "annotations/MCSA-5.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "038df34324380a1a7d0d719f9a1853fa1f07eeef8bdda39f9185af2f0a9a83aa",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:5:component_map",
+      "artifact": "annotations/MCSA-5.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:6:annotations",
+      "artifact": "annotations/MCSA-6.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "b800d04e69dabd9344403b0212105ea0ac54b4347d5d5797011abae84f258f56",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:6:component_map",
+      "artifact": "annotations/MCSA-6.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "27e83b8b7a6e42439a1d031741a32052acc050cd1d358f916f22ca087fb39546",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:7:annotations",
+      "artifact": "annotations/MCSA-7.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "9094db127af72ed1e1cbcfaf846ab041df8181ebaf90748e724f39364870c1ab",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:7:component_map",
+      "artifact": "annotations/MCSA-7.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "fc2d5c3a27a6e9831f73e73e5c9c5369d6537c9acd949742223c72bfc2bffb83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:8:annotations",
+      "artifact": "annotations/MCSA-8.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "29321771f87fc99d2187ceeafec8217e27992b4d694af5569ccb9e1b540678f5",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:8:component_map",
+      "artifact": "annotations/MCSA-8.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1ALG",
+      "artifact": "provenance/1ALG.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "03409f6069f2ad904ab86fbc97ee2e311d6ed5f2f9c633ca44140ad4ab28d45b",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1B73",
+      "artifact": "provenance/1B73.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "8d5c73f538b6eae145d4cda82cbd7f0fb5f9e66a552e30e563c2ecef91495245",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1BTL",
+      "artifact": "provenance/1BTL.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "21314f57664ea50239d80608684add27593790c28579ef526a4a2d9c0ea09718",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1D3Z",
+      "provider": "authored for this collection",
+      "artifact": "provenance/1D3Z.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "4e0fa6fd389d7904d7ba6611c9a7435c3ffaf304e0135e443b4d82d61a72c3f0"
+    },
+    {
+      "source_id": "PROVENANCE:1DNC",
+      "artifact": "provenance/1DNC.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "275f63c15ad58dda023601c7e85459e007bed62ab66a9151945a155da0b0794e",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1DO8",
+      "artifact": "provenance/1DO8.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "73e92bd34715b1be2f7bba074140f6f24e777f3fd34b09c387bbe06a54757652",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1G03",
+      "provider": "authored for this collection",
+      "artifact": "provenance/1G03.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "9d9e78518194a765d38e4e13df2b43b22244bbebeeafee5f4e4aef46ef3735fc"
+    },
+    {
+      "source_id": "PROVENANCE:1IGT",
+      "provider": "authored for this collection",
+      "artifact": "provenance/1IGT.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "739f570e3d8f3e328c1933110ab7f8247452dfd5f6848ffcf9e6039ce7e814fb"
+    },
+    {
+      "source_id": "PROVENANCE:1NBA",
+      "artifact": "provenance/1NBA.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "0f7d73e12c8ee726b2646482a8f06a457519b89bfc5ac445fa65e7132425e5a2",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1NIA",
+      "artifact": "provenance/1NIA.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "9f2898a84d2dc6d0aa93b449ab6460a88e290562c6659a378c2392e05ba1ce66",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1NZY",
+      "artifact": "provenance/1NZY.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "486373be16c02208ee85383572404660e07d83217916a105872de36ced17b267",
+      "acquisition": "committed_in_repository"
     },
     {
       "source_id": "PROVENANCE:1OAI",
@@ -105,6 +318,62 @@
       "sha256": "6a6b492ba0cb84a0254edea8c4ca1887727945574381e01cd7d3754fa9361c48"
     },
     {
+      "source_id": "PROVENANCE:1OTH",
+      "artifact": "provenance/1OTH.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "f8bd945ab8d3c985e5d6ba6e09a0c8ca62f1b3a1277bf1e05abe445ed26fd2fd",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1QPR",
+      "artifact": "provenance/1QPR.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "78621c0ed8868ae206cbb21fcf029480298a474594d18792bd5a597c04083da9",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1QUM",
+      "artifact": "provenance/1QUM.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "bfbefd7a63b1fac5cf9c618eba81f5112c4c2e77974f5e0c2c030df616432df4",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1RR6",
+      "artifact": "provenance/1RR6.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "30dfb5e1beb470f56b4b78a49dc775fbf7480b47d8fb6da23b2546b2cd9e484d",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:1WHS",
+      "artifact": "provenance/1WHS.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "a9ffc676cef1930db3d8212b92f7d9bd01bef588c378f36fa5191a13b77cc653",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:2JDW",
+      "artifact": "provenance/2JDW.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "a0bde1be152e7d0143bd135a86c1a27e3ede12cc9e32d32d51de58008d0cc83f",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:2K0Q",
+      "provider": "authored for this collection",
+      "artifact": "provenance/2K0Q.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "1870c976e3b1f3e2c43a8e7cc7f40ff7c494f949c6eab9990730689e9a083d17"
+    },
+    {
+      "source_id": "PROVENANCE:2MZQ",
+      "provider": "authored for this collection",
+      "artifact": "provenance/2MZQ.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "9b67ceeed3e562c0b7a9fa90ea5a400e7d294527d30364948530133c70d6b74b"
+    },
+    {
       "source_id": "PROVENANCE:2V7A",
       "provider": "authored for this collection",
       "artifact": "provenance/2V7A.provenance.json",
@@ -113,12 +382,90 @@
       "sha256": "915a755f3d8b9d0f22cc797469d7f04c3dd9d26f18468fe4d0f12643c4254901"
     },
     {
+      "source_id": "PROVENANCE:4EA9",
+      "provider": "authored for this collection",
+      "artifact": "provenance/4EA9.provenance.json",
+      "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
+      "acquisition": "committed_in_repository",
+      "sha256": "6c58ad14e7bf0779dab88f731184c06268dc9e8ea97f58a654442e5f102ce972"
+    },
+    {
+      "source_id": "PROVENANCE:4JDW",
+      "artifact": "provenance/4JDW.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "d84bd48709fefb2ef820d49540c01aa3a77709c31dea507a471f9ff9356bd36a",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:5ICD",
+      "artifact": "provenance/5ICD.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "8d9fc9c961070f5eb18b2f8094c4b4baa1bdebf53d56ea1f4c669a35acb1bcdd",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PROVENANCE:5W3L",
+      "provider": "authored for this collection",
+      "artifact": "provenance/5W3L.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "c0df49f5495f95b811c994304bf970cec94dadcfcda8eab588d1d48c4201518d"
+    },
+    {
+      "source_id": "PROVENANCE:6CVM",
+      "provider": "authored for this collection",
+      "artifact": "provenance/6CVM.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "ae6cdc595129904cc8caa3bb1102db5018103bc0c6bc56af3f6faee0131dd3fa"
+    },
+    {
+      "source_id": "PROVENANCE:6VXX",
+      "provider": "authored for this collection",
+      "artifact": "provenance/6VXX.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "0e3f48723432a670f5ce4ad58823d95d4e2520c4ed8d8d3ea3683df3d91c09f1"
+    },
+    {
+      "source_id": "PROVENANCE:7A4M",
+      "provider": "authored for this collection",
+      "artifact": "provenance/7A4M.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "a8aec79f7b4fbcf16cbb5a49d7839e87450ba4e5ffa0773bdc67d1e35af687f6"
+    },
+    {
       "source_id": "PROVENANCE:8SSN",
       "provider": "authored for this collection",
       "artifact": "provenance/8SSN.provenance.json",
       "note": "Declares experimental provenance; method taken from the entry's own _exptl.method record.",
       "acquisition": "committed_in_repository",
       "sha256": "74a88e168cda61ee53997a7db52302890641ffb78b6694168d059e3a5428e146"
+    },
+    {
+      "source_id": "PROVENANCE:P00698",
+      "provider": "authored for this collection",
+      "artifact": "provenance/P00698.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "28e33bf9d4e3792e27b9632fa76c87117162cd630b33fc61f95cb3ccd7c9eea5"
+    },
+    {
+      "source_id": "PROVENANCE:P01308",
+      "provider": "authored for this collection",
+      "artifact": "provenance/P01308.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "e09c33d1c40589597697cab83570b726f5dd26734bf8a8a8d3ba7e80a8683aee"
+    },
+    {
+      "source_id": "PROVENANCE:P61769",
+      "provider": "authored for this collection",
+      "artifact": "provenance/P61769.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "68b1cd45d7481f25688b5e07aba4acdad20046e43fb5f6da1e634ae68772e040"
+    },
+    {
+      "source_id": "PROVENANCE:P69905",
+      "provider": "authored for this collection",
+      "artifact": "provenance/P69905.provenance.json",
+      "acquisition": "committed_in_repository",
+      "sha256": "c8980e70f58dd0b1af9101429dfdd0f64f4d0c53da7ab304c664021bb0752e0d"
     },
     {
       "source_id": "AF-P00698-F1:model:v6",
@@ -137,21 +484,6 @@
       "sha256": "552a54f5912fae8dea7a94a0b91971d4a2dadbfaf053778f99f39869f571bde3"
     },
     {
-      "source_id": "UNIPROT:P00698",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P00698.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P00698.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "a2919b66501aec6b03bc821537e24eee649e3a7d7c9a854588f2338c992e0bb4"
-    },
-    {
-      "source_id": "PROVENANCE:P00698",
-      "provider": "authored for this collection",
-      "artifact": "provenance/P00698.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "28e33bf9d4e3792e27b9632fa76c87117162cd630b33fc61f95cb3ccd7c9eea5"
-    },
-    {
       "source_id": "AF-P01308-F1:model:v6",
       "provider": "AlphaFold Protein Structure Database",
       "artifact": "sources/alphafold/AF-P01308-F1-model_v6.cif",
@@ -166,52 +498,6 @@
       "url": "https://alphafold.ebi.ac.uk/files/AF-P01308-F1-predicted_aligned_error_v6.json",
       "license": "CC-BY-4.0",
       "sha256": "12d840e97dca9c6e1ffba505982d1420f60f5dc5a6e4fb0495793cf3a3f9a6cd"
-    },
-    {
-      "source_id": "UNIPROT:P01308",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P01308.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P01308.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "ec55929cdb69371f89213f4b08a19808c115fc8225ed92b09dd93d15571b5584"
-    },
-    {
-      "source_id": "PROVENANCE:P01308",
-      "provider": "authored for this collection",
-      "artifact": "provenance/P01308.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "e09c33d1c40589597697cab83570b726f5dd26734bf8a8a8d3ba7e80a8683aee"
-    },
-    {
-      "source_id": "AF-P69905-F1:model:v6",
-      "provider": "AlphaFold Protein Structure Database",
-      "artifact": "sources/alphafold/AF-P69905-F1-model_v6.cif",
-      "url": "https://alphafold.ebi.ac.uk/files/AF-P69905-F1-model_v6.cif",
-      "license": "CC-BY-4.0",
-      "sha256": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230"
-    },
-    {
-      "source_id": "AF-P69905-F1:pae:v6",
-      "provider": "AlphaFold Protein Structure Database",
-      "artifact": "sources/alphafold/AF-P69905-F1-predicted_aligned_error_v6.json",
-      "url": "https://alphafold.ebi.ac.uk/files/AF-P69905-F1-predicted_aligned_error_v6.json",
-      "license": "CC-BY-4.0",
-      "sha256": "9d6bfee2b49f0391f3be41fdc617bfb70e0b976660d48b422b69b96c2b92fa85"
-    },
-    {
-      "source_id": "UNIPROT:P69905",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P69905.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P69905.fasta",
-      "license": "CC BY 4.0",
-      "sha256": "aecc3cb75f840f242f6b4489d501384d0c50cf0d61a8dab5a1dab81a80aa4bae"
-    },
-    {
-      "source_id": "PROVENANCE:P69905",
-      "provider": "authored for this collection",
-      "artifact": "provenance/P69905.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "c8980e70f58dd0b1af9101429dfdd0f64f4d0c53da7ab304c664021bb0752e0d"
     },
     {
       "source_id": "AF-P61769-F1:model:v6",
@@ -230,6 +516,206 @@
       "sha256": "8bedef7ff1edcbf623a28d36f456ac5442363bce2990b343bcb988a1c4afabb9"
     },
     {
+      "source_id": "AF-P69905-F1:model:v6",
+      "provider": "AlphaFold Protein Structure Database",
+      "artifact": "sources/alphafold/AF-P69905-F1-model_v6.cif",
+      "url": "https://alphafold.ebi.ac.uk/files/AF-P69905-F1-model_v6.cif",
+      "license": "CC-BY-4.0",
+      "sha256": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230"
+    },
+    {
+      "source_id": "AF-P69905-F1:pae:v6",
+      "provider": "AlphaFold Protein Structure Database",
+      "artifact": "sources/alphafold/AF-P69905-F1-predicted_aligned_error_v6.json",
+      "url": "https://alphafold.ebi.ac.uk/files/AF-P69905-F1-predicted_aligned_error_v6.json",
+      "license": "CC-BY-4.0",
+      "sha256": "9d6bfee2b49f0391f3be41fdc617bfb70e0b976660d48b422b69b96c2b92fa85"
+    },
+    {
+      "source_id": "UNIPROT:A5JTM5",
+      "artifact": "sources/uniprot/A5JTM5.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "5357680238d3a9a75d45f8c44007d47c3d257b678ebf14d72468f923950c4545",
+      "url": "https://rest.uniprot.org/uniprotkb/A5JTM5.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:O85353",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/O85353.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/O85353.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "6cbe0e1924c1ca4573e4a968cf680df863f128ff585e45971184ba0b4f108a58"
+    },
+    {
+      "source_id": "UNIPROT:P00390",
+      "artifact": "sources/uniprot/P00390.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "97aab49cdc3cbfc6bfe4e25c85f02522c928f9290ad3adae35bdc80ca99f983a",
+      "url": "https://rest.uniprot.org/uniprotkb/P00390.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P00480",
+      "artifact": "sources/uniprot/P00480.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "478d8197968c9e3778e6f0b92148ddbd65bdec35389378e59ffef4ca3a43baf6",
+      "url": "https://rest.uniprot.org/uniprotkb/P00480.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P00491",
+      "artifact": "sources/uniprot/P00491.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "6805ebbc9b983d706e882ca4d9ffadd8bc2c8ddda1604bafd1013b2961f8d039",
+      "url": "https://rest.uniprot.org/uniprotkb/P00491.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P00519",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P00519.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P00519.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "f28f5df82a7b04e5a51dc63582a0ce7a41459f6c221e8efa24313fe7e550cc12"
+    },
+    {
+      "source_id": "UNIPROT:P00698",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P00698.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P00698.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "a2919b66501aec6b03bc821537e24eee649e3a7d7c9a854588f2338c992e0bb4"
+    },
+    {
+      "source_id": "UNIPROT:P00722",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P00722.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P00722.fasta",
+      "sha256": "6eaf4eb59b178dc946fcd9f50fdcfbec9d1b49b53bc8d849a402c3a0405830eb"
+    },
+    {
+      "source_id": "UNIPROT:P01308",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P01308.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P01308.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "ec55929cdb69371f89213f4b08a19808c115fc8225ed92b09dd93d15571b5584"
+    },
+    {
+      "source_id": "UNIPROT:P01863",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P01863.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P01863.fasta",
+      "sha256": "cdc71e4129ec5762e63d4c5e7b5c8aac127333b5ba185341699ef415d7e06e94"
+    },
+    {
+      "source_id": "UNIPROT:P03303",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P03303.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P03303.fasta",
+      "sha256": "05032b329581a2f888fdecfbf010f91e9fdcda465ab4b7cb8f09c166eeb83095"
+    },
+    {
+      "source_id": "UNIPROT:P08200",
+      "artifact": "sources/uniprot/P08200.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "840e45620fe5adc06da75968c6e5746f8b3c31968c9cdd9a2258af080222d7f3",
+      "url": "https://rest.uniprot.org/uniprotkb/P08200.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P08819",
+      "artifact": "sources/uniprot/P08819.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "2f0d535dd4923834bbc7814a512a88920e185e2fd569789e6bd0f60223be1e59",
+      "url": "https://rest.uniprot.org/uniprotkb/P08819.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P09528",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P09528.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P09528.fasta",
+      "sha256": "a8b183144523f9e78f22fdb953bdaa6349b0ec72e93c02890fd4b79d131a98b2"
+    },
+    {
+      "source_id": "UNIPROT:P0A6C1",
+      "artifact": "sources/uniprot/P0A6C1.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "b15cb7c2d211e87b97c42ec3f1c9058261c19e1a33892e6e53f2bc5a1fd9e327",
+      "url": "https://rest.uniprot.org/uniprotkb/P0A6C1.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P0CG48",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P0CG48.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P0CG48.fasta",
+      "sha256": "63df9310296dffa3ee2b83aa0315a4d15c82a2da8066e86e55a06ef32d1a3c3d"
+    },
+    {
+      "source_id": "UNIPROT:P0DTC2",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P0DTC2.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P0DTC2.fasta",
+      "sha256": "399308ca13674141add24eb388b1b4fc3a84330350075c18be0b4261166f8086"
+    },
+    {
+      "source_id": "UNIPROT:P14077",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P14077.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P14077.fasta",
+      "sha256": "d93130b2ee6a9a6f6522f84ee9aecbbfd3ba79b8e19884423577549b270c164e"
+    },
+    {
+      "source_id": "UNIPROT:P23368",
+      "artifact": "sources/uniprot/P23368.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "18fdc5718b8ef3865425029f6cc010ab608a12ee4ad0f83eec2bbda8c060f719",
+      "url": "https://rest.uniprot.org/uniprotkb/P23368.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P25006",
+      "artifact": "sources/uniprot/P25006.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "f5d2f16934da250113f9db3a44db85bd3bc5702868fe68164f1df65dfe043fca",
+      "url": "https://rest.uniprot.org/uniprotkb/P25006.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P25555",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P25555.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P25555.fasta",
+      "sha256": "16c9a4f7ed28b8c93b423e81b59099431cfc8f57e3f9c304d2a355e6a4f4a44d"
+    },
+    {
+      "source_id": "UNIPROT:P32400",
+      "artifact": "sources/uniprot/P32400.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "2c6ecf76e58aa00c6a19c05c5d1872152793fe880f14123e77390d3f46c5af54",
+      "url": "https://rest.uniprot.org/uniprotkb/P32400.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P50440",
+      "artifact": "sources/uniprot/P50440.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "5a10926eefcc287848009a0d9a654ae80e9c7e53ba360e8b93ed5bb9d03f3031",
+      "url": "https://rest.uniprot.org/uniprotkb/P50440.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P56868",
+      "artifact": "sources/uniprot/P56868.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "4a9ad5013ebfa035b58dd8b10bae2657f97bfda0b3441c27d1d138e88aec7a36",
+      "url": "https://rest.uniprot.org/uniprotkb/P56868.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
       "source_id": "UNIPROT:P61769",
       "provider": "UniProt / UniProtKB",
       "artifact": "sources/uniprot/P61769.fasta",
@@ -238,11 +724,421 @@
       "sha256": "0e4ee90a5d0e1bde555a5c13345e83f81d17429ce56764c661693bfc80cbd0dd"
     },
     {
-      "source_id": "PROVENANCE:P61769",
-      "provider": "authored for this collection",
-      "artifact": "provenance/P61769.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "68b1cd45d7481f25688b5e07aba4acdad20046e43fb5f6da1e634ae68772e040"
+      "source_id": "UNIPROT:P62593",
+      "artifact": "sources/uniprot/P62593.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "1c8bc02d0571812eda41a515e0396d37c2bb241e849f0e73fb563f27808eb32e",
+      "url": "https://rest.uniprot.org/uniprotkb/P62593.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:P69905",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/P69905.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/P69905.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "aecc3cb75f840f242f6b4489d501384d0c50cf0d61a8dab5a1dab81a80aa4bae"
+    },
+    {
+      "source_id": "UNIPROT:P9WJJ7",
+      "artifact": "sources/uniprot/P9WJJ7.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "175fb4a4144b34971430a4ec96b95efbbc42b86e42246e6ad6f3f7e017e53217",
+      "url": "https://rest.uniprot.org/uniprotkb/P9WJJ7.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "UNIPROT:Q58AD3",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/Q58AD3.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/Q58AD3.fasta",
+      "sha256": "6b9f1d80dc64d1c16c9468f431bd8abbd9aa38d195c99705eca18674509ed09d"
+    },
+    {
+      "source_id": "UNIPROT:Q9UBU9",
+      "provider": "UniProt / UniProtKB",
+      "artifact": "sources/uniprot/Q9UBU9.fasta",
+      "url": "https://rest.uniprot.org/uniprotkb/Q9UBU9.fasta",
+      "license": "CC BY 4.0",
+      "sha256": "09b7f1c360bdf8208a8fc9236db5dae4144da78763ccfe0e7b5f37ef8e085102"
+    },
+    {
+      "source_id": "PDB:1ALG",
+      "artifact": "sources/wwpdb/1ALG.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ece3c33189710ba74b7c9e11c56902628c44b886339ddbc3cdd8a41843442d9b",
+      "url": "https://files.rcsb.org/download/1ALG.cif"
+    },
+    {
+      "source_id": "PDB:1B73",
+      "artifact": "sources/wwpdb/1B73.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "fd4141ee024b29a065aebd583ea7641844c6724d0128bc402eb4ed44be00dffc",
+      "url": "https://files.rcsb.org/download/1B73.cif"
+    },
+    {
+      "source_id": "PDB:1BTL",
+      "artifact": "sources/wwpdb/1BTL.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "932981534e5dd6abcdd02271935e055c74dff16486c991cd610c16c95b5a2b82",
+      "url": "https://files.rcsb.org/download/1BTL.cif"
+    },
+    {
+      "source_id": "PDB:1D3Z",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1D3Z.cif",
+      "url": "https://files.rcsb.org/download/1D3Z.cif",
+      "sha256": "7242859f3508ff1711e5b38a78b14c960f137c096f36302406223c93b909c407"
+    },
+    {
+      "source_id": "PDB:1DNC",
+      "artifact": "sources/wwpdb/1DNC.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0253204f534b474c4c3a7edbe0a08e3180d37338d1d7ab7e3c4b0a5946a4ac87",
+      "url": "https://files.rcsb.org/download/1DNC.cif"
+    },
+    {
+      "source_id": "PDB:1DO8",
+      "artifact": "sources/wwpdb/1DO8.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+      "url": "https://files.rcsb.org/download/1DO8.cif"
+    },
+    {
+      "source_id": "PDB:1G03",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1G03.cif",
+      "url": "https://files.rcsb.org/download/1G03.cif",
+      "sha256": "56340eeaa8121ee6f31e9594086593d5addf3f3777a0445fe3486ff4f469a6d0"
+    },
+    {
+      "source_id": "PDB:1IGT",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1IGT.cif",
+      "url": "https://files.rcsb.org/download/1IGT.cif",
+      "sha256": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f"
+    },
+    {
+      "source_id": "PDB:1NBA",
+      "artifact": "sources/wwpdb/1NBA.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2583e192b8e5e1c37babf77291b089c5e7712cddf09bc0f438c4f9caefcda4b7",
+      "url": "https://files.rcsb.org/download/1NBA.cif"
+    },
+    {
+      "source_id": "PDB:1NIA",
+      "artifact": "sources/wwpdb/1NIA.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "783eb91b7b4a4115f974f53304dd48568f6ab53366d5399176d8037883b1a086",
+      "url": "https://files.rcsb.org/download/1NIA.cif"
+    },
+    {
+      "source_id": "PDB:1NZY",
+      "artifact": "sources/wwpdb/1NZY.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "af2d43a8bb512605dcd67693a5b0e60c704d64d7a4a35cff3d64a42f21e3c98d",
+      "url": "https://files.rcsb.org/download/1NZY.cif"
+    },
+    {
+      "source_id": "PDB:1OAI",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "url": "https://files.rcsb.org/download/1OAI.cif",
+      "sha256": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c"
+    },
+    {
+      "source_id": "PDB:1OTH",
+      "artifact": "sources/wwpdb/1OTH.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "700cc3710001752e0c925c78ed5a9eb311f09c971654dc9976c54fea7378f650",
+      "url": "https://files.rcsb.org/download/1OTH.cif"
+    },
+    {
+      "source_id": "PDB:1QPR",
+      "artifact": "sources/wwpdb/1QPR.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+      "url": "https://files.rcsb.org/download/1QPR.cif"
+    },
+    {
+      "source_id": "PDB:1QUM",
+      "artifact": "sources/wwpdb/1QUM.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8ef91fa5ce01aef925052a0df8c0198620407657bc0cd2408f4bd5d71e157dce",
+      "url": "https://files.rcsb.org/download/1QUM.cif"
+    },
+    {
+      "source_id": "PDB:1RR6",
+      "artifact": "sources/wwpdb/1RR6.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d217ae06133f3280d2687e8493adc3c720aec541a27239bf70e793f6083288e8",
+      "url": "https://files.rcsb.org/download/1RR6.cif"
+    },
+    {
+      "source_id": "PDB:1WHS",
+      "artifact": "sources/wwpdb/1WHS.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8069857ca19cfbad6ed8554032e5e26204fdb57be9889b4d8e17826451c27e47",
+      "url": "https://files.rcsb.org/download/1WHS.cif"
+    },
+    {
+      "source_id": "PDB:1ALG:validation_xml",
+      "artifact": "sources/wwpdb/1alg_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9ab2bc344f790ad639117683b128b2fab69e56e10a31420ddf10de8e768fc110",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/al/1alg/1alg_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1B73:validation_xml",
+      "artifact": "sources/wwpdb/1b73_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "f38dfe764ea983bef49a48517c125b38297d6c4987050664dc31eda5525216ef",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/b7/1b73/1b73_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1BTL:validation_xml",
+      "artifact": "sources/wwpdb/1btl_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "5f034802464a650317b702db3748ca6f6167b4bcd019fd2a8d7c50732c0f0164",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/bt/1btl/1btl_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1D3Z:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1d3z_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/d3/1d3z/1d3z_validation.xml.gz",
+      "sha256": "66ff6ab047dd0f449df0b51f6dc3fa4c11fea8e592da8f29ea113b9f156fd5c1"
+    },
+    {
+      "source_id": "PDB:1DNC:validation_xml",
+      "artifact": "sources/wwpdb/1dnc_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "939e303ee9555531b1c057bf696132cd28cd4e7ed721b43f574e63fa4450c57b",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/dn/1dnc/1dnc_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1DO8:validation_xml",
+      "artifact": "sources/wwpdb/1do8_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "16605eadefa7669aa320c6f7ec73579e883253bfc4c57518ef1a8bc5d5957b6b",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/do/1do8/1do8_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1G03:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1g03_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/g0/1g03/1g03_validation.xml.gz",
+      "sha256": "b9faf614776f492aba25c9d9d29330128dadc30f8569076cac8962dc7132eb3d"
+    },
+    {
+      "source_id": "PDB:1IGT:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/1igt_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ig/1igt/1igt_validation.xml.gz",
+      "sha256": "4f3a39bfd23518ffe9fe6072c3fcafc69ccfdbfe36f8bc9b527c616da54eeda8"
+    },
+    {
+      "source_id": "PDB:1NBA:validation_xml",
+      "artifact": "sources/wwpdb/1nba_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9a4127429e75755bd3858d6467d2ad4e971b81c1049a05780a966a146b06ff98",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/nb/1nba/1nba_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1NIA:validation_xml",
+      "artifact": "sources/wwpdb/1nia_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d7b769efb42e4e39cc352105426dffd3b4bed1a772ed32a9e9a5489e7bdbf43f",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ni/1nia/1nia_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1NZY:validation_xml",
+      "artifact": "sources/wwpdb/1nzy_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "7ad905b1b973236b7c9b33553e426f70d0c419a7f4917ed0aba42e9bfda06d34",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/nz/1nzy/1nzy_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1OAI:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/1oai_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/oa/1oai/1oai_validation.xml.gz",
+      "sha256": "9729a302dd8f5906c7d6e420d1c4fcc43eb9911ebf17de0a45064270179f3d9c"
+    },
+    {
+      "source_id": "PDB:1OTH:validation_xml",
+      "artifact": "sources/wwpdb/1oth_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "970023213e9d48ecaf5b56499fea0abe12e30f1c34236b48cc5a982e4444d6e7",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ot/1oth/1oth_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1QPR:validation_xml",
+      "artifact": "sources/wwpdb/1qpr_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "69ac5419a0361fac90d995689368e3125612dec8411dc74628967f85b95816be",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/qp/1qpr/1qpr_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1QUM:validation_xml",
+      "artifact": "sources/wwpdb/1qum_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "fc6ea96083a3610c26d196f200ef9311c8fd3113addc257e3b938a01597efd08",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/qu/1qum/1qum_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1RR6:validation_xml",
+      "artifact": "sources/wwpdb/1rr6_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "f8f95a8ee484d2e97f41d5f3fd456aa96b1e287d101773dc5ff9d3d0f2696754",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/rr/1rr6/1rr6_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:1WHS:validation_xml",
+      "artifact": "sources/wwpdb/1whs_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d2115eda46d1ddd77dafeedfa9d0a585a5e1737bfecc7a4c2d71a9cfbd52d9d7",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/wh/1whs/1whs_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:2JDW",
+      "artifact": "sources/wwpdb/2JDW.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ce268ce28caf802c9e5c6bc19aaee1759b48ee49eeedfc8ada8aa105b4c331f7",
+      "url": "https://files.rcsb.org/download/2JDW.cif"
+    },
+    {
+      "source_id": "PDB:2K0Q",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2K0Q.cif",
+      "url": "https://files.rcsb.org/download/2K0Q.cif",
+      "sha256": "b198ca486b46805e1605dd5af5c7dc3c41ec2ab83482354c57209564eed0b3c7"
+    },
+    {
+      "source_id": "PDB:2MZQ",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2MZQ.cif",
+      "url": "https://files.rcsb.org/download/2MZQ.cif",
+      "sha256": "3922bcd5f17a78082c533588159f77afcfea0b376c0e1bc3b2823f3128e7fd98"
+    },
+    {
+      "source_id": "PDB:2V7A",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2V7A.cif",
+      "url": "https://files.rcsb.org/download/2V7A.cif",
+      "sha256": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3"
+    },
+    {
+      "source_id": "PDB:2JDW:validation_xml",
+      "artifact": "sources/wwpdb/2jdw_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "4629f7af08e977175c445f1df376137ed4ad283f98de475398744f46c0387133",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/jd/2jdw/2jdw_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:2K0Q:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2k0q_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/k0/2k0q/2k0q_validation.xml.gz",
+      "sha256": "2a38e9ed087ab002e2dfd52529f180caae3d5e13417d19775bf0e0086148a48b"
+    },
+    {
+      "source_id": "PDB:2MZQ:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/2mzq_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/mz/2mzq/2mzq_validation.xml.gz",
+      "sha256": "e59527a15152b5090b743aa7e3014c31f499416f2c348714e741ef609bfe9689"
+    },
+    {
+      "source_id": "PDB:2V7A:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/2v7a_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/v7/2v7a/2v7a_validation.xml.gz",
+      "sha256": "94615a492e788bf9cf09d50aa5e4266e12935758cbde11b948d66d1c58e5d68e"
+    },
+    {
+      "source_id": "PDB:4EA9",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/4EA9.cif",
+      "url": "https://files.rcsb.org/download/4EA9.cif",
+      "sha256": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88"
+    },
+    {
+      "source_id": "PDB:4JDW",
+      "artifact": "sources/wwpdb/4JDW.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "e6797fac8081b2d57dff9525b86ef84b4c262b0f9197e9f6725de8e4933227a6",
+      "url": "https://files.rcsb.org/download/4JDW.cif"
+    },
+    {
+      "source_id": "PDB:4EA9:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/4ea9_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ea/4ea9/4ea9_validation.xml.gz",
+      "sha256": "6931194705ae471bc6100de52c54cf561faac661cc027e2eba84107afd5a3243"
+    },
+    {
+      "source_id": "PDB:4JDW:validation_xml",
+      "artifact": "sources/wwpdb/4jdw_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "39fdc92fe6b8a79501ee1c593402fe4b25a98f7a8bd88f653e6b56f10ea8939a",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/jd/4jdw/4jdw_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:5ICD",
+      "artifact": "sources/wwpdb/5ICD.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2743bffee86fbe414d6f21f69260e622e440f7c3de30f3b0c1194b0515354c62",
+      "url": "https://files.rcsb.org/download/5ICD.cif"
+    },
+    {
+      "source_id": "PDB:5W3L",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/5W3L.cif",
+      "url": "https://files.rcsb.org/download/5W3L.cif",
+      "sha256": "6c21936d8e8f6151bd5290530acff4b0566379cdb78ede9edca762f5dfd6ef41"
+    },
+    {
+      "source_id": "PDB:5ICD:validation_xml",
+      "artifact": "sources/wwpdb/5icd_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2d8805e24629495e731936afe525d17380542eccba1982e68bf747fc4b275042",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ic/5icd/5icd_validation.xml.gz"
+    },
+    {
+      "source_id": "PDB:5W3L:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/5w3l_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/w3/5w3l/5w3l_validation.xml.gz",
+      "sha256": "7850b149a1a1b91597b745d440bd44e5ea6add410bc930df0d32395efd3c31f1"
+    },
+    {
+      "source_id": "PDB:6CVM",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/6CVM.cif",
+      "url": "https://files.rcsb.org/download/6CVM.cif",
+      "sha256": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d"
+    },
+    {
+      "source_id": "PDB:6VXX",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/6VXX.cif",
+      "url": "https://files.rcsb.org/download/6VXX.cif",
+      "sha256": "74ceac62dc45e34818f7c6f32fc12690f250ad803b999c1d7399a362ecd86984"
+    },
+    {
+      "source_id": "PDB:6CVM:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/6cvm_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/cv/6cvm/6cvm_validation.xml.gz",
+      "sha256": "0a08598357855f2b985488a5508c82b0cfc7e4c6a822c7bb12312dde12024ad3"
+    },
+    {
+      "source_id": "PDB:6VXX:validation_xml",
+      "provider": "wwPDB/RCSB PDB",
+      "artifact": "sources/wwpdb/6vxx_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/vx/6vxx/6vxx_validation.xml.gz",
+      "sha256": "a15d36f3248a92debc03a9c31c70dd82497823418b390a964957c4d19ba5f6ee"
     },
     {
       "source_id": "PDB:7A4M",
@@ -259,242 +1155,18 @@
       "sha256": "06a1d4b04bb9915335404b27f8b62708be7d5fad1b2fd3cb7c9fcb7e0cd0920f"
     },
     {
-      "source_id": "UNIPROT:P09528",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P09528.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P09528.fasta",
-      "sha256": "a8b183144523f9e78f22fdb953bdaa6349b0ec72e93c02890fd4b79d131a98b2"
-    },
-    {
-      "source_id": "PROVENANCE:7A4M",
-      "provider": "authored for this collection",
-      "artifact": "provenance/7A4M.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "a8aec79f7b4fbcf16cbb5a49d7839e87450ba4e5ffa0773bdc67d1e35af687f6"
-    },
-    {
-      "source_id": "PDB:6CVM",
+      "source_id": "PDB:8SSN",
       "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/6CVM.cif",
-      "url": "https://files.rcsb.org/download/6CVM.cif",
-      "sha256": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d"
+      "artifact": "sources/wwpdb/8SSN.cif",
+      "url": "https://files.rcsb.org/download/8SSN.cif",
+      "sha256": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537"
     },
     {
-      "source_id": "PDB:6CVM:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/6cvm_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/cv/6cvm/6cvm_validation.xml.gz",
-      "sha256": "0a08598357855f2b985488a5508c82b0cfc7e4c6a822c7bb12312dde12024ad3"
-    },
-    {
-      "source_id": "UNIPROT:P00722",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P00722.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P00722.fasta",
-      "sha256": "6eaf4eb59b178dc946fcd9f50fdcfbec9d1b49b53bc8d849a402c3a0405830eb"
-    },
-    {
-      "source_id": "PROVENANCE:6CVM",
-      "provider": "authored for this collection",
-      "artifact": "provenance/6CVM.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "ae6cdc595129904cc8caa3bb1102db5018103bc0c6bc56af3f6faee0131dd3fa"
-    },
-    {
-      "source_id": "PDB:6VXX",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/6VXX.cif",
-      "url": "https://files.rcsb.org/download/6VXX.cif",
-      "sha256": "74ceac62dc45e34818f7c6f32fc12690f250ad803b999c1d7399a362ecd86984"
-    },
-    {
-      "source_id": "PDB:6VXX:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/6vxx_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/vx/6vxx/6vxx_validation.xml.gz",
-      "sha256": "a15d36f3248a92debc03a9c31c70dd82497823418b390a964957c4d19ba5f6ee"
-    },
-    {
-      "source_id": "UNIPROT:P0DTC2",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P0DTC2.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P0DTC2.fasta",
-      "sha256": "399308ca13674141add24eb388b1b4fc3a84330350075c18be0b4261166f8086"
-    },
-    {
-      "source_id": "PROVENANCE:6VXX",
-      "provider": "authored for this collection",
-      "artifact": "provenance/6VXX.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "0e3f48723432a670f5ce4ad58823d95d4e2520c4ed8d8d3ea3683df3d91c09f1"
-    },
-    {
-      "source_id": "PDB:5W3L",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/5W3L.cif",
-      "url": "https://files.rcsb.org/download/5W3L.cif",
-      "sha256": "6c21936d8e8f6151bd5290530acff4b0566379cdb78ede9edca762f5dfd6ef41"
-    },
-    {
-      "source_id": "PDB:5W3L:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/5w3l_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/w3/5w3l/5w3l_validation.xml.gz",
-      "sha256": "7850b149a1a1b91597b745d440bd44e5ea6add410bc930df0d32395efd3c31f1"
-    },
-    {
-      "source_id": "UNIPROT:P03303",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P03303.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P03303.fasta",
-      "sha256": "05032b329581a2f888fdecfbf010f91e9fdcda465ab4b7cb8f09c166eeb83095"
-    },
-    {
-      "source_id": "PROVENANCE:5W3L",
-      "provider": "authored for this collection",
-      "artifact": "provenance/5W3L.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "c0df49f5495f95b811c994304bf970cec94dadcfcda8eab588d1d48c4201518d"
-    },
-    {
-      "source_id": "PDB:1D3Z",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1D3Z.cif",
-      "url": "https://files.rcsb.org/download/1D3Z.cif",
-      "sha256": "7242859f3508ff1711e5b38a78b14c960f137c096f36302406223c93b909c407"
-    },
-    {
-      "source_id": "PDB:1D3Z:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1d3z_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/d3/1d3z/1d3z_validation.xml.gz",
-      "sha256": "66ff6ab047dd0f449df0b51f6dc3fa4c11fea8e592da8f29ea113b9f156fd5c1"
-    },
-    {
-      "source_id": "UNIPROT:P0CG48",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P0CG48.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P0CG48.fasta",
-      "sha256": "63df9310296dffa3ee2b83aa0315a4d15c82a2da8066e86e55a06ef32d1a3c3d"
-    },
-    {
-      "source_id": "PROVENANCE:1D3Z",
-      "provider": "authored for this collection",
-      "artifact": "provenance/1D3Z.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "4e0fa6fd389d7904d7ba6611c9a7435c3ffaf304e0135e443b4d82d61a72c3f0"
-    },
-    {
-      "source_id": "PDB:2K0Q",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/2K0Q.cif",
-      "url": "https://files.rcsb.org/download/2K0Q.cif",
-      "sha256": "b198ca486b46805e1605dd5af5c7dc3c41ec2ab83482354c57209564eed0b3c7"
-    },
-    {
-      "source_id": "PDB:2K0Q:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/2k0q_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/k0/2k0q/2k0q_validation.xml.gz",
-      "sha256": "2a38e9ed087ab002e2dfd52529f180caae3d5e13417d19775bf0e0086148a48b"
-    },
-    {
-      "source_id": "UNIPROT:Q58AD3",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/Q58AD3.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/Q58AD3.fasta",
-      "sha256": "6b9f1d80dc64d1c16c9468f431bd8abbd9aa38d195c99705eca18674509ed09d"
-    },
-    {
-      "source_id": "PROVENANCE:2K0Q",
-      "provider": "authored for this collection",
-      "artifact": "provenance/2K0Q.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "1870c976e3b1f3e2c43a8e7cc7f40ff7c494f949c6eab9990730689e9a083d17"
-    },
-    {
-      "source_id": "PDB:1G03",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1G03.cif",
-      "url": "https://files.rcsb.org/download/1G03.cif",
-      "sha256": "56340eeaa8121ee6f31e9594086593d5addf3f3777a0445fe3486ff4f469a6d0"
-    },
-    {
-      "source_id": "PDB:1G03:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1g03_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/g0/1g03/1g03_validation.xml.gz",
-      "sha256": "b9faf614776f492aba25c9d9d29330128dadc30f8569076cac8962dc7132eb3d"
-    },
-    {
-      "source_id": "UNIPROT:P14077",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P14077.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P14077.fasta",
-      "sha256": "d93130b2ee6a9a6f6522f84ee9aecbbfd3ba79b8e19884423577549b270c164e"
-    },
-    {
-      "source_id": "PROVENANCE:1G03",
-      "provider": "authored for this collection",
-      "artifact": "provenance/1G03.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "9d9e78518194a765d38e4e13df2b43b22244bbebeeafee5f4e4aef46ef3735fc"
-    },
-    {
-      "source_id": "PDB:2MZQ",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/2MZQ.cif",
-      "url": "https://files.rcsb.org/download/2MZQ.cif",
-      "sha256": "3922bcd5f17a78082c533588159f77afcfea0b376c0e1bc3b2823f3128e7fd98"
-    },
-    {
-      "source_id": "PDB:2MZQ:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/2mzq_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/mz/2mzq/2mzq_validation.xml.gz",
-      "sha256": "e59527a15152b5090b743aa7e3014c31f499416f2c348714e741ef609bfe9689"
-    },
-    {
-      "source_id": "UNIPROT:P25555",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P25555.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P25555.fasta",
-      "sha256": "16c9a4f7ed28b8c93b423e81b59099431cfc8f57e3f9c304d2a355e6a4f4a44d"
-    },
-    {
-      "source_id": "PROVENANCE:2MZQ",
-      "provider": "authored for this collection",
-      "artifact": "provenance/2MZQ.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "9b67ceeed3e562c0b7a9fa90ea5a400e7d294527d30364948530133c70d6b74b"
-    },
-    {
-      "source_id": "PDB:1IGT",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1IGT.cif",
-      "url": "https://files.rcsb.org/download/1IGT.cif",
-      "sha256": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f"
-    },
-    {
-      "source_id": "PDB:1IGT:validation_xml",
-      "provider": "wwPDB/RCSB PDB",
-      "artifact": "sources/wwpdb/1igt_validation.xml",
-      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ig/1igt/1igt_validation.xml.gz",
-      "sha256": "4f3a39bfd23518ffe9fe6072c3fcafc69ccfdbfe36f8bc9b527c616da54eeda8"
-    },
-    {
-      "source_id": "UNIPROT:P01863",
-      "provider": "UniProt / UniProtKB",
-      "artifact": "sources/uniprot/P01863.fasta",
-      "url": "https://rest.uniprot.org/uniprotkb/P01863.fasta",
-      "sha256": "cdc71e4129ec5762e63d4c5e7b5c8aac127333b5ba185341699ef415d7e06e94"
-    },
-    {
-      "source_id": "PROVENANCE:1IGT",
-      "provider": "authored for this collection",
-      "artifact": "provenance/1IGT.provenance.json",
-      "acquisition": "committed_in_repository",
-      "sha256": "739f570e3d8f3e328c1933110ab7f8247452dfd5f6848ffcf9e6039ce7e814fb"
+      "source_id": "PDB:8SSN:validation_xml",
+      "provider": "wwPDB validation reports",
+      "artifact": "sources/wwpdb/8ssn_validation.xml",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ss/8ssn/8ssn_validation.xml.gz",
+      "sha256": "b1aea92dfba264c7e324b07a3f813db7a8a6d9861a4e0db1bca1b47f15a5d15f"
     }
   ]
 }

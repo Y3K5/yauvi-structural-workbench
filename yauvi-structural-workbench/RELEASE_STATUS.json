@@ -18,7 +18,7 @@
     "structure_qc": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "membrane_orientation": "beta_barrel_conditionally_qualified_alpha_helical_prototype_v2_panel_unadopted",
     "conformational_state": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
-    "functional_site_state": "qualification_v1_public_case_passed_v2_panel_unadopted",
+    "functional_site_state": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "assembly_interface": "qualification_v1_public_case_passed_freesasa_2_1_3_v2_panel_unadopted",
     "sf_csa": "qualification_v1_public_case_passed_real_engines_v2_four_family_panel_unadopted"
   },
@@ -37,11 +37,11 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "356a550c76e6a85ac57fe0bccc65fcbac34ca8da781e0cd3b8da0fb9dbf53aa5",
+      "panel_manifest_sha256": "8dd90d42387246fc8e44141a13daaf6f6ec41682e77d925ae2d32890210644fa",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
-      "source_lock_sha256": "dd28431569bca59ecf68a073d91ae4d1bff9c733a137d5aed1f31f82c2af9723",
+      "source_lock_sha256": "060686b1d444c8f210b493f28c1e4c61c3cf9203dbe2f01c44f31c931e67f870",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "a8d85291e925b4bd62c5f092b0b6a462a052133f22187f3095eb0e18458a0586",
+      "results_sha256": "db7bc09ccda65307b313f2759238881bd64ecdab546d52fd484103479022d91c",
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
@@ -51,7 +51,7 @@
       },
       "execution_results_sha256": {
         "structure_qc": "2f18019ea10a52dc98dca046048e498b3d91eeebc6b42690abb4a377d6f85e0d",
-        "functional_site_state": "cf2f42276187e40f6ef9fda72c1af8f83d8f623b1b9fc37feea03fc257e8e838"
+        "functional_site_state": "aecbcb984bde3180589235facdb368232f24bce4816fa9fb768156f1f4928149"
       },
       "strata_executed": {
         "structure_qc": [
@@ -59,9 +59,15 @@
           "cryo_em",
           "nmr",
           "alphafold"
+        ],
+        "functional_site_state": [
+          "acid_base",
+          "nucleophile_or_covalent",
+          "metal_or_cofactor",
+          "apo_modified_or_incomplete"
         ]
       },
-      "scientific_execution_note": "The StructQC panel is fully composed: all four strata adopted, 16/16 cases and 1/1 control executing and passing. This flag stays false because it reports the whole collection -- five panels (membrane, ABL StateAtlas, site-context, assembly-context, sf-csa) remain unadopted, and no scope has completed the independent second-machine gate.",
+      "scientific_execution_note": "Two panels are fully composed and executing: StructQC 16/16 cases with 2 controls and 7/7 coverage, and site-context 16/16 cases with 1 control and 8/8 coverage. This flag stays false because it reports the whole collection: membrane, ABL StateAtlas, assembly-context and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
       "results_note": "One results document per collection. A single fixed filename meant the second panel executed overwrote the first panel's evidence."

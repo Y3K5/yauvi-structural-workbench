@@ -39,26 +39,27 @@
       "mode": "witnessed_by_at_least_one_executed_case",
       "required_features": [
         "curated_residue_resolved",
+        "curated_residue_substituted",
         "curated_residue_unresolved",
-        "metal_ligand_role",
-        "declared_cofactor_observed",
         "declared_cofactor_absent",
+        "declared_cofactor_observed",
         "declared_cofactor_unmappable",
+        "metal_ligand_role",
         "missing_evidence_reported"
       ],
       "rationale": "The panel's coverage_rules were prose, and composition counts records per stratum and split, so a rule could go unmet while the panel reported itself complete. That is exactly how insertion codes hid in the StructQC panel. Each feature is witnessed from the evidence an executed case produced, and execution fails if any required feature has no witness.",
       "unwitnessable_features": {
-        "curated_residue_substituted": {
-          "declared_by": "the panel's coverage_rules, as modified controls",
-          "status": "NOT SATISFIED - recorded rather than claimed",
-          "why_not_witnessed": "A role_mismatch needs a structure whose curated residue is substituted. The four found (1FQG E164N, 4ZNB C181S, 2NQ9 Y72A, 4K1G H69A) are each alternative structures of proteins already used in other strata, so adopting one would put a single homolog group in two strata.",
-          "resolution": "Curate a substituted structure of a protein not otherwise in the panel."
-        },
         "curated_residue_missing_coordinates": {
           "declared_by": "the panel's coverage_rules, as incomplete controls",
           "status": "NOT SATISFIED - recorded rather than claimed",
           "why_not_witnessed": "1ALG's curated residues fall outside the modelled fragment entirely, so site-context reports unresolved_mapping. missing_coordinates needs a residue inside the reference map but disordered in the coordinates.",
           "resolution": "Curate a structure with a disordered catalytic residue."
+        }
+      },
+      "resolved_features": {
+        "curated_residue_substituted": {
+          "was": "recorded unwitnessable while the panel held only twelve cases",
+          "now": "witnessed by 4JDW, a C407A substitution of glycine amidinotransferase. It was recorded as unsatisfiable because every substituted structure found duplicated a homolog group already in the panel; 4JDW does not, because P50440 entered the panel through the apo/modified stratum rather than a mechanism stratum."
         }
       }
     }
@@ -97,8 +98,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1B73.cif",
-          "annotations": "sources/mcsa/MCSA-1.annotations.json",
-          "component_map": "sources/mcsa/MCSA-1.component_map.json"
+          "annotations": "annotations/MCSA-1.annotations.json",
+          "component_map": "annotations/MCSA-1.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -207,8 +208,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1OTH.cif",
-          "annotations": "sources/mcsa/MCSA-12.annotations.json",
-          "component_map": "sources/mcsa/MCSA-12.component_map.json"
+          "annotations": "annotations/MCSA-12.annotations.json",
+          "component_map": "annotations/MCSA-12.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -319,8 +320,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1ALG.cif",
-          "annotations": "sources/mcsa/MCSA-6.annotations.json",
-          "component_map": "sources/mcsa/MCSA-6.component_map.json"
+          "annotations": "annotations/MCSA-6.annotations.json",
+          "component_map": "annotations/MCSA-6.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -427,8 +428,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/2JDW.cif",
-          "annotations": "sources/mcsa/MCSA-18.annotations.json",
-          "component_map": "sources/mcsa/MCSA-18.component_map.json"
+          "annotations": "annotations/MCSA-18.annotations.json",
+          "component_map": "annotations/MCSA-18.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -528,8 +529,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1NIA.cif",
-          "annotations": "sources/mcsa/MCSA-4.annotations.json",
-          "component_map": "sources/mcsa/MCSA-4.component_map.json"
+          "annotations": "annotations/MCSA-4.annotations.json",
+          "component_map": "annotations/MCSA-4.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -673,8 +674,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/5ICD.cif",
-          "annotations": "sources/mcsa/MCSA-7.annotations.json",
-          "component_map": "sources/mcsa/MCSA-7.component_map.json"
+          "annotations": "annotations/MCSA-7.annotations.json",
+          "component_map": "annotations/MCSA-7.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -782,8 +783,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1QUM.cif",
-          "annotations": "sources/mcsa/MCSA-11.annotations.json",
-          "component_map": "sources/mcsa/MCSA-11.component_map.json"
+          "annotations": "annotations/MCSA-11.annotations.json",
+          "component_map": "annotations/MCSA-11.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -961,8 +962,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1DO8.cif",
-          "annotations": "sources/mcsa/MCSA-21.annotations.json",
-          "component_map": "sources/mcsa/MCSA-21.component_map.json"
+          "annotations": "annotations/MCSA-21.annotations.json",
+          "component_map": "annotations/MCSA-21.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1112,8 +1113,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1BTL.cif",
-          "annotations": "sources/mcsa/MCSA-2.annotations.json",
-          "component_map": "sources/mcsa/MCSA-2.component_map.json"
+          "annotations": "annotations/MCSA-2.annotations.json",
+          "component_map": "annotations/MCSA-2.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1235,8 +1236,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1WHS.cif",
-          "annotations": "sources/mcsa/MCSA-5.annotations.json",
-          "component_map": "sources/mcsa/MCSA-5.component_map.json"
+          "annotations": "annotations/MCSA-5.annotations.json",
+          "component_map": "annotations/MCSA-5.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1321,8 +1322,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1NZY.cif",
-          "annotations": "sources/mcsa/MCSA-24.annotations.json",
-          "component_map": "sources/mcsa/MCSA-24.component_map.json"
+          "annotations": "annotations/MCSA-24.annotations.json",
+          "component_map": "annotations/MCSA-24.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1437,8 +1438,8 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1NBA.cif",
-          "annotations": "sources/mcsa/MCSA-25.annotations.json",
-          "component_map": "sources/mcsa/MCSA-25.component_map.json"
+          "annotations": "annotations/MCSA-25.annotations.json",
+          "component_map": "annotations/MCSA-25.component_map.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1513,9 +1514,1160 @@
           "SO4"
         ]
       }
+    },
+    {
+      "record_id": "v2-sitecontext-acid_base-held-1QPR",
+      "record_kind": "benchmark_case",
+      "stratum": "acid_base",
+      "split": "held_out",
+      "pdb_entry_id": "1QPR",
+      "homolog_group": "nicotinate_nucleotide_diphosphorylase",
+      "artifact": "sources/wwpdb/1QPR.cif",
+      "checksum": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P9WJJ7",
+        "annotation_source": "M-CSA:8",
+        "cofactor_source": "UniProt:P9WJJ7 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1QPR",
+        "mcsa": "M-CSA:8"
+      },
+      "exclusion_rationale": "Proton-transfer transferase from M. tuberculosis; a bacterial acid/base case in a different fold from 1B73.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1QPR.cif",
+            "reference_fasta": "sources/uniprot/P9WJJ7.fasta",
+            "validation_report": "sources/wwpdb/1qpr_validation.xml",
+            "provenance": "provenance/1QPR.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1QPR.cif",
+          "annotations": "annotations/MCSA-8.annotations.json",
+          "component_map": "annotations/MCSA-8.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 4,
+        "state_counts": {
+          "role_compatible": 4
+        },
+        "sites": [
+          {
+            "position": 140,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 172,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 201,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          },
+          {
+            "position": 222,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "MN",
+          "PHT",
+          "PPC"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-acid_base-held-1RR6",
+      "record_kind": "benchmark_case",
+      "stratum": "acid_base",
+      "split": "held_out",
+      "pdb_entry_id": "1RR6",
+      "homolog_group": "purine_nucleoside_phosphorylase",
+      "artifact": "sources/wwpdb/1RR6.cif",
+      "checksum": "d217ae06133f3280d2687e8493adc3c720aec541a27239bf70e793f6083288e8",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P00491",
+        "annotation_source": "M-CSA:17",
+        "cofactor_source": "UniProt:P00491 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1RR6",
+        "mcsa": "M-CSA:17"
+      },
+      "exclusion_rationale": "Eleven curated residues, the largest acid/base site in the panel.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1RR6.cif",
+            "reference_fasta": "sources/uniprot/P00491.fasta",
+            "validation_report": "sources/wwpdb/1rr6_validation.xml",
+            "provenance": "provenance/1RR6.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1RR6.cif",
+          "annotations": "annotations/MCSA-17.annotations.json",
+          "component_map": "annotations/MCSA-17.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 11,
+        "state_counts": {
+          "role_compatible": 11
+        },
+        "sites": [
+          {
+            "position": 33,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 33,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 64,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 86,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 88,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          },
+          {
+            "position": 89,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          },
+          {
+            "position": 116,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "A",
+            "expected_residues": [
+              "A"
+            ]
+          },
+          {
+            "position": 219,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "M",
+            "expected_residues": [
+              "M"
+            ]
+          },
+          {
+            "position": 220,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "S",
+            "expected_residues": [
+              "S"
+            ]
+          },
+          {
+            "position": 243,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "N",
+            "expected_residues": [
+              "N"
+            ]
+          },
+          {
+            "position": 257,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "IMH",
+          "PO4"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-apo_modified_or_incomplete-dev-1DNC",
+      "record_kind": "benchmark_case",
+      "stratum": "apo_modified_or_incomplete",
+      "split": "development",
+      "pdb_entry_id": "1DNC",
+      "homolog_group": "glutathione_reductase",
+      "artifact": "sources/wwpdb/1DNC.cif",
+      "checksum": "0253204f534b474c4c3a7edbe0a08e3180d37338d1d7ab7e3c4b0a5946a4ac87",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P00390",
+        "annotation_source": "M-CSA:6",
+        "cofactor_source": "UniProt:P00390 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:1DNC",
+        "mcsa": "M-CSA:6"
+      },
+      "exclusion_rationale": "Chemically modified residue: carries CSD, an oxidised cysteine at the curated position, which site-context reports as unresolved rather than accepting as an ordinary cysteine.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/1DNC.cif",
+            "reference_fasta": "sources/uniprot/P00390.fasta",
+            "validation_report": "sources/wwpdb/1dnc_validation.xml",
+            "provenance": "provenance/1DNC.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/1DNC.cif",
+          "annotations": "annotations/MCSA-6.annotations.json",
+          "component_map": "annotations/MCSA-6.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 5,
+        "state_counts": {
+          "role_compatible": 4,
+          "unresolved_mapping": 1
+        },
+        "sites": [
+          {
+            "position": 102,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_compatible",
+            "observed_residue": "C",
+            "expected_residues": [
+              "C"
+            ]
+          },
+          {
+            "position": 107,
+            "chain_id": null,
+            "role": "nucleophile",
+            "state": "unresolved_mapping",
+            "observed_residue": null,
+            "expected_residues": [
+              "C"
+            ]
+          },
+          {
+            "position": 110,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "K",
+            "expected_residues": [
+              "K"
+            ]
+          },
+          {
+            "position": 241,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "Y",
+            "expected_residues": [
+              "Y"
+            ]
+          },
+          {
+            "position": 245,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "E",
+            "expected_residues": [
+              "E"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 0.8,
+        "cofactors": [
+          {
+            "chebi": "CHEBI:57692",
+            "component_id": "",
+            "detail": "observed component(s): FAD",
+            "name": "FAD",
+            "state": "observed_match"
+          }
+        ],
+        "observed_heteroatoms": [
+          "CSD",
+          "FAD",
+          "GSH",
+          "PO4"
+        ]
+      }
+    },
+    {
+      "record_id": "v2-sitecontext-apo_modified_or_incomplete-held-4JDW",
+      "record_kind": "benchmark_case",
+      "stratum": "apo_modified_or_incomplete",
+      "split": "held_out",
+      "pdb_entry_id": "4JDW",
+      "homolog_group": "glycine_amidinotransferase",
+      "artifact": "sources/wwpdb/4JDW.cif",
+      "checksum": "e6797fac8081b2d57dff9525b86ef84b4c262b0f9197e9f6725de8e4933227a6",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P50440",
+        "annotation_source": "M-CSA:18",
+        "cofactor_source": "UniProt:P50440 COFACTOR"
+      },
+      "license": "CC0 1.0 Universal (wwPDB); M-CSA CC-BY-4.0; UniProt CC-BY-4.0",
+      "citation": {
+        "entry": "PDB:4JDW",
+        "mcsa": "M-CSA:18"
+      },
+      "exclusion_rationale": "Engineered substitution: a C407A mutant, so the curated catalytic cysteine is absent as curated.",
+      "expected_result": {
+        "cli_exit_code": 1,
+        "exit_code_reason": "scientifically incomplete, missing: pocket_results",
+        "invocation": {
+          "upstream": {
+            "workflow": "structure_qc",
+            "structure": "sources/wwpdb/4JDW.cif",
+            "reference_fasta": "sources/uniprot/P50440.fasta",
+            "validation_report": "sources/wwpdb/4jdw_validation.xml",
+            "provenance": "provenance/4JDW.provenance.json",
+            "chain": "A"
+          },
+          "structure": "sources/wwpdb/4JDW.cif",
+          "annotations": "annotations/MCSA-18.annotations.json",
+          "component_map": "annotations/MCSA-18.component_map.json"
+        },
+        "missing_evidence": [
+          "pocket_results"
+        ],
+        "site_count": 5,
+        "state_counts": {
+          "role_compatible": 4,
+          "role_mismatch": 1
+        },
+        "sites": [
+          {
+            "position": 170,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 254,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 303,
+            "chain_id": "A",
+            "role": "acid_base",
+            "state": "role_compatible",
+            "observed_residue": "H",
+            "expected_residues": [
+              "H"
+            ]
+          },
+          {
+            "position": 305,
+            "chain_id": "A",
+            "role": "unspecified",
+            "state": "role_compatible",
+            "observed_residue": "D",
+            "expected_residues": [
+              "D"
+            ]
+          },
+          {
+            "position": 407,
+            "chain_id": "A",
+            "role": "nucleophile",
+            "state": "role_mismatch",
+            "observed_residue": "A",
+            "expected_residues": [
+              "C"
+            ]
+          }
+        ],
+        "curated_residue_recovery": 1.0,
+        "cofactors": [],
+        "observed_heteroatoms": [
+          "ARG"
+        ]
+      }
     }
   ],
-  "source_lock_additions": [],
+  "source_lock_additions": [
+    {
+      "source_id": "PDB:1B73",
+      "artifact": "sources/wwpdb/1B73.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "fd4141ee024b29a065aebd583ea7641844c6724d0128bc402eb4ed44be00dffc",
+      "url": "https://files.rcsb.org/download/1B73.cif"
+    },
+    {
+      "source_id": "PDB:1B73:validation_xml",
+      "artifact": "sources/wwpdb/1b73_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "f38dfe764ea983bef49a48517c125b38297d6c4987050664dc31eda5525216ef",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/b7/1b73/1b73_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P56868",
+      "artifact": "sources/uniprot/P56868.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "4a9ad5013ebfa035b58dd8b10bae2657f97bfda0b3441c27d1d138e88aec7a36",
+      "url": "https://rest.uniprot.org/uniprotkb/P56868.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1B73",
+      "artifact": "provenance/1B73.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "8d5c73f538b6eae145d4cda82cbd7f0fb5f9e66a552e30e563c2ecef91495245",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:1:annotations",
+      "artifact": "annotations/MCSA-1.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "5ef514775ac9e0072554d7ba602dee00c7e7f5993229f4b764999efada95a563",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:1:component_map",
+      "artifact": "annotations/MCSA-1.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1OTH",
+      "artifact": "sources/wwpdb/1OTH.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "700cc3710001752e0c925c78ed5a9eb311f09c971654dc9976c54fea7378f650",
+      "url": "https://files.rcsb.org/download/1OTH.cif"
+    },
+    {
+      "source_id": "PDB:1OTH:validation_xml",
+      "artifact": "sources/wwpdb/1oth_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "970023213e9d48ecaf5b56499fea0abe12e30f1c34236b48cc5a982e4444d6e7",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ot/1oth/1oth_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P00480",
+      "artifact": "sources/uniprot/P00480.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "478d8197968c9e3778e6f0b92148ddbd65bdec35389378e59ffef4ca3a43baf6",
+      "url": "https://rest.uniprot.org/uniprotkb/P00480.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1OTH",
+      "artifact": "provenance/1OTH.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "f8bd945ab8d3c985e5d6ba6e09a0c8ca62f1b3a1277bf1e05abe445ed26fd2fd",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:12:annotations",
+      "artifact": "annotations/MCSA-12.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "08234ea1592d98eb3449eee69673696bced0258e3d48fa03a27918b4fb5b4b07",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:12:component_map",
+      "artifact": "annotations/MCSA-12.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1ALG",
+      "artifact": "sources/wwpdb/1ALG.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ece3c33189710ba74b7c9e11c56902628c44b886339ddbc3cdd8a41843442d9b",
+      "url": "https://files.rcsb.org/download/1ALG.cif"
+    },
+    {
+      "source_id": "PDB:1ALG:validation_xml",
+      "artifact": "sources/wwpdb/1alg_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9ab2bc344f790ad639117683b128b2fab69e56e10a31420ddf10de8e768fc110",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/al/1alg/1alg_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P00390",
+      "artifact": "sources/uniprot/P00390.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "97aab49cdc3cbfc6bfe4e25c85f02522c928f9290ad3adae35bdc80ca99f983a",
+      "url": "https://rest.uniprot.org/uniprotkb/P00390.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1ALG",
+      "artifact": "provenance/1ALG.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "03409f6069f2ad904ab86fbc97ee2e311d6ed5f2f9c633ca44140ad4ab28d45b",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:6:annotations",
+      "artifact": "annotations/MCSA-6.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "b800d04e69dabd9344403b0212105ea0ac54b4347d5d5797011abae84f258f56",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:6:component_map",
+      "artifact": "annotations/MCSA-6.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "27e83b8b7a6e42439a1d031741a32052acc050cd1d358f916f22ca087fb39546",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:2JDW",
+      "artifact": "sources/wwpdb/2JDW.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "ce268ce28caf802c9e5c6bc19aaee1759b48ee49eeedfc8ada8aa105b4c331f7",
+      "url": "https://files.rcsb.org/download/2JDW.cif"
+    },
+    {
+      "source_id": "PDB:2JDW:validation_xml",
+      "artifact": "sources/wwpdb/2jdw_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "4629f7af08e977175c445f1df376137ed4ad283f98de475398744f46c0387133",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/jd/2jdw/2jdw_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P50440",
+      "artifact": "sources/uniprot/P50440.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "5a10926eefcc287848009a0d9a654ae80e9c7e53ba360e8b93ed5bb9d03f3031",
+      "url": "https://rest.uniprot.org/uniprotkb/P50440.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:2JDW",
+      "artifact": "provenance/2JDW.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "a0bde1be152e7d0143bd135a86c1a27e3ede12cc9e32d32d51de58008d0cc83f",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:18:annotations",
+      "artifact": "annotations/MCSA-18.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "c1af2b1ffb74d11bc5dea343c9b50a63f518fb3618ae227d8e563af3952198c6",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:18:component_map",
+      "artifact": "annotations/MCSA-18.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1NIA",
+      "artifact": "sources/wwpdb/1NIA.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "783eb91b7b4a4115f974f53304dd48568f6ab53366d5399176d8037883b1a086",
+      "url": "https://files.rcsb.org/download/1NIA.cif"
+    },
+    {
+      "source_id": "PDB:1NIA:validation_xml",
+      "artifact": "sources/wwpdb/1nia_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d7b769efb42e4e39cc352105426dffd3b4bed1a772ed32a9e9a5489e7bdbf43f",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ni/1nia/1nia_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P25006",
+      "artifact": "sources/uniprot/P25006.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "f5d2f16934da250113f9db3a44db85bd3bc5702868fe68164f1df65dfe043fca",
+      "url": "https://rest.uniprot.org/uniprotkb/P25006.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1NIA",
+      "artifact": "provenance/1NIA.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "9f2898a84d2dc6d0aa93b449ab6460a88e290562c6659a378c2392e05ba1ce66",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:4:annotations",
+      "artifact": "annotations/MCSA-4.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "2eb3013daa813629f2fbd6fc577db244d9e8884fd3dadd38c38a07a2da930b71",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:4:component_map",
+      "artifact": "annotations/MCSA-4.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ce5cbe030e65492c977964d90251ec860919fc049225cde95e19413c674d4251",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:5ICD",
+      "artifact": "sources/wwpdb/5ICD.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2743bffee86fbe414d6f21f69260e622e440f7c3de30f3b0c1194b0515354c62",
+      "url": "https://files.rcsb.org/download/5ICD.cif"
+    },
+    {
+      "source_id": "PDB:5ICD:validation_xml",
+      "artifact": "sources/wwpdb/5icd_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2d8805e24629495e731936afe525d17380542eccba1982e68bf747fc4b275042",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/ic/5icd/5icd_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P08200",
+      "artifact": "sources/uniprot/P08200.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "840e45620fe5adc06da75968c6e5746f8b3c31968c9cdd9a2258af080222d7f3",
+      "url": "https://rest.uniprot.org/uniprotkb/P08200.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:5ICD",
+      "artifact": "provenance/5ICD.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "8d9fc9c961070f5eb18b2f8094c4b4baa1bdebf53d56ea1f4c669a35acb1bcdd",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:7:annotations",
+      "artifact": "annotations/MCSA-7.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "9094db127af72ed1e1cbcfaf846ab041df8181ebaf90748e724f39364870c1ab",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:7:component_map",
+      "artifact": "annotations/MCSA-7.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "fc2d5c3a27a6e9831f73e73e5c9c5369d6537c9acd949742223c72bfc2bffb83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1QUM",
+      "artifact": "sources/wwpdb/1QUM.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8ef91fa5ce01aef925052a0df8c0198620407657bc0cd2408f4bd5d71e157dce",
+      "url": "https://files.rcsb.org/download/1QUM.cif"
+    },
+    {
+      "source_id": "PDB:1QUM:validation_xml",
+      "artifact": "sources/wwpdb/1qum_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "fc6ea96083a3610c26d196f200ef9311c8fd3113addc257e3b938a01597efd08",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/qu/1qum/1qum_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P0A6C1",
+      "artifact": "sources/uniprot/P0A6C1.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "b15cb7c2d211e87b97c42ec3f1c9058261c19e1a33892e6e53f2bc5a1fd9e327",
+      "url": "https://rest.uniprot.org/uniprotkb/P0A6C1.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1QUM",
+      "artifact": "provenance/1QUM.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "bfbefd7a63b1fac5cf9c618eba81f5112c4c2e77974f5e0c2c030df616432df4",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:11:annotations",
+      "artifact": "annotations/MCSA-11.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "d8908965351ff5824ed40334af8e57b4af49850de23061df486ee8a54b3fbde7",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:11:component_map",
+      "artifact": "annotations/MCSA-11.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "cb92bdfa573598d7ec97961137e9f62886ff2e77cc2888e52e120637dce6fb11",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1DO8",
+      "artifact": "sources/wwpdb/1DO8.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9843ac4eda5b60f9f48a2d4861ad085716a8eae7f22ce72adcb0ec09eaa45e39",
+      "url": "https://files.rcsb.org/download/1DO8.cif"
+    },
+    {
+      "source_id": "PDB:1DO8:validation_xml",
+      "artifact": "sources/wwpdb/1do8_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "16605eadefa7669aa320c6f7ec73579e883253bfc4c57518ef1a8bc5d5957b6b",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/do/1do8/1do8_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P23368",
+      "artifact": "sources/uniprot/P23368.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "18fdc5718b8ef3865425029f6cc010ab608a12ee4ad0f83eec2bbda8c060f719",
+      "url": "https://rest.uniprot.org/uniprotkb/P23368.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1DO8",
+      "artifact": "provenance/1DO8.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "73e92bd34715b1be2f7bba074140f6f24e777f3fd34b09c387bbe06a54757652",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:21:annotations",
+      "artifact": "annotations/MCSA-21.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "e1b73268035b24191b5a71758e8d10d63435f6d856fbca177712ca5564d061e2",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:21:component_map",
+      "artifact": "annotations/MCSA-21.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "fc2d5c3a27a6e9831f73e73e5c9c5369d6537c9acd949742223c72bfc2bffb83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1BTL",
+      "artifact": "sources/wwpdb/1BTL.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "932981534e5dd6abcdd02271935e055c74dff16486c991cd610c16c95b5a2b82",
+      "url": "https://files.rcsb.org/download/1BTL.cif"
+    },
+    {
+      "source_id": "PDB:1BTL:validation_xml",
+      "artifact": "sources/wwpdb/1btl_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "5f034802464a650317b702db3748ca6f6167b4bcd019fd2a8d7c50732c0f0164",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/bt/1btl/1btl_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P62593",
+      "artifact": "sources/uniprot/P62593.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "1c8bc02d0571812eda41a515e0396d37c2bb241e849f0e73fb563f27808eb32e",
+      "url": "https://rest.uniprot.org/uniprotkb/P62593.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1BTL",
+      "artifact": "provenance/1BTL.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "21314f57664ea50239d80608684add27593790c28579ef526a4a2d9c0ea09718",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:2:annotations",
+      "artifact": "annotations/MCSA-2.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "a05b0b4a20ef8c8bd9399ada544ae922e61a20a9300d008b5e8032c511bcd55b",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:2:component_map",
+      "artifact": "annotations/MCSA-2.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1WHS",
+      "artifact": "sources/wwpdb/1WHS.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "8069857ca19cfbad6ed8554032e5e26204fdb57be9889b4d8e17826451c27e47",
+      "url": "https://files.rcsb.org/download/1WHS.cif"
+    },
+    {
+      "source_id": "PDB:1WHS:validation_xml",
+      "artifact": "sources/wwpdb/1whs_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d2115eda46d1ddd77dafeedfa9d0a585a5e1737bfecc7a4c2d71a9cfbd52d9d7",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/wh/1whs/1whs_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P08819",
+      "artifact": "sources/uniprot/P08819.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "2f0d535dd4923834bbc7814a512a88920e185e2fd569789e6bd0f60223be1e59",
+      "url": "https://rest.uniprot.org/uniprotkb/P08819.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1WHS",
+      "artifact": "provenance/1WHS.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "a9ffc676cef1930db3d8212b92f7d9bd01bef588c378f36fa5191a13b77cc653",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:5:annotations",
+      "artifact": "annotations/MCSA-5.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "038df34324380a1a7d0d719f9a1853fa1f07eeef8bdda39f9185af2f0a9a83aa",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:5:component_map",
+      "artifact": "annotations/MCSA-5.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1NZY",
+      "artifact": "sources/wwpdb/1NZY.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "af2d43a8bb512605dcd67693a5b0e60c704d64d7a4a35cff3d64a42f21e3c98d",
+      "url": "https://files.rcsb.org/download/1NZY.cif"
+    },
+    {
+      "source_id": "PDB:1NZY:validation_xml",
+      "artifact": "sources/wwpdb/1nzy_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "7ad905b1b973236b7c9b33553e426f70d0c419a7f4917ed0aba42e9bfda06d34",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/nz/1nzy/1nzy_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:A5JTM5",
+      "artifact": "sources/uniprot/A5JTM5.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "5357680238d3a9a75d45f8c44007d47c3d257b678ebf14d72468f923950c4545",
+      "url": "https://rest.uniprot.org/uniprotkb/A5JTM5.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1NZY",
+      "artifact": "provenance/1NZY.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "486373be16c02208ee85383572404660e07d83217916a105872de36ced17b267",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:24:annotations",
+      "artifact": "annotations/MCSA-24.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "2511b38614b1e200ee78cc282f32ac65b24b05983445ae2843faa47407877e83",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:24:component_map",
+      "artifact": "annotations/MCSA-24.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1NBA",
+      "artifact": "sources/wwpdb/1NBA.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "2583e192b8e5e1c37babf77291b089c5e7712cddf09bc0f438c4f9caefcda4b7",
+      "url": "https://files.rcsb.org/download/1NBA.cif"
+    },
+    {
+      "source_id": "PDB:1NBA:validation_xml",
+      "artifact": "sources/wwpdb/1nba_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "9a4127429e75755bd3858d6467d2ad4e971b81c1049a05780a966a146b06ff98",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/nb/1nba/1nba_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P32400",
+      "artifact": "sources/uniprot/P32400.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "2c6ecf76e58aa00c6a19c05c5d1872152793fe880f14123e77390d3f46c5af54",
+      "url": "https://rest.uniprot.org/uniprotkb/P32400.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1NBA",
+      "artifact": "provenance/1NBA.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "0f7d73e12c8ee726b2646482a8f06a457519b89bfc5ac445fa65e7132425e5a2",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:25:annotations",
+      "artifact": "annotations/MCSA-25.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "76074a2f1c4cb70f4e5073819fb8355fff0c9c779a52d50d57ed3c7d9aebc91d",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:25:component_map",
+      "artifact": "annotations/MCSA-25.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1QPR",
+      "artifact": "sources/wwpdb/1QPR.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "cb5f7f8aa37df71fffcc5780b813903ba6a0a64cd75a58961dc47e719d987653",
+      "url": "https://files.rcsb.org/download/1QPR.cif"
+    },
+    {
+      "source_id": "PDB:1QPR:validation_xml",
+      "artifact": "sources/wwpdb/1qpr_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "69ac5419a0361fac90d995689368e3125612dec8411dc74628967f85b95816be",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/qp/1qpr/1qpr_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P9WJJ7",
+      "artifact": "sources/uniprot/P9WJJ7.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "175fb4a4144b34971430a4ec96b95efbbc42b86e42246e6ad6f3f7e017e53217",
+      "url": "https://rest.uniprot.org/uniprotkb/P9WJJ7.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1QPR",
+      "artifact": "provenance/1QPR.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "78621c0ed8868ae206cbb21fcf029480298a474594d18792bd5a597c04083da9",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:8:annotations",
+      "artifact": "annotations/MCSA-8.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "29321771f87fc99d2187ceeafec8217e27992b4d694af5569ccb9e1b540678f5",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:8:component_map",
+      "artifact": "annotations/MCSA-8.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1RR6",
+      "artifact": "sources/wwpdb/1RR6.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "d217ae06133f3280d2687e8493adc3c720aec541a27239bf70e793f6083288e8",
+      "url": "https://files.rcsb.org/download/1RR6.cif"
+    },
+    {
+      "source_id": "PDB:1RR6:validation_xml",
+      "artifact": "sources/wwpdb/1rr6_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "f8f95a8ee484d2e97f41d5f3fd456aa96b1e287d101773dc5ff9d3d0f2696754",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/rr/1rr6/1rr6_validation.xml.gz"
+    },
+    {
+      "source_id": "UNIPROT:P00491",
+      "artifact": "sources/uniprot/P00491.fasta",
+      "provider": "UniProt / UniProtKB",
+      "sha256": "6805ebbc9b983d706e882ca4d9ffadd8bc2c8ddda1604bafd1013b2961f8d039",
+      "url": "https://rest.uniprot.org/uniprotkb/P00491.fasta",
+      "license": "CC BY 4.0"
+    },
+    {
+      "source_id": "PROVENANCE:1RR6",
+      "artifact": "provenance/1RR6.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "30dfb5e1beb470f56b4b78a49dc775fbf7480b47d8fb6da23b2546b2cd9e484d",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "MCSA:17:annotations",
+      "artifact": "annotations/MCSA-17.annotations.json",
+      "provider": "M-CSA via tools/harvest_mcsa_annotations.py",
+      "sha256": "35248e5c56c8f762b6edb7bf9ecfc29a8cad4d34f4eb7ffaf014e608b43d5ba2",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "MCSA:17:component_map",
+      "artifact": "annotations/MCSA-17.component_map.json",
+      "provider": "M-CSA/UniProt join, authored for this collection",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "acquisition": "committed_in_repository",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "source_id": "PDB:1DNC",
+      "artifact": "sources/wwpdb/1DNC.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "0253204f534b474c4c3a7edbe0a08e3180d37338d1d7ab7e3c4b0a5946a4ac87",
+      "url": "https://files.rcsb.org/download/1DNC.cif"
+    },
+    {
+      "source_id": "PDB:1DNC:validation_xml",
+      "artifact": "sources/wwpdb/1dnc_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "939e303ee9555531b1c057bf696132cd28cd4e7ed721b43f574e63fa4450c57b",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/dn/1dnc/1dnc_validation.xml.gz"
+    },
+    {
+      "source_id": "PROVENANCE:1DNC",
+      "artifact": "provenance/1DNC.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "275f63c15ad58dda023601c7e85459e007bed62ab66a9151945a155da0b0794e",
+      "acquisition": "committed_in_repository"
+    },
+    {
+      "source_id": "PDB:4JDW",
+      "artifact": "sources/wwpdb/4JDW.cif",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "e6797fac8081b2d57dff9525b86ef84b4c262b0f9197e9f6725de8e4933227a6",
+      "url": "https://files.rcsb.org/download/4JDW.cif"
+    },
+    {
+      "source_id": "PDB:4JDW:validation_xml",
+      "artifact": "sources/wwpdb/4jdw_validation.xml",
+      "provider": "wwPDB/RCSB PDB",
+      "sha256": "39fdc92fe6b8a79501ee1c593402fe4b25a98f7a8bd88f653e6b56f10ea8939a",
+      "url": "https://files.rcsb.org/pub/pdb/validation_reports/jd/4jdw/4jdw_validation.xml.gz"
+    },
+    {
+      "source_id": "PROVENANCE:4JDW",
+      "artifact": "provenance/4JDW.provenance.json",
+      "provider": "authored for this collection",
+      "sha256": "d84bd48709fefb2ef820d49540c01aa3a77709c31dea507a471f9ff9356bd36a",
+      "acquisition": "committed_in_repository"
+    }
+  ],
   "controls": [
     {
       "record_id": "v2-sitecontext-control-unmapped-cofactor-1NIA",
@@ -1551,7 +2703,7 @@
             "chain": "A"
           },
           "structure": "sources/wwpdb/1NIA.cif",
-          "annotations": "sources/mcsa/MCSA-4.annotations.json"
+          "annotations": "annotations/MCSA-4.annotations.json"
         },
         "missing_evidence": [
           "pocket_results"
@@ -1662,5 +2814,7 @@
       },
       "control_purpose": "fail_closed"
     }
-  ]
+  ],
+  "annotation_policy": "M-CSA annotations and their ChEBI-to-component maps are committed, not acquired. The panel's coverage_rules require every catalytic residue and role to be frozen from a cited M-CSA release before execution, and re-fetching them at execution time would let an upstream curation change silently move an expectation. They are generated by tools/harvest_mcsa_annotations.py, carry the entry and URL they came from, and are digest-locked like any other artifact.",
+  "stratum": "all_four_site_context_strata"
 }

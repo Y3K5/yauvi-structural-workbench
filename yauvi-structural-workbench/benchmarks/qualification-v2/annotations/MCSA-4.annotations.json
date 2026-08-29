@@ -1,0 +1,122 @@
+{
+  "component_map": {
+    "CHEBI:29036": [
+      "CU"
+    ],
+    "CHEBI:49552": [
+      "CU"
+    ],
+    "CHEBI:57692": [
+      "FAD"
+    ]
+  },
+  "declared_cofactors": [
+    {
+      "chebi": "CHEBI:49552",
+      "component_id": "",
+      "name": "Cu(+)",
+      "source": "UniProt:P25006 COFACTOR"
+    },
+    {
+      "chebi": "CHEBI:29036",
+      "component_id": "",
+      "name": "Cu(2+)",
+      "source": "UniProt:P25006 COFACTOR"
+    },
+    {
+      "chebi": "CHEBI:57692",
+      "component_id": "",
+      "name": "FAD",
+      "source": "UniProt:P25006 COFACTOR"
+    }
+  ],
+  "provenance": {
+    "cofactor_note": "Cofactors are declared from UniProt's COFACTOR annotation, not read off the coordinate file, so an apo structure fails the gate instead of satisfying it vacuously. ChEBI identities are joined to PDB component ids through an explicit table; anything unmapped is listed in unmapped_chebi rather than dropped.",
+    "ec": [
+      "1.7.2.1"
+    ],
+    "entry": "M-CSA:4",
+    "enzyme": "nitrite reductase (copper type)",
+    "reference_chain": "A",
+    "reference_pdb": "1NIA",
+    "reference_uniprot": "P25006",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "metal_or_cofactor",
+    "unmapped_chebi": [],
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/4/"
+  },
+  "sites": [
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 95,
+      "position": 133,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "activator, hydrogen bond acceptor, proton acceptor, proton donor",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 98,
+      "position": 136,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 100,
+      "position": 138,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand, single electron acceptor, single electron donor, single electron relay",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 135,
+      "position": 173,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand, single electron acceptor, single electron donor, single electron relay",
+      "expected_residues": [
+        "C"
+      ],
+      "pdb_auth_resid": 136,
+      "position": 174,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 145,
+      "position": 183,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    },
+    {
+      "detail": "metal ligand",
+      "expected_residues": [
+        "M"
+      ],
+      "pdb_auth_resid": 150,
+      "position": 188,
+      "role": "metal_ligand",
+      "type": "metal_ligand"
+    }
+  ]
+}

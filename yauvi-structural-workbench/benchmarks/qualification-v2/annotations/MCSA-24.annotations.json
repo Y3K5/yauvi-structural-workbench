@@ -1,0 +1,83 @@
+{
+  "component_map": {},
+  "declared_cofactors": [],
+  "provenance": {
+    "cofactor_note": "Cofactors are declared from UniProt's COFACTOR annotation, not read off the coordinate file, so an apo structure fails the gate instead of satisfying it vacuously. ChEBI identities are joined to PDB component ids through an explicit table; anything unmapped is listed in unmapped_chebi rather than dropped.",
+    "ec": [
+      "3.8.1.7"
+    ],
+    "entry": "M-CSA:24",
+    "enzyme": "4-chlorobenzoyl-CoA dehalogenase",
+    "reference_chain": "A",
+    "reference_pdb": "1NZY",
+    "reference_uniprot": "A5JTM5",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "nucleophile_or_covalent",
+    "unmapped_chebi": [],
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/24/"
+  },
+  "sites": [
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "F"
+      ],
+      "pdb_auth_resid": 64,
+      "position": 64,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "activator, hydrogen bond acceptor",
+      "expected_residues": [
+        "A"
+      ],
+      "pdb_auth_resid": 86,
+      "position": 86,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 90,
+      "position": 90,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "G"
+      ],
+      "pdb_auth_resid": 114,
+      "position": 114,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "W"
+      ],
+      "pdb_auth_resid": 137,
+      "position": 137,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "covalently attached, electrofuge, electrophile, hydrogen bond acceptor, hydrogen bond donor, nucleophile, proton acceptor, proton donor",
+      "expected_residues": [
+        "D"
+      ],
+      "pdb_auth_resid": 145,
+      "position": 145,
+      "role": "nucleophile",
+      "type": "active_site"
+    }
+  ]
+}

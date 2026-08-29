@@ -28,7 +28,7 @@ permissions:
 
 jobs:
   execute:
-    name: StructQC strata · py${{ matrix.python }} · ${{ matrix.os }}
+    name: Adopted panels · py${{ matrix.python }} · ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -53,9 +53,16 @@ jobs:
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python acquire_sources.py --verify-only
 
-      - name: Execute the adopted strata offline
+      - name: Execute the StructQC panel offline
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python run_execution.py
+
+      - name: Execute the functional-site panel offline
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          python run_execution.py \
+            --panel ADOPTION_DRAFT_SITECONTEXT.json \
+            --out results/execution-sitecontext
 
       - name: Composition audit still fails closed on cryo_em and nmr
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2

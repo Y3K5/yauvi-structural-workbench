@@ -1,0 +1,50 @@
+{
+  "declared_cofactors": [],
+  "provenance": {
+    "ec": [
+      "1.6.5.2"
+    ],
+    "entry": "M-CSA:3",
+    "enzyme": "NAD(P)H dehydrogenase (quinone)",
+    "reference_chain": "A",
+    "reference_pdb": "1D4A",
+    "reference_uniprot": "P15559",
+    "role_mapping_note": "M-CSA functions are mapped onto the five roles site-context accepts; unrecognised functions become 'unspecified' rather than being guessed into a role.",
+    "skipped_nonstandard_residues": [],
+    "source": "M-CSA (Mechanism and Catalytic Site Atlas)",
+    "stratum": "acid_base",
+    "url": "https://www.ebi.ac.uk/thornton-srv/m-csa/api/entries/3/"
+  },
+  "sites": [
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond donor",
+      "expected_residues": [
+        "G"
+      ],
+      "pdb_auth_resid": 149,
+      "position": 150,
+      "role": "unspecified",
+      "type": "active_site"
+    },
+    {
+      "detail": "electrostatic stabiliser, hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor, proton relay",
+      "expected_residues": [
+        "Y"
+      ],
+      "pdb_auth_resid": 155,
+      "position": 156,
+      "role": "acid_base",
+      "type": "active_site"
+    },
+    {
+      "detail": "hydrogen bond acceptor, hydrogen bond donor, proton acceptor, proton donor, proton relay",
+      "expected_residues": [
+        "H"
+      ],
+      "pdb_auth_resid": 161,
+      "position": 162,
+      "role": "acid_base",
+      "type": "active_site"
+    }
+  ]
+}
