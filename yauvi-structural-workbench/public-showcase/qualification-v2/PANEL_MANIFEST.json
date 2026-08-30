@@ -5896,5 +5896,54 @@
       "state": "not_adopted",
       "reason": "Qualification v1 artifacts remain useful curation candidates but do not satisfy v2 split, mapping, stratum, or expected-result metadata by themselves."
     }
+  ],
+  "record_corrections": [
+    {
+      "date": "2026-08-30",
+      "kind": "record_correction",
+      "collection_unchanged": "2.2",
+      "why_not_a_version_bump": "No threshold, record, source, split or expectation changes. These correct claims made in earlier entries and add findings about the membrane objective. The gates are untouched.",
+      "corrections": [
+        {
+          "corrects": "collection 2.1 rationale",
+          "claimed": "The 1.0 degree bound was justified as accuracy against OPM, citing OPM's orientational uncertainty and 0.21 A of rim displacement at a 12 A barrel radius.",
+          "actual": "mean_unsigned_normal_error_deg measures rotational SELF-CONSISTENCY, not accuracy. orientor.py computes it as the angle between R @ (unrotated fit normal) and the fit on the rotated structure, and its own docstring states 'Self-consistency, not correctness -- a stable wrong answer still passes.' The threshold VALUE stands: 1.0 degree is memorient's own validation.normal_threshold_deg on this same quantity. The published justification describes a quantity the gate does not measure.",
+          "status": "value retained, rationale withdrawn"
+        },
+        {
+          "corrects": "collection 2.2 correction, the 2F1C claim",
+          "claimed": "2F1C shows different reachable basin SETS per environment, not different draws from a shared set.",
+          "actual": "At 16 rotations the recording machine reaches 10.0793 deg; ubuntu x64 reported 10.07834 deg at 8. The basin is shared and was unsampled, not unreachable. The claim is unsupported for 2F1C. It remains untested for 1BXW (fails only under Rosetta x86_64) and 2MPR (only on ubuntu).",
+          "status": "withdrawn for 2F1C, undetermined for 1BXW and 2MPR"
+        },
+        {
+          "corrects": "the Mode A / Mode B classification reported during investigation",
+          "claimed": "Five structures (1BXW, 2F1C, 1FEP, 1UYN, 2ERV) admit no optimum near OPM -- a representation defect no re-weighting could repair.",
+          "actual": "Polishing from OPM's z with fatol 1e-8 stays at z for all 16 structures: drift below 0.13 deg for fifteen and 0.70 deg for 2F1C. An optimum exists at the correct orientation for every case. The earlier finding was an artifact of an 80-point grid at ~20 deg spacing with loose polish, which never sampled near z. Mode B does not exist.",
+          "status": "retracted"
+        }
+      ],
+      "findings": [
+        {
+          "finding": "The panel contains no orientation-accuracy gate.",
+          "detail": "half_thickness_error_A is the only comparison against OPM. The normal gates measure rotational self-consistency. 1FEP and 2ERV pass every gate in every environment while sitting 6.69 and 5.41 degrees from OPM's deposited orientation. This is a scope gap in the panel, not a defect in the software under test."
+        },
+        {
+          "finding": "The membrane objective mis-ranks the correct orientation for at least 10 of 16.",
+          "detail": "With symmetric Nelder-Mead convergence (xatol/fatol 1e-8) on both z and the alternatives, 10 of 16 structures have an alternative optimum scoring strictly higher than the optimum at OPM's orientation. Gaps range +0.065 (1K24) to +0.786 (1UYN); alternatives sit 2.3 to 28.9 deg from OPM. Six -- 1QD6, 1E54, 1FEP, 2POR, 2OMF, 1TLY -- have z as the best found. The alternative pool is the top 12 coarse candidates, so 10/16 is a LOWER BOUND: a wider pool can only raise it.",
+          "consequence": "A search-only fix cannot work, because the search is not what ranks these. Deterministic best-of-all-starts would return the wrong orientation for those 10."
+        },
+        {
+          "finding": "delta_kd is the term responsible.",
+          "detail": "Component breakdown at z versus the winning alternative. 1UYN: delta_kd +0.8246 against a total gap of +0.786, with belt correctly preferring z by only -0.0844. 1PRN: delta_kd +0.8928 and thickness +0.3676 against belt -0.9041, net +0.139. delta_kd rewards hydrophobic contrast between slab interior and exterior, so a tilted slab can win by enclosing a smaller, more hydrophobic subset -- it measures whether hydrophobic residues were enclosed, not whether the bilayer was spanned. belt, the aromatic girdle term, carries the correct signal and is outvoted.",
+          "consequence": "Two different remedies are implied and one weight will not serve both. 1PRN flips if belt is roughly doubled. 1UYN does not -- belt is nearly indifferent there at -0.0844 -- and needs delta_kd normalised against the size or composition of the selected set."
+        },
+        {
+          "finding": "Eight rotations is insufficient; no tested count is demonstrably sufficient.",
+          "detail": "On the recording machine the beta_barrel stratum is 15/16 at five rotations, 14/16 at eight and 13/16 at sixteen. Each increase surfaces a failure the previous count missed. Whether any count suffices is untested; the rotation protocol is a confound in every cross-environment comparison recorded in collections 2.1 and 2.2."
+        }
+      ],
+      "method_note": "Every measurement above was made with memorient's own _score_placement on OPM-deposited coordinates, taking the membrane normal to be z. That assumption is corroborated by 1E54 and 2POR whose best optima sit 0.080 and 0.052 deg from z, which would not occur if z were not the reference."
+    }
   ]
 }

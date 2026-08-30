@@ -10,7 +10,7 @@ import pytest
 from memorient.contexts import get_context
 from memorient.orientor import (
     LocalizationCall,
-    five_fold_validate,
+    rotation_validate,
     orient_structure,
 )
 
@@ -142,21 +142,21 @@ def test_synthetic_barrel_is_broadly_rotation_invariant():
     of boundary residues flicker. We require the extracellular set to be broadly stable here
     and enforce the strict >=0.95 bar on a real OMP (below), which has loop asymmetry."""
     s = make_barrel(n_strands=12, strand_len=10, ec_loop_len=10, peri_loop_len=2, seed=0)
-    v = five_fold_validate(s, GN, n_points=160)
+    v = rotation_validate(s, GN, n_points=160)
     assert v["mean_jaccard"] >= 0.90
     assert min(v["jaccards"]) >= 0.80
 
 
 def test_soluble_is_rotation_invariant():
     b = make_soluble_blob(n_res=120, seed=2)
-    v = five_fold_validate(b, SOL, n_points=160)
+    v = rotation_validate(b, SOL, n_points=160)
     assert v["passed"]                # soluble surface set is frame-independent
     assert v["mean_jaccard"] >= 0.95
 
 
 def test_empty_extracellular_sets_are_not_a_passing_jaccard():
     helix = make_tm_helix(seed=1)
-    validation = five_fold_validate(helix, TM, seeds=2, n_points=80)
+    validation = rotation_validate(helix, TM, seeds=2, n_points=80)
     assert validation["extracellular_comparison_state"] == "not_applicable_empty_or_unresolved"
     assert validation["jaccards"] == [None, None]
     assert validation["sidedness_passed"] is False
@@ -173,6 +173,12 @@ def test_real_omp_is_strictly_rotation_invariant():
     if not os.path.exists(path):
         urllib.request.urlretrieve("https://files.rcsb.org/download/1BXW.pdb", path)
     s = load_structure(path, chain="A")
-    v = five_fold_validate(s, GN, n_points=240)
+    v = rotation_validate(s, GN, n_points=240)
     assert v["passed"]
     assert v["mean_jaccard"] >= 0.95
+
+
+def test_five_fold_validate_alias_is_retained():
+    """The historical name must keep working for existing callers."""
+    from memorient.orientor import five_fold_validate, rotation_validate
+    assert five_fold_validate is rotation_validate

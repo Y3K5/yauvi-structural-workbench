@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "tests"))
 from memorient.barrel import fit_membrane
 from memorient.contexts import get_context
 from memorient.geometry import load_structure
-from memorient.orientor import five_fold_validate
+from memorient.orientor import rotation_validate
 
 # PDB id -> common name. All are gram-negative OMP beta-barrels in OPM.
 PANEL = {
@@ -75,7 +75,7 @@ def run(cache_dir: str = "/tmp") -> list:
             cos = min(abs(float(np.dot(fit.normal, true_n))), 1.0)
             errs.append(np.degrees(np.arccos(cos)))
             ds.append(fit.half_thickness)
-        v = five_fold_validate(s, ctx, n_points=200)
+        v = rotation_validate(s, ctx, n_points=200)
         rows.append({
             "pdb": pdb.upper(), "name": name,
             "opm_half": _opm_half_thickness(path),

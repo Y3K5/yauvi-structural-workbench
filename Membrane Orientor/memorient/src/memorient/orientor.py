@@ -21,7 +21,7 @@
 4. gates ``host_antibody_accessible`` through an **injected localization call** (the P1 seam)
    that can veto geometry — a residue can be geometrically extracellular yet biologically
    shielded (a periplasmic assembly, an LPS-buried surface). The default is pass-through;
-5. runs :func:`five_fold_validate` — re-orients under random rotations and separately checks
+5. runs :func:`rotation_validate` — re-orients under random rotations and separately checks
    unsigned normal drift, non-vacuous embedded-residue agreement, and supported non-empty
    extracellular-residue agreement. This proves *self-consistency*, which is necessary but
    not sufficient for correctness; an external benchmark checks correctness.
@@ -551,7 +551,7 @@ def orient_structure(
     # 5. rotation-invariance validation
     validation: Dict[str, object] = {}
     if validate:
-        validation = _run_five_fold(
+        validation = _run_rotation_validation(
             structure, context, loc, n_validate_seeds, topology_evidence=topology_evidence,
         )
 
@@ -595,7 +595,7 @@ def _evidence_sets(structure, context, loc, n_points, topology_evidence=None):
     return result, embedded, extracellular
 
 
-def _run_five_fold(
+def _run_rotation_validation(
     structure, context, loc, seeds, n_points: int = 160,
     threshold: float = 0.95, normal_threshold_deg: float = 1.0,
     topology_evidence: Optional[Mapping[str, Any]] = None,
@@ -659,7 +659,7 @@ def _run_five_fold(
     }
 
 
-def five_fold_validate(structure, context: MembraneContext,
+def rotation_validate(structure, context: MembraneContext,
                        localization: Optional[LocalizationCall] = None,
                        seeds: int = 8, threshold: float = 0.95,
                        n_points: int = 160,
@@ -686,7 +686,13 @@ def five_fold_validate(structure, context: MembraneContext,
     pass ``seeds=5`` explicitly.
     """
     loc = localization if localization is not None else DEFAULT_LOCALIZATION
-    return _run_five_fold(
+    return _run_rotation_validation(
         structure, context, loc, seeds, n_points=n_points, threshold=threshold,
         normal_threshold_deg=normal_threshold_deg, topology_evidence=topology_evidence,
     )
+
+
+#: Historical name. This was ``five_fold_validate`` when the default was 5 seeds; the
+#: default is now 8 and the count is a parameter, so the name asserted a protocol the
+#: function no longer runs. Retained as an alias so existing callers keep working.
+five_fold_validate = rotation_validate

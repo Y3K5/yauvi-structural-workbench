@@ -18,7 +18,7 @@ reflection):
   (skew) along that axis — a frame-intrinsic tiebreak;
 * the third axis is replaced by ``cross(axis0, axis1)`` so the basis is right-handed.
 
-This is what makes ``five_fold_validate`` reach Jaccard 1.0: re-orienting the same structure
+This is what makes ``rotation_validate`` reach Jaccard 1.0: re-orienting the same structure
 from any input rotation yields the same canonical frame (up to the degenerate case of equal
 eigenvalues, which is reported).
 """
