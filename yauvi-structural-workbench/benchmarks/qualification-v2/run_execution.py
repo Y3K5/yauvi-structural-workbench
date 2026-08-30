@@ -619,7 +619,7 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
 
     for key, field in (("mean_unsigned_normal_error_deg_max", "mean_unsigned_normal_error_deg"),
                        ("per_case_unsigned_normal_error_deg_max", "max_unsigned_normal_error_deg"),
-                       ("normal_drift_across_20_rotations_deg_max", "normal_drift_deg")):
+                       ("normal_drift_across_5_rotations_deg_max", "normal_drift_deg")):
         limit = mo.get(key)
         value = obs[field]
         if limit is None:

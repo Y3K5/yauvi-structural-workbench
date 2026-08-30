@@ -8,13 +8,13 @@
   "gate_semantics": {
     "membrane_orientation": {
       "mean_half_thickness_error_A_max": 2.5,
-      "mean_unsigned_normal_error_deg_max": 15.0,
-      "per_case_unsigned_normal_error_deg_max": 30.0,
-      "normal_drift_across_20_rotations_deg_max": 1.0,
+      "mean_unsigned_normal_error_deg_max": 1.0,
+      "per_case_unsigned_normal_error_deg_max": 2.0,
+      "normal_drift_across_5_rotations_deg_max": 1.0,
       "non_vacuous_residue_jaccard_min": 0.95,
       "minimum_reference_extracellular_residues": 10,
       "reference": "OPM, which distributes structures already oriented on Z and records its fitted half-thickness as a REMARK in the file.",
-      "note": "The module's own validation.passed is not the gate. It applies a 1.0 degree threshold to the normal *error*, so 1BXW at 6.19 degrees reports placement_passed false, while the panel's 1.0 degree gate is on *drift across rotations*, which for 1BXW is 0.015 degrees. The panel asks whether the normal is reproducible under rotation, not whether it matches OPM to within a degree.",
+      "note": "The panel now asks two independent questions and both are gated at 1.0 degree: accuracy against OPM (mean_unsigned_normal_error_deg_max) and reproducibility under rotation (normal_drift_across_5_rotations_deg_max). They are different quantities and a case can fail either alone -- 1BXW is 6.19 degrees from OPM on x86_64 while drifting only 0.015 degrees under rotation, and 2F1C sits 5.6 degrees from OPM on arm64 while drifting 5.09. The accuracy bound was 15.0 degrees in collection 2.0, which sat inside the failure mode and passed 1QD6 on arm64 at 8.391 degrees; see threshold_revisions. Note that memorient's own validation.normal_threshold_deg has always been 1.0 degree on the error, so the panel now holds the workflow to the standard the module itself declares rather than to one fifteen times looser.",
       "vacuity_note": "A Jaccard over an empty reference set is 1.0 and means nothing, so a minimum extracellular reference size is required before the floor applies. 1THQ was excluded for carrying only 7 reference residues."
     },
     "missing_evidence_behavior": {

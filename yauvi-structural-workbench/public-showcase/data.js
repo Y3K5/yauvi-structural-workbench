@@ -731,7 +731,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
-        "execution_state": "passed",
+        "execution_state": "failed",
         "missing_count": 16,
         "record_count": 16,
         "state": "blocked_panel_incomplete",
@@ -775,11 +775,11 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     ],
     "scientific_execution": {
       "all_release_blocking_scopes_qualified": false,
-      "cases_passed": 64,
+      "cases_passed": 63,
       "cases_required": 114,
-      "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 16/32 with 6/6, covering the release-blocking beta_barrel stratum only. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 15/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage: 1BXW fails the collection 2.1 accuracy gate at 6.199 degrees against 1.0. That gate was 15.0 degrees in collection 2.0, under which the same case passed; the threshold was tightened because the achieved accuracy is bimodal and 15.0 sat inside the failure mode. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "counts_are_single_machine": true,
-      "every_executed_panel_passed": true,
+      "every_executed_panel_passed": false,
       "panels": [
         {
           "cases_adopted": 16,
@@ -796,7 +796,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         },
         {
           "cases_adopted": 16,
-          "cases_passed": 16,
+          "cases_passed": 15,
           "cases_required": 32,
           "controls_passed": 0,
           "controls_total": 0,
@@ -804,7 +804,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
           "coverage_unwitnessable": [],
           "coverage_witnessed": 6,
           "stratum_scope": "beta_barrel",
-          "stratum_state": "passed",
+          "stratum_state": "failed",
           "workflow": "membrane_orientation"
         },
         {
@@ -995,7 +995,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "membrane_orientation",
       "external_benchmark": "partial_public_case",
-      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_passed_alpha_helical_unadopted_and_non_blocking",
+      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_executing_15_of_16_under_collection_2_1_gates_1BXW_fails_accuracy_alpha_helical_unadopted_and_non_blocking",
       "inputs": [
         {
           "absence_effect": "blocked",

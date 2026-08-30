@@ -1,8 +1,31 @@
 {
   "schema_version": "2.0",
   "collection_id": "yauvi-structural-public-qualification-v2",
+  "collection_version": "2.1",
   "manifest_state": "source_adoption_required",
   "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
+  "threshold_revisions": [
+    {
+      "collection_version": "2.1",
+      "date": "2026-08-29",
+      "scope": "membrane_orientation gates only; no record, source, split or expectation changed",
+      "change": [
+        "mean_unsigned_normal_error_deg_max: 15.0 -> 1.0",
+        "per_case_unsigned_normal_error_deg_max: 30.0 -> 2.0",
+        "normal_drift_across_20_rotations_deg_max renamed to normal_drift_across_5_rotations_deg_max (value unchanged at 1.0)"
+      ],
+      "evidence": "The achieved accuracy is bimodal with an empty band four orders of magnitude wide. Across 16 beta_barrel cases the mean unsigned normal error is <= 0.057 deg on x86_64 and <= 0.038 deg on arm64 for every case that converges, and >= 5.618 deg for every case that does not. Nothing falls between 0.06 and 5.6 deg on either architecture. The method does not degrade gracefully: it either recovers the normal essentially exactly or misses by degrees. The superseded 15.0 deg threshold sat inside the failure mode and could not separate the two populations -- 1QD6 passed every gate on arm64 with an 8.391 deg error while x86_64 recorded 0.000115 deg for the same case.",
+      "rationale": "1.0 deg is above the converged population by more than an order of magnitude and below the failure population by a factor of five, so it separates them without sitting on either. It is also defensible against the reference rather than only against this dataset: OPM's own orientational uncertainty for well-ordered barrels is of this order, and at a typical barrel radius of ~12 A a 1 deg tilt displaces rim residue depth by 12*sin(1 deg) = 0.21 A -- well under one residue layer and small against the ~5 A interface width the zone assignment depends on. The per-case bound is held at twice the mean bound, preserving the original intent that a single case may deviate further than the panel average; 2.0 deg is 0.42 A of rim displacement, still sub-residue.",
+      "rename_rationale": "The drift gate was named for 20 rotations while memorient's five_fold_validate performs 5, and every adopted case records exactly 5. The name asserted a protocol the evidence does not perform. The value is unchanged; only the name is corrected to match what is measured. Raising the rotation count to 20 would be a stronger test of rotational stability and is recorded as a future scientific improvement, not made here, because it would change what the gate measures rather than what it is called.",
+      "superseded": {
+        "mean_unsigned_normal_error_deg_max": 15.0,
+        "per_case_unsigned_normal_error_deg_max": 30.0,
+        "normal_drift_across_20_rotations_deg_max": 1.0
+      },
+      "records_unaffected": true,
+      "note": "Recorded rather than edited silently, per immutability_policy. No adopted record, source checksum, split or expectation is altered; only the pass criteria for the membrane_orientation workflow move, and the superseded values are kept above."
+    }
+  ],
   "execution_policy": {
     "network_access": "forbidden",
     "software_tests_are_separate": true,
@@ -56,11 +79,11 @@
         "Development and held-out records cannot share a PDB entry or close-homolog group."
       ],
       "gates": {
-        "mean_unsigned_normal_error_deg_max": 15.0,
-        "per_case_unsigned_normal_error_deg_max": 30.0,
+        "mean_unsigned_normal_error_deg_max": 1.0,
+        "per_case_unsigned_normal_error_deg_max": 2.0,
         "mean_half_thickness_error_A_max": 2.5,
         "non_vacuous_residue_jaccard_min": 0.95,
-        "normal_drift_across_20_rotations_deg_max": 1.0,
+        "normal_drift_across_5_rotations_deg_max": 1.0,
         "empty_extracellular_comparison": "not_applicable"
       },
       "records": [
@@ -964,13 +987,13 @@
       "gate_semantics": {
         "membrane_orientation": {
           "mean_half_thickness_error_A_max": 2.5,
-          "mean_unsigned_normal_error_deg_max": 15.0,
-          "per_case_unsigned_normal_error_deg_max": 30.0,
-          "normal_drift_across_20_rotations_deg_max": 1.0,
+          "mean_unsigned_normal_error_deg_max": 1.0,
+          "per_case_unsigned_normal_error_deg_max": 2.0,
+          "normal_drift_across_5_rotations_deg_max": 1.0,
           "non_vacuous_residue_jaccard_min": 0.95,
           "minimum_reference_extracellular_residues": 10,
           "reference": "OPM, which distributes structures already oriented on Z and records its fitted half-thickness as a REMARK in the file.",
-          "note": "The module's own validation.passed is not the gate. It applies a 1.0 degree threshold to the normal *error*, so 1BXW at 6.19 degrees reports placement_passed false, while the panel's 1.0 degree gate is on *drift across rotations*, which for 1BXW is 0.015 degrees. The panel asks whether the normal is reproducible under rotation, not whether it matches OPM to within a degree.",
+          "note": "The panel now asks two independent questions and both are gated at 1.0 degree: accuracy against OPM (mean_unsigned_normal_error_deg_max) and reproducibility under rotation (normal_drift_across_5_rotations_deg_max). They are different quantities and a case can fail either alone -- 1BXW is 6.19 degrees from OPM on x86_64 while drifting only 0.015 degrees under rotation, and 2F1C sits 5.6 degrees from OPM on arm64 while drifting 5.09. The accuracy bound was 15.0 degrees in collection 2.0, which sat inside the failure mode and passed 1QD6 on arm64 at 8.391 degrees; see threshold_revisions. Note that memorient's own validation.normal_threshold_deg has always been 1.0 degree on the error, so the panel now holds the workflow to the standard the module itself declares rather than to one fifteen times looser.",
           "vacuity_note": "A Jaccard over an empty reference set is 1.0 and means nothing, so a minimum extracellular reference size is required before the floor applies. 1THQ was excluded for carrying only 7 reference residues."
         },
         "missing_evidence_behavior": {

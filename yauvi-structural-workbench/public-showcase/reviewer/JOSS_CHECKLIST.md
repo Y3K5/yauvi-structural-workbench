@@ -23,8 +23,10 @@ only after a public repository and independent research use exist.
   specification with a deterministic fail-closed panel audit in
   [benchmarks/qualification-v2/](benchmarks/qualification-v2/README.md).
 - Four Qualification v2 panels executed offline against checksum-verified
-  artifacts and passing on six OS/Python combinations in CI, with coverage
-  verified from executed evidence rather than asserted. Passing execution is not
+  artifacts on six OS/Python combinations in CI, with coverage verified from
+  executed evidence rather than asserted. Three pass; the membrane stratum does
+  not, and the tightened gate that surfaced it is recorded in
+  `PANEL_MANIFEST.json` `threshold_revisions`. Passing execution is not
   scope qualification: the second-machine reproduction gate is untouched by it.
 - Shareable public-safe microsite with file-role guidance, six synthetic
   demonstrations, six separate public qualification narratives, biological
@@ -48,10 +50,11 @@ only after a public repository and independent research use exist.
 ## Required before `local_release_candidate`
 
 - Adopt and execute every source-locked Qualification v2 case and pass all six
-  Mark 1 release-blocking scopes. Four panels are adopted and executed and 64 of
+  Mark 1 release-blocking scopes. Four panels are adopted and executed and 63 of
   114 cases pass: StructQC 16/16 with 2 controls, site-context 16/16 with 1
-  control, assembly-context 16/16, and membrane 16/32 covering the
-  release-blocking `beta_barrel` stratum only. ABL StateAtlas and SF-CSA are
+  control, assembly-context 16/16, and membrane 15/16 of the adopted
+  `beta_barrel` stratum (16 of that panel's 32). The membrane stratum **fails**:
+  1BXW misses the collection 2.1 accuracy gate at 6.199 degrees against 1.0. ABL StateAtlas and SF-CSA are
   unadopted, so the collection's composition state remains
   `blocked_panel_incomplete` and no scope is qualified. Counts here are derived
   from `benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json`, not typed.
