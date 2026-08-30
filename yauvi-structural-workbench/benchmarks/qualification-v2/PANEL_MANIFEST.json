@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "collection_id": "yauvi-structural-public-qualification-v2",
-  "collection_version": "2.1",
+  "collection_version": "2.2",
   "manifest_state": "source_adoption_required",
   "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
   "threshold_revisions": [
@@ -24,6 +24,27 @@
       },
       "records_unaffected": true,
       "note": "Recorded rather than edited silently, per immutability_policy. No adopted record, source checksum, split or expectation is altered; only the pass criteria for the membrane_orientation workflow move, and the superseded values are kept above."
+    },
+    {
+      "collection_version": "2.2",
+      "date": "2026-08-30",
+      "scope": "membrane_orientation rotation protocol; no threshold, record, source, split or expectation value changed",
+      "change": [
+        "memorient orient_structure n_validate_seeds default: 5 -> 8",
+        "memorient five_fold_validate seeds default: 5 -> 8",
+        "normal_drift_across_5_rotations_deg_max renamed to normal_drift_across_8_rotations_deg_max (value unchanged at 1.0)"
+      ],
+      "evidence": "Five rotations under-sampled the objective's basin structure. Under collection 2.1 gates 1QD6 passed on the recording machine at 0.000115 deg while failing on arm64 and ubuntu x64 at 8.390785 deg. At eight rotations the recording machine reaches the same second basin and reports 8.390785 deg -- the identical value. The basin was always there; five rotations simply did not draw it. What looked like architecture-dependent answers is better described as a multi-basin objective sampled too sparsely to see reliably, with the arithmetic environment determining which basins a short sample happens to visit.",
+      "rationale": "Eight rotations is a measurement where five was an accident. It is not a claim that eight is sufficient: it is the count at which the beta_barrel stratum's known second basins become visible on every environment tested so far, and a higher count may expose more. The gate values are unchanged; only how many samples the drift and error statistics are computed over.",
+      "consequence": "The beta_barrel stratum falls from 15/16 to 14/16 on the recording machine: 1BXW fails accuracy at 6.197 deg and 1QD6 now fails accuracy at 3.147 deg mean / 8.391 deg max with 8.391 deg of rotational drift. This is a more accurate report of the same software, not a regression in it.",
+      "expectations_note": "mean_jaccard is averaged over rotations, so the expectations recorded under five rotations are no longer directly comparable; drift.mean_jaccard now shows deltas up to 0.019 that are attributable to the protocol change rather than to cross-machine drift. The recorded expectations are deliberately NOT re-recorded under eight rotations: doing so would bake this machine's basin sampling into the reference, which is the error this whole line of work exists to unwind. Read drift.mean_jaccard against this note until a rotation-equivariant fit makes the reference meaningful again.",
+      "superseded": {
+        "n_validate_seeds": 5,
+        "five_fold_validate_seeds": 5,
+        "gate_key": "normal_drift_across_5_rotations_deg_max"
+      },
+      "records_unaffected": true,
+      "open": "The five_fold_validate and _run_five_fold names are historical and now describe a default of 8. Renaming them is a public API change and is deliberately not bundled with a change to what is measured."
     }
   ],
   "execution_policy": {
@@ -83,7 +104,7 @@
         "per_case_unsigned_normal_error_deg_max": 2.0,
         "mean_half_thickness_error_A_max": 2.5,
         "non_vacuous_residue_jaccard_min": 0.95,
-        "normal_drift_across_5_rotations_deg_max": 1.0,
+        "normal_drift_across_8_rotations_deg_max": 1.0,
         "empty_extracellular_comparison": "not_applicable"
       },
       "records": [
@@ -989,7 +1010,7 @@
           "mean_half_thickness_error_A_max": 2.5,
           "mean_unsigned_normal_error_deg_max": 1.0,
           "per_case_unsigned_normal_error_deg_max": 2.0,
-          "normal_drift_across_5_rotations_deg_max": 1.0,
+          "normal_drift_across_8_rotations_deg_max": 1.0,
           "non_vacuous_residue_jaccard_min": 0.95,
           "minimum_reference_extracellular_residues": 10,
           "reference": "OPM, which distributes structures already oriented on Z and records its fitted half-thickness as a REMARK in the file.",

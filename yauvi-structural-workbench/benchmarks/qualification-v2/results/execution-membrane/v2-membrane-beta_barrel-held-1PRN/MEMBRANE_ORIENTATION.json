@@ -18,7 +18,7 @@
     "n_embedded": 549,
     "ec_sign_confidence": 0.7,
     "rotation_invariant": true,
-    "mean_jaccard": 0.973,
+    "mean_jaccard": 0.974,
     "metric.lipid_pore_gap": 1.731,
     "metric.hydrophobic_belt": 1.426,
     "metric.aromatic_girdle": 0.042,
@@ -11069,9 +11069,9 @@
     }
   ],
   "votes": {
-    "loop_architecture": 1,
+    "loop_architecture": -1,
     "terminus": 0,
-    "positive_inside": -1
+    "positive_inside": 1
   },
   "metrics": {
     "lipid_pore_gap": 1.7309241483154527,
@@ -11088,22 +11088,31 @@
       0.985,
       0.97,
       0.97,
+      0.97,
+      0.97,
+      0.985,
       0.97
     ],
-    "mean_jaccard": 0.973,
+    "mean_jaccard": 0.974,
     "embedded_jaccards": [
       1.0,
       1.0,
       1.0,
       1.0,
-      0.984
+      0.984,
+      1.0,
+      1.0,
+      0.965
     ],
     "normal_angle_errors_deg": [
       0.002714,
       0.000141,
       0.002714,
       0.002714,
-      0.000121
+      0.000121,
+      0.000175,
+      0.000204,
+      0.000204
     ],
     "threshold": 0.95,
     "normal_threshold_deg": 1.0,

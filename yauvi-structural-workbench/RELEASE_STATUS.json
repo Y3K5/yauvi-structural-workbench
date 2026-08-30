@@ -16,7 +16,7 @@
   "qualification_policy": "all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2_before_local_release_candidate",
   "external_benchmarks": {
     "structure_qc": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
-    "membrane_orientation": "v2_beta_barrel_stratum_adopted_and_executing_15_of_16_under_collection_2_1_gates_1BXW_fails_accuracy_alpha_helical_unadopted_and_non_blocking",
+    "membrane_orientation": "v2_beta_barrel_stratum_adopted_and_executing_14_of_16_under_collection_2_2_eight_rotation_protocol_1BXW_and_1QD6_fail_accuracy_alpha_helical_unadopted_and_non_blocking",
     "conformational_state": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
     "functional_site_state": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "assembly_interface": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
@@ -37,7 +37,7 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "62e672a07dc3ed81abab787c4fd107cadfdc97ea1e3cf876518306f0397c0c6d",
+      "panel_manifest_sha256": "f2fa02d01382b4353b3eb9303a3ba91a0bc84d9c1a90240d4780251f6244171e",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
       "source_lock_sha256": "e8ea5c8c2aa8a45828a9951b23f02dc3cfc02adc02fccd66c018760f4011fb81",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
@@ -46,7 +46,7 @@
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
       "execution_summary": "benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
-      "execution_summary_sha256": "178e8f7c25a6af71256ae7b5b0b9cd24cba34168d8f6cdf8638c698d46b66051",
+      "execution_summary_sha256": "9e4a3e6fcf4814e82bfcfda0a25404cc42d1e66829d85bd15300f15d93e25d03",
       "execution_results": {
         "structure_qc": "benchmarks/qualification-v2/results/execution-structqc/EXECUTION_STATUS.json",
         "functional_site_state": "benchmarks/qualification-v2/results/execution-sitecontext/EXECUTION_STATUS.json",
@@ -57,7 +57,7 @@
         "structure_qc": "40d8a4a16ff2ef0ad91051033dd687f9d93635becb932bba2d73aafce1fe2213",
         "functional_site_state": "c6279c94bf2ca0002d578924ec42721b3dfebb135146acb6e85c5d3fe74b357e",
         "assembly_interface": "7e0e577285e6822db205c4fde1b11f8b1361c0c8f4e120fee0cf68ffc96919bb",
-        "membrane_orientation": "aa88c0b60f9ac3e5f4cc3c691079f7079918b6f90dbeeb5ba94224a99690d282"
+        "membrane_orientation": "cdb47e1d4cb80ebd266d31b193d7391ecb393974ab70d8ef686bce8aa90e3785"
       },
       "strata_executed": {
         "structure_qc": [
@@ -82,7 +82,7 @@
           "beta_barrel"
         ]
       },
-      "scientific_execution_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 15/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage: 1BXW fails the collection 2.1 accuracy gate at 6.199 degrees against 1.0. That gate was 15.0 degrees in collection 2.0, under which the same case passed; the threshold was tightened because the achieved accuracy is bimodal and 15.0 sat inside the failure mode. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "scientific_execution_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
       "results_note": "Each execution writes its results document beside its own case outputs. A shared filename keyed on the panel id separated different panels but not two runs of the same panel, and an adversarial run overwrote the real membrane evidence with its own deliberate failures."

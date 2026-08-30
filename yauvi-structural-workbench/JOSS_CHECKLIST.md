@@ -50,11 +50,12 @@ only after a public repository and independent research use exist.
 ## Required before `local_release_candidate`
 
 - Adopt and execute every source-locked Qualification v2 case and pass all six
-  Mark 1 release-blocking scopes. Four panels are adopted and executed and 63 of
+  Mark 1 release-blocking scopes. Four panels are adopted and executed and 62 of
   114 cases pass: StructQC 16/16 with 2 controls, site-context 16/16 with 1
-  control, assembly-context 16/16, and membrane 15/16 of the adopted
+  control, assembly-context 16/16, and membrane 14/16 of the adopted
   `beta_barrel` stratum (16 of that panel's 32). The membrane stratum **fails**:
-  1BXW misses the collection 2.1 accuracy gate at 6.199 degrees against 1.0. ABL StateAtlas and SF-CSA are
+  1BXW misses the accuracy gate at 6.197 degrees against 1.0, and 1QD6 at 8.391
+  degrees once collection 2.2 raised the rotation count from 5 to 8. ABL StateAtlas and SF-CSA are
   unadopted, so the collection's composition state remains
   `blocked_panel_incomplete` and no scope is qualified. Counts here are derived
   from `benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json`, not typed.

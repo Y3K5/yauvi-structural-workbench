@@ -427,7 +427,7 @@ def _random_rotation(rng) -> np.ndarray:
 def orient_structure(
     structure, context: MembraneContext,
     localization: Optional[LocalizationCall] = None,
-    validate: bool = True, n_points: int = 240, n_validate_seeds: int = 5,
+    validate: bool = True, n_points: int = 240, n_validate_seeds: int = 8,
     topology_evidence: Optional[Mapping[str, Any]] = None,
 ) -> OrientationResult:
     """Orient and label a structure in its membrane context. The one public entry point."""
@@ -661,7 +661,7 @@ def _run_five_fold(
 
 def five_fold_validate(structure, context: MembraneContext,
                        localization: Optional[LocalizationCall] = None,
-                       seeds: int = 5, threshold: float = 0.95,
+                       seeds: int = 8, threshold: float = 0.95,
                        n_points: int = 160,
                        topology_evidence: Optional[Mapping[str, Any]] = None,
                        normal_threshold_deg: float = 1.0) -> Dict[str, object]:
@@ -675,6 +675,15 @@ def five_fold_validate(structure, context: MembraneContext,
 
     Self-consistency, not correctness — a stable wrong answer still passes. The P4 benchmark
     checks the membrane normal against experimentally-oriented references.
+
+    The rotation count is ``seeds`` and is now 8. It was 5, and the ``five_fold``
+    names are historical: they record the original default, not a fixed protocol.
+    Five rotations under-sampled the basin structure -- on Qualification v2's
+    beta_barrel stratum, cases that showed zero drift over five rotations in one
+    environment drifted by more than 8 degrees over the same five in another, so
+    the sample was small enough that whether a second basin was visited at all
+    depended on the machine. Any caller that needs the historical behaviour can
+    pass ``seeds=5`` explicitly.
     """
     loc = localization if localization is not None else DEFAULT_LOCALIZATION
     return _run_five_fold(

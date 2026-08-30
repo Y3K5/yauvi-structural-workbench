@@ -17,8 +17,8 @@
     "delta_kd": 2.53,
     "n_embedded": 247,
     "ec_sign_confidence": 0.7,
-    "rotation_invariant": true,
-    "mean_jaccard": 1.0,
+    "rotation_invariant": false,
+    "mean_jaccard": 0.981,
     "metric.lipid_pore_gap": 2.532,
     "metric.hydrophobic_belt": 1.244,
     "metric.aromatic_girdle": 0.086,
@@ -6802,30 +6802,39 @@
     "lps_shielding": 0.4280155642023346
   },
   "validation": {
-    "passed": true,
-    "placement_passed": true,
+    "passed": false,
+    "placement_passed": false,
     "sidedness_passed": true,
     "jaccards": [
       1.0,
       1.0,
       1.0,
       1.0,
-      1.0
+      1.0,
+      0.95,
+      0.95,
+      0.95
     ],
-    "mean_jaccard": 1.0,
+    "mean_jaccard": 0.981,
     "embedded_jaccards": [
       1.0,
       1.0,
       1.0,
       1.0,
-      1.0
+      1.0,
+      0.808,
+      0.808,
+      0.808
     ],
     "normal_angle_errors_deg": [
       0.000115,
       0.000115,
       0.000115,
       0.000115,
-      0.000115
+      0.000115,
+      8.390785,
+      8.390785,
+      8.390785
     ],
     "threshold": 0.95,
     "normal_threshold_deg": 1.0,
