@@ -44,7 +44,16 @@
         "gate_key": "normal_drift_across_5_rotations_deg_max"
       },
       "records_unaffected": true,
-      "open": "The five_fold_validate and _run_five_fold names are historical and now describe a default of 8. Renaming them is a public API change and is deliberately not bundled with a change to what is measured."
+      "open": "The five_fold_validate and _run_five_fold names are historical and now describe a default of 8. Renaming them is a public API change and is deliberately not bundled with a change to what is measured.",
+      "correction": {
+        "date": "2026-08-30",
+        "corrects": "the 'evidence' field of this entry, which is left unedited above",
+        "claimed": "That entry described the finding as 'better described as a multi-basin objective sampled too sparsely to see reliably, with the arithmetic environment determining which basins a short sample happens to visit' -- i.e. one shared landscape, differing only in which basins a short draw reaches.",
+        "observed": "The eight-rotation run across three environments shows two distinct mechanisms, not one. 1QD6 behaves exactly as claimed: max 8.390785 deg and drift 8.39067 deg identical to six decimal places on Rosetta x86_64, arm64 and ubuntu x64, so its basins are a property of the objective and five rotations merely under-sampled them. 2F1C does not: arm64 reaches a basin at 7.653946 deg and ubuntu x64 one at 10.07834 deg. Those are different reachable basin SETS, not different draws from a shared set. 1BXW fails only under Rosetta x86_64 and 2MPR only on ubuntu x64, both consistent with the same mechanism.",
+        "corrected_claim": "Sampling sparsity explains 1QD6. It does not explain 2F1C, 1BXW or 2MPR, where the set of optima the search can reach genuinely differs with the arithmetic environment. Both mechanisms are present and the original entry generalised from the first.",
+        "consequence_for_any_fix": "Deterministic basin selection -- choosing the best-scoring optimum among those found -- repairs 1QD6 in every environment and does not repair 2F1C, because those environments are not choosing differently among the same candidates, they are finding different candidates. A sufficient fix must make the search locate the global optimum reliably, which is the same defect pinned by test_fit_membrane_is_rotation_equivariant: a search whose result depends on input orientation is the search whose result depends on arithmetic.",
+        "unchanged": "Raising 5 -> 8 rotations exposed no new failing cases; the union remains 1BXW, 1QD6, 2F1C and 2MPR, four of sixteen. Whether eight is sufficient is untested -- finding nothing that five missed is equally consistent with eight also being too few."
+      }
     }
   ],
   "execution_policy": {
