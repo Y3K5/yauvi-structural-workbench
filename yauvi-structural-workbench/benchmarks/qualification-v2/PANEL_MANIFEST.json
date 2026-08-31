@@ -6037,6 +6037,29 @@
         "An initial finding that 1QD6, 1T16 and 1UYN were unsatisfiable even individually was an artifact of pinning girdle=+1, which forces that weight positive. Under all eight normalisations all 16 are individually satisfiable.",
         "A first greedy subset of 4 of 16 came from the same bias; the unbiased figure is 6 of 16."
       ]
+    },
+    {
+      "date": "2026-08-31",
+      "kind": "finding",
+      "collection_unchanged": "2.3",
+      "finding": "Supported mechanism: azimuthal aliasing",
+      "attribution": "Hypothesis proposed during Codex-assisted analysis; tested here against its own stated kill criteria.",
+      "statement": "For 6 of 7 tested monomeric failures the falsely preferred tilt depended on azimuthal phase and lost to the OPM orientation after averaging across phase. Three trimer controls showed no false tilt at any azimuth. Isolated protomers became vulnerable while their complete assemblies remained correctly oriented, supporting rotational structure as protection against phase-selected scoring artifacts.",
+      "mechanism": "At the reference orientation each membrane boundary cuts the barrel in a ring. Tilting turns those rings into sinusoidal paths around the circumference, and the optimiser can select the phase that aligns those paths with incidental hydrophobic patches -- favourable residues inside, unfavourable outside. That improves either delta_kd or belt, so the two apparent causes may be two readouts of one geometric defect.",
+      "proposed_missing_quantity": "Circumferential coherence. The present terms reward favourable residues without requiring the membrane evidence to agree around the complete barrel circumference. That is consistent with the linear-program proof that no re-weighting can fix the ranking: the missing quantity is an invariance none of the four terms measures.",
+      "evidence": {
+        "phase_localisation_P1": "6 of 7 monomers: max over phi beats the reference while the mean over phi does not. Exception 1UYN.",
+        "trimer_controls": "3 of 3 (1PRN, 2POR, 1E54) give theta*=0.0 -- no tilt at any azimuth beats the reference.",
+        "protomer_reversal_P4": "6 of 7 isolated protomers show the phase-selected false tilt (1PRN:A/B/C, 2POR:A/B, 1E54:A) while their assemblies show none. 1E54:B is uninformative: it does not form a scoreable barrel alone (S=-0.125).",
+        "symmetry_equivalence": "The three 1PRN protomers give identical maxima (4.7471) and means (4.3856-4.3858), as C3 equivalence requires.",
+        "first_harmonic_P2": "Mixed and not diagnostic. k=1 is largest in 5 of 7 but dominant only in 1T16 (0.74); 1QD6 is k=2 dominated. A tilted plane cutting a cylinder produces a first-harmonic boundary geometrically, whether or not the mechanism holds."
+      },
+      "boundaries": [
+        "1UYN falsifies this mechanism for itself: its tilted orientation remains preferred after azimuthal averaging (3.5461 against 3.3073 at the reference). It is also the largest ranking gap in the stratum, +0.786.",
+        "The same-phase versus C3-averaged control was run and did NOT separate symmetry from sample size. C3 averaging of the monomer profile removes the false tilt in only 2 of 9 cases (1T16, 1BXW) and fails on 1PRN:A and 2POR:A, whose intact assemblies are immune. If assembly immunity were rotational averaging of three equivalent contributions, the surrogate should reproduce it on exactly those two.",
+        "The likely reason is that the surrogate is not a valid model of the assembly: the score is not additive across chains, since the intact trimer has one centroid, one radial frame, and three times the residues entering the shared means in delta_kd and belt. Assembly immunity is real but arises from scoring one object, not from averaging three evaluations. Symmetry and sample size therefore remain confounded."
+      ],
+      "status": "The phenomenology is supported: phase-selected advantage, trimer immunity, protomer vulnerability. The causal account of WHY assemblies are protected is not established, and circumferential coherence is a proposed correction direction rather than a validated fix. Any coherence term should require agreement across azimuthal sectors or transmembrane strands rather than penalising tilt, so that a genuinely tilted barrel whose whole circumference supports one placement still passes while a lucky diagonal stripe does not."
     }
   ]
 }

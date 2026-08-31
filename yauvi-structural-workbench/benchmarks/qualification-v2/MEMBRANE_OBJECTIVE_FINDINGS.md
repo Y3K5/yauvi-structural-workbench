@@ -104,6 +104,62 @@ functional form of the existing ones. Not a re-weighting.**
   and plugs. Accurate only where it is not needed.
 - **Finer search** — `n_scan` 80 → 400 makes rotation drift worse, not better.
 
+## 6b. Supported mechanism: azimuthal aliasing
+
+*Hypothesis proposed during Codex-assisted analysis; tested here against its own
+stated kill criteria.*
+
+At the reference orientation each membrane boundary cuts the barrel in a ring.
+Tilting turns those rings into sinusoidal paths around the circumference, and the
+optimiser can select the **phase** that aligns them with incidental hydrophobic
+patches — favourable residues inside, unfavourable outside. That improves either
+`delta_kd` or `belt`, so the two apparent causes in §4 may be two readouts of one
+geometric defect.
+
+For 6 of 7 tested monomeric failures the falsely preferred tilt depended on
+azimuthal phase and lost to the OPM orientation after averaging across phase.
+Three trimer controls showed no false tilt at any azimuth. Isolated protomers
+became vulnerable while their complete assemblies remained correctly oriented.
+
+| evidence | result |
+|---|---|
+| P1 — advantage destroyed by φ-averaging | 6 of 7 monomers (1UYN excepted) |
+| trimer controls | 3 of 3 give θ\* = 0.0° |
+| P4 — protomers become vulnerable | 6 of 7 (1E54:B uninformative, no scoreable barrel alone) |
+| C3 symmetry equivalence | 1PRN:A/B/C identical to 4 dp |
+| P2 — first-harmonic dominance | mixed; not diagnostic |
+
+**Proposed missing quantity: circumferential coherence.** The present terms
+reward favourable residues without requiring the membrane evidence to agree
+around the complete barrel circumference. This is consistent with §5: no
+re-weighting can supply an invariance that none of the four terms measures.
+
+### Boundaries
+
+**1UYN falsifies this for itself.** Its tilted orientation remains preferred
+after azimuthal averaging (3.5461 against 3.3073 at the reference), and it is the
+largest ranking gap in the stratum at +0.786.
+
+**Symmetry and sample size remain confounded.** The same-phase versus
+C3-averaged control was run and did *not* separate them. C3 averaging of the
+monomer profile removes the false tilt in only 2 of 9 cases (1T16, 1BXW) and
+fails on 1PRN:A and 2POR:A — whose intact assemblies are immune. If assembly
+immunity were rotational averaging of three equivalent contributions, the
+surrogate should have reproduced it on exactly those two.
+
+The likely reason is that the surrogate is not a valid model of the assembly: the
+score is not additive across chains, since the intact trimer has one centroid,
+one radial frame, and three times the residues entering the shared means in
+`delta_kd` and `belt`. Assembly immunity is real, but it arises from scoring one
+object rather than from averaging three evaluations.
+
+**Status.** The phenomenology is supported; the causal account of why assemblies
+are protected is not. Circumferential coherence is a correction *direction*, not
+a validated fix. Any such term should require agreement across azimuthal sectors
+or transmembrane strands rather than penalising tilt — so a genuinely tilted
+barrel whose whole circumference supports one placement still passes, while a
+lucky diagonal stripe does not.
+
 ## 7. Open
 
 What physical or geometric signal distinguishes a correctly placed bilayer for
