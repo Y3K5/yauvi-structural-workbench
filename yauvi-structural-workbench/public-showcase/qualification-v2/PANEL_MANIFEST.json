@@ -6044,13 +6044,13 @@
       "collection_unchanged": "2.3",
       "finding": "Supported mechanism: azimuthal aliasing",
       "attribution": "Hypothesis proposed during Codex-assisted analysis; tested here against its own stated kill criteria.",
-      "statement": "For 6 of 7 tested monomeric failures the falsely preferred tilt depended on azimuthal phase and lost to the OPM orientation after averaging across phase. Three trimer controls showed no false tilt at any azimuth. Isolated protomers became vulnerable while their complete assemblies remained correctly oriented, supporting rotational structure as protection against phase-selected scoring artifacts.",
+      "statement": "For 6 of 7 tested monomeric failures the falsely preferred tilt depended on azimuthal phase and lost to the OPM orientation after averaging across phase. Three trimer controls showed no false tilt at any azimuth. All six informative isolated protomers became vulnerable while their complete assemblies remained correctly oriented, supporting rotational structure as protection against phase-selected scoring artifacts.",
       "mechanism": "At the reference orientation each membrane boundary cuts the barrel in a ring. Tilting turns those rings into sinusoidal paths around the circumference, and the optimiser can select the phase that aligns those paths with incidental hydrophobic patches -- favourable residues inside, unfavourable outside. That improves either delta_kd or belt, so the two apparent causes may be two readouts of one geometric defect.",
       "proposed_missing_quantity": "Circumferential coherence. The present terms reward favourable residues without requiring the membrane evidence to agree around the complete barrel circumference. That is consistent with the linear-program proof that no re-weighting can fix the ranking: the missing quantity is an invariance none of the four terms measures.",
       "evidence": {
         "phase_localisation_P1": "6 of 7 monomers: max over phi beats the reference while the mean over phi does not. Exception 1UYN.",
         "trimer_controls": "3 of 3 (1PRN, 2POR, 1E54) give theta*=0.0 -- no tilt at any azimuth beats the reference.",
-        "protomer_reversal_P4": "6 of 7 isolated protomers show the phase-selected false tilt (1PRN:A/B/C, 2POR:A/B, 1E54:A) while their assemblies show none. 1E54:B is uninformative: it does not form a scoreable barrel alone (S=-0.125).",
+        "protomer_reversal_P4": "6 of 6 informative isolated protomers show the phase-selected false tilt (1PRN:A/B/C, 2POR:A/B, 1E54:A) while their assemblies show none. A seventh, 1E54:B, is uninformative and excluded, not counted as a failure: it does not form a scoreable barrel alone (S=-0.125). Previously reported as 6 of 7, which implied an informative protomer that was not vulnerable.",
         "symmetry_equivalence": "The three 1PRN protomers give identical maxima (4.7471) and means (4.3856-4.3858), as C3 equivalence requires.",
         "first_harmonic_P2": "Mixed and not diagnostic. k=1 is largest in 5 of 7 but dominant only in 1T16 (0.74); 1QD6 is k=2 dominated. A tilted plane cutting a cylinder produces a first-harmonic boundary geometrically, whether or not the mechanism holds."
       },
@@ -6060,6 +6060,52 @@
         "The likely reason is that the surrogate is not a valid model of the assembly: the score is not additive across chains, since the intact trimer has one centroid, one radial frame, and three times the residues entering the shared means in delta_kd and belt. Assembly immunity is real but arises from scoring one object, not from averaging three evaluations. Symmetry and sample size therefore remain confounded."
       ],
       "status": "The phenomenology is supported: phase-selected advantage, trimer immunity, protomer vulnerability. The causal account of WHY assemblies are protected is not established, and circumferential coherence is a proposed correction direction rather than a validated fix. Any coherence term should require agreement across azimuthal sectors or transmembrane strands rather than penalising tilt, so that a genuinely tilted barrel whose whole circumference supports one placement still passes while a lucky diagonal stripe does not."
+    },
+    {
+      "date": "2026-08-31",
+      "kind": "negative_result",
+      "collection_unchanged": "2.3",
+      "test": "Circumferential coherence, first operationalization. Preregistered before any value was computed.",
+      "operationalization_tested": "Sectors: contiguous runs of slab-crossing residues, >=3 residues, from sequence connectivity, partitioned separately for each candidate placement. Per-sector support: mean(kd inside slab) - mean(kd in flank), flank d < |proj| <= d+8, mirroring the global belt term. Statistic: 25th percentile of sector support. Comparison: reference against the strongest non-reference competitor. Thresholds fixed in advance -- supported >=15/16, equivocal 11-14, withdraw <=10.",
+      "result": "Coherence preferred the reference in 7 of 16. Below the preregistered withdrawal threshold.",
+      "values": {
+        "reference_preferred": {
+          "1QD6": 1.0307,
+          "1PRN": 0.8583,
+          "1E54": 0.5797,
+          "1UYN": 0.3514,
+          "2POR": 0.2485,
+          "1TLY": 0.1374,
+          "1T16": 0.1154
+        },
+        "alternative_preferred": {
+          "2F1T": -0.4073,
+          "1FEP": -0.348,
+          "1K24": -0.3346,
+          "1P4T": -0.2558,
+          "2OMF": -0.1981,
+          "2ERV": -0.1253,
+          "2MPR": -0.1233,
+          "1BXW": -0.0164,
+          "2F1C": -0.0089
+        }
+      },
+      "why_decisively_unusable": "It failed on 2OMF and 2MPR, which the current objective already ranks correctly. A term that prefers the false optimum on structures that presently pass would break them. That was named in advance as the damning condition.",
+      "scope_of_withdrawal": "WITHDRAWN: this exact operationalization -- placement-dependent contiguous runs combined with a Q25 belt-contrast statistic. It does NOT withdraw circumferential coherence as a concept. The sectors were neither verified beta-strands nor held constant between the candidates being compared, so the test confounds the statistic with its segmentation.",
+      "known_defects_of_this_operationalization": [
+        "Sectors were partitioned per placement, so the reference and its competitor were scored over different partitions. Flagged before the run; on margins as small as 1BXW -0.0164 and 2F1C -0.0089 it cannot be dismissed.",
+        "Q25 over 7-8 sectors on the small barrels is close to the minimum, while over 45-54 sectors on the trimers it is a genuine quartile. The statistic is not the same measurement across the panel.",
+        "Derived sectors were validated against annotated strand COUNTS only (1BXW 8 derived against 8 annotated), never against residue spans."
+      ],
+      "requirements_for_any_second_test": [
+        "Infer secondary structure once from backbone geometry, independently of either placement.",
+        "Validate residue spans, not merely strand counts, against the four structures retaining SHEET records: 1BXW, 2F1T, 1PRN, 2OMF.",
+        "Use exactly the same strand partition for the reference and its competitor.",
+        "Keep the support calculation, the Q25 statistic and the verdict thresholds unchanged, so that only the methodological defect differs.",
+        "Preregister separately. This first test is preserved permanently as withdrawn and is not to be treated as a pilot."
+      ],
+      "not_attempted": "No variant was tried after the result. Adjusting the percentile, flank width or minimum sector length until 7 became 15 across sixteen structures would be fitting, not measuring, and is the failure mode the preregistration existed to prevent.",
+      "unaffected": "The azimuthal aliasing phenomenology stands: phase-selected advantage in 6 of 7 monomers, trimer immunity 3 of 3, protomer vulnerability 6 of 6 informative. What is eliminated is one proposed remedy, not the description of the failure."
     }
   ]
 }

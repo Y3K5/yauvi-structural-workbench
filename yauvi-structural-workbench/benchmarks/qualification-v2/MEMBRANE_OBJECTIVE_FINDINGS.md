@@ -125,7 +125,7 @@ became vulnerable while their complete assemblies remained correctly oriented.
 |---|---|
 | P1 — advantage destroyed by φ-averaging | 6 of 7 monomers (1UYN excepted) |
 | trimer controls | 3 of 3 give θ\* = 0.0° |
-| P4 — protomers become vulnerable | 6 of 7 (1E54:B uninformative, no scoreable barrel alone) |
+| P4 — protomers become vulnerable | 6 of 6 informative (1E54:B excluded, no scoreable barrel alone) |
 | C3 symmetry equivalence | 1PRN:A/B/C identical to 4 dp |
 | P2 — first-harmonic dominance | mixed; not diagnostic |
 
@@ -159,6 +159,46 @@ a validated fix. Any such term should require agreement across azimuthal sectors
 or transmembrane strands rather than penalising tilt — so a genuinely tilted
 barrel whose whole circumference supports one placement still passes, while a
 lucky diagonal stripe does not.
+
+## 6c. Circumferential coherence, first test — withdrawn
+
+Preregistered before any value was computed: sectors as contiguous runs of
+slab-crossing residues partitioned per placement; per-sector support as
+`mean(kd inside) − mean(kd in flank)`; statistic the 25th percentile; thresholds
+supported ≥15/16, equivocal 11–14, withdraw ≤10.
+
+**Result: 7 of 16. Withdrawn.**
+
+| reference preferred | alternative preferred |
+|---|---|
+| 1QD6 +1.031, 1PRN +0.858, 1E54 +0.580, 1UYN +0.351, 2POR +0.249, 1TLY +0.137, 1T16 +0.115 | 2F1T −0.407, 1FEP −0.348, 1K24 −0.335, 1P4T −0.256, 2OMF −0.198, 2ERV −0.125, 2MPR −0.123, 1BXW −0.016, 2F1C −0.009 |
+
+It fails on **2OMF and 2MPR**, which the current objective already ranks
+correctly — a term preferring the false optimum on structures that presently pass
+would break them. That was named in advance as the disqualifying condition.
+
+**Scope of the withdrawal.** This exact operationalization is withdrawn:
+placement-dependent contiguous runs combined with a Q25 belt-contrast statistic.
+Circumferential coherence as a concept is *not* withdrawn. The sectors were
+neither verified β-strands nor held constant between the candidates being
+compared, so the test confounds the statistic with its segmentation.
+
+Known defects of this operationalization: sectors were partitioned per placement,
+so reference and competitor were scored over different partitions — flagged
+before the run, and not dismissable on margins as small as 1BXW −0.016 and 2F1C
+−0.009. Q25 over 7–8 sectors on the small barrels is near the minimum while over
+45–54 on the trimers it is a real quartile. And the derived sectors were validated
+against strand *counts* only (1BXW: 8 derived vs 8 annotated), never residue spans.
+
+**A second test would require**, preregistered separately: secondary structure
+inferred once from backbone geometry independently of either placement; residue
+spans validated against the four structures retaining `SHEET` records; the same
+partition used for both candidates; support calculation, statistic and thresholds
+unchanged so only the methodological defect differs. This first test is preserved
+permanently as withdrawn and is not a pilot for it.
+
+No variant was tried after seeing the result. Adjusting percentile, flank width or
+minimum sector length until 7 became 15 would be fitting, not measuring.
 
 ## 7. Open
 
