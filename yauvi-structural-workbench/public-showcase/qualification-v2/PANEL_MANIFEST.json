@@ -6019,6 +6019,24 @@
       "girdle_observation": "The aromatic girdle term -- the only one encoding barrel-specific interface structure rather than generic hydrophobic contrast -- favours the reference orientation in 8 of 10 cases but contributes at most 0.058 against gaps of 0.065 to 0.786. At its current weight of 0.5 it is effectively inert. Raising it enough to decide 1UYN would require roughly a 24-fold increase.",
       "rejected_fix": "A barrel-axis alignment term was considered on the reasoning that for a beta-barrel the membrane normal is the barrel axis, and tested before proposal. Principal axes of the CA coordinates track OPM's z to within 0.16 deg for the five disc-like trimers -- 1PRN 0.001, 2OMF 0.007, 2POR 0.053, 1E54 0.080, 2MPR 0.160 -- which are the cases that already pass. For the monomeric barrels that fail, PCA is contaminated by extramembrane loops and plugs and errs by 6.1 to 26.3 deg. The proxy is accurate only where it is not needed. Rejected.",
       "status": "No fix proposed. The mechanism by which either hydrophobicity term prefers a tilted slab is not characterised, and identifying the geometric or physical signal that would distinguish a correctly placed bilayer for these folds is a question about membrane protein biology. Six mechanisms were proposed across this investigation and all six were withdrawn on measurement; a seventh encoded into the scoring function and published is not supportable on that record."
+    },
+    {
+      "date": "2026-08-31",
+      "kind": "finding",
+      "collection_unchanged": "2.3",
+      "finding": "No weighting of the membrane objective's four terms can rank the reference orientation first for all 16 adopted cases.",
+      "method": "J is linear in its weights, so requiring the reference to outscore every alternative optimum is a system of linear inequalities in w: w.(c_z - c_alt) >= t for every structure and every alternative. Maximising t is a linear program. Components were collected at the tight-polished reference optimum and at every distinct polished optimum of the 83-candidate coarse grid, excluding those converging back to the reference: 1303 constraints over 16 structures.",
+      "result": "Best margin over eight normalisations (each weight pinned to +1 and to -1, to exclude the trivial w=0 solution): -0.158825. Infeasible. Leave-one-structure-out remains infeasible for every case, so no single structure drives it.",
+      "why_this_is_a_proof": "Alternative optima were located under the CURRENT weights. Re-optimising under any other weighting can only surface further optima, which adds constraints and can never relax them. Infeasibility on this constraint set therefore implies infeasibility on the true one. The negative result is a proof about the objective family; a positive one would have needed re-optimisation to confirm.",
+      "also_established": [
+        "Every structure is individually satisfiable: some weighting ranks the reference first for each one alone. They cannot be satisfied jointly.",
+        "A greedy maximal feasible subset reaches 6 of 16, a lower bound on the true maximum since greedy is not exhaustive. The weighting achieving it requires girdle = -18.7, inverting the aromatic girdle term, which is physically meaningless -- the LP solving a problem that is not numerical."
+      ],
+      "consequence": "Re-weighting is eliminated as a repair strategy. Fixing the membrane scope requires a new term encoding something the present four do not capture, or a change to their functional form. The objective family is the binding constraint.",
+      "corrections_made_during_this_analysis": [
+        "An initial finding that 1QD6, 1T16 and 1UYN were unsatisfiable even individually was an artifact of pinning girdle=+1, which forces that weight positive. Under all eight normalisations all 16 are individually satisfiable.",
+        "A first greedy subset of 4 of 16 came from the same bias; the unbiased figure is 6 of 16."
+      ]
     }
   ]
 }

@@ -37,7 +37,7 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "08564067903120c8081aaf90b3a10a99a132ed05914d8ef224d9756abd1421c8",
+      "panel_manifest_sha256": "c5a0d0306782aea9d5f681bb678239ebe08372f08a193997dfa91e78f6e1ceb3",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
       "source_lock_sha256": "e8ea5c8c2aa8a45828a9951b23f02dc3cfc02adc02fccd66c018760f4011fb81",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
@@ -83,6 +83,7 @@
         ]
       },
       "scientific_execution_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "membrane_objective_findings": "benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
       "results_note": "Each execution writes its results document beside its own case outputs. A shared filename keyed on the panel id separated different panels but not two runs of the same panel, and an adversarial run overwrote the real membrane evidence with its own deliberate failures."
