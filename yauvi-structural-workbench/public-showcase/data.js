@@ -995,7 +995,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "membrane_orientation",
       "external_benchmark": "partial_public_case",
-      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_executing_5_of_16_under_collection_2_3_which_adds_the_first_orientation_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_alpha_helical_unadopted_and_non_blocking",
+      "external_benchmark_detail": "NON_BLOCKING_from_collection_2_4_research_only_beta_barrel_executes_at_5_of_16_under_the_2_3_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_mark_1_makes_no_accuracy_claim_for_membrane_orientation",
       "inputs": [
         {
           "absence_effect": "blocked",

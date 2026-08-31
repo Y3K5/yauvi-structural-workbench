@@ -21,8 +21,13 @@ def runner_module():
 def test_v2_panel_freezes_all_scopes_strata_and_gates():
     manifest = json.loads((QUALIFICATION / "PANEL_MANIFEST.json").read_text(encoding="utf-8"))
     assert manifest["manifest_state"] == "source_adoption_required"
-    assert len(manifest["release_blocking_scopes"]) == 6
+    # Collection 2.4 moved membrane_orientation:beta_barrel to non-blocking:
+    # under the 2.3 accuracy gate it passes 5 of 16 and cannot be qualified for
+    # Mark 1. Both membrane strata are now non-blocking; the panel still executes.
+    assert len(manifest["release_blocking_scopes"]) == 5
+    assert "membrane_orientation" not in {s.split(":", 1)[0] for s in manifest["release_blocking_scopes"]}
     assert "membrane_orientation:alpha_helical" in manifest["non_blocking_scopes"]
+    assert "membrane_orientation:beta_barrel" in manifest["non_blocking_scopes"]
     panels = {row["workflow"]: row for row in manifest["panels"]}
     assert set(panels) == {
         "structure_qc", "membrane_orientation", "conformational_state",

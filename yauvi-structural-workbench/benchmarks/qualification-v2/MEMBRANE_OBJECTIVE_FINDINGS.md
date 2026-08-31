@@ -1,5 +1,12 @@
 # Membrane orientation: current state of knowledge
 
+> **Scope status (collection 2.4): NON-BLOCKING, research-only.** Mark 1 makes no
+> accuracy claim for membrane orientation. Both strata are non-blocking; the panel
+> continues to execute and report 5/16. The circumferential-coherence branch is
+> closed as deferred research — reopen only when fixed strands can be derived
+> independently and validated, a held-out membrane panel exists, and the full
+> protocol and stopping rule are frozen beforehand.
+
 Written 2026-08-31. `PANEL_MANIFEST.json` carries the full provenance —
 `threshold_revisions` for gate changes, `record_corrections` for claims made and
 withdrawn during the investigation. That trail is the evidence; this file is the

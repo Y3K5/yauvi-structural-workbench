@@ -50,14 +50,20 @@ only after a public repository and independent research use exist.
 ## Required before `local_release_candidate`
 
 - Adopt and execute every source-locked Qualification v2 case and pass all six
-  Mark 1 release-blocking scopes. Four panels are adopted and executed and 53 of
-  114 cases pass: StructQC 16/16 with 2 controls, site-context 16/16 with 1
-  control, assembly-context 16/16, and membrane 5/16 of the adopted
-  `beta_barrel` stratum (16 of that panel's 32). The membrane stratum **fails**.
-  Collection 2.3 added the panel's first orientation-accuracy gate; before it,
-  every normal gate measured rotational self-consistency, so a stable wrong
-  answer passed. Eleven of the sixteen fitted orientations sit 2.5 to 17.4
-  degrees from the deposited OPM reference. The five that pass are within 0.14. ABL StateAtlas and SF-CSA are
+  Mark 1 release-blocking scopes, of which there are now **five**. Collection 2.4
+  moved `membrane_orientation` to non-blocking, both strata: Mark 1 makes no
+  accuracy claim for membrane orientation, and the scope is research-only.
+
+  Of the blocking scopes, three are adopted and pass: StructQC 16/16 with 2
+  controls, site-context 16/16 with 1 control, assembly-context 16/16. ABL
+  StateAtlas (18) and SF-CSA (16) remain unadopted.
+
+  Membrane continues to execute and report, at 5/16. Collection 2.3 added the
+  panel's first orientation-accuracy gate; before it every normal gate measured
+  rotational self-consistency, so a stable wrong answer passed. Eleven of the
+  sixteen fitted orientations sit 2.5 to 17.4 degrees from the deposited OPM
+  reference; the five that pass are within 0.14. See
+  `benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md`. ABL StateAtlas and SF-CSA are
   unadopted, so the collection's composition state remains
   `blocked_panel_incomplete` and no scope is qualified. Counts here are derived
   from `benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json`, not typed.

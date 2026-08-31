@@ -314,7 +314,7 @@ def analysis_definitions() -> list[dict[str, Any]]:
         definition["scientific_readiness"] = {
             "software_state": definition["readiness"],
             "external_benchmark": "qualification_v2_incomplete",
-            "release_gate": "all_six_mark_1_release_blocking_scopes_must_pass",
+            "release_gate": "all_five_mark_1_release_blocking_scopes_must_pass",
         }
         for input_role in definition["inputs"]:
             input_role["accepted_extensions"] = list(input_role["extensions"])

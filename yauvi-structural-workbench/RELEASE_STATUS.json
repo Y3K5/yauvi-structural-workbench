@@ -13,10 +13,10 @@
   "independent_install": "not_recorded",
   "research_use_evidence": "not_recorded",
   "core_workflows_required": 6,
-  "qualification_policy": "all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2_before_local_release_candidate",
+  "qualification_policy": "all_five_mark_1_release_blocking_scopes_must_pass_qualification_v2_before_local_release_candidate_membrane_orientation_is_non_blocking_from_collection_2_4",
   "external_benchmarks": {
     "structure_qc": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
-    "membrane_orientation": "v2_beta_barrel_stratum_adopted_and_executing_5_of_16_under_collection_2_3_which_adds_the_first_orientation_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_alpha_helical_unadopted_and_non_blocking",
+    "membrane_orientation": "NON_BLOCKING_from_collection_2_4_research_only_beta_barrel_executes_at_5_of_16_under_the_2_3_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_mark_1_makes_no_accuracy_claim_for_membrane_orientation",
     "conformational_state": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
     "functional_site_state": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "assembly_interface": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
@@ -37,7 +37,7 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "b0070dfa8a9e1f07a3032bc0ea01d5fcc567c0654605a1b2589ef96a73f993e0",
+      "panel_manifest_sha256": "b0a0730e38ea3a81a655dfe5c1a21af4f5237b845328e8a9e0d25df37a97d739",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
       "source_lock_sha256": "e8ea5c8c2aa8a45828a9951b23f02dc3cfc02adc02fccd66c018760f4011fb81",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
@@ -90,7 +90,7 @@
     }
   },
   "gates": {
-    "all_six_mark_1_qualification_v2_scopes_passed": false,
+    "all_five_mark_1_qualification_v2_scopes_passed": false,
     "qualification_v2_panel_adopted": false,
     "independent_second_machine_reproduction_passed": false,
     "public_history_requirement_satisfied": false,

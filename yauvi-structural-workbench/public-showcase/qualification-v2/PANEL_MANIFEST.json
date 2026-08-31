@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "collection_id": "yauvi-structural-public-qualification-v2",
-  "collection_version": "2.3",
+  "collection_version": "2.4",
   "manifest_state": "source_adoption_required",
   "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
   "threshold_revisions": [
@@ -77,6 +77,20 @@
       ],
       "incidental_finding": "Calling fit_membrane directly on 1T16 gives 11.08 degrees; the pipeline, which fits a canonicalised structure and maps back, gives 16.30. Same file, same 427 residues, ~5 degrees apart. That is the rotation-equivariance defect recorded in the preceding record_corrections appearing inside the production path, not only under the validation's synthetic rotations.",
       "records_unaffected": true
+    },
+    {
+      "collection_version": "2.4",
+      "date": "2026-08-31",
+      "scope": "reclassifies membrane_orientation:beta_barrel from release-blocking to non-blocking; no threshold, gate, record, source, split or expectation changed",
+      "change": [
+        "release_blocking_scopes: 6 -> 5, membrane_orientation:beta_barrel removed",
+        "non_blocking_scopes: membrane_orientation:beta_barrel added, joining membrane_orientation:alpha_helical"
+      ],
+      "decision": "Membrane orientation is excluded from Mark 1 accuracy claims: research-only and non-blocking. The whole membrane_orientation workflow is now non-blocking, both strata.",
+      "basis": "Under the collection 2.3 accuracy gate the beta_barrel stratum passes 5 of 16. Eleven fitted orientations sit 2.5 to 17.4 degrees from the deposited reference. The correct orientation is a local optimum in all 16 cases, but at least 10 of 16 rank a wrong one higher, and no weighting of the four terms can fix that -- proven infeasible over 1303 constraints. The scope cannot be qualified for Mark 1 on any realistic timeline.",
+      "why_not_removed_from_scope": "Retained as non-blocking rather than deleted so the measurement, the gate and the evidence remain visible. Removing the scope would hide a documented accuracy failure rather than declare it. The panel continues to execute and continues to report 5 of 16.",
+      "consequence": "Five release-blocking scopes remain: structure_qc, conformational_state, functional_site_state, assembly_interface, sf_csa. Mark 1 makes no accuracy claim for membrane orientation. The collection total is unchanged at 114 cases; membrane's 16 adopted cases continue to execute and are reported, but do not gate the release.",
+      "records_unaffected": true
     }
   ],
   "execution_policy": {
@@ -87,15 +101,15 @@
   },
   "release_blocking_scopes": [
     "structure_qc:coordinate_provenance_and_validation",
-    "membrane_orientation:beta_barrel",
     "conformational_state:abl_family",
     "functional_site_state:curated_functional_site_mapping",
     "assembly_interface:deposited_biological_assembly",
     "sf_csa:curated_structure_sequence_comparison"
   ],
   "non_blocking_scopes": [
+    "conformational_state:other_proteins",
     "membrane_orientation:alpha_helical",
-    "conformational_state:other_proteins"
+    "membrane_orientation:beta_barrel"
   ],
   "panels": [
     {
@@ -6106,6 +6120,19 @@
       ],
       "not_attempted": "No variant was tried after the result. Adjusting the percentile, flank width or minimum sector length until 7 became 15 across sixteen structures would be fitting, not measuring, and is the failure mode the preregistration existed to prevent.",
       "unaffected": "The azimuthal aliasing phenomenology stands: phase-selected advantage in 6 of 7 monomers, trimer immunity 3 of 3, protomer vulnerability 6 of 6 informative. What is eliminated is one proposed remedy, not the description of the failure."
+    },
+    {
+      "date": "2026-08-31",
+      "kind": "decision",
+      "collection": "2.4",
+      "decision": "The second circumferential-coherence test is NOT preregistered for Mark 1. The branch is closed as deferred research.",
+      "reasoning": "Fixed sectors are not a small repair: they require a new, independently validated strand-inference method. The current statistic would need eight of nine adverse comparisons to reverse, including large-margin failures and two positive controls. Success on the same discovery panel would still not qualify the objective without held-out structures.",
+      "reopen_only_when": [
+        "Fixed strands can be derived independently of any candidate placement and validated against annotated residue spans.",
+        "A held-out membrane panel exists, distinct from the 16 discovery structures.",
+        "The complete protocol and stopping rule are frozen before any of those outcomes are examined."
+      ],
+      "status": "deferred_research"
     }
   ]
 }
