@@ -25,6 +25,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import platform
 import shutil
 import re
@@ -370,6 +371,8 @@ def _measure_membrane_orientation(ev, manifest) -> dict[str, Any]:
         "extracellular_comparison_state": validation.get("extracellular_comparison_state"),
         "n_embedded": summary.get("n_embedded"),
         "delta_kd": summary.get("delta_kd"),
+        "fitted_normal": summary.get("normal"),
+        "normal_frame": summary.get("normal_frame"),
     }
 
 
@@ -657,6 +660,39 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
     # precisely what the independent second-machine gate exists to answer, and
     # pretending it holds here would answer it by assumption.
     #
+    # Accuracy against the reference orientation.
+    #
+    # Every other normal gate in this panel measures self-consistency: whether
+    # the fit reproduces under rotation. A stable wrong answer passes them, and
+    # two cases did -- 1FEP and 2ERV pass every gate in every environment while
+    # sitting 6.69 and 5.41 degrees from OPM. This is the only gate that asks
+    # whether the orientation is right.
+    #
+    # OPM distributes structures already oriented with the membrane normal on z,
+    # so the reference direction is the panel's declared `reference_normal` and
+    # the error is the undirected angle to it -- a membrane normal equals its
+    # negation, so the comparison must not be signed.
+    reference = mo.get("reference_normal")
+    limit = mo.get("opm_normal_error_deg_max")
+    fitted = obs.get("fitted_normal")
+    if reference is not None and limit is not None:
+        if fitted is None:
+            checks.append({"check": "opm_normal_error_deg", "required": True,
+                           "expected": f"<= {limit}",
+                           "observed": "fitted normal absent from evidence",
+                           "passed": False})
+        else:
+            a = [float(v) for v in fitted]
+            b = [float(v) for v in reference]
+            na = math.sqrt(sum(v * v for v in a)) or 1.0
+            nb = math.sqrt(sum(v * v for v in b)) or 1.0
+            dot = sum(x * y for x, y in zip(a, b)) / (na * nb)
+            error = math.degrees(math.acos(min(1.0, abs(dot))))
+            checks.append({"check": "opm_normal_error_deg", "required": True,
+                           "expected": f"<= {limit} vs reference {reference}",
+                           "observed": round(error, 6),
+                           "passed": error <= float(limit)})
+
     # `n_reference_extracellular` was required here on the reasoning that a
     # count is not a fit. It is a count *of residues selected using the fitted
     # geometry* -- it comes from the same `validation` block as mean_jaccard,

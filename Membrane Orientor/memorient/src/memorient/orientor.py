@@ -141,6 +141,20 @@ class OrientationResult:
             s["half_thickness"] = round(self.fit.half_thickness, 2)
             s["delta_kd"] = round(self.fit.delta_kd, 2)
             s["n_embedded"] = self.fit.n_embedded
+        # The fitted normal in the INPUT file's frame. This is the module's
+        # primary geometric output and was absent from the evidence, which is why
+        # nothing downstream could compare an orientation to a reference:
+        # half_thickness could be checked against OPM and the direction could not.
+        #
+        # It must be `input_normal`, not `fit.normal`. The pipeline fits a
+        # canonicalised structure and maps back with `canonical_R.T`, so
+        # `fit.normal` lives in the canonical frame and comparing it to a
+        # reference in the deposited frame is meaningless -- on 1T16 the two
+        # differ by 18 degrees. Sign is not meaningful, a membrane normal equals
+        # its negation, so consumers must compare undirected angles.
+        if self.input_normal is not None:
+            s["normal"] = [round(float(v), 6) for v in self.input_normal]
+            s["normal_frame"] = "input_coordinates"
         if self.side is not None:
             s["ec_sign_confidence"] = round(self.side.confidence, 3)
         if self.validation:

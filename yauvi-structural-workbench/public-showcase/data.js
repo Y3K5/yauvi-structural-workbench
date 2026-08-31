@@ -69,7 +69,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "MEMBRANE_ORIENTATION.json",
           "path": "evidence/HUC-02/MEMBRANE_ORIENTATION.json",
-          "sha256": "7235dacc12e70dcb385b5d439453e86a1ac3d8bc03664d49dd763302cb94884a"
+          "sha256": "9f7e22278fad595725fea60e7d1018c5128fafd793d7ed3fbce143d7a83bbb95"
         },
         {
           "label": "RESIDUE_ORIENTATION.tsv",
@@ -775,7 +775,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     ],
     "scientific_execution": {
       "all_release_blocking_scopes_qualified": false,
-      "cases_passed": 62,
+      "cases_passed": 53,
       "cases_required": 114,
       "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "counts_are_single_machine": true,
@@ -796,7 +796,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         },
         {
           "cases_adopted": 16,
-          "cases_passed": 14,
+          "cases_passed": 5,
           "cases_required": 32,
           "controls_passed": 0,
           "controls_total": 0,
@@ -995,7 +995,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "membrane_orientation",
       "external_benchmark": "partial_public_case",
-      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_executing_14_of_16_under_collection_2_2_eight_rotation_protocol_1BXW_and_1QD6_fail_accuracy_alpha_helical_unadopted_and_non_blocking",
+      "external_benchmark_detail": "v2_beta_barrel_stratum_adopted_and_executing_5_of_16_under_collection_2_3_which_adds_the_first_orientation_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_alpha_helical_unadopted_and_non_blocking",
       "inputs": [
         {
           "absence_effect": "blocked",

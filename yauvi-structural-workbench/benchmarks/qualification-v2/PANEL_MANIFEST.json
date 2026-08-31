@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "collection_id": "yauvi-structural-public-qualification-v2",
-  "collection_version": "2.2",
+  "collection_version": "2.3",
   "manifest_state": "source_adoption_required",
   "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
   "threshold_revisions": [
@@ -54,6 +54,29 @@
         "consequence_for_any_fix": "Deterministic basin selection -- choosing the best-scoring optimum among those found -- repairs 1QD6 in every environment and does not repair 2F1C, because those environments are not choosing differently among the same candidates, they are finding different candidates. A sufficient fix must make the search locate the global optimum reliably, which is the same defect pinned by test_fit_membrane_is_rotation_equivariant: a search whose result depends on input orientation is the search whose result depends on arithmetic.",
         "unchanged": "Raising 5 -> 8 rotations exposed no new failing cases; the union remains 1BXW, 1QD6, 2F1C and 2MPR, four of sixteen. Whether eight is sufficient is untested -- finding nothing that five missed is equally consistent with eight also being too few."
       }
+    },
+    {
+      "collection_version": "2.3",
+      "date": "2026-08-31",
+      "scope": "adds one required gate to membrane_orientation; no existing threshold, record, source or split changed",
+      "change": [
+        "new required gate opm_normal_error_deg_max = 2.0",
+        "new panel datum reference_normal = [0.0, 0.0, 1.0]",
+        "memorient now records summary.normal and summary.normal_frame in MEMBRANE_ORIENTATION.json"
+      ],
+      "why": "Every other normal gate in this panel measures rotational self-consistency: whether the fit reproduces under rotation. A stable wrong answer passes them. Before this gate the stratum reported 14/16 passing while eleven of those orientations were 2.5 to 17.4 degrees from the deposited reference, and nothing in the panel could see it. half_thickness_error_A was the only comparison against OPM, and it constrains slab thickness, not direction.",
+      "why_the_normal_had_to_be_added_to_the_evidence": "The fitted normal -- the module's primary geometric output -- was absent from MEMBRANE_ORIENTATION.json, which recorded half_thickness, delta_kd and n_embedded. No accuracy gate was possible because the quantity to be judged was never written down.",
+      "threshold_evidence": "Accuracy is bimodal with a 2.341 degree empty band. The platform's opm_normal_error_deg over the 16 adopted cases: 1PRN 0.0010, 2OMF 0.0067, 2POR 0.0511, 1E54 0.0803, 2MPR 0.1384, then nothing until 1QD6 2.4797, 1BXW 2.9269, 1FEP 4.0008, 2F1C 6.1835, 1TLY 7.8497, 1K24 8.2936, 1P4T 9.5821, 2ERV 14.1113, 1T16 16.3030, 1UYN 16.8009, 2F1T 17.4304.",
+      "threshold_rationale": "2.0 degrees sits inside the empty band, so any bound from 0.2 to 2.4 yields the identical verdict -- the placement is robust rather than tuned. It is above OPM's own orientational precision for well-ordered barrels (~1-2 degrees), so the gate does not measure reference noise. At a typical 12 A barrel radius it is 12*sin(2 deg) = 0.42 A of rim displacement, under one residue layer and small against the ~5 A interface width the zone assignment depends on. A 3.0 degree bound was set first and withdrawn: on the correct distribution it falls in a 1.07 degree gap between 2.9269 and 4.0008, where moving it to 2.5 or 4.1 changes the result.",
+      "reference_assumption": "OPM distributes structures already oriented with the membrane normal on z, so reference_normal is [0,0,1] and the error is the UNDIRECTED angle to it -- a membrane normal equals its negation. The assumption is declared as panel data rather than hardcoded in the runner so it is visible and correctable. It is corroborated by five cases landing within 0.14 degrees of z, which would not occur if z were not the reference.",
+      "consequence": "The beta_barrel stratum falls from 14/16 to 5/16. The five that pass -- 1PRN, 2OMF, 2POR, 1E54, 2MPR -- are oriented within 0.14 degrees. The other eleven were passing a panel that never asked whether they were right. This is a more accurate report of the same software.",
+      "defects_in_this_change_found_before_publication": [
+        "The gate first used numpy, which run_execution.py deliberately does not import; rewritten in the standard library.",
+        "It first read fit.normal, which lives in the canonicalised frame the pipeline fits in, not the input frame. On 1T16 that reads 29.54 degrees against the correct 16.30. Corrected to input_normal, which the pipeline already computes as canonical_R.T @ fit.normal.",
+        "summary.normal_frame was labelled 'input_coordinates' while carrying a canonical-frame vector. The label was false when written and would have shipped as documentation."
+      ],
+      "incidental_finding": "Calling fit_membrane directly on 1T16 gives 11.08 degrees; the pipeline, which fits a canonicalised structure and maps back, gives 16.30. Same file, same 427 residues, ~5 degrees apart. That is the rotation-equivariance defect recorded in the preceding record_corrections appearing inside the production path, not only under the validation's synthetic rotations.",
+      "records_unaffected": true
     }
   ],
   "execution_policy": {
@@ -114,6 +137,12 @@
         "mean_half_thickness_error_A_max": 2.5,
         "non_vacuous_residue_jaccard_min": 0.95,
         "normal_drift_across_8_rotations_deg_max": 1.0,
+        "opm_normal_error_deg_max": 2.0,
+        "reference_normal": [
+          0.0,
+          0.0,
+          1.0
+        ],
         "empty_extracellular_comparison": "not_applicable"
       },
       "records": [
@@ -1020,6 +1049,12 @@
           "mean_unsigned_normal_error_deg_max": 1.0,
           "per_case_unsigned_normal_error_deg_max": 2.0,
           "normal_drift_across_8_rotations_deg_max": 1.0,
+          "opm_normal_error_deg_max": 2.0,
+          "reference_normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
           "non_vacuous_residue_jaccard_min": 0.95,
           "minimum_reference_extracellular_residues": 10,
           "reference": "OPM, which distributes structures already oriented on Z and records its fitted half-thickness as a REMARK in the file.",
