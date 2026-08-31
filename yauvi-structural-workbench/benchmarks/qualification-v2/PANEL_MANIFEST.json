@@ -5944,6 +5944,34 @@
         }
       ],
       "method_note": "Every measurement above was made with memorient's own _score_placement on OPM-deposited coordinates, taking the membrane normal to be z. That assumption is corroborated by 1E54 and 2POR whose best optima sit 0.080 and 0.052 deg from z, which would not occur if z were not the reference."
+    },
+    {
+      "date": "2026-08-30",
+      "kind": "record_correction",
+      "collection_unchanged": "2.2",
+      "corrects": "the delta_kd finding recorded in the preceding record_corrections entry",
+      "why": "Both errors come from describing _score_placement before reading it. The objective is J = 1.0*delta_kd + 0.7*belt + 0.5*girdle - 0.25*thickness, where thickness is a PENALTY.",
+      "corrections": [
+        {
+          "claimed": "1PRN: 'delta_kd +0.8928 and thickness +0.3676 against belt -0.9041', implying thickness favours the wrong optimum.",
+          "actual": "thickness is subtracted with weight -0.25, so a larger penalty at the alternative OPPOSES it. Contributions to J, which reconstruct the measured gaps exactly: 1PRN -- delta_kd +0.8929, belt -0.6329, girdle -0.0292, thickness -0.0919, net +0.1389. 1UYN -- delta_kd +0.8246, belt -0.0591, girdle +0.0323, thickness -0.0119, net +0.7859.",
+          "effect_on_finding": "Strengthens it. delta_kd is SOLELY responsible: every other term opposes the wrong optimum or is negligible. The earlier wording implied two terms shared the blame."
+        },
+        {
+          "claimed": "'a tilted slab wins by enclosing a smaller, more hydrophobic subset -- it measures whether hydrophobic residues were enclosed, not whether the bilayer was spanned.'",
+          "actual": "Embedded-residue counts at z versus the winning alternative: 1PRN 549 -> 151, 1UYN 150 -> 127, 2ERV 89 -> 77, but 2F1T 68 -> 79, 2MPR 625 -> 629, 1T16 167 -> 170, 1K24 98 -> 100. The mechanism holds strongly for 1PRN -- consistent with the slab capturing part of one monomer of a trimeric porin rather than spanning all three -- is marginal for 1UYN and 2ERV, and is ABSENT for four cases where the alternative encloses as many residues or more. There the tilt achieves better lipid-versus-pore separation at comparable coverage, which is delta_kd behaving as designed and still preferring the wrong answer.",
+          "effect_on_finding": "Withdraws the mechanism, not the finding. delta_kd's failure mode is structure-dependent and not characterised. Any fix premised on set-size normalisation would repair 1PRN and leave those four untouched.",
+          "also_withdrawn": "The implied remedy 'normalise delta_kd against the size or composition of the selected set' is unsupported for the majority of mis-ranked cases."
+        }
+      ],
+      "still_supported": [
+        "delta_kd is solely responsible for the mis-ranking; verified by exact reconstruction of both measured gaps from the published weights.",
+        "An optimum exists at OPM's orientation for all 16 structures (polish from z at fatol 1e-8, drift <= 0.13 deg for fifteen, 0.70 deg for 2F1C).",
+        "At least 10 of 16 are mis-ranked under symmetric 1e-8 convergence; a lower bound, top-12 alternative pool.",
+        "Belt re-weighting alone cannot fix it: doubling belt's weight to 1.4 flips 1PRN to -0.494 and leaves 1UYN at +0.727."
+      ],
+      "open_question": "What the lipid-versus-pore hydrophobic contrast should encode for barrels of differing oligomeric state and size. 1PRN is trimeric and 2MPR is large, and they sit at opposite ends of the coverage table, but whether oligomeric state is the axis is not established -- it is one pattern in ten structures. This is a question about membrane protein biology rather than about optimisation, and is deliberately left open rather than answered by inference.",
+      "process_note": "Six mechanisms were proposed during this investigation and five were withdrawn: float tie-breaking at the selection points, a principal-axis candidate frame, sampling density, different reachable basin sets per environment, and a representation defect (Mode B). Each was reported after a measurement whose output agreed with the then-current explanation, and each was withdrawn after reading the code the measurement depended on. The surviving results above are the ones that were checked against source rather than against expectation."
     }
   ]
 }
