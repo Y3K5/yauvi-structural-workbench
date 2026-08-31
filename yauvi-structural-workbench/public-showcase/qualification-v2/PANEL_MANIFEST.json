@@ -6007,6 +6007,18 @@
       ],
       "open_question": "What the lipid-versus-pore hydrophobic contrast should encode for barrels of differing oligomeric state and size. 1PRN is trimeric and 2MPR is large, and they sit at opposite ends of the coverage table, but whether oligomeric state is the axis is not established -- it is one pattern in ten structures. This is a question about membrane protein biology rather than about optimisation, and is deliberately left open rather than answered by inference.",
       "process_note": "Six mechanisms were proposed during this investigation and five were withdrawn: float tie-breaking at the selection points, a principal-axis candidate frame, sampling density, different reachable basin sets per environment, and a representation defect (Mode B). Each was reported after a measurement whose output agreed with the then-current explanation, and each was withdrawn after reading the code the measurement depended on. The surviving results above are the ones that were checked against source rather than against expectation."
+    },
+    {
+      "date": "2026-08-31",
+      "kind": "record_correction",
+      "collection_unchanged": "2.3",
+      "corrects": "the finding 'delta_kd is solely responsible for the mis-ranking'",
+      "claimed": "Recorded in an earlier record_corrections entry from component breakdowns of two cases, 1UYN and 1PRN, where delta_kd exceeded the whole ranking gap while every other term opposed the wrong optimum.",
+      "actual": "Decomposing all ten mis-ranked cases: delta_kd dominates the gap in eight -- 1BXW +0.1651, 1P4T +0.1869, 1K24 +0.1380, 1PRN +0.8928, 1UYN +0.8246, 2F1C +0.1451, 2ERV +0.5037, 2MPR +0.0881. In the remaining two the belt term dominates and delta_kd correctly favours the reference orientation: 2F1T dkd -0.5122 with belt +0.4305, and 1T16 dkd -0.1355 with belt +0.1524. Both hydrophobicity terms can prefer a tilted slab; which one does is structure-dependent.",
+      "corrected_claim": "delta_kd dominates the mis-ranking in 8 of 10 cases, not all of them. Repairing delta_kd alone would leave 2F1T and 1T16 mis-ranked, and any re-weighting that helps the eight risks those two, where delta_kd is already on the right side.",
+      "girdle_observation": "The aromatic girdle term -- the only one encoding barrel-specific interface structure rather than generic hydrophobic contrast -- favours the reference orientation in 8 of 10 cases but contributes at most 0.058 against gaps of 0.065 to 0.786. At its current weight of 0.5 it is effectively inert. Raising it enough to decide 1UYN would require roughly a 24-fold increase.",
+      "rejected_fix": "A barrel-axis alignment term was considered on the reasoning that for a beta-barrel the membrane normal is the barrel axis, and tested before proposal. Principal axes of the CA coordinates track OPM's z to within 0.16 deg for the five disc-like trimers -- 1PRN 0.001, 2OMF 0.007, 2POR 0.053, 1E54 0.080, 2MPR 0.160 -- which are the cases that already pass. For the monomeric barrels that fail, PCA is contaminated by extramembrane loops and plugs and errs by 6.1 to 26.3 deg. The proxy is accurate only where it is not needed. Rejected.",
+      "status": "No fix proposed. The mechanism by which either hydrophobicity term prefers a tilted slab is not characterised, and identifying the geometric or physical signal that would distinguish a correctly placed bilayer for these folds is a question about membrane protein biology. Six mechanisms were proposed across this investigation and all six were withdrawn on measurement; a seventh encoded into the scoring function and published is not supportable on that record."
     }
   ]
 }
