@@ -259,6 +259,79 @@ def opm_half_thickness(path: Path) -> float | None:
     return float(match.group(1)) if match else None
 
 
+# --- sf-csa ----------------------------------------------------------------
+# sf-csa is a campaign engine, not a single-structure engine. One invocation
+# compares every query against a structure database and a proteome universe, and
+# a panel record is one query -> target judgment read back out of the release.
+# The judged pair is therefore declared in the invocation and located afterwards,
+# rather than being what the command line asks for.
+
+
+def _cmd_sf_csa(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
+    return [exe, "run",
+            "--queries", str(at(inv["queries"])),
+            "--databases", str(at(inv["databases"])),
+            "--output", str(out)]
+
+
+def _tsv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.is_file():
+        return []
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle, delimiter="\t"))
+
+
+def _run_manifest_sf_csa(out: Path, inv: Mapping[str, Any]) -> dict[str, Any]:
+    """The harness view of an sf-csa run, derived from what the module wrote.
+
+    sf-csa writes a release, not a run record: there is no RUN_MANIFEST.json and
+    no missing-evidence concept in the module at all. Synthesising an empty
+    missing list would make the shared fail-closed gate unfalsifiable, so the
+    three legs the panel gates on are located in the release instead, and a leg
+    is called missing only when the release carries no row for this pair. That
+    is the module's own stated position: a protein without evidence is missing
+    evidence, not a structural negative.
+
+    The two legs are read from two different files by design. `structure_hits`
+    is Foldseek's output and `species_comparison` is DIAMOND's; keeping them
+    apart here is what makes the panel's `structural_and_sequence_outputs`
+    contract check something that can actually be observed rather than assumed.
+    """
+    query, target = str(inv["query"]), str(inv["target"])
+    qdir = out / "targets" / query
+    structural_leg, sequence_leg = qdir / "structure_hits.tsv", qdir / "species_comparison.tsv"
+
+    structural = next((r for r in _tsv_rows(structural_leg)
+                       if r.get("target_id") == target), None)
+    sequence = next((r for r in _tsv_rows(sequence_leg)
+                     if r.get("target_accession") == target), None)
+
+    missing: list[str] = []
+    if structural is None:
+        missing.append("structural_comparison")
+    if sequence is None:
+        missing.append("sequence_comparison")
+    elif not sequence.get("orthology_status"):
+        missing.append("reciprocal_best_hit")
+
+    release_path = out / "SF_CSA_RELEASE_MANIFEST.json"
+    release = json.loads(release_path.read_text(encoding="utf-8")) if release_path.is_file() else {}
+
+    return {
+        "missing_evidence": missing,
+        "sf_csa": {
+            "query_id": query, "target_id": target,
+            "structural": structural, "sequence": sequence,
+            "orthology_status": (sequence or {}).get("orthology_status"),
+            "structural_leg": panel_relative(structural_leg),
+            "sequence_leg": panel_relative(sequence_leg),
+            "legs_are_separate_files": structural_leg.resolve() != sequence_leg.resolve(),
+            "database_manifest_sha256": release.get("database_manifest_sha256"),
+            "query_manifest_sha256": release.get("query_manifest_sha256"),
+        },
+    }
+
+
 ENGINES: dict[str, dict[str, Any]] = {
     "structure_qc": {"cli": "structqc", "evidence": "STRUCTURE_EVIDENCE.json",
                      "build_cmd": _cmd_structure_qc},
@@ -268,7 +341,23 @@ ENGINES: dict[str, dict[str, Any]] = {
                            "build_cmd": _cmd_assembly_interface},
     "membrane_orientation": {"cli": "memorient", "evidence": "MEMBRANE_ORIENTATION.json",
                              "build_cmd": _cmd_membrane_orientation},
+    # `run_manifest` is declared only by engines that do not write one themselves.
+    "sf_csa": {"cli": "sf-csa", "evidence": "SF_CSA_RELEASE_MANIFEST.json",
+               "build_cmd": _cmd_sf_csa, "run_manifest": _run_manifest_sf_csa},
 }
+
+
+def read_run_manifest(out: Path, inv: Mapping[str, Any], workflow: str) -> dict[str, Any]:
+    """One run record, however the engine happens to express it.
+
+    Four engines write RUN_MANIFEST.json and it is read unchanged. An engine that
+    does not declares its own builder, so the adapter is visible in the registry
+    rather than hidden in a branch at the call site.
+    """
+    builder = ENGINES[workflow].get("run_manifest")
+    if builder is not None:
+        return builder(out, inv)
+    return json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
 
 
 def invoke(inv: Mapping[str, Any], exe: str, out: Path, workflow: str = "structure_qc"):
@@ -376,10 +465,53 @@ def _measure_membrane_orientation(ev, manifest) -> dict[str, Any]:
     }
 
 
+def _measure_sf_csa(ev, manifest) -> dict[str, Any]:
+    """Record one judgment, with both legs kept apart.
+
+    `ev` is the release manifest and carries provenance for the whole campaign;
+    the judged pair lives in the derived run record. Structural and sequence
+    quantities are reported under separate keys and never combined into a single
+    similarity number, which is the module's first declared limitation.
+    """
+    pair = manifest["sf_csa"]
+    structural, sequence = pair.get("structural") or {}, pair.get("sequence") or {}
+    return {
+        "judgment": {
+            "query_id": pair["query_id"], "target_id": pair["target_id"],
+            "structural_category": structural.get("structural_category"),
+            "function_classification": structural.get("function_classification"),
+            "classification_basis": structural.get("classification_basis"),
+            "evidence_class": structural.get("evidence_class"),
+            "limitation": structural.get("limitation"),
+        },
+        "structural_leg": {
+            "source": pair.get("structural_leg"),
+            "aligned_tm_score": structural.get("aligned_tm_score"),
+            "query_coverage": structural.get("query_coverage"),
+            "target_coverage": structural.get("target_coverage"),
+            "rmsd": structural.get("rmsd"),
+        },
+        "sequence_leg": {
+            "source": pair.get("sequence_leg"),
+            "orthology_status": pair.get("orthology_status"),
+            "percent_identity": sequence.get("pident"),
+            "evalue": sequence.get("evalue"),
+            "query_coverage_hsp": sequence.get("qcovhsp"),
+        },
+        "release_provenance": {
+            "tools": ev.get("tools"),
+            "thresholds": ev.get("thresholds"),
+            "database_manifest_sha256": ev.get("database_manifest_sha256"),
+            "query_manifest_sha256": ev.get("query_manifest_sha256"),
+        },
+    }
+
+
 MEASURERS = {"structure_qc": _measure_structure_qc,
              "membrane_orientation": _measure_membrane_orientation,
              "assembly_interface": _measure_assembly_interface,
-             "functional_site_state": _measure_functional_site_state}
+             "functional_site_state": _measure_functional_site_state,
+             "sf_csa": _measure_sf_csa}
 
 
 def measure(record: Mapping[str, Any], exe: str, out_root: Path,
@@ -393,7 +525,7 @@ def measure(record: Mapping[str, Any], exe: str, out_root: Path,
     inv = record["expected_result"]["invocation"]
     proc, out = invoke(inv, exe, out_root / record["record_id"], workflow)
     ev = json.loads((out / ENGINES[workflow]["evidence"]).read_text(encoding="utf-8"))
-    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+    manifest = read_run_manifest(out, inv, workflow)
     missing = manifest.get("missing_evidence") or []
     return {
         "cli_exit_code": proc.returncode,
@@ -406,7 +538,7 @@ def measure(record: Mapping[str, Any], exe: str, out_root: Path,
     }
 
 
-def _gates_structure_qc(record, expected, ev, checks) -> bool:
+def _gates_structure_qc(record, expected, ev, checks, manifest) -> bool:
     """StructQC gate checks. Returns False if the case cannot be judged further.
 
     Lifted verbatim from run_case so a second workflow can be added without this
@@ -468,7 +600,7 @@ def _gates_structure_qc(record, expected, ev, checks) -> bool:
     return True
 
 
-def _gates_functional_site_state(record, expected, ev, checks) -> bool:
+def _gates_functional_site_state(record, expected, ev, checks, manifest) -> bool:
     """Functional-site gate checks.
 
     The panel declares four gates. Three are thresholds; the fourth -- that a
@@ -529,7 +661,7 @@ def _gates_functional_site_state(record, expected, ev, checks) -> bool:
     return True
 
 
-def _gates_assembly_interface(record, expected, ev, checks) -> bool:
+def _gates_assembly_interface(record, expected, ev, checks, manifest) -> bool:
     """Assembly-interface gate checks.
 
     The panel's gates are exact stoichiometry and a SASA agreement tolerance.
@@ -593,7 +725,7 @@ def _gates_assembly_interface(record, expected, ev, checks) -> bool:
     return True
 
 
-def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
+def _gates_membrane_orientation(record, expected, ev, checks, manifest) -> bool:
     """Membrane-orientation gate checks.
 
     The module's own ``validation.passed`` is deliberately not used. It applies
@@ -720,10 +852,135 @@ def _gates_membrane_orientation(record, expected, ev, checks) -> bool:
     return True
 
 
+# The two labels that assert function. `same_mechanism_class` is deliberately
+# not among them: it is a bounded inference about mechanism, and the module's own
+# contract says substrate and activity are not transferred by it.
+SF_CSA_FUNCTION_CLAIMS = frozenset({"exact_function_supported", "probable_same_function"})
+
+# What each stratum must produce. `fold_analogy` and `unrelated` carry no
+# positive expectation beyond the absolute bound below, because the point of
+# those strata is what must *not* happen.
+SF_CSA_STRATUM_LABEL = {
+    "exact": "exact_function_supported",
+    "homologous_superfamily": "same_mechanism_class",
+}
+
+
+def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
+    """sf-csa gate checks. Returns False if the case cannot be judged further.
+
+    The scientifically load-bearing gate is the absolute bound: a fold analogy or
+    an unrelated pair may never carry a functional claim. It is checked here per
+    record; the panel-level `analogy_or_unrelated_promoted_to_function_max = 0`
+    is the sum of these and admits no tolerance.
+
+    The `structural_and_sequence_outputs` check is recorded with kind
+    "contract". It asserts that the two evidence legs stayed apart, which is a
+    property of the module's output shape and not a scientific result, and it is
+    labelled so a green panel is not read as one more scientific finding.
+    """
+    pair = manifest["sf_csa"]
+    structural = pair.get("structural")
+    gates = record["_gate_semantics"].get("sf_csa", {})
+
+    checks.append({"check": "judged_pair_present_in_release", "required": True,
+                   "expected": f"a structural row for {pair['query_id']} -> {pair['target_id']}",
+                   "observed": None if structural is None else "present",
+                   "passed": structural is not None})
+    if structural is None:
+        return False
+
+    observed_label = structural.get("function_classification")
+    observed_category = structural.get("structural_category")
+    exp = expected.get("judgment", {})
+
+    checks.append({"check": "function_classification_unchanged", "required": True,
+                   "expected": exp.get("function_classification"), "observed": observed_label,
+                   "passed": observed_label == exp.get("function_classification")})
+    checks.append({"check": "structural_category_unchanged", "required": True,
+                   "expected": exp.get("structural_category"), "observed": observed_category,
+                   "passed": observed_category == exp.get("structural_category")})
+
+    # --- gate: the closed vocabulary is closed -----------------------------
+    vocabulary = ev.get("classification_vocabulary") or []
+    checks.append({"check": "label_within_closed_vocabulary", "required": True,
+                   "expected": "one of the release's declared vocabulary",
+                   "observed": observed_label,
+                   "passed": observed_label in vocabulary})
+
+    stratum = record["stratum"]
+    kind = record.get("record_kind")
+
+    if kind == "control_case":
+        purpose = record.get("control_purpose")
+        orthology = pair.get("orthology_status")
+        if purpose == "rbh_computed_path":
+            # A genuine reciprocal best hit that the module still does not
+            # promote. The control passes while the defect is present, and
+            # fails the day it is fixed -- which is the notification we want,
+            # not a silent change of meaning.
+            checks.append({"check": "computed_rbh_does_not_reach_function_label", "required": True,
+                           "expected": "reciprocal_best_hit present and label not probable_same_function",
+                           "observed": {"orthology_status": orthology, "label": observed_label},
+                           "passed": orthology == "reciprocal_best_hit"
+                                     and observed_label != "probable_same_function"})
+        elif purpose == "rbh_asserted_rejected":
+            # The same label reached by asserting `rbh` in the queries manifest,
+            # on a pair that is not a reciprocal best hit. The panel must be able
+            # to tell this apart from computed evidence; if it cannot, the
+            # absolute bound above is satisfiable by curator fiat.
+            promoted_without_evidence = (observed_label == "probable_same_function"
+                                         and orthology != "reciprocal_best_hit")
+            checks.append({"check": "asserted_rbh_detected_as_unsupported", "required": True,
+                           "expected": "probable_same_function without a computed reciprocal best hit",
+                           "observed": {"orthology_status": orthology, "label": observed_label},
+                           "passed": promoted_without_evidence})
+        else:
+            checks.append({"check": "control_purpose_declared", "required": True,
+                           "expected": "a control_purpose this runner knows",
+                           "observed": purpose, "passed": False})
+    else:
+        required_label = SF_CSA_STRATUM_LABEL.get(stratum)
+        if required_label is not None:
+            checks.append({"check": f"{stratum}_control_recovered", "required": True,
+                           "expected": required_label, "observed": observed_label,
+                           "passed": observed_label == required_label})
+        if stratum in ("fold_analogy", "unrelated"):
+            # The absolute bound. Not a tolerance: one promotion fails the panel.
+            checks.append({"check": "not_promoted_to_functional_claim", "required": True,
+                           "expected": "a label outside the functional-claim set",
+                           "observed": observed_label,
+                           "passed": observed_label not in SF_CSA_FUNCTION_CLAIMS})
+
+    # --- contract check, not a scientific gate -----------------------------
+    checks.append({"check": "structural_and_sequence_outputs_separate", "required": True,
+                   "kind": "contract",
+                   "expected": "Foldseek and DIAMOND rows read from two distinct files",
+                   "observed": {"structural": pair.get("structural_leg"),
+                                "sequence": pair.get("sequence_leg")},
+                   "passed": bool(pair.get("legs_are_separate_files"))})
+
+    # --- gate: the release used the table the panel froze -------------------
+    # Finding 2: the default mechanism tables are periodontal biology, and a
+    # panel that does not override them cannot separate a homolog from an
+    # unrelated pair. `build-manifests` writes the tables into the database
+    # manifest explicitly, so pinning its checksum pins which biology was used.
+    # Fail closed when the panel has not frozen a checksum: an absent expectation
+    # must not silently skip the check that decides which biology was used.
+    frozen_db = gates.get("database_manifest_sha256")
+    observed_db = pair.get("database_manifest_sha256")
+    checks.append({"check": "database_manifest_matches_frozen_tables", "required": True,
+                   "expected": frozen_db or "a frozen database_manifest_sha256 in gate_semantics",
+                   "observed": observed_db,
+                   "passed": bool(frozen_db) and observed_db == frozen_db})
+    return True
+
+
 GATE_CHECKS = {"structure_qc": _gates_structure_qc,
                "membrane_orientation": _gates_membrane_orientation,
                "assembly_interface": _gates_assembly_interface,
-               "functional_site_state": _gates_functional_site_state}
+               "functional_site_state": _gates_functional_site_state,
+               "sf_csa": _gates_sf_csa}
 
 
 def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, Any]:
@@ -754,14 +1011,14 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
                        "observed": None, "passed": False, "stderr": proc.stderr[-400:]})
         return {"record_id": record["record_id"], "passed": False, "checks": checks}
     ev = json.loads(evidence_path.read_text(encoding="utf-8"))
-    manifest = json.loads((out / "RUN_MANIFEST.json").read_text(encoding="utf-8"))
+    manifest = read_run_manifest(out, inv, workflow)
 
     gate_checks = GATE_CHECKS.get(record["_workflow"])
     if gate_checks is None:
         checks.append({"check": "workflow_gates_declared", "required": True,
                        "expected": f"gate checks for workflow {record['_workflow']}",
                        "observed": None, "passed": False})
-    elif not gate_checks(record, expected, ev, checks):
+    elif not gate_checks(record, expected, ev, checks, manifest):
         return {"record_id": record["record_id"], "passed": False, "checks": checks}
 
     # --- gate: fail-closed behaviour --------------------------------------
@@ -799,7 +1056,7 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
                    "expected": sorted(expected.get("missing_evidence") or []), "observed": missing,
                    "passed": missing == sorted(expected.get("missing_evidence") or [])})
 
-    return {"record_id": record["record_id"], "pdb_entry_id": record["pdb_entry_id"],
+    return {"record_id": record["record_id"], "pdb_entry_id": record.get("pdb_entry_id"),
             "stratum": record["stratum"], "split": record["split"],
             "output_dir": panel_relative(out),
             "passed": all(c["passed"] for c in checks if c["required"]), "checks": checks}
@@ -931,10 +1188,42 @@ def _witness_membrane_orientation(out: Path) -> set[str]:
     return seen
 
 
+def _witness_sf_csa(out: Path) -> set[str]:
+    seen: set[str] = set()
+    matrix = _tsv_rows(out / "RELEASE_COMPARISON_MATRIX.tsv")
+    if matrix:
+        seen.add("cross_query_matrix_written")
+    for row in matrix:
+        category, label = row.get("structural_category"), row.get("function_classification")
+        if category == "whole_architecture_match":
+            seen.add("whole_architecture_match_observed")
+        if category == "domain_or_partial_match":
+            seen.add("domain_or_partial_match_observed")
+        if category == "below_structural_similarity_threshold":
+            seen.add("below_threshold_observed")
+        if label == "exact_function_supported":
+            seen.add("exact_identity_recovered")
+        if label == "same_mechanism_class":
+            seen.add("mechanism_class_recovered")
+        if label == "structural_analogy_only":
+            # The discriminating observation: a real structural match that was
+            # still withheld from any functional claim.
+            seen.add("analogy_withheld_from_function")
+        if label == "candidate_functional_divergence":
+            seen.add("divergence_observed")
+    # Both legs present as separate artefacts, witnessed once per release.
+    if any((out / "targets").glob("*/structure_hits.tsv")):
+        seen.add("structural_leg_written")
+    if any((out / "targets").glob("*/species_comparison.tsv")):
+        seen.add("sequence_leg_written")
+    return seen
+
+
 WITNESSES = {"structure_qc": _witness_structure_qc,
              "membrane_orientation": _witness_membrane_orientation,
              "assembly_interface": _witness_assembly_interface,
-             "functional_site_state": _witness_functional_site_state}
+             "functional_site_state": _witness_functional_site_state,
+             "sf_csa": _witness_sf_csa}
 
 
 def witness_coverage(out: Path, workflow: str = "structure_qc") -> set[str]:

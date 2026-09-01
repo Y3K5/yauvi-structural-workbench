@@ -5935,7 +5935,127 @@
         "analogy_or_unrelated_promoted_to_function_max": 0,
         "structural_and_sequence_outputs": "separate"
       },
-      "records": []
+      "records": [],
+      "gate_semantics": {
+        "sf_csa": {
+          "decision_date": "2026-08-31",
+          "decision_basis": "SF_CSA_PANEL_SCOPE.draft.md as corrected by SF_CSA_PREADOPTION_FINDINGS.md. Frozen before any record was curated.",
+          "gate_kinds": {
+            "exact_controls_recovered": "scientific",
+            "structural_homolog_controls_recovered": "scientific",
+            "analogy_or_unrelated_promoted_to_function_max": "scientific",
+            "structural_and_sequence_outputs": "contract",
+            "note": "The fourth gate asserts that the module kept its two evidence legs apart. That is a property of the output shape, not a result about proteins. It is labelled a contract check so a green panel reads as three scientific results plus one contract check, and not as four scientific results."
+          },
+          "comparison_axis": {
+            "axis": "campaign_models",
+            "rule": "Every judged pair is between two campaign queries. Query-to-experimental-PDB hits are produced by the release but are not gated.",
+            "basis": "target_meta contains campaign query accessions only, so for an experimental-PDB hit the target's mechanism group is not the curated one but whatever the mechanism-family regex reads out of the PDB title. On the campaign axis the group is curator-supplied on both sides and the classifier separates the strata; off it, the panel would be gating a regex over free-text headers.",
+            "measured": "A true homolog and an unrelated pair both classify structural_analogy_only off this axis when the tables do not cover the biology."
+          },
+          "stratum_definition": {
+            "exact": "The same protein: an identical sequence, reached either as a self-match or under a second accession. Distinguished by accession identity before any structural reasoning.",
+            "homologous_superfamily": "Two proteins of one curated mechanism group with accepted common ancestry, matching across the whole architecture.",
+            "fold_analogy": "Two proteins whose folds match above threshold but which are not homologous and carry different curated mechanism groups. Convergence, not descent.",
+            "unrelated": "Neither homologous nor structurally similar above the release's threshold.",
+            "note": "Homology is a curatorial judgment taken from the literature, recorded per record with its citation. It is never inferred from the TM-score the panel is testing, which would make the gate circular."
+          },
+          "stratum_expected_label": {
+            "exact": "exact_function_supported",
+            "homologous_superfamily": "same_mechanism_class",
+            "fold_analogy": "any label outside function_claim_labels",
+            "unrelated": "any label outside function_claim_labels"
+          },
+          "function_claim_labels": [
+            "exact_function_supported",
+            "probable_same_function"
+          ],
+          "function_claim_note": "same_mechanism_class is deliberately excluded. The module's contract says substrate, activity, virulence and vaccine suitability are not transferred by it, so it is a bounded mechanism inference rather than a functional claim.",
+          "absolute_bound": {
+            "gate": "analogy_or_unrelated_promoted_to_function_max",
+            "value": 0,
+            "rule": "A single promotion of a fold analogy or an unrelated pair to a functional claim fails the panel. This is a bound, not a tolerance, and it is not relaxed for any family."
+          },
+          "mechanism_tables": {
+            "requirement": "The database manifest must carry mechanism_families, contested_groups and divergence_sets explicitly, built by `sf-csa build-manifests` from the campaign spec.",
+            "why": "core.DEFAULT_MECHANISM_FAMILIES is periodontal and Bacteroidetes outer-membrane biology. With it left in place for non-periodontal families, classify_title returns 'unknown', the qgroup == tgroup branch is never entered, structural_homolog_controls_recovered fails on every case, and analogy_or_unrelated_promoted_to_function_max passes without anything being able to violate it. Overriding the tables is a precondition for the panel measuring anything, not a tidiness precaution.",
+            "checkable": "build-manifests writes the tables into the database manifest with setdefault, so the manifest states which biology was used whether or not the spec overrode it. Pinning the manifest checksum therefore pins the tables. Verified by reading manifests.build_database_manifest.",
+            "families": [
+              {
+                "family": "serine_protease_chymotrypsin",
+                "default_tables_cover_it": false
+              },
+              {
+                "family": "tim_barrel",
+                "default_tables_cover_it": false
+              },
+              {
+                "family": "immunoglobulin_like",
+                "default_tables_cover_it": false
+              },
+              {
+                "family": "omp85_bama",
+                "default_tables_cover_it": true,
+                "role": "table control: the one family the periodontal defaults already handle. It must classify identically with the defaults and with the override, which is the evidence that the override changed the biology it was meant to change and nothing else."
+              }
+            ]
+          },
+          "database_manifest_sha256": null,
+          "database_manifest_note": "Frozen when the campaign manifests are built. Null until then, and the gate fails closed while it is null: an absent expectation must not silently skip the check that decides which biology the release used.",
+          "controls": {
+            "rbh_computed_path": {
+              "purpose": "Show that the computed reciprocal-best-hit path does not reach probable_same_function.",
+              "construction": "A pair that IS a reciprocal best hit, whole-architecture matched, same curated mechanism group, with no rbh key in the queries manifest.",
+              "expected": "orthology_status == reciprocal_best_hit and the label is not probable_same_function.",
+              "passes_while_the_defect_exists": true,
+              "note": "This control fails the day the module is fixed. That is the intent: the panel reports the defect rather than routing around it, and a fix must be accompanied by a recorded revision instead of quietly changing what the panel means."
+            },
+            "rbh_asserted_rejected": {
+              "purpose": "Show that the panel can tell computed evidence from asserted evidence.",
+              "construction": "A pair that is NOT a reciprocal best hit, carrying \"rbh\": true in its queries-manifest record.",
+              "expected": "the module emits probable_same_function while orthology_status is not reciprocal_best_hit, and the panel records that as a promotion without computed support.",
+              "why_required": "Without it, the absolute bound above is satisfiable by curator fiat: any pair can be promoted by adding one key that manifest validation does not reject."
+            }
+          },
+          "known_defect": {
+            "id": "probable_same_function_unsupported_promotion",
+            "state": "open, gated not routed around",
+            "summary": "probable_same_function is unreachable through the computed reciprocal-best-hit path and reachable through the queries manifest. classify_hit reads target_meta['rbh'] (core.py:348); the RBH computation runs after classification and writes to h['orthology_status'] on sequence rows (core.py:591-598); validated query rows are built as {**q, ...} (core.py:517) and become target_meta (core.py:533); manifest validation checks only for missing required fields (manifests.py:89) and never rejects unknown keys.",
+            "consequence": "The strongest non-exact functional label in the closed vocabulary can be switched on by a manifest field, carrying a basis string asserting an RBH that was never computed.",
+            "decision": "Option C of SF_CSA_PREADOPTION_FINDINGS.md: gate it with both controls above. Excluding the label would leave the fail-open path unmeasured; a single positive control would most likely pass via the manifest field and certify a path that never ran."
+          }
+        },
+        "missing_evidence_behavior": {
+          "mode": "fail_closed",
+          "expected_missing_by_stratum": {
+            "exact": [],
+            "homologous_superfamily": [],
+            "fold_analogy": [],
+            "unrelated": []
+          },
+          "legs": [
+            "structural_comparison",
+            "sequence_comparison",
+            "reciprocal_best_hit"
+          ],
+          "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated. The unrelated stratum is expected to produce both legs: a pair below the structural threshold still yields a row saying so, and an absent row means the release did not compare the pair at all, which is a different fact.",
+          "derivation_note": "sf-csa writes no RUN_MANIFEST.json and has no missing-evidence concept of its own. The runner derives one from the release rather than assuming nothing is missing, which would make this gate unfalsifiable. A leg counts as missing only when the release carries no row for the judged pair."
+        },
+        "coverage_requirements": {
+          "mode": "witnessed_by_at_least_one_executed_case",
+          "required_features": [
+            "cross_query_matrix_written",
+            "structural_leg_written",
+            "sequence_leg_written",
+            "whole_architecture_match_observed",
+            "below_threshold_observed",
+            "exact_identity_recovered",
+            "mechanism_class_recovered",
+            "analogy_withheld_from_function"
+          ],
+          "rationale": "analogy_withheld_from_function is the discriminating witness: a structural match above threshold that was still refused a functional claim. A release that never produces it has not exercised the behaviour the panel exists to test."
+        }
+      }
     }
   ],
   "candidate_migrations": [
