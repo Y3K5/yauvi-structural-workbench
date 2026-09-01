@@ -956,6 +956,32 @@ def main(argv: list[str] | None = None) -> int:
     if exe is None:
         print(f"{cli} is not on PATH; install the distribution first", file=sys.stderr)
         return 1
+
+    # The engine must actually execute, not merely exist on PATH.
+    #
+    # invoke() clears a case's output directory before running the engine, so an
+    # engine that fails destroys that case's previous evidence and writes
+    # nothing in its place. On 2026-08-31 a console script whose package could no
+    # longer be imported passed `which`, failed all sixteen cases, and left the
+    # panel's committed evidence as sixteen empty directories. The summary line
+    # still parsed. Probe before anything is touched, and probe the upstream
+    # engine too, since a chained case runs that one first.
+    for probe_cli in dict.fromkeys([cli] + [
+            ENGINES[str(r.get("upstream", {}).get("workflow", "structure_qc"))]["cli"]
+            for r in panel.get("records", []) if r.get("upstream")]):
+        probe_exe = shutil.which(probe_cli)
+        if probe_exe is None:
+            print(f"{probe_cli} is not on PATH; install the distribution first", file=sys.stderr)
+            return 1
+        probe = subprocess.run([probe_exe, "describe"], capture_output=True, text=True)
+        if probe.returncode != 0:
+            print(f"{probe_cli} is on PATH at {probe_exe} but failed to execute: "
+                  f"`{probe_cli} describe` exited {probe.returncode}. Refusing to run: "
+                  f"each case's output directory is cleared before its engine runs, so "
+                  f"continuing would destroy the existing evidence.", file=sys.stderr)
+            if probe.stderr.strip():
+                print(probe.stderr.strip().splitlines()[-1], file=sys.stderr)
+            return 1
     semantics = panel.get("gate_semantics")
     if not semantics:
         print(f"{args.panel.name} declares no gate_semantics; refusing to assume any", file=sys.stderr)
