@@ -62,6 +62,47 @@ jobs:
           fi
           freesasa --version | head -1
 
+      # sf-csa shells out to Foldseek and DIAMOND. `sf_csa.core` hard-fails on
+      # any Foldseek build other than the one the database manifest pins --
+      #   required_foldseek_version: 10.941cd33
+      # -- and raises "Foldseek version drift" rather than reporting a number
+      # from a different implementation. DIAMOND's version is recorded but not
+      # enforced, and is pinned here anyway so the sequence leg is comparable
+      # across the matrix.
+      #
+      # Both come from conda-forge/bioconda rather than apt or brew, for one
+      # reason: DIAMOND publishes no macOS binary at all, and brew and apt carry
+      # whatever version is current rather than the one the panel recorded
+      # against. bioconda carries these exact versions for linux-64, osx-64 and
+      # osx-arm64, which is also where the recording machine's builds came from.
+      - name: Install the sf-csa runtimes, pinned
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            platform=linux-64
+          elif [ "$(uname -m)" = "arm64" ]; then
+            platform=osx-arm64
+          else
+            platform=osx-64
+          fi
+          curl -fsSL "https://micro.mamba.pm/api/micromamba/${platform}/latest" | tar -xj bin/micromamba
+          ./bin/micromamba create -y -q -p "$HOME/sfcsa-runtimes" \
+            -c conda-forge -c bioconda \
+            foldseek=10.941cd33 diamond=2.1.11
+          echo "$HOME/sfcsa-runtimes/bin" >> "$GITHUB_PATH"
+
+      # Assert rather than trust. A silently different build would make the
+      # sequence or structure leg report a number the expectations were never
+      # recorded against, and that would read as a scientific disagreement.
+      - name: Assert the pinned runtime versions
+        run: |
+          set -euo pipefail
+          foldseek_got="$(foldseek version)"
+          diamond_got="$(diamond --version | awk '{print $NF}')"
+          echo "foldseek ${foldseek_got} / diamond ${diamond_got}"
+          [ "$foldseek_got" = "10.941cd33" ] || { echo "foldseek drift: expected 10.941cd33, got ${foldseek_got}"; exit 1; }
+          [ "$diamond_got" = "2.1.11" ] || { echo "diamond drift: expected 2.1.11, got ${diamond_got}"; exit 1; }
+
       - name: Acquire the locked artifacts
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python acquire_sources.py
@@ -111,6 +152,22 @@ jobs:
           python run_execution.py \
             --panel ADOPTION_DRAFT_SITECONTEXT.json \
             --out results/execution-sitecontext
+
+      # sf-csa executes from its adoption draft, like the panels above, because
+      # adoption protocol rule 7 wants cross-machine reproduction *before* a
+      # stratum is called adopted. Running the draft here is what produces that
+      # evidence; the records stay out of PANEL_MANIFEST.json until it holds.
+      #
+      # The slowest panel in the matrix: each of the sixteen records runs a full
+      # sf-csa release, and collection 2.6 turned on exhaustive structure search,
+      # which is quadratic. Roughly a minute a record on the recording machine.
+      - name: Execute the sf-csa panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          python run_execution.py \
+            --panel ADOPTION_DRAFT_SFCSA.json \
+            --out results/execution-sfcsa
 
       # Reduce this runner's four results to one readable document. On CI this
       # is the interesting artifact: the panels just executed on a machine that
