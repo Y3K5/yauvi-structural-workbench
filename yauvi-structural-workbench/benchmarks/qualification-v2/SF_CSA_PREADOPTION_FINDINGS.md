@@ -524,3 +524,77 @@ Whether to bring that axis into scope is a scientific decision and Yuvraj's.
 Until then the gate should be **relabelled from scientific to definitional**, so a
 green panel is not read as three scientific results plus a contract check when one
 of the three cannot fail.
+
+---
+
+## Finding 8 — a sha256 on a live query is not a lock
+
+Found 2026-09-04 by pushing the sf-csa CI enablement and reading why all six
+runners failed. The failing step was `Acquire the locked artifacts`, before any
+panel executed.
+
+### What broke
+
+`SOURCE_LOCK.json` gained 48 sf-csa entries. Ten of them are reference proteomes
+recorded as UniProt *stream queries*:
+
+    https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000005640%29&format=fasta
+
+That endpoint has no version parameter. It returns whatever the current UniProt
+release holds. Measured against the locked digest on the day of the push:
+
+    locked   eb9a0f1cd363c8e7afa20517c46c7ae517ff80564cbfbe4d73db956f78118f7d   144,818 sequences
+    fetched  4477c2a858646a958fc84fca351b21a4f479ce4744cf3c054bc889fa69759369   147,520 sequences
+
+`acquire_sources.py` retries "until its digest matches", which for this endpoint
+is never, so every job spent its retries and failed. Fifteen minutes, six
+runners, no science.
+
+### Why it is a finding and not a CI defect
+
+`SOURCE_LOCK.json`'s stated purpose is that a reviewer "acquires the exact same
+bytes themselves". For these ten entries no reviewer ever can, including the
+author on a second machine. The lock recorded a digest for a file the URL cannot
+return again.
+
+That is worse than an unreproducible build step, because the entry's own note
+says the proteome set defines the measurement:
+
+> Part of the declared search space: coverage_boundary states the search is
+> exhaustive only within these proteomes, so a different file is a different
+> measurement.
+
+Taken together: the sf-csa sequence leg is computed against a search space that
+silently changes with every UniProt release, and nothing in the panel could
+detect it. The digest was the thing that was supposed to detect it.
+
+### What was done, and what was not
+
+The ten proteome entries are **withdrawn from the lock** (276 -> 266) and the
+sf-csa CI steps are removed, restoring the workflow byte-identically to the last
+green run. The other 38 sf-csa entries — AlphaFold models, per-accession UniProt
+FASTAs, RCSB coordinate files — are addressed by stable URLs, verified reachable,
+and stay locked.
+
+Nothing was repaired, because the repair is a scientific choice and is Yuvraj's:
+
+1.  **Pin to a UniProt release.** `previous_releases/release-2026_02/` and its
+    siblings are versioned and stable. This makes the lock a real lock, but the
+    files it pins are a *different* release from the ones the sixteen sf-csa
+    expectations were recorded against, so those expectations must be re-recorded
+    and the sequence leg re-measured.
+2.  **Declare the search space by accession list** rather than by live query, and
+    lock the accessions instead of the bytes.
+3.  **Narrow the search space** to proteomes small enough to redistribute, which
+    changes what "exhaustive" covers.
+
+Option 1 is the smallest change that makes the claim true. It is not free: 153 MB
+per runner, and re-recorded expectations.
+
+### One thing the failed run did establish
+
+Every step before acquisition passed on all six runners, including the pinned
+install and the version assertion. Foldseek 10.941cd33 and DIAMOND 2.1.11 install
+reproducibly from conda-forge/bioconda on ubuntu-latest and macos-latest across
+Python 3.10, 3.11 and 3.12. That part of the enablement is measured and can be
+re-landed as-is.
