@@ -28,10 +28,10 @@ A closed six-value vocabulary. Nothing else is ever emitted.
 | `probable_active` | residues intact, but a needed signal is unavailable or the structure is predicted |
 | `apo_but_competent` | site intact and unoccupied; a declared cofactor is absent from the coordinates |
 | `inactive_conformation` | residues present but not mutually positioned as a site |
-| `active_site_disrupted` | legacy generic-residue screen fired; treat as a review flag, not proof that catalysis is disrupted |
+| `active_site_disrupted` | an annotated position does not hold the residue an experimentally validated reference carries there. Requires `--expected-residues`; see rule 4 |
 | `indeterminate` | not enough is annotated to make any claim |
 
-## Three rules
+## Four rules
 
 1. **No annotated active site means `indeterminate`, never `inactive`.** Absence
    of annotation is not evidence of absence of function. Most proteins in a
@@ -44,6 +44,14 @@ A closed six-value vocabulary. Nothing else is ever emitted.
    neutral value, and it never quietly drops out of the summary. `probable_active`
    most often means *a signal could not be evaluated*, not *the evidence was weak* —
    the `rationale` field says which.
+4. **`active_site_disrupted` requires a position-specific expected residue.**
+   Supply it with `--expected-residues`, a JSON map keyed by accession then by
+   annotated position, holding the residue an experimentally validated reference
+   carries there. Without one, a residue outside the competence set is reported
+   as contradicting evidence and the label caps at `indeterminate` — the
+   observation is kept and the `rationale` names the positions that would need
+   an expectation. Membership in a broad residue set is not a chemistry test for
+   a position.
 
 ## The signals
 
@@ -55,13 +63,17 @@ A closed six-value vocabulary. Nothing else is ever emitted.
 | `conformation` | structural aligner + curated references | does this resemble a known active or inactive state? |
 | `assembly` | `fold_state` output | is this the isolated fold or the working assembly? |
 
-`completeness` currently includes a generic residue-membership screen. That
-screen is not role-aware and does not compare the observed residue with a
-validated active ortholog or a position-specific expected residue. It can flag
-an unusual annotated position for review, but it cannot by itself diagnose a
-pseudoenzyme or establish loss of catalysis. The legacy
-`active_site_disrupted` label is therefore a pre-public design blocker until the
-implementation is made role/reference-aware or the vocabulary is narrowed.
+`completeness` compares against an expected residue where one is supplied, and
+otherwise against a generic 13-letter competence set. The generic screen is not
+role-aware, and it is wrong in both directions on its own: it cannot separate a
+real substitution from a sequence numbered against a different entry, and it is
+blind to the commoner degradations that stay inside the set — catalytic Cys to
+Ser, His to Asn. So it may cap a claim and may not make one. Only the
+position-specific comparison reaches `active_site_disrupted`, and only it
+detects a within-set substitution. An expectation the pipeline cannot check —
+a position carrying no `ACT_SITE` annotation, or anything that is not a standard
+one-letter code — is rejected, named in `rejected_expectations`, and has no
+effect on the label.
 
 `occupancy` ignores a maintained set of common solvent, buffer, and
 cryoprotectant components. It presently detects candidate non-solvent

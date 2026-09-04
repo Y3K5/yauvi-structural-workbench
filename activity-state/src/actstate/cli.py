@@ -79,6 +79,15 @@ def _describe() -> dict:
                 "format": "JSON keyed by accession",
                 "required": False,
             },
+            {
+                "name": "expected_residues",
+                "format": "JSON keyed by accession, then by catalytic position",
+                "required": False,
+                "note": (
+                    "The residue an experimentally validated reference carries at each "
+                    "annotated position. Required to reach active_site_disrupted."
+                ),
+            },
         ],
         "outputs": [
             {"name": RESULT_NAME, "contract": "activity_state_summary", "format": "JSON"},
@@ -111,6 +120,11 @@ def _describe() -> dict:
             "unavailable until one is supplied.",
             "Catalytic competence is judged by residue identity, which does not "
             "detect a site disabled by a change outside the annotated positions.",
+            "active_site_disrupted requires an expected residue for the position from "
+            "an experimentally validated reference. Without one, a residue outside the "
+            "competence set is reported as contradicting evidence and caps the label at "
+            "indeterminate; membership in a broad residue set is not a position-specific "
+            "chemistry test.",
         ],
     }
 
@@ -203,6 +217,7 @@ def cmd_run(args) -> int:
 
     fold_states = read_sidecar(args.fold_state)
     comparisons = read_sidecar(args.reference_comparison)
+    expected_residues = read_sidecar(args.expected_residues)
 
     structure_errors: list[str] = []
     assessments = []
@@ -224,6 +239,7 @@ def cmd_run(args) -> int:
                 chain=args.chain,
                 reference_comparison=comparisons.get(record.accession),
                 fold_state=fold_states.get(record.accession),
+                expected_residues=expected_residues.get(record.accession),
                 max_separation=args.max_separation,
             )
         )
@@ -235,6 +251,15 @@ def cmd_run(args) -> int:
         "structures_supplied": bool(inputs["structures"]),
         "fold_state_supplied": bool(fold_states),
         "reference_comparison_supplied": bool(comparisons),
+        "expected_residues_supplied": bool(expected_residues),
+        # A mistyped expectation does nothing, and doing nothing silently is how
+        # a curator concludes their entry was applied. Named here and printed.
+        "rejected_expectations": sorted(
+            f"{a.accession}: {reason}"
+            for a in assessments
+            for reason in (a.signal("completeness").values.get("rejected_expectations", ())
+                           if a.signal("completeness") else ())
+        ),
         "unreadable_structures": sorted(structure_errors),
     }
     document = build_document(assessments, config=config)
@@ -247,6 +272,11 @@ def cmd_run(args) -> int:
     if structure_errors:
         print(f"\n{len(structure_errors)} structure(s) could not be read:")
         for message in structure_errors:
+            print(f"  - {message}")
+    if config["rejected_expectations"]:
+        print(f"\n{len(config['rejected_expectations'])} expected-residue entr(ies) were "
+              "rejected and had no effect:")
+        for message in config["rejected_expectations"]:
             print(f"  - {message}")
     print(f"\nwrote {result_path}")
     print(f"wrote {table_path}")
@@ -292,6 +322,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--out", dest="output", required=True, help="output directory")
     p_run.add_argument("--chain", help="restrict geometry to one chain")
     p_run.add_argument("--fold-state", help="JSON of fold_state records, keyed by accession")
+    p_run.add_argument(
+        "--expected-residues",
+        help=(
+            "JSON of expected catalytic residues, keyed by accession then position. "
+            "Required to reach active_site_disrupted."
+        ),
+    )
     p_run.add_argument(
         "--reference-comparison",
         help="JSON of reference-state comparisons, keyed by accession",

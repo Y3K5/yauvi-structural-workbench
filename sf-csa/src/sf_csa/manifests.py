@@ -47,7 +47,13 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from . import core
-from .core import select_fasta, sequence_sha, sha256
+from .core import (
+    RESERVED_COMPUTED_FIELDS,
+    reject_reserved_fields,
+    select_fasta,
+    sequence_sha,
+    sha256,
+)
 
 REQUIRED_TARGET_FIELDS = (
     "accession",
@@ -87,9 +93,10 @@ def load_spec(path: str | Path) -> tuple[dict[str, Any], Path]:
         if not isinstance(target, Mapping):
             raise SpecError(f"target #{index} is not an object")
         missing = [f for f in REQUIRED_TARGET_FIELDS if not target.get(f)]
+        label = target.get("accession") or f"#{index}"
         if missing:
-            label = target.get("accession") or f"#{index}"
             raise SpecError(f"target {label} is missing required field(s): {', '.join(missing)}")
+        reject_reserved_fields(target, f"target {label}")
         accession = str(target["accession"])
         if accession in seen:
             raise SpecError(f"target {accession} is declared twice")

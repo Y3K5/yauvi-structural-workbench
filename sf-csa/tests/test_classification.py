@@ -78,15 +78,16 @@ def test_a_contested_group_is_never_promoted():
         query(group="msp_contested"),
         hit(target="T9"),
         "whole_architecture_match",
-        {"mechanism_group": "msp_contested", "rbh": True},
-    )
+        {"mechanism_group": "msp_contested"},
+        rbh=True)
     assert label == "unresolved_or_conflicted"
     assert "contested" in basis
 
 
 def test_rbh_plus_whole_architecture_reaches_probable_same_function():
     label, *_ = classify_hit(
-        query(), hit(), "whole_architecture_match", {"mechanism_group": "omp85_bama", "rbh": True}
+        query(), hit(), "whole_architecture_match", {"mechanism_group": "omp85_bama"},
+        rbh=True,
     )
     assert label == "probable_same_function"
 

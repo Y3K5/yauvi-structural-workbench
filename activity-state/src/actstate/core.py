@@ -24,8 +24,9 @@ into one:
                                entry declares is not present in the coordinates
     inactive_conformation      residues present but not mutually positioned as a
                                site
-    active_site_disrupted      an annotated catalytic position does not hold a
-                               residue that can perform chemistry
+    active_site_disrupted      an annotated catalytic position does not hold the
+                               residue expected there. Requires a
+                               position-specific expectation: see rule 4
     indeterminate              not enough is annotated to make any claim
 
 Three rules constrain what may be concluded:
@@ -38,6 +39,13 @@ Three rules constrain what may be concluded:
    observation of a functional state.
 3. **An unavailable signal is recorded as unavailable.** It never becomes a
    neutral or favourable value, and it never silently drops out of the summary.
+4. **`active_site_disrupted` requires a position-specific expected residue.**
+   Membership in a broad residue set is not a chemistry test for a position.
+   Without an expectation for the position -- supplied per accession from an
+   experimentally validated ortholog -- a residue outside
+   `CATALYTICALLY_COMPETENT` is reported as contradicting evidence and caps the
+   label at `indeterminate`. The observation is kept in the signal and named in
+   the rationale; the claim is not made.
 """
 from __future__ import annotations
 
@@ -49,9 +57,19 @@ from .structure import Structure, pairwise_distances
 
 # Residues that can participate in catalysis — nucleophiles, acid/base pairs,
 # metal ligands, and the two that act through backbone geometry. A position
-# annotated ACT_SITE holding anything outside this set is the signature of a
+# annotated ACT_SITE holding anything outside this set is *consistent with* a
 # degraded site, which is what pseudoenzymes look like.
+#
+# It is not a test for one. The set covers 13 of the 20 amino acids and knows
+# nothing about the role the position plays, so it cannot separate a real
+# substitution from a sequence numbered against a different entry, and it is
+# blind to the commoner degradations that stay inside it (catalytic Cys to Ser,
+# His to Asn). Rule 4: it may cap a claim, and it may not make one.
 CATALYTICALLY_COMPETENT = frozenset("DEHCKRSTYNQGW")
+
+# For validating a curator-supplied expectation. A residue outside this is not
+# an amino acid and the entry is rejected rather than compared.
+STANDARD_AMINO_ACIDS = frozenset("ACDEFGHIKLMNPQRSTVWY")
 
 # Upper bound on the separation of two residues that belong to one active site.
 # Generous on purpose: catalytic residues are typically within ~10 A, and the
@@ -137,8 +155,59 @@ class ActivityAssessment:
 # -- the five signals -----------------------------------------------------
 
 
-def completeness_signal(record: ProteinRecord, features: FeatureSet) -> Signal:
-    """Are the annotated catalytic positions present, and can they do chemistry?"""
+def normalize_expected_residues(
+    expected: object, positions: Sequence[int]
+) -> tuple[dict[int, str], list[str]]:
+    """Split a curator-supplied expectation into what is usable and what is not.
+
+    An expectation is the only thing that can license `active_site_disrupted`,
+    so an entry that cannot be checked is rejected and named rather than
+    quietly ignored -- a curator who mistypes a position should see that their
+    entry did nothing, not read a label that was decided without it.
+
+    Rejected: a position that carries no ACT_SITE annotation (there is nothing
+    to compare it against), and anything that is not a single standard
+    one-letter residue code. Returns (usable, rejected descriptions); never
+    raises, because `assess` is total and validation belongs at the IO boundary.
+    """
+    usable: dict[int, str] = {}
+    rejected: list[str] = []
+    if not isinstance(expected, Mapping):
+        if expected is not None:
+            rejected.append(f"expected_residues is not a mapping: {type(expected).__name__}")
+        return usable, rejected
+
+    annotated = set(positions)
+    for key, value in expected.items():
+        try:
+            position = int(key)
+        except (TypeError, ValueError):
+            rejected.append(f"{key!r} is not a position")
+            continue
+        if position not in annotated:
+            rejected.append(f"{position} carries no ACT_SITE annotation in this entry")
+            continue
+        if not isinstance(value, str) or value.upper() not in STANDARD_AMINO_ACIDS:
+            rejected.append(f"{position}: {value!r} is not a standard one-letter residue code")
+            continue
+        usable[position] = value.upper()
+    return usable, sorted(rejected)
+
+
+def completeness_signal(
+    record: ProteinRecord,
+    features: FeatureSet,
+    *,
+    expected_residues: object = None,
+) -> Signal:
+    """Are the annotated catalytic positions present, and can they do chemistry?
+
+    `expected_residues` maps an annotated position to the residue an
+    experimentally validated ortholog carries there. It is the only evidence
+    that can establish disruption (rule 4), and it is keyword-only and explicit
+    for the same reason `sf_csa.classify_hit` takes `rbh` that way: a field read
+    out of a record the caller also controls is not provenance.
+    """
     positions = features.catalytic_positions()
     if not positions:
         return Signal(
@@ -168,7 +237,42 @@ def completeness_signal(record: ProteinRecord, features: FeatureSet) -> Signal:
         )
 
     observed = {p: record.sequence[p - 1].upper() for p in positions}
-    degraded = {p: aa for p, aa in observed.items() if aa not in CATALYTICALLY_COMPETENT}
+    expected, rejected = normalize_expected_residues(expected_residues, positions)
+    experimental = sum(1 for f in features.catalytic if f.experimentally_evidenced)
+    common = {
+        "observed": {str(p): aa for p, aa in observed.items()},
+        "expected": {str(p): aa for p, aa in sorted(expected.items())},
+        "rejected_expectations": rejected,
+        "experimentally_evidenced": experimental,
+    }
+
+    # Position-specific first, and decisive. This is the only comparison that
+    # knows what the position is supposed to hold, so it is the only one that
+    # can establish disruption -- including the substitutions the competence set
+    # cannot see, which are the commoner ones.
+    mismatched = {p: aa for p, aa in observed.items() if p in expected and aa != expected[p]}
+    if mismatched:
+        return Signal(
+            "completeness",
+            "contradicted",
+            (
+                "annotated catalytic position(s) do not hold the residue an experimentally "
+                "validated reference carries there: "
+                + ", ".join(
+                    f"position {p} observed {aa}, expected {expected[p]}"
+                    for p, aa in sorted(mismatched.items())
+                )
+            ),
+            {**common, "basis": "position_specific_expected_residue",
+             "mismatched": {str(p): aa for p, aa in mismatched.items()}},
+        )
+
+    # A position whose expectation matches is settled, whatever the competence
+    # set thinks of that residue: the reference is the authority on its own site.
+    degraded = {
+        p: aa for p, aa in observed.items()
+        if p not in expected and aa not in CATALYTICALLY_COMPETENT
+    }
     if degraded:
         return Signal(
             "completeness",
@@ -177,22 +281,35 @@ def completeness_signal(record: ProteinRecord, features: FeatureSet) -> Signal:
                 "annotated catalytic position(s) hold residues that cannot perform "
                 "chemistry: "
                 + ", ".join(f"{p}{aa}" for p, aa in sorted(degraded.items()))
+                + ". No expected residue was supplied for "
+                + ", ".join(str(p) for p in sorted(degraded))
+                + ", so this observation cannot establish that the site is disrupted"
             ),
-            {"degraded": {str(p): aa for p, aa in degraded.items()}, "observed": {str(p): aa for p, aa in observed.items()}},
+            {**common, "basis": "generic_competence_set",
+             "degraded": {str(p): aa for p, aa in degraded.items()}},
         )
 
-    experimental = sum(1 for f in features.catalytic if f.experimentally_evidenced)
+    confirmed = len(expected)
     return Signal(
         "completeness",
         "supported",
         (
             f"all {len(positions)} annotated catalytic position(s) hold competent residues "
             f"({', '.join(f'{p}{aa}' for p, aa in sorted(observed.items()))}); "
-            f"{experimental} of {len(features.catalytic)} annotation(s) carry experimental evidence"
+            + (
+                f"{confirmed} match an expected residue from a validated reference; "
+                if confirmed
+                else "no expected residues were supplied, so this is compatibility with a "
+                     "broad competence set rather than position-specific confirmation; "
+            )
+            + f"{experimental} of {len(features.catalytic)} annotation(s) carry experimental evidence"
         ),
         {
-            "observed": {str(p): aa for p, aa in observed.items()},
-            "experimentally_evidenced": experimental,
+            **common,
+            "basis": (
+                "position_specific_expected_residue" if confirmed else "generic_competence_set"
+            ),
+            "position_specific_confirmed": confirmed,
         },
     )
 
@@ -431,7 +548,8 @@ def assign_label(signals: Sequence[Signal], *, structure: Structure | None) -> t
 
     Ordered by what each signal can rule out. A contradicted completeness signal
     is decisive on its own: if a catalytic position cannot do chemistry, nothing
-    downstream can restore it.
+    downstream can restore it. Whether it is decisive *for the strong label*
+    depends on how it was established -- rule 4.
     """
     by_name = {s.name: s for s in signals}
     completeness = by_name["completeness"]
@@ -441,7 +559,21 @@ def assign_label(signals: Sequence[Signal], *, structure: Structure | None) -> t
     assembly = by_name["assembly"]
 
     if completeness.state == "contradicted":
-        return "active_site_disrupted", completeness.detail
+        if completeness.values.get("basis") == "position_specific_expected_residue":
+            return "active_site_disrupted", completeness.detail
+        # Rule 4. The observation stands and is reported; the claim it would
+        # have supported is not made. `indeterminate` rather than a positive
+        # label: nothing here is favourable, and the branch returns immediately
+        # so no downstream signal can lift it.
+        degraded = ", ".join(sorted(completeness.values.get("degraded", {})))
+        return (
+            "indeterminate",
+            (
+                f"{completeness.detail}. Supply the expected residue for "
+                f"{degraded} from an experimentally validated reference to reach "
+                "active_site_disrupted"
+            ),
+        )
 
     if completeness.state == "unevaluated":
         # Rule 1: nothing annotated means nothing to conclude.
@@ -515,12 +647,13 @@ def assess(
     chain: str | None = None,
     reference_comparison: Mapping[str, object] | None = None,
     fold_state: Mapping[str, object] | None = None,
+    expected_residues: object = None,
     max_separation: float = SITE_CLUSTER_MAX_ANGSTROM,
 ) -> ActivityAssessment:
     """Assess one protein. Pure: no IO, no network, no paths."""
     features = record.features()
     signals = (
-        completeness_signal(record, features),
+        completeness_signal(record, features, expected_residues=expected_residues),
         geometry_signal(features, structure, chain=chain, max_separation=max_separation),
         occupancy_signal(record, structure),
         conformation_signal(reference_comparison),

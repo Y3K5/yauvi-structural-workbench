@@ -140,9 +140,8 @@ def target_metas(draw):
         st.one_of(
             st.none(),
             st.builds(
-                lambda group, rbh: {"mechanism_group": group, "rbh": rbh},
+                lambda group: {"mechanism_group": group},
                 st.sampled_from(KNOWN_GROUPS),
-                st.booleans(),
             ),
             st.just({}),
         )
@@ -209,7 +208,8 @@ def test_below_threshold_is_always_unresolved(query, hit, target_meta):
 def test_below_threshold_never_claims_shared_function_for_a_different_accession(query, hit):
     assume(norm_id(hit.get("target", "")) != query["accession"])
     interpretation, _, _, _ = classify_hit(
-        query, hit, "below_structural_similarity_threshold", {"mechanism_group": query["mechanism_group"], "rbh": True}
+        query, hit, "below_structural_similarity_threshold", {"mechanism_group": query["mechanism_group"]},
+        rbh=True,
     )
     assert interpretation not in FUNCTION_CLAIMS
 
@@ -254,9 +254,9 @@ def test_a_contested_group_is_never_promoted(hit, category, rbh, group):
     biological rather than computational.
     """
     query = {"accession": "Q_CONTESTED", "mechanism_group": group}
-    target_meta = {"mechanism_group": group, "rbh": rbh}
+    target_meta = {"mechanism_group": group}
     assume(norm_id(hit.get("target", "")) != query["accession"])
-    interpretation, _, _, _ = classify_hit(query, hit, category, target_meta)
+    interpretation, _, _, _ = classify_hit(query, hit, category, target_meta, rbh=rbh)
     assert interpretation not in FUNCTION_CLAIMS
 
 
@@ -267,7 +267,8 @@ def test_a_contested_group_is_unresolved_at_every_score(tm, qcov, tcov, rbh):
     hit = {"target": "T_OTHER", "theader": "", "alntmscore": tm, "qcov": qcov, "tcov": tcov}
     category = structural_category(hit, WHOLE_COVERAGE, SAME_FOLD_TM)
     interpretation, _, _, _ = classify_hit(
-        query, hit, category, {"mechanism_group": group, "rbh": rbh}
+        query, hit, category, {"mechanism_group": group},
+        rbh=rbh,
     )
     assert interpretation == "unresolved_or_conflicted"
 
@@ -284,9 +285,10 @@ def test_an_empty_contested_list_is_not_treated_as_the_default(hit, category):
     query = {"accession": "Q", "mechanism_group": group}
     assume(norm_id(hit.get("target", "")) != "Q")
     assume(category != "below_structural_similarity_threshold")
-    with_default = classify_hit(query, hit, category, {"mechanism_group": group, "rbh": True})
+    with_default = classify_hit(query, hit, category, {"mechanism_group": group}, rbh=True)
     with_none = classify_hit(
-        query, hit, category, {"mechanism_group": group, "rbh": True}, contested=[]
+        query, hit, category, {"mechanism_group": group}, contested=[],
+        rbh=True,
     )
     assert with_default[0] == "unresolved_or_conflicted"
     assert with_none[0] != "unresolved_or_conflicted"
@@ -469,8 +471,8 @@ def test_sequence_evidence_only_enters_through_the_rbh_flag(query, hit, category
     """
     assume(norm_id(hit.get("target", "")) != query["accession"])
     group = query["mechanism_group"]
-    without = classify_hit(query, hit, category, {"mechanism_group": group, "rbh": False})[0]
-    with_rbh = classify_hit(query, hit, category, {"mechanism_group": group, "rbh": True})[0]
+    without = classify_hit(query, hit, category, {"mechanism_group": group}, rbh=False)[0]
+    with_rbh = classify_hit(query, hit, category, {"mechanism_group": group}, rbh=True)[0]
     assert CLAIM_STRENGTH[with_rbh] - CLAIM_STRENGTH[without] <= 1
 
 
@@ -482,7 +484,8 @@ def test_rbh_alone_never_promotes_a_partial_match_to_shared_function(query, hit,
     group = query["mechanism_group"]
     assume(group not in CONTESTED_GROUP_NAMES)
     interpretation, _, _, _ = classify_hit(
-        query, hit, category, {"mechanism_group": group, "rbh": True}
+        query, hit, category, {"mechanism_group": group},
+        rbh=True,
     )
     assert interpretation != "probable_same_function"
 
@@ -499,7 +502,8 @@ def test_a_cross_group_match_inside_a_divergence_set_is_divergence(hit, category
     assume(norm_id(hit.get("target", "")) != query["accession"])
     assume(category != "below_structural_similarity_threshold")
     interpretation, _, _, _ = classify_hit(
-        query, hit, category, {"mechanism_group": tgroup, "rbh": rbh}
+        query, hit, category, {"mechanism_group": tgroup},
+        rbh=rbh,
     )
     assert interpretation == "candidate_functional_divergence"
     assert interpretation not in FUNCTION_CLAIMS
@@ -515,8 +519,9 @@ def test_divergence_is_never_a_shared_function_claim(hit, category):
             query = {"accession": "Q_D", "mechanism_group": qgroup}
             assume(norm_id(hit.get("target", "")) != "Q_D")
             interpretation, _, _, _ = classify_hit(
-                query, hit, category, {"mechanism_group": tgroup, "rbh": True}
-            )
+                query, hit, category, {"mechanism_group": tgroup},
+        rbh=True,
+    )
             assert interpretation not in FUNCTION_CLAIMS
 
 
@@ -585,7 +590,8 @@ def test_the_title_trap_is_a_release_audit_not_a_classifier_guard():
         "tcov": 0.95,
     }
     interpretation, _, _, _ = classify_hit(
-        query, hit, "whole_architecture_match", {"mechanism_group": "omp85_bama", "rbh": True}
+        query, hit, "whole_architecture_match", {"mechanism_group": "omp85_bama"},
+        rbh=True,
     )
     # The classifier promotes it; only the release audit would object.
     assert interpretation == "probable_same_function"

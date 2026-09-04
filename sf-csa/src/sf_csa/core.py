@@ -25,6 +25,7 @@ import subprocess
 import tempfile
 from collections import defaultdict
 from pathlib import Path
+from typing import Mapping
 
 
 AA3 = {
@@ -325,9 +326,38 @@ def structural_category(hit: dict, whole_cov: float, same_tm: float) -> str:
     return "below_structural_similarity_threshold"
 
 
+RESERVED_COMPUTED_FIELDS = (
+    "rbh",
+    "orthology_status",
+    "identity_status",
+    "sequence_length",
+    "structure_residue_count",
+    "geometry",
+    "uniprot_annotation",
+)
+
+
+def reject_reserved_fields(record: Mapping, label: str) -> None:
+    """Refuse a curator record that carries a field the pipeline computes.
+
+    Curator keys survive verbatim into `target_meta` (`row = {**q, ...}`), so a
+    manifest field named like a computed one is indistinguishable from evidence
+    downstream. `rbh` is the load-bearing case: asserting it would satisfy or
+    violate the panel's false-positive gate without any reciprocal best hit
+    having been computed. Rejecting at read time keeps assertion and measurement
+    separable, which is the property the gate depends on.
+    """
+    present = sorted(f for f in RESERVED_COMPUTED_FIELDS if f in record)
+    if present:
+        raise SFCSError(
+            f"{label} declares reserved computed field(s): {', '.join(present)}. "
+            "These are produced by the pipeline and may not be supplied by a manifest."
+        )
+
+
 def classify_hit(query: dict, hit: dict, category: str, target_meta: dict | None = None,
                  families: list | None = None, contested: list | None = None,
-                 divergence_sets: list | None = None) -> tuple[str,str,str,str]:
+                 divergence_sets: list | None = None, *, rbh: bool = False) -> tuple[str,str,str,str]:
     qgroup = query["mechanism_group"]
     tgroup = (target_meta or {}).get("mechanism_group") or classify_title(hit.get("theader", ""), families)
     target_id = norm_id(hit.get("target", ""))
@@ -345,7 +375,7 @@ def classify_hit(query: dict, hit: dict, category: str, target_meta: dict | None
             return ("unresolved_or_conflicted", entry["reason"],
                     entry.get("evidence_class", "E2_direct_biology_plus_E4_structure"),
                     entry.get("boundary", "no single active pose is asserted"))
-        if target_meta and target_meta.get("rbh") and category == "whole_architecture_match":
+        if rbh and category == "whole_architecture_match":
             return ("probable_same_function", "RBH plus compatible whole architecture and mechanism annotation", "E3_curated_plus_E4_computational", "substrate and native activity still require direct validation")
         return ("same_mechanism_class", "compatible structural architecture and independently named mechanism class", "E3_or_E4_bounded_inference", "substrate, activity, virulence and vaccine suitability are not transferred")
     for entry in divergence_sets:
@@ -358,10 +388,38 @@ def classify_hit(query: dict, hit: dict, category: str, target_meta: dict | None
     return ("structural_analogy_only", "whole-architecture similarity without concordant independent function evidence", "E4_computational", "fold similarity alone is non-functional evidence")
 
 
-def foldseek_search(query_pdb: Path, target: Path, out: Path, tmp: Path, max_hits: int, evalue: str) -> list[dict]:
+def foldseek_search(query_pdb: Path, target: Path, out: Path, tmp: Path, max_hits: int, evalue: str,
+                    exhaustive: bool = False) -> list[dict]:
+    """Search one query against a structure database.
+
+    `exhaustive` exists because two filters act in series, and only the first is
+    invisible. Foldseek prefilters before scoring, and the prefilter ignores the
+    e-value entirely; the e-value then applies to whatever survives. Measured on
+    this campaign, for P00198 against the twelve-entry campaign database:
+
+        -e 0.01                        2 rows
+        -e 10000                       2 rows      prefilter, e-value irrelevant
+        -e 0.01   --exhaustive-search  2 rows      no prefilter, e-value binds
+        -e 10000  --exhaustive-search  12 rows
+
+    So neither setting alone reports a distant pair. That matters to a benchmark,
+    because "no row" and "a row saying below threshold" are different facts about
+    a comparison, and a panel that cannot tell them apart cannot say whether a
+    pair was rejected or never examined. A campaign that needs every declared
+    pair reported must set both, and let its own declared thresholds --
+    same_fold_tm and whole_architecture_coverage -- do the scientific filtering
+    rather than leaving it to a search heuristic.
+
+    It is off by default: exhaustive search is quadratic, and a release scanning
+    a large database should keep the prefilter. A qualification campaign over a
+    twelve-entry database declares it on.
+    """
     fields = "query,target,evalue,fident,alnlen,qlen,tlen,qcov,tcov,qtmscore,ttmscore,alntmscore,rmsd,theader,u,t"
-    run_cmd(["foldseek","easy-search",str(query_pdb),str(target),str(out),str(tmp),
-             "--format-output",fields,"-e",evalue,"--max-seqs",str(max_hits)])
+    cmd = ["foldseek","easy-search",str(query_pdb),str(target),str(out),str(tmp),
+           "--format-output",fields,"-e",evalue,"--max-seqs",str(max_hits)]
+    if exhaustive:
+        cmd += ["--exhaustive-search","1"]
+    run_cmd(cmd)
     names = fields.split(",")
     rows = []
     if out.exists():
@@ -502,6 +560,7 @@ def run_pipeline(query_manifest_path: Path, db_manifest_path: Path, output: Path
             pdb = (qroot / q["structure_path"]).resolve()
             if not fasta.exists() or not pdb.exists():
                 raise SFCSError(f"missing query input for {q['accession']}")
+            reject_reserved_fields(q, f"query {q.get('accession', '?')}")
             rec = select_fasta(fasta, q["accession"])
             if sequence_sha(rec["sequence"]) != q["sequence_sha256"]:
                 raise SFCSError(f"FASTA checksum mismatch for {q['accession']}")
@@ -529,6 +588,38 @@ def run_pipeline(query_manifest_path: Path, db_manifest_path: Path, output: Path
             f"expected {db.get('pdb_database_checksum')}, got {actual_database_checksum}"
         )
 
+    # The sequence leg runs first. Reciprocal best hits are evidence the
+    # structural classification is entitled to use, so they have to exist before
+    # it runs; computing them afterwards is what left `probable_same_function`
+    # unreachable by measurement. See tests/test_rbh_provenance.py.
+    universe_fasta = work / "campaign_proteomes.faa"
+    proteomes, seq_index = build_proteome_universe(db, db_manifest_path, universe_fasta)
+    seq_hits = diamond_search(all_queries, universe_fasta, work/"diamond_hits.tsv", work, db["thresholds"])
+    grouped: dict[str,dict[str,list[dict]]] = defaultdict(lambda: defaultdict(list))
+    available = set(campaign_meta) | set(aliases)
+    for h in seq_hits:
+        meta = seq_index.get(h["sseqid"])
+        if not meta: continue
+        qid = norm_id(h["qseqid"]); acc = norm_id(meta["id"])
+        grouped[qid][meta["proteome_id"]].append({**h,"target_accession":acc,"proteome_id":meta["proteome_id"],
+            "protein_header":meta["header"],"structure_status":"available_local_structure" if acc in available or aliases.get(acc) in available else "candidate_missing_structure"})
+
+    # RBH is a relation between one query and one target, never a property of the
+    # target on its own: a target may be reciprocal for one query and not for
+    # another. Keyed by query accession for exactly that reason — a flag stored
+    # on a shared target row would be query-independent by construction.
+    rbh_by_query: dict[str,dict[str,str]] = {}
+    rbh_targets: dict[str,set[str]] = {}
+    for q in validated:
+        source_proteome = (qroot / q["source_proteome_path"]).resolve()
+        if not source_proteome.exists(): raise SFCSError(f"source proteome missing for RBH: {q['accession']}")
+        hits = reciprocal_best_hits(q, grouped[q["accession"]], seq_index, source_proteome, work)
+        rbh_by_query[q["accession"]] = hits
+        rbh_targets[q["accession"]] = {
+            norm_id(seq_index[s]["id"]) for s, status in hits.items()
+            if status == "reciprocal_best_hit" and s in seq_index
+        }
+
     structure_rows_by_query: dict[str,list[dict]] = defaultdict(list)
     target_meta = {q["accession"]: q for q in validated}
     for q in validated:
@@ -539,7 +630,8 @@ def run_pipeline(query_manifest_path: Path, db_manifest_path: Path, output: Path
         for dbname, target in searches:
             raw = rawdir / f"{dbname}.tsv"
             rows = foldseek_search(qpdb, target, raw, work/f"tmp_{qid}_{dbname}",
-                                   db["thresholds"]["max_structure_hits"], db["thresholds"]["structure_evalue"])
+                                   db["thresholds"]["max_structure_hits"], db["thresholds"]["structure_evalue"],
+                                   exhaustive=bool(db["thresholds"].get("exhaustive_structure_search", False)))
             for h in rows:
                 category = structural_category(h, db["thresholds"]["whole_architecture_coverage"], db["thresholds"]["same_fold_tm"])
                 tid = norm_id(h["target"])
@@ -549,6 +641,7 @@ def run_pipeline(query_manifest_path: Path, db_manifest_path: Path, output: Path
                     db.get("mechanism_families"),
                     db.get("contested_groups"),
                     db.get("divergence_sets"),
+                    rbh=tid in rbh_targets.get(qid, frozenset()),
                 )
                 structure_rows_by_query[qid].append({
                     "query_id":qid,"target_id":tid,"database":dbname,"target_description":h.get("theader", ""),
@@ -573,22 +666,9 @@ def run_pipeline(query_manifest_path: Path, db_manifest_path: Path, output: Path
             shutil.copy2(qpdb,qdir/f"{qid}_query.pdb")
             write_superposition_html(qdir/"superposition.html",qdir/f"{qid}_query.pdb",aligned,qid,best["target_id"],best["aligned_tm_score"],best["rmsd"])
 
-    universe_fasta = work / "campaign_proteomes.faa"
-    proteomes, seq_index = build_proteome_universe(db, db_manifest_path, universe_fasta)
-    seq_hits = diamond_search(all_queries, universe_fasta, work/"diamond_hits.tsv", work, db["thresholds"])
-    grouped: dict[str,dict[str,list[dict]]] = defaultdict(lambda: defaultdict(list))
-    available = set(campaign_meta) | set(aliases)
-    for h in seq_hits:
-        meta = seq_index.get(h["sseqid"])
-        if not meta: continue
-        qid = norm_id(h["qseqid"]); acc = norm_id(meta["id"])
-        grouped[qid][meta["proteome_id"]].append({**h,"target_accession":acc,"proteome_id":meta["proteome_id"],
-            "protein_header":meta["header"],"structure_status":"available_local_structure" if acc in available or aliases.get(acc) in available else "candidate_missing_structure"})
     all_species_rows = []
     for q in validated:
-        source_proteome=(qroot/q["source_proteome_path"]).resolve()
-        if not source_proteome.exists(): raise SFCSError(f"source proteome missing for RBH: {q['accession']}")
-        rbh=reciprocal_best_hits(q,grouped[q["accession"]],seq_index,source_proteome,work)
+        rbh = rbh_by_query[q["accession"]]
         rows = []
         for proteome_id, hits in grouped[q["accession"]].items():
             hits.sort(key=lambda x: -float(x["bitscore"]))

@@ -119,6 +119,7 @@ def run_examples(examples, tmp_path):
                 "--out", str(out),
                 "--fold-state", str(examples / "fold_state.json"),
                 "--reference-comparison", str(examples / "reference_comparison.json"),
+                "--expected-residues", str(examples / "expected_residues.json"),
             ]
         )
         assert code == EXIT_OK

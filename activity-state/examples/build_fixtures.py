@@ -190,6 +190,14 @@ def main() -> None:
         '{\n  "P_ACTIVE": {"reference": "0REF", "state": "active", "score": 0.94}\n}\n',
         encoding="utf-8",
     )
+    # Supplied only for P_DISRUPTED, because it is the only fixture making the
+    # disruption claim. Without it that entry reports its Ala positions as
+    # contradicting evidence and stops at `indeterminate` -- which is the point
+    # of the fixture as much as the label is.
+    (HERE / "expected_residues.json").write_text(
+        '{\n  "P_DISRUPTED": {\n    "5": "H",\n    "9": "D",\n    "14": "S"\n  }\n}\n',
+        encoding="utf-8",
+    )
 
     print(f"wrote fixtures under {HERE}")
 

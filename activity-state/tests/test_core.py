@@ -196,9 +196,25 @@ def test_a_disrupted_site_is_decisive_even_with_good_geometry(write_pdb, cluster
         accession="P", sequence=sequence_with(p5="A", p9="A"), act_site_raw=TRIAD_ACT_SITE
     )
     structure = read_structure(write_pdb("x.pdb", clustered_triad))
-    result = assess(record, structure=structure)
+    # Rule 4: the disruption has to be established against an expected residue.
+    # This test asserted the label from the residue set alone until 2026-09-02.
+    result = assess(record, structure=structure, expected_residues={5: "H", 9: "D"})
     assert result.label == "active_site_disrupted"
     # Geometry still reports separately; it is not overwritten by the label.
+    assert result.signal("geometry").state == "supported"
+
+
+def test_without_an_expected_residue_the_same_site_caps_at_indeterminate(
+    write_pdb, clustered_triad
+):
+    """The other half of rule 4, on exactly the input above."""
+    record = ProteinRecord(
+        accession="P", sequence=sequence_with(p5="A", p9="A"), act_site_raw=TRIAD_ACT_SITE
+    )
+    structure = read_structure(write_pdb("x.pdb", clustered_triad))
+    result = assess(record, structure=structure)
+    assert result.label == "indeterminate"
+    assert result.signal("completeness").state == "contradicted"
     assert result.signal("geometry").state == "supported"
 
 

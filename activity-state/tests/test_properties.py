@@ -13,7 +13,11 @@ are encoded here as properties:
       (no input raises)
   P2  every signal reports a state from `SIGNAL_STATES` and explains itself
   P3  a degraded catalytic position is decisive: no other evidence, however
-      favourable, can lift the label off `active_site_disrupted`
+      favourable, can lift the label off it. Which label it is decisive *for*
+      depends on how the degradation was established — against an expected
+      residue it is `active_site_disrupted`, and on the generic competence set
+      alone it caps at `indeterminate` (rule 4). Both halves are asserted:
+      the second is the one that must never become a positive claim
   P4  no annotated catalytic site always yields `indeterminate` — never any
       `inactive` label (absence of annotation is not absence of function)
   P5  a predicted model can never reach `active_state_supported`, and neither can
@@ -321,12 +325,8 @@ def test_no_signal_is_ever_a_neutral_placeholder(case):
 # -- P3: a degraded catalytic position is decisive ------------------------
 
 
-@given(records(annotated=True, competent=False))
-def test_a_degraded_site_is_disrupted_whatever_else_is_supplied(case):
-    """The strongest possible supporting evidence cannot rescue a dead site."""
-    record, positions = case
-    assume(positions)
-    structure = Structure(
+def _fully_supported_structure(record, positions):
+    return Structure(
         identifier=record.accession,
         residues=tuple(
             Residue(
@@ -343,13 +343,47 @@ def test_a_degraded_site_is_disrupted_whatever_else_is_supplied(case):
         heteroatoms=(Heteroatom(name="ZN", chain="A", seq_id=900, atom_count=1),),
         is_predicted=False,
     )
-    result = assess(
+
+
+def _assess_with_everything(record, positions, **kwargs):
+    return assess(
         record,
-        structure=structure,
+        structure=_fully_supported_structure(record, positions),
         reference_comparison={"reference": "0REF", "state": "active", "score": 1.0},
         fold_state={"state": "active_assembly"},
+        **kwargs,
     )
+
+
+@given(records(annotated=True, competent=False))
+def test_a_degraded_site_is_disrupted_whatever_else_is_supplied(case):
+    """The strongest possible supporting evidence cannot rescue a dead site.
+
+    Stated against an expected residue, because that is what establishes the
+    degradation. The expectation used here is deliberately one the observed
+    residue cannot match — every generated position holds a non-competent
+    residue, and `H` is competent — so the mismatch is real, not assumed.
+    """
+    record, positions = case
+    assume(positions)
+    result = _assess_with_everything(record, positions, expected_residues={p: "H" for p in positions})
     assert result.label == "active_site_disrupted"
+
+
+@given(records(annotated=True, competent=False))
+def test_a_generic_degradation_caps_the_claim_and_never_inverts_into_a_positive_one(case):
+    """Rule 4. Without an expectation the same evidence makes no claim.
+
+    The guarantee that has to survive the narrowing: capping is not fail-open.
+    Whatever else is supplied, a non-competent residue at an annotated position
+    can never produce a label that asserts a working state.
+    """
+    record, positions = case
+    assume(positions)
+    result = _assess_with_everything(record, positions)
+    assert result.label == "indeterminate"
+    assert result.label not in ("active_state_supported", "probable_active", "apo_but_competent")
+    assert result.signal("completeness").state == "contradicted"
 
 
 @given(records(annotated=True, competent=False))
