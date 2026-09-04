@@ -1,0 +1,87 @@
+{
+ "schema_version": "2.0",
+ "reference_set_id": "abl1-mark1-qualification-v2:6BL8",
+ "qualification_scope": "abl_family",
+ "subject_family": "ABL1",
+ "alignment_mask": {
+  "uniprot_start": 242,
+  "uniprot_end": 495,
+  "minimum_coverage": 0.9
+ },
+ "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+ "decision_rules": {
+  "max_rmsd_A": 2.5,
+  "min_margin_A": 0.25
+ },
+ "note": "One reference set per record. The reference block is identical across all fourteen; only alignment_map_sha256 differs, because the map carries the record's own query rows and the module binds the two together by digest.",
+ "references": [
+  {
+   "reference_id": "ACTIVE_4XEY",
+   "state": "active",
+   "structure": "../../sources/wwpdb/4XEY.cif",
+   "reference_kind": "exact",
+   "pdb_entry_id": "4XEY",
+   "chain": "A",
+   "structure_sha256": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+   "provenance": {
+    "class": "experimental",
+    "method": "X-ray diffraction, wwPDB deposition"
+   },
+   "state_evidence": {
+    "basis": "type I ATP-site ligand 1N1 at 2.6 A from the DFG-in reference centroid; DFG-in",
+    "citation": "wwPDB entry 4XEY"
+   }
+  },
+  {
+   "reference_id": "ACTIVE_7W7X",
+   "state": "active",
+   "structure": "../../sources/wwpdb/7W7X.cif",
+   "reference_kind": "exact",
+   "pdb_entry_id": "7W7X",
+   "chain": "A",
+   "structure_sha256": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+   "provenance": {
+    "class": "experimental",
+    "method": "X-ray diffraction, wwPDB deposition"
+   },
+   "state_evidence": {
+    "basis": "activation-loop phosphotyrosine present; type I ATP-site ligand 8DW at 1.0 A from the DFG-in reference centroid",
+    "citation": "wwPDB entry 7W7X"
+   }
+  },
+  {
+   "reference_id": "INACTIVE_2E2B",
+   "state": "inactive",
+   "structure": "../../sources/wwpdb/2E2B.cif",
+   "reference_kind": "exact",
+   "pdb_entry_id": "2E2B",
+   "chain": "A",
+   "structure_sha256": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+   "provenance": {
+    "class": "experimental",
+    "method": "X-ray diffraction, wwPDB deposition"
+   },
+   "state_evidence": {
+    "basis": "type II ligand 406 at 7.4 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+    "citation": "wwPDB entry 2E2B"
+   }
+  },
+  {
+   "reference_id": "INACTIVE_3QRK",
+   "state": "inactive",
+   "structure": "../../sources/wwpdb/3QRK.cif",
+   "reference_kind": "exact",
+   "pdb_entry_id": "3QRK",
+   "chain": "A",
+   "structure_sha256": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+   "provenance": {
+    "class": "experimental",
+    "method": "X-ray diffraction, wwPDB deposition"
+   },
+   "state_evidence": {
+    "basis": "type II ligand 9DP at 10.3 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+    "citation": "wwPDB entry 3QRK"
+   }
+  }
+ ]
+}
