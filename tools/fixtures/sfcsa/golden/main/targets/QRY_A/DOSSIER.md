@@ -19,11 +19,11 @@
 
 | Target | aln TM | identity | classification |
 |---|---:|---:|---|
-| `QRY_B` | 0.83 | 0.38 | same_mechanism_class |
+| `QRY_B` | 0.83 | 0.38 | probable_same_function |
 
 ## Species comparison
 
-Sequence candidates retained: **2**; candidates without a local structure: **2**.
+Sequence candidates retained: **3**; candidates without a local structure: **2**.
 
 ## Interpretation boundary
 

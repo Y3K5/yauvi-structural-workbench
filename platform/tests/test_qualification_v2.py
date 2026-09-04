@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import re
+import sys
 from pathlib import Path
 
 
@@ -116,3 +117,110 @@ def test_v2_source_lock_preserves_v1_as_candidate_only():
         or "qualification-v1" in str(source["artifact"])
         for source in lock["sources"]
     ), "v2 must acquire its own artifacts rather than reach into the v1 tree"
+
+
+def summarizer_module():
+    # It imports `run_execution` as a sibling, the way CI runs it: from inside
+    # the qualification directory. Loading it by path has to put that directory
+    # on sys.path or the import fails for a reason unrelated to the test.
+    if str(QUALIFICATION) not in sys.path:
+        sys.path.insert(0, str(QUALIFICATION))
+    spec = importlib.util.spec_from_file_location(
+        "qualification_v2_summarizer", QUALIFICATION / "summarize_execution.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_release_status_digest_chain_matches_the_files():
+    # Adoption protocol rule 2: a digest nothing compares is a claim, not a
+    # check. Three of the eight recorded here were stale on 2026-09-02 -- the
+    # manifest had been revised twice and neither the composition audit nor the
+    # execution summary had been regenerated against it.
+    spec = importlib.util.spec_from_file_location(
+        "verify_release_status_digests", ROOT / "tools" / "verify_release_status_digests.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.main([]) == 0, "RELEASE_STATUS.json records a digest that no longer matches its file"
+
+
+def test_status_prose_quotes_the_executed_numbers():
+    # The digest chain above cannot reach this. A digest can be perfectly current
+    # beside a sentence that is two collections stale, and on 2026-09-03 it was:
+    # `scientific_execution_note` said membrane was 14/16 while
+    # EXECUTION_SUMMARY.json had recorded 5/16 since collection 2.3 added the OPM
+    # accuracy gate, and `external_benchmarks.membrane_orientation` in the same
+    # file carried the correct figure the whole time.
+    spec = importlib.util.spec_from_file_location(
+        "verify_status_note_numbers", ROOT / "tools" / "verify_status_note_numbers.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.main([]) == 0, "RELEASE_STATUS.json prose disagrees with the executed evidence"
+
+    # Rule 2: prove the check can fail. The exact text that stood for two
+    # collections must be rejected, and so must a dropped panel figure.
+    status = json.loads((ROOT / "yauvi-structural-workbench" / "RELEASE_STATUS.json").read_text(encoding="utf-8"))
+    summary = json.loads((QUALIFICATION / "results" / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
+    current = status["qualification_evidence"]["current_v2"]
+    external = status["external_benchmarks"]["membrane_orientation"]
+
+    superseded = current["scientific_execution_note_correction"]["superseded_text"]
+    assert any("membrane" in p for p in module.check(superseded, external, summary))
+
+    dropped = current["scientific_execution_note"].replace("assembly-context 16/16 with 6/6; ", "")
+    assert any("assembly_interface" in p for p in module.check(dropped, external, summary))
+
+    assert module.check(current["scientific_execution_note"], external, summary) == []
+
+
+def test_non_blocking_scope_failure_does_not_gate_the_release():
+    # Collection 2.4 made membrane orientation research-only, and until
+    # 2026-09-02 the summarizer still failed the whole run on it: every CI job
+    # on every push and the weekly schedule was red for a scope the manifest
+    # says does not gate the release.
+    manifest = json.loads((QUALIFICATION / "PANEL_MANIFEST.json").read_text(encoding="utf-8"))
+    non_blocking = frozenset(manifest["non_blocking_scopes"])
+    module = summarizer_module()
+
+    assert module.release_blocking("membrane_orientation", ["beta_barrel"], non_blocking) is False
+    assert module.release_blocking("membrane_orientation", ["alpha_helical"], non_blocking) is False
+    assert module.release_blocking("structure_qc", ["x_ray", "cryo_em"], non_blocking) is True
+
+    # conformational_state has one blocking stratum and one non-blocking one.
+    # Executing the non-blocking stratum must not exempt the workflow, and a
+    # panel that recorded no strata at all fails closed.
+    assert module.release_blocking("conformational_state", ["other_proteins"], non_blocking) is False
+    assert module.release_blocking(
+        "conformational_state", ["abl_family", "other_proteins"], non_blocking
+    ) is True
+    assert module.release_blocking("conformational_state", [], non_blocking) is True
+
+
+def test_execution_summary_reports_which_failures_gate_the_release():
+    summary = json.loads(
+        (QUALIFICATION / "results" / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8")
+    )
+    # Both facts have to be readable without inferring either from the other:
+    # a panel failed, and no panel that gates the release failed.
+    assert summary["every_executed_panel_passed"] is False
+    assert summary["every_executed_release_blocking_panel_passed"] is True
+    assert summary["release_blocking_panels_failed"] == []
+    assert summary["non_blocking_panels_failed"] == ["membrane_orientation"]
+    # The gate this summary must never be able to close, whatever it executed.
+    assert summary["all_release_blocking_scopes_qualified"] is False
+    assert summary["second_machine_reproduction"] == "not_recorded"
+
+    # Required-case totals are derived from the manifest, not typed. The
+    # 2026-09-01 ABL revision moved this from 114 to 110 and the committed
+    # summary kept quoting 114.
+    manifest = json.loads((QUALIFICATION / "PANEL_MANIFEST.json").read_text(encoding="utf-8"))
+    required = sum(
+        requirement["count"] for panel in manifest["panels"] for requirement in panel["requirements"]
+    )
+    assert summary["cases_required"] == required

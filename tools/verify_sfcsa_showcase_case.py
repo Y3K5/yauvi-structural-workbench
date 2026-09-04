@@ -26,6 +26,19 @@ def sha256(path: Path) -> str:
 def main() -> int:
     case = json.loads((SHOWCASE / "CASE.json").read_text(encoding="utf-8"))
     adoption = json.loads(ADOPTION.read_text(encoding="utf-8"))
+    # The reviewed archive is not redistributed with this distribution, so in a
+    # published checkout this check has no artifact to hash. Say that, rather
+    # than raising FileNotFoundError from the middle of a checksum comparison.
+    # It still fails: an absent archive is unverified provenance, and the one
+    # thing this repository may never do is let missing evidence pass as
+    # favorable evidence.
+    if not ARTIFACT.is_file():
+        fail(
+            f"the reviewed source archive is not present at {ARTIFACT.relative_to(ROOT)}. "
+            "It is not redistributed with this distribution, so this check can only run "
+            "in the development tree that holds it. Its recorded digest is "
+            f"{adoption.get('source_archive', {}).get('sha256', 'unrecorded')}."
+        )
     if sha256(ARTIFACT) != adoption.get("source_archive", {}).get("sha256"):
         fail("reviewed artifact checksum no longer matches the adoption record")
     for relative, expected in adoption.get("canonical_file_sha256", {}).items():

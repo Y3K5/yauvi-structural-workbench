@@ -19,18 +19,25 @@ What this file may not do, deliberately:
   panels are unadopted and no second-machine run is recorded, so
   `all_release_blocking_scopes_qualified` is false here by construction, the
   same way `scope_qualified` is false in every execution result it reads.
+* It never fails the run on a non-blocking scope. Collection 2.4 moved
+  membrane orientation to research-only, both strata, and a research-only
+  stratum that misses its gate is a recorded finding, not a broken release.
+  Which scopes block is read from the manifest, never hardcoded here.
 * It records no absolute paths. Each case carries an `output_dir` naming the
   machine that ran it; that is provenance belonging to the run, not to a
   summary the showcase commits, and embedding it would leak a home directory
   into a public artifact.
 * It *does* record the interpreter the counts came from. These totals are one
-  machine's result. The membrane stratum passes 16/16 here and 9-10/16 on CI's
-  runners, so publishing "64 cases passed" without naming the recorder would
-  overstate what has been established -- and the recorder is an x86_64 build
-  under Rosetta on arm64 hardware, which matches neither CI platform.
+  machine's result, and the membrane stratum in particular reports different
+  counts on different runners, so publishing a case total without naming the
+  recorder would overstate what has been established -- and the recorder is an
+  x86_64 build under Rosetta on arm64 hardware, which matches neither CI
+  platform.
 
 Usage:  python summarize_execution.py
-Exit:   0 every executed panel passed, 1 one did not or its evidence is unreadable.
+Exit:   0 every executed *release-blocking* panel passed, 1 one did not or its
+        evidence is unreadable. A failing non-blocking panel is reported in the
+        summary and on stdout, and does not change the exit code.
 """
 from __future__ import annotations
 
@@ -49,7 +56,29 @@ def canonical(value: Any) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
 
 
-def panel_summary(status: Mapping[str, Any], workflow: str, required: int) -> dict[str, Any]:
+def release_blocking(workflow: str, strata: list[str], non_blocking: frozenset[str]) -> bool:
+    """Whether this panel's executed evidence gates the release.
+
+    Read from the manifest's `non_blocking_scopes`, which collection 2.4 revised
+    to carry both membrane strata. A panel is non-blocking only when *every*
+    stratum it actually executed is named there: `conformational_state` has one
+    blocking stratum and one non-blocking one, so executing a non-blocking
+    stratum of an otherwise blocking workflow must not exempt the workflow.
+
+    A panel that records no strata is treated as blocking. Failing closed is the
+    right direction for a question about whether a result may be waived.
+    """
+    if not strata:
+        return True
+    return not all(f"{workflow}:{stratum}" in non_blocking for stratum in strata)
+
+
+def panel_summary(
+    status: Mapping[str, Any],
+    workflow: str,
+    required: int,
+    non_blocking: frozenset[str],
+) -> dict[str, Any]:
     """Reduce one execution result to the facts a surface can state."""
     cases = status.get("cases", [])
     controls = status.get("controls", [])
@@ -68,6 +97,12 @@ def panel_summary(status: Mapping[str, Any], workflow: str, required: int) -> di
         "stratum_scope": status.get("stratum"),
         "stratum_state": status.get("stratum_state"),
         "strata_executed": sorted(status.get("strata_executed", [])),
+        # Whether a failure here blocks the release, from the manifest. The
+        # summary states this per panel so a reader never has to infer it from
+        # the exit code, which reports only the blocking set.
+        "release_blocking": release_blocking(
+            workflow, sorted(status.get("strata_executed", [])), non_blocking
+        ),
         "cases": status.get("case_counts", {}),
         "controls": status.get("control_counts", {}),
         # Adopted cases against the panel's full requirement. A panel can pass
@@ -100,6 +135,8 @@ def main() -> int:
         for panel in manifest["panels"]
     }
 
+    non_blocking = frozenset(manifest["non_blocking_scopes"])
+
     summaries: list[dict[str, Any]] = []
     for directory in sorted(RESULTS.glob("execution-*")):
         path = directory / "EXECUTION_STATUS.json"
@@ -111,7 +148,7 @@ def main() -> int:
             print(f"unknown panel in {path.name}: {panel_id}")
             return 1
         workflow, required = panels[panel_id]
-        summaries.append(panel_summary(status, workflow, required))
+        summaries.append(panel_summary(status, workflow, required, non_blocking))
 
     # One entry per distinct interpreter across the results. Normally one; more
     # than one means the results were not all produced by the same run and the
@@ -128,6 +165,20 @@ def main() -> int:
     cases_passed = sum(summary["cases"].get("passed", 0) for summary in summaries)
     cases_required = sum(required for _, required in panels.values())
     all_passed = all(summary["stratum_state"] == "passed" for summary in summaries)
+    # Partitioned, because these two answer different questions. A blocking
+    # panel that misses its gate stops the release; a non-blocking one records
+    # a research finding. Collapsing them is what pinned every CI run red on
+    # membrane orientation after collection 2.4 made that scope research-only.
+    blocking_failed = sorted(
+        summary["workflow"]
+        for summary in summaries
+        if summary["release_blocking"] and summary["stratum_state"] != "passed"
+    )
+    non_blocking_failed = sorted(
+        summary["workflow"]
+        for summary in summaries
+        if not summary["release_blocking"] and summary["stratum_state"] != "passed"
+    )
 
     result = {
         "schema_version": "1.0",
@@ -140,6 +191,9 @@ def main() -> int:
         "cases_passed": cases_passed,
         "cases_required": cases_required,
         "every_executed_panel_passed": all_passed,
+        "every_executed_release_blocking_panel_passed": not blocking_failed,
+        "release_blocking_panels_failed": blocking_failed,
+        "non_blocking_panels_failed": non_blocking_failed,
         # The two gates this file must never be able to close.
         "all_release_blocking_scopes_qualified": False,
         "second_machine_reproduction": "not_recorded",
@@ -169,9 +223,14 @@ def main() -> int:
               f" [{summary['stratum_scope']}] {summary['stratum_state']}")
     if result["workflows_not_executed"]:
         print(f"not executed: {', '.join(result['workflows_not_executed'])}")
+    if non_blocking_failed:
+        print(f"non-blocking, does not gate the release: {', '.join(non_blocking_failed)}"
+              " (see PANEL_MANIFEST.json non_blocking_scopes)")
+    if blocking_failed:
+        print(f"release-blocking failure: {', '.join(blocking_failed)}")
     print("all_release_blocking_scopes_qualified: false "
           "(panels unadopted; no second-machine reproduction recorded)")
-    return 0 if all_passed else 1
+    return 1 if blocking_failed else 0
 
 
 if __name__ == "__main__":

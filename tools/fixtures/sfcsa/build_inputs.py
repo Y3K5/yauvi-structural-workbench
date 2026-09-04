@@ -181,8 +181,17 @@ def build(root: Path) -> None:
             }
         )
 
-    # Two comparison proteomes. Sequences are the queries' own plus one decoy, so
-    # the canned DIAMOND hits have real subjects to point at.
+    # Two comparison proteomes. Sequences are decoys the canned DIAMOND hits can
+    # point at, plus -- in proteome 1 -- QRY_B itself.
+    #
+    # QRY_B is there so a reciprocal best hit can land on a protein that is also
+    # a structural target. `probable_same_function` needs both legs on the same
+    # target: an RBH from the sequence search and a whole-architecture match from
+    # the structure search. Before 2026-09-01 nothing in the pipeline wrote the
+    # RBH flag at all, so the trap scenario declared it by hand in the manifest.
+    # That route is now refused at manifest read time, and this record is what
+    # replaces it: the label is reached by computation, which is what the panel
+    # is supposed to be testing.
     for proteome_id, seeds in (("SYN_PROTEOME_1", (11, 29)), ("SYN_PROTEOME_2", (41,))):
         records = []
         for seed in seeds:
@@ -190,6 +199,12 @@ def build(root: Path) -> None:
             records.append(
                 f">SYN{seed:03d} synthetic protein seed {seed} [{proteome_id}]\n"
                 f"{synthetic_sequence(length, seed)}\n"
+            )
+        if proteome_id == "SYN_PROTEOME_1":
+            spec = next(q for q in QUERIES if q["accession"] == "QRY_B")
+            records.append(
+                f">QRY_B {spec['common_name']} [{proteome_id}]\n"
+                f"{synthetic_sequence(spec['length'], spec['seed'])}\n"
             )
         (proteomes_dir / f"{proteome_id}.faa").write_text("".join(records), encoding="utf-8")
 
@@ -276,20 +291,19 @@ def build(root: Path) -> None:
     # `probable_same_function` while its PDB title carries a trap substring, so
     # `verify_release` has something to catch.
     #
-    # Reaching that label requires `rbh` truthy on the TARGET's metadata, and
-    # `run_pipeline` builds target metadata solely from the validated query
-    # entries (`target_meta = {q["accession"]: q for q in validated}`), so the
-    # only targets that can carry the key at all are other queries, reached as
-    # `campaign_models` hits. Nothing in the pipeline ever writes the key itself
-    # (see README.md, "The RBH promotion gate is dead"), so it is declared here
-    # by hand — which is also the point: a hand-declared promotion is exactly
-    # the case the title trap is the last line of defence against.
+    # Rewritten 2026-09-01. The label used to be reached by declaring `rbh: true`
+    # on QRY_B by hand, because nothing in the pipeline ever wrote the key. Both
+    # halves of that changed: the RBH computation now runs before classification
+    # and reaches the label as a pairwise fact, and `reject_reserved_fields`
+    # refuses a curator-supplied `rbh` at manifest read time. The hand-declared
+    # route is not merely unnecessary now, it is rejected -- so the trap manifest
+    # is an ordinary manifest, and the promotion it traps is one the module made
+    # on its own evidence.
     #
-    # QRY_B is the target of the trapped hit, so QRY_B is what carries `rbh`.
-    trap_queries = [
-        {**entry, "rbh": True} if entry["accession"] == "QRY_B" else dict(entry)
-        for entry in manifest_queries
-    ]
+    # That is a stronger test than the one it replaces. A hand-declared promotion
+    # is caught upstream by the manifest reader; a computed one is not, and the
+    # title trap is genuinely the last line of defence against it.
+    trap_queries = [dict(entry) for entry in manifest_queries]
     (root / "query_manifest_trap.json").write_text(
         json.dumps(
             {

@@ -23,7 +23,7 @@
 
 ## Species comparison
 
-Sequence candidates retained: **2**; candidates without a local structure: **2**.
+Sequence candidates retained: **3**; candidates without a local structure: **2**.
 
 ## Interpretation boundary
 

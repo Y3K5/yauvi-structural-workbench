@@ -180,15 +180,21 @@ def test_both_scenarios_have_manifests():
         assert (INPUTS / name).exists(), f"{name} missing -- run build_inputs.py"
 
 
-def test_the_trap_manifest_declares_rbh_by_hand():
-    """This is the fixture's record of a defect: `rbh` is the gate on promotion
-    to probable_same_function, and nothing in the pipeline ever writes it (see
-    README.md). The trap scenario can only reach that label by declaring the
-    key in the manifest, and it must be on the *target* query, because
-    `run_pipeline` builds target metadata from the validated query entries."""
-    queries = json.loads((INPUTS / "query_manifest_trap.json").read_text(encoding="utf-8"))["queries"]
-    flagged = [q["accession"] for q in queries if q.get("rbh")]
-    assert flagged == ["QRY_B"], f"expected rbh on QRY_B only, found {flagged}"
+def test_no_manifest_declares_a_reserved_computed_field():
+    """Inverted 2026-09-01, when the defect it recorded was fixed.
+
+    This used to assert that the trap manifest declared `rbh: true` on QRY_B by
+    hand, because nothing in the pipeline ever wrote the key and that was the
+    only way to reach probable_same_function. Both halves changed: the RBH
+    computation now runs before classification and reaches the label as a
+    pairwise fact, and `reject_reserved_fields` refuses a curator-supplied `rbh`
+    at manifest read time. A manifest declaring it no longer promotes a hit -- it
+    fails the run. So the assertion is now the opposite one, and it guards the
+    fix rather than recording the defect."""
+    for name in ("query_manifest.json", "query_manifest_trap.json"):
+        queries = json.loads((INPUTS / name).read_text(encoding="utf-8"))["queries"]
+        flagged = [q["accession"] for q in queries if q.get("rbh")]
+        assert not flagged, f"{name} declares rbh on {flagged}; the reader will reject the run"
 
 
 def test_the_trap_manifest_declares_the_trap_it_tests():
@@ -254,17 +260,37 @@ def test_the_main_scenario_exercises_every_decision_path(tmp_path):
     assert labels[("QRY_A", "SYN_WHOLE")] == "same_mechanism_class"
     assert labels[("QRY_A", "SYN_PART")] == "structural_analogy_only"
     assert labels[("QRY_B", "SYN_BELOW")] == "unresolved_or_conflicted"
-    assert labels[("QRY_A", "QRY_B")] == "same_mechanism_class"
+    # Changed 2026-09-01 from same_mechanism_class. QRY_B now sits in proteome 1
+    # as the top-scoring hit and points back at QRY_A in the reverse search, so
+    # the pair is a computed reciprocal best hit and the structural leg is a
+    # whole-architecture match in the same mechanism group. Both legs on one
+    # target is what the label requires, and it is now reached by measurement
+    # rather than by a manifest key.
+    assert labels[("QRY_A", "QRY_B")] == "probable_same_function"
 
 
-def test_the_main_scenario_cannot_reach_probable_same_function(tmp_path):
-    """The dead-RBH-gate finding, stated as a test. QRY_A vs QRY_B is a whole
-    architecture match in the same mechanism group between two campaign
-    queries -- the exact case the label exists for -- and it stops one rung
-    short, because no code path sets `rbh`. When that defect is fixed this test
-    fails, which is the intended signal."""
+def test_the_main_scenario_reaches_probable_same_function_by_computation(tmp_path):
+    """The signal this file said to watch for, arrived.
+
+    Its predecessor asserted that QRY_A vs QRY_B stopped one rung short of
+    probable_same_function because no code path set `rbh`, and said in as many
+    words: "when that defect is fixed this test fails, which is the intended
+    signal". The defect was fixed on 2026-09-01, so the assertion is inverted
+    rather than deleted -- the fixture keeps its memory of what changed.
+
+    What matters is *how* the label is reached. It must come from a reciprocal
+    best hit the pipeline computed, not from a key a curator wrote, so the
+    orthology status behind it is checked here too."""
+    import csv as _csv
+
     release, _ = pipeline("main", tmp_path)
-    assert "probable_same_function" not in set(classifications(release).values())
+    assert classifications(release)[("QRY_A", "QRY_B")] == "probable_same_function"
+
+    species = release / "targets" / "QRY_A" / "species_comparison.tsv"
+    rows = list(_csv.DictReader(species.open(), delimiter="\t"))
+    reciprocal = [r for r in rows
+                  if r["target_accession"] == "QRY_B" and r["orthology_status"] == "reciprocal_best_hit"]
+    assert reciprocal, "the label was reached without a computed reciprocal best hit behind it"
 
 
 def test_the_trap_scenario_fails_its_audit(tmp_path):

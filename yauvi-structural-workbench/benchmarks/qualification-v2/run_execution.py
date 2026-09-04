@@ -332,6 +332,30 @@ def _run_manifest_sf_csa(out: Path, inv: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+# --- conformational_state (StateAtlas) --------------------------------------
+# StateAtlas compares a structure to a two-sided reference set, so the reference
+# set and its alignment map are inputs on a par with the coordinates: the same
+# structure judged against a different reference set is a different measurement.
+# Both are therefore declared by the case rather than defaulted here. The module
+# writes its own RUN_MANIFEST.json, so no run_manifest builder is needed.
+
+
+def _cmd_conformational_state(inv: Mapping[str, Any], exe: str, out: Path) -> list[str]:
+    cmd = [exe, "run",
+           "--manifest", str(at(inv["manifest"])),
+           "--reference-set", str(at(inv["reference_set"])),
+           "--structure", str(at(inv["structure"])),
+           "--out", str(out)]
+    # Reference Set v2 requires an alignment map, and every Mark 1 ABL-family
+    # call is v2. It stays optional here so the builder does not assume a
+    # reference-set version the case did not declare.
+    if inv.get("alignment_map"):
+        cmd += ["--alignment-map", str(at(inv["alignment_map"]))]
+    if inv.get("chain"):
+        cmd += ["--chain", str(inv["chain"])]
+    return cmd
+
+
 ENGINES: dict[str, dict[str, Any]] = {
     "structure_qc": {"cli": "structqc", "evidence": "STRUCTURE_EVIDENCE.json",
                      "build_cmd": _cmd_structure_qc},
@@ -341,6 +365,8 @@ ENGINES: dict[str, dict[str, Any]] = {
                            "build_cmd": _cmd_assembly_interface},
     "membrane_orientation": {"cli": "memorient", "evidence": "MEMBRANE_ORIENTATION.json",
                              "build_cmd": _cmd_membrane_orientation},
+    "conformational_state": {"cli": "state-atlas", "evidence": "STATE_ENSEMBLE.json",
+                             "build_cmd": _cmd_conformational_state},
     # `run_manifest` is declared only by engines that do not write one themselves.
     "sf_csa": {"cli": "sf-csa", "evidence": "SF_CSA_RELEASE_MANIFEST.json",
                "build_cmd": _cmd_sf_csa, "run_manifest": _run_manifest_sf_csa},
@@ -507,10 +533,47 @@ def _measure_sf_csa(ev, manifest) -> dict[str, Any]:
     }
 
 
+
+# --- conformational_state (StateAtlas) --------------------------------------
+# The panel gates on the *margin* between the two sides of the reference set, so
+# the per-reference distances are reported individually and never reduced to one
+# similarity number. A margin only exists while both sides are still visible.
+
+CONFIDENT_STATE_LABELS = {"active_like", "inactive_like"}
+OPPOSITE_STATE_LABEL = {"active_like": "inactive_like", "inactive_like": "active_like"}
+STRATUM_STATE_LABEL = {"active": "active_like", "inactive": "inactive_like"}
+
+
+def _measure_conformational_state(ev, manifest) -> dict[str, Any]:
+    frames = ev.get("frame_metrics") or []
+    frame = frames[0] if frames else {}
+    per_reference = {key[len("rmsd_"):-len("_A")]: value
+                     for key, value in frame.items()
+                     if key.startswith("rmsd_") and key.endswith("_A")}
+    config = ev.get("config") or {}
+    return {
+        "overall_label": ev.get("overall_label"),
+        "frames_total": ev.get("frames_total"),
+        "frames_interpretable": ev.get("frames_interpretable"),
+        "populations": ev.get("populations"),
+        "call": frame.get("call"),
+        "best_reference": frame.get("best_reference"),
+        "best_rmsd_A": frame.get("best_rmsd_A"),
+        "margin_A": frame.get("margin_A"),
+        "rmsd_by_reference_A": per_reference,
+        "alignment_map_sha256": config.get("alignment_map_sha256"),
+        "mapped_residue_count": config.get("ensemble_alignment_residue_count"),
+        "chain": config.get("chain"),
+        "coordinate_sha256": ev.get("coordinate_sha256"),
+        "input_kind": ev.get("input_kind"),
+    }
+
+
 MEASURERS = {"structure_qc": _measure_structure_qc,
              "membrane_orientation": _measure_membrane_orientation,
              "assembly_interface": _measure_assembly_interface,
              "functional_site_state": _measure_functional_site_state,
+             "conformational_state": _measure_conformational_state,
              "sf_csa": _measure_sf_csa}
 
 
@@ -869,10 +932,18 @@ SF_CSA_STRATUM_LABEL = {
 def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
     """sf-csa gate checks. Returns False if the case cannot be judged further.
 
-    The scientifically load-bearing gate is the absolute bound: a fold analogy or
-    an unrelated pair may never carry a functional claim. It is checked here per
-    record; the panel-level `analogy_or_unrelated_promoted_to_function_max = 0`
-    is the sum of these and admits no tolerance.
+    The absolute bound -- a fold analogy or an unrelated pair may never carry a
+    functional claim -- is checked here per record; the panel-level
+    `analogy_or_unrelated_promoted_to_function_max = 0` is the sum of these and
+    admits no tolerance. It is recorded with kind "definitional", not
+    "scientific": on the campaign axis both sides of a pair carry a
+    curator-supplied mechanism group, `classify_hit` promotes only when the two
+    groups match, and the fold_analogy and unrelated strata are *defined* as
+    different group. So the bound holds by construction rather than by anything
+    the module computed. It stays required because it still constrains any
+    selection in which a target group is inferred rather than curated. See
+    collection 2.8 in PANEL_MANIFEST.json and Finding 7 in
+    SF_CSA_PREADOPTION_FINDINGS.md.
 
     The `structural_and_sequence_outputs` check is recorded with kind
     "contract". It asserts that the two evidence legs stayed apart, which is a
@@ -915,26 +986,41 @@ def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
         purpose = record.get("control_purpose")
         orthology = pair.get("orthology_status")
         if purpose == "rbh_computed_path":
-            # A genuine reciprocal best hit that the module still does not
-            # promote. The control passes while the defect is present, and
-            # fails the day it is fixed -- which is the notification we want,
-            # not a silent change of meaning.
-            checks.append({"check": "computed_rbh_does_not_reach_function_label", "required": True,
-                           "expected": "reciprocal_best_hit present and label not probable_same_function",
+            # Expectation inverted 2026-09-01, when the defect this control was
+            # written against was repaired.
+            #
+            # It used to assert that a genuine reciprocal best hit was *not*
+            # promoted, and its own note said it would "fail the day it is
+            # fixed". That day came: the RBH computation now runs before
+            # classification and reaches the label as a pairwise fact. The
+            # control keeps its name and its purpose -- watching the computed
+            # path -- and now asserts that the path works. Leaving the old
+            # expectation in place would have failed the panel for the repair.
+            checks.append({"check": "computed_rbh_reaches_function_label", "required": True,
+                           "expected": "reciprocal_best_hit present and label probable_same_function",
                            "observed": {"orthology_status": orthology, "label": observed_label},
                            "passed": orthology == "reciprocal_best_hit"
+                                     and observed_label == "probable_same_function"})
+        elif purpose == "rbh_without_whole_architecture":
+            # Replaces `rbh_asserted_rejected`, which is no longer curatable: the
+            # asserted-evidence path it probed is now refused by the module's
+            # manifest reader, so its input never reaches classification and it
+            # cannot exist as a record. That guard moved to
+            # sf-csa/tests/test_rbh_provenance.py.
+            #
+            # The panel keeps a false-positive bound of its own: a genuine
+            # reciprocal best hit on a pair that is not a whole-architecture
+            # match must still not be promoted. Sequence evidence alone does not
+            # carry the label; both legs are required, and this is where that is
+            # observed rather than assumed.
+            category = (structural or {}).get("structural_category")
+            checks.append({"check": "computed_rbh_alone_does_not_promote", "required": True,
+                           "expected": "reciprocal_best_hit on a non-whole-architecture match, label not probable_same_function",
+                           "observed": {"orthology_status": orthology, "structural_category": category,
+                                        "label": observed_label},
+                           "passed": orthology == "reciprocal_best_hit"
+                                     and category != "whole_architecture_match"
                                      and observed_label != "probable_same_function"})
-        elif purpose == "rbh_asserted_rejected":
-            # The same label reached by asserting `rbh` in the queries manifest,
-            # on a pair that is not a reciprocal best hit. The panel must be able
-            # to tell this apart from computed evidence; if it cannot, the
-            # absolute bound above is satisfiable by curator fiat.
-            promoted_without_evidence = (observed_label == "probable_same_function"
-                                         and orthology != "reciprocal_best_hit")
-            checks.append({"check": "asserted_rbh_detected_as_unsupported", "required": True,
-                           "expected": "probable_same_function without a computed reciprocal best hit",
-                           "observed": {"orthology_status": orthology, "label": observed_label},
-                           "passed": promoted_without_evidence})
         else:
             checks.append({"check": "control_purpose_declared", "required": True,
                            "expected": "a control_purpose this runner knows",
@@ -947,7 +1033,11 @@ def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
                            "passed": observed_label == required_label})
         if stratum in ("fold_analogy", "unrelated"):
             # The absolute bound. Not a tolerance: one promotion fails the panel.
+            # Kind "definitional": unreachable on the campaign axis, where the
+            # strata are defined as different curated group and promotion needs
+            # the groups to match. Kept required, not relaxed.
             checks.append({"check": "not_promoted_to_functional_claim", "required": True,
+                           "kind": "definitional",
                            "expected": "a label outside the functional-claim set",
                            "observed": observed_label,
                            "passed": observed_label not in SF_CSA_FUNCTION_CLAIMS})
@@ -976,10 +1066,111 @@ def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
     return True
 
 
+
+def _gates_conformational_state(record, expected, ev, checks, manifest) -> bool:
+    """StateAtlas gate checks.
+
+    `max_best_reference_rmsd_A` is an interpretability bound rather than a
+    result: it decides whether the case may be judged at all. The margin gate
+    only binds on a confident call, because an unresolved frame is a legitimate
+    outcome the module is required to report rather than a failure to hide. The
+    load-bearing gate is the third one, and it is absolute.
+    """
+    cs = record["_gate_semantics"].get("conformational_state", {})
+    obs = _measure_conformational_state(ev, None)
+    expected_label = STRATUM_STATE_LABEL.get(record.get("stratum", ""))
+    limit_A = cs.get("max_best_reference_rmsd_A")
+
+    if record.get("record_kind") == "control_case":
+        # A control is curated to breach a bound, so asserting the bound holds
+        # would contradict its declared purpose. What it must show is that the
+        # breach was *reported* rather than absorbed: too far from any reference
+        # to be spoken for, and said so, instead of being forced onto the nearer
+        # side. The harness separately requires a fail_closed control to withhold
+        # evidence; this is the scientific half of the same statement.
+        if record.get("control_purpose", "fail_closed") == "fail_closed":
+            beyond = (limit_A is not None and obs["best_rmsd_A"] is not None
+                      and float(obs["best_rmsd_A"]) > float(limit_A))
+            checks.append({"check": "uninterpretable_control_is_reported_unresolved", "required": True,
+                           "expected": f"best reference RMSD > {limit_A} and the call withheld as unresolved",
+                           "observed": {"best_rmsd_A": obs["best_rmsd_A"], "call": obs["call"]},
+                           "passed": beyond and obs["call"] == "unresolved"})
+        else:
+            checks.append({"check": "control_purpose_declared", "required": True,
+                           "expected": "a control_purpose this runner knows",
+                           "observed": record.get("control_purpose"), "passed": False})
+        return True
+
+    # --- gate: interpretability bound -------------------------------------
+    limit = cs.get("max_best_reference_rmsd_A")
+    best = obs["best_rmsd_A"]
+    if limit is not None:
+        checks.append({"check": "best_reference_rmsd_A", "required": True,
+                       "expected": f"<= {limit}", "observed": best,
+                       "passed": best is not None and float(best) <= float(limit)})
+
+    # --- gate: separation --------------------------------------------------
+    # Binds only on a confident call. An unresolved frame has no margin claim to
+    # make, and requiring one would turn "I cannot tell" into a failure.
+    margin_min = cs.get("minimum_opposite_state_margin_A")
+    margin = obs["margin_A"]
+    if margin_min is not None:
+        confident = obs["call"] in CONFIDENT_STATE_LABELS
+        ok = (not confident) or (margin is not None and float(margin) >= float(margin_min))
+        checks.append({"check": "opposite_state_margin_A", "required": True,
+                       "expected": f">= {margin_min} whenever the call is confident",
+                       "observed": {"call": obs["call"], "margin_A": margin}, "passed": ok})
+
+    # --- gate: no confident call to the opposite state ---------------------
+    # An absolute bound, not a tolerance. This is the gate the panel exists for.
+    if cs.get("confident_opposite_state_calls_max") is not None and expected_label:
+        opposite = OPPOSITE_STATE_LABEL.get(expected_label)
+        checks.append({"check": "confident_opposite_state_call", "required": True,
+                       "expected": f"never {opposite} for a {record.get('stratum')} record",
+                       "observed": obs["call"], "passed": obs["call"] != opposite})
+
+    # --- the recorded expectation -----------------------------------------
+    # The call and the two numbers behind it are all compared. Checking only the
+    # label would leave the recorded distances inert: a run could drift by an
+    # angstrom, keep the same side, and pass. Those distances are the quantity
+    # the independent second-machine gate has to reproduce, so they must be
+    # capable of failing here first.
+    checks.append({"check": "call_matches_recorded_expectation", "required": True,
+                   "expected": expected.get("call"), "observed": obs["call"],
+                   "passed": obs["call"] == expected.get("call")})
+    tol = float(cs.get("recorded_value_tolerance_A", 1e-3))
+    for field in ("best_rmsd_A", "margin_A"):
+        want, got = expected.get(field), obs[field]
+        checks.append({"check": f"{field}_matches_recorded_expectation", "required": True,
+                       "expected": want, "observed": got,
+                       "passed": want is not None and got is not None
+                                 and abs(float(got) - float(want)) <= tol})
+    checks.append({"check": "best_reference_matches_recorded_expectation", "required": True,
+                   "expected": expected.get("best_reference"), "observed": obs["best_reference"],
+                   "passed": obs["best_reference"] == expected.get("best_reference")})
+
+    # Both sides of the reference set must have been compared. A margin computed
+    # against one side is not a margin, and the module would still report a call.
+    per_reference = obs["rmsd_by_reference_A"]
+    checks.append({"check": "both_reference_states_compared", "required": True,
+                   "expected": "a distance to at least two references",
+                   "observed": sorted(per_reference), "passed": len(per_reference) >= 2})
+
+    # The alignment map is what makes the comparison residue-exact. A run that
+    # lost it would still produce numbers, from a different set of residues.
+    checks.append({"check": "alignment_map_bound", "required": True,
+                   "expected": record.get("alignment_map_sha256"),
+                   "observed": obs["alignment_map_sha256"],
+                   "passed": (record.get("alignment_map_sha256") is None
+                              or obs["alignment_map_sha256"] == record["alignment_map_sha256"])})
+    return True
+
+
 GATE_CHECKS = {"structure_qc": _gates_structure_qc,
                "membrane_orientation": _gates_membrane_orientation,
                "assembly_interface": _gates_assembly_interface,
                "functional_site_state": _gates_functional_site_state,
+               "conformational_state": _gates_conformational_state,
                "sf_csa": _gates_sf_csa}
 
 
@@ -1049,6 +1240,30 @@ def run_case(record: Mapping[str, Any], exe: str, out_root: Path) -> dict[str, A
     else:
         expected_missing = sorted(
             gates["missing_evidence_behavior"]["expected_missing_by_stratum"].get(stratum, []))
+        # A record may narrow its own expectation, and only if it says why.
+        #
+        # The stratum expectation catches evidence that vanished for a reason
+        # nobody declared, which is what it is for. It cannot express a legitimate
+        # absence that applies to one record and not its stratum-mates: three
+        # homologous_superfamily pairs carry no DIAMOND row because their measured
+        # identity and coverage fall below the declared minima, or because the
+        # aligner does not seed them, and each of those is a recorded measurement
+        # rather than a fault. Loosening the whole stratum to accommodate them
+        # would be tuning an expectation to a result. Requiring the justification
+        # keeps every exception individually evidenced and visible in the record,
+        # and leaves the stratum strict for everything that does not carry one.
+        justification = record.get("expected_missing_justification") or record.get("sequence_leg_measurement")
+        declared = record.get("expected_missing")
+        if declared is not None:
+            if not justification:
+                checks.append({"check": "record_expected_missing_is_justified", "required": True,
+                               "expected": "a measurement or stated reason accompanying expected_missing",
+                               "observed": None, "passed": False})
+            else:
+                expected_missing = sorted(declared)
+                checks.append({"check": "record_expected_missing_is_justified", "required": True,
+                               "expected": sorted(declared), "observed": justification,
+                               "passed": True})
         checks.append({"check": "missing_evidence_matches_stratum_expectation", "required": True,
                        "expected": expected_missing, "observed": missing,
                        "passed": missing == expected_missing})
@@ -1219,7 +1434,34 @@ def _witness_sf_csa(out: Path) -> set[str]:
     return seen
 
 
+
+def _witness_conformational_state(out: Path) -> set[str]:
+    seen: set[str] = set()
+    evidence = out / "STATE_ENSEMBLE.json"
+    if not evidence.is_file():
+        return seen
+    ev = json.loads(evidence.read_text(encoding="utf-8"))
+    frames = ev.get("frame_metrics") or []
+    frame = frames[0] if frames else {}
+    call = frame.get("call")
+    if call in ("active_like", "inactive_like", "mixed", "unresolved"):
+        seen.add(f"{call}_reported")
+    per_reference = [k for k in frame if k.startswith("rmsd_") and k.endswith("_A")]
+    if len(per_reference) >= 2:
+        seen.add("both_reference_states_compared")
+    if frame.get("margin_A") is not None:
+        seen.add("margin_reported")
+    if (ev.get("config") or {}).get("alignment_map_sha256"):
+        seen.add("alignment_map_bound")
+    if ev.get("clusters"):
+        seen.add("clusters_written")
+    if (ev.get("populations") or {}).get("unresolved") is not None:
+        seen.add("unresolved_in_denominator")
+    return seen
+
+
 WITNESSES = {"structure_qc": _witness_structure_qc,
+             "conformational_state": _witness_conformational_state,
              "membrane_orientation": _witness_membrane_orientation,
              "assembly_interface": _witness_assembly_interface,
              "functional_site_state": _witness_functional_site_state,
