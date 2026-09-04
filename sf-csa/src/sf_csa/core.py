@@ -475,6 +475,12 @@ def load_annotations(db: dict, db_path: Path) -> dict:
 
 
 def build_proteome_universe(db: dict, db_path: Path, out: Path) -> tuple[list[dict], dict[str,dict]]:
+    # Paths are recorded relative to the database root, matching stage_campaign
+    # above. An absolute path here put the generating machine's home directory
+    # into `proteome_denominator.json`, which is release evidence and is
+    # published; it is also useless to a reader who cannot resolve it. The
+    # sha256 beside it is what identifies the file, so nothing is lost.
+    db_root = (db_path.parent / db["path_base"]).resolve()
     files = []
     for pattern in db["proteome_globs"]:
         base = resolve(db_path, pattern.split("*")[0], db["path_base"])
@@ -491,7 +497,9 @@ def build_proteome_universe(db: dict, db_path: Path, out: Path) -> tuple[list[di
                 fh.write(f">{uid} {rec['header']}\n{rec['sequence']}\n")
                 index[uid] = {**rec, "proteome_id": proteome_id, "source": str(path), "uid": uid}
                 count += 1
-            records.append({"proteome_id": proteome_id, "path": str(path), "protein_count": count, "sha256": sha256(path)})
+            records.append({"proteome_id": proteome_id,
+                            "path": str(path.relative_to(db_root)) if db_root in path.parents else path.name,
+                            "protein_count": count, "sha256": sha256(path)})
     return records, index
 
 

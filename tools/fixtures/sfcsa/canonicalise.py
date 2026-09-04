@@ -3,15 +3,23 @@
 
 A release as produced by `sf_csa.cli run` is *not* byte-comparable across
 machines, and pretending otherwise is how golden fixtures rot into
-"regenerate it until the diff goes away". Exactly three things vary:
+"regenerate it until the diff goes away". What varies:
 
 1.  `SF_CSA_RELEASE_MANIFEST.json` records `release_id`, which the pipeline
     takes from the basename of `--output`. A run into `/tmp/xyz` and a run
     into `./out` produce different manifests from identical inputs.
-2.  `proteome_denominator.json` records the resolved absolute path of every
-    proteome FASTA (`build_proteome_universe` stores `str(path)` after
-    `Path.resolve()`), so it embeds the checkout location.
-3.  `CHECKSUMS.json` digests the two files above, so it inherits both.
+2.  `CHECKSUMS.json` digests that file, so it inherits the same variation.
+
+**Closed 2026-09-04.** `proteome_denominator.json` used to be a third source of
+variation: `build_proteome_universe` stored `str(path)` after `Path.resolve()`,
+so it embedded the checkout location and had to be rewritten here. It now
+records paths relative to the database root, so no substitution is needed and
+the file is portable as produced. That was a privacy fix rather than a fixture
+one -- the absolute form reached release evidence staged for a public
+repository -- and the property is held by
+`sf-csa/tests/test_release_paths_are_portable.py`. This note stays because a
+canonicaliser that silently keeps substituting a field the pipeline no longer
+emits is how the next reader concludes the pipeline still emits it.
 
 This script copies a release into a canonical tree with those substitutions
 applied and the checksums recomputed over the canonical bytes. Recomputing is

@@ -1,3 +1,35 @@
+## 2026-09-04 — release evidence stops recording the generating machine
+
+`build_proteome_universe` recorded `str(path)` after `Path.resolve()` for every
+proteome FASTA, so `proteome_denominator.json` — which is part of a release and
+is published — carried the absolute checkout location. Ten occurrences of a home
+directory were found in a file staged for the public repository and withheld
+from the push.
+
+Paths are now recorded relative to the database root, which is the convention
+`stage_campaign` already used a few lines above. The sha256 beside each path is
+what identifies the file, so nothing identifying is lost and a reviewer can still
+see where in the panel a proteome sits.
+
+Not a cosmetic change, for two reasons. Every one of the sixteen sf-csa panel
+records runs a full release, so adopting the panel with the old behaviour would
+have published sixteen copies of the leak rather than one. And the same class
+already reached the public repository once before through a different writer —
+`tools/build_cli_reference.py`, fixed by teaching the generator to scrub `$HOME`
+— which is the argument for holding the property in a test rather than the
+incident.
+
+`tests/test_release_paths_are_portable.py` asserts no absolute path, no database
+root, and that the recorded path keeps its directory component. That last
+assertion is load-bearing: the first attempt at this fix satisfied "no absolute
+path" while silently recording a bare basename, because the local name `root` is
+rebound by the glob loop above it. The three tests fail against the previous
+implementation and against that first attempt.
+
+Nothing frozen changes. No panel record, expectation, threshold or checksum
+gates on `proteome_denominator.json`, so the sf-csa adoption draft's sixteen
+expectations are untouched.
+
 
 ## 2026-09-01 — reciprocal best hit is evidence, not a manifest field
 
