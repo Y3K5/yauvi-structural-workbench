@@ -1,0 +1,2820 @@
+{
+  "clusters": [
+    {
+      "calls": {
+        "active_like": 0,
+        "inactive_like": 1,
+        "mixed": 0,
+        "unresolved": 0
+      },
+      "cluster": 1,
+      "fraction_total": 1.0,
+      "frames": 1,
+      "majority_call": "inactive_like"
+    }
+  ],
+  "config": {
+    "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+    "chain": "A",
+    "cluster_cutoff_A": 2.0,
+    "ensemble_alignment_residue_count": 254,
+    "pbc": null,
+    "selection": "protein and name CA",
+    "stride": 1
+  },
+  "coordinate_sha256": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+  "frame_metrics": [
+    {
+      "best_reference": "INACTIVE_3QRK",
+      "best_rmsd_A": 0.0,
+      "call": "inactive_like",
+      "cluster": 1,
+      "frame": 0,
+      "margin_A": 5.046267,
+      "rmsd_ACTIVE_4XEY_A": 5.20337,
+      "rmsd_ACTIVE_7W7X_A": 5.046267,
+      "rmsd_INACTIVE_2E2B_A": 1.091361,
+      "rmsd_INACTIVE_3QRK_A": 0.0
+    }
+  ],
+  "frames_interpretable": 1,
+  "frames_total": 1,
+  "input_kind": "static_ensemble",
+  "input_sha256": {
+    "alignment_map": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+    "reference_ACTIVE_4XEY": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+    "reference_ACTIVE_7W7X": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+    "reference_INACTIVE_2E2B": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+    "reference_INACTIVE_3QRK": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+    "reference_set": "5c87d178936d1b768b813cb4e4bd1229efc82e65ce31014f84a901e41a2f4a94",
+    "structure": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+    "structure_evidence_manifest": "4c60e9de36f289377b4ef472f696e70d09ffb0ad4f59749f3c18af64fa8b39cb"
+  },
+  "limitations": [
+    "State labels describe structural resemblance, not biochemical activity.",
+    "Frame populations depend on trajectory preparation, selection, stride, references, and thresholds.",
+    "Unresolved frames remain in the total-frame denominator.",
+    "The exact-mapped ABL-family path remains prototype until the Qualification v2 held-out gate passes."
+  ],
+  "module_id": "conformational_state",
+  "overall_label": "inactive_like",
+  "populations": {
+    "active_like": {
+      "count": 0,
+      "fraction_interpretable": 0.0,
+      "fraction_total": 0.0
+    },
+    "inactive_like": {
+      "count": 1,
+      "fraction_interpretable": 1.0,
+      "fraction_total": 1.0
+    },
+    "mixed": {
+      "count": 0,
+      "fraction_interpretable": 0.0,
+      "fraction_total": 0.0
+    },
+    "unresolved": {
+      "count": 0,
+      "fraction_interpretable": null,
+      "fraction_total": 0.0
+    }
+  },
+  "reference_set": {
+    "decision_rules": {
+      "max_rmsd_A": 2.5,
+      "min_margin_A": 0.25
+    },
+    "id": "abl1-mark1-qualification-v2:3QRK",
+    "qualification_scope": "abl_family",
+    "references": [
+      {
+        "id": "ACTIVE_4XEY",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "uniprot",
+          "coverage": 0.984252,
+          "excluded_uniprot_positions": [
+            250,
+            251,
+            252,
+            253
+          ],
+          "included_uniprot_positions": [
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            254,
+            255,
+            256,
+            257,
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270,
+            271,
+            272,
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286,
+            287,
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300,
+            301,
+            302,
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330,
+            331,
+            332,
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345,
+            346,
+            347,
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360,
+            361,
+            362,
+            363,
+            364,
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371,
+            372,
+            373,
+            374,
+            375,
+            376,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390,
+            391,
+            392,
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420,
+            421,
+            422,
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435,
+            436,
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450,
+            451,
+            452,
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465,
+            466,
+            467,
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480,
+            481,
+            482,
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "missing_coordinate_positions": [],
+          "positions_declared": 254,
+          "positions_mapped": 250,
+          "uniprot_end": 495,
+          "uniprot_start": 242
+        },
+        "sha256": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+        "state": "active"
+      },
+      {
+        "id": "ACTIVE_7W7X",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "uniprot",
+          "coverage": 0.988189,
+          "excluded_uniprot_positions": [
+            276,
+            277,
+            393
+          ],
+          "included_uniprot_positions": [
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255,
+            256,
+            257,
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270,
+            271,
+            272,
+            273,
+            274,
+            275,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286,
+            287,
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300,
+            301,
+            302,
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330,
+            331,
+            332,
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345,
+            346,
+            347,
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360,
+            361,
+            362,
+            363,
+            364,
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371,
+            372,
+            373,
+            374,
+            375,
+            376,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390,
+            391,
+            392,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420,
+            421,
+            422,
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435,
+            436,
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450,
+            451,
+            452,
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465,
+            466,
+            467,
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480,
+            481,
+            482,
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "missing_coordinate_positions": [],
+          "positions_declared": 254,
+          "positions_mapped": 251,
+          "uniprot_end": 495,
+          "uniprot_start": 242
+        },
+        "sha256": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+        "state": "active"
+      },
+      {
+        "id": "INACTIVE_2E2B",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "uniprot",
+          "coverage": 0.968504,
+          "excluded_uniprot_positions": [
+            274,
+            275,
+            276,
+            277,
+            388,
+            389,
+            390,
+            391
+          ],
+          "included_uniprot_positions": [
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255,
+            256,
+            257,
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270,
+            271,
+            272,
+            273,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286,
+            287,
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300,
+            301,
+            302,
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330,
+            331,
+            332,
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345,
+            346,
+            347,
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360,
+            361,
+            362,
+            363,
+            364,
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371,
+            372,
+            373,
+            374,
+            375,
+            376,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            392,
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420,
+            421,
+            422,
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435,
+            436,
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450,
+            451,
+            452,
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465,
+            466,
+            467,
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480,
+            481,
+            482,
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "missing_coordinate_positions": [],
+          "positions_declared": 254,
+          "positions_mapped": 246,
+          "uniprot_end": 495,
+          "uniprot_start": 242
+        },
+        "sha256": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+        "state": "inactive"
+      },
+      {
+        "id": "INACTIVE_3QRK",
+        "mapping": {
+          "ambiguous_uniprot_positions": [],
+          "coordinate_system": "uniprot",
+          "coverage": 1.0,
+          "excluded_uniprot_positions": [],
+          "included_uniprot_positions": [
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255,
+            256,
+            257,
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270,
+            271,
+            272,
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286,
+            287,
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300,
+            301,
+            302,
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330,
+            331,
+            332,
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345,
+            346,
+            347,
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360,
+            361,
+            362,
+            363,
+            364,
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371,
+            372,
+            373,
+            374,
+            375,
+            376,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390,
+            391,
+            392,
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420,
+            421,
+            422,
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435,
+            436,
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450,
+            451,
+            452,
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465,
+            466,
+            467,
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480,
+            481,
+            482,
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "missing_coordinate_positions": [],
+          "positions_declared": 254,
+          "positions_mapped": 254,
+          "uniprot_end": 495,
+          "uniprot_start": 242
+        },
+        "sha256": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+        "state": "inactive"
+      }
+    ],
+    "schema_version": "2.0",
+    "subject_family": "ABL1"
+  },
+  "rmsf": [
+    {
+      "auth_seq_id": 227,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 228,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 229,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 230,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 231,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 232,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 233,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 234,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 235,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 236,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 237,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 238,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 239,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 240,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 241,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 242,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 243,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 244,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 245,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 246,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 247,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 248,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 249,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 250,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 251,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 252,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 253,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 254,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 255,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 256,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 257,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 258,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 259,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 260,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 261,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 262,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 263,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 264,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 265,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 266,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 267,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 268,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 269,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 270,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 271,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 272,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 273,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 274,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 275,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 276,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 277,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 278,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 279,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 280,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 281,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 282,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 283,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 284,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 285,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 286,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 287,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 288,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 289,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 290,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 291,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 292,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 293,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 294,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 295,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 296,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 297,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 298,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 299,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 300,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 301,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 302,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 303,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 304,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 305,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 306,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 307,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 308,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 309,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 310,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 311,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 312,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 313,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 314,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 315,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 316,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 317,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 318,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 319,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 320,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 321,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 322,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 323,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 324,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 325,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 326,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 327,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 328,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 329,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 330,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 331,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 332,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 333,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 334,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 335,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 336,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 337,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 338,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 339,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 340,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 341,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 342,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 343,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 344,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 345,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 346,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 347,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 348,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 349,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 350,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 351,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 352,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 353,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 354,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 355,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 356,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 357,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 358,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 359,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 360,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 361,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 362,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 363,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 364,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 365,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 366,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 367,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 368,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 369,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 370,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 371,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 372,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 373,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 374,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 375,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 376,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 377,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 378,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 379,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 380,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 381,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 382,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 383,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 384,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 385,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 386,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 387,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 388,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 389,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 390,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 391,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 392,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 393,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 394,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 395,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 396,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 397,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 398,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 399,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 400,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 401,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 402,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 403,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 404,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 405,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 406,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 407,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 408,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 409,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 410,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 411,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 412,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 413,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 414,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 415,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 416,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 417,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 418,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 419,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 420,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 421,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 422,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 423,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 424,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 425,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 426,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 427,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 428,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 429,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 430,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 431,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 432,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 433,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 434,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 435,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 436,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 437,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 438,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 439,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 440,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 441,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 442,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 443,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 444,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 445,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 446,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 447,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 448,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 449,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 450,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 451,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 452,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 453,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 454,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 455,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 456,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 457,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 458,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 459,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 460,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 461,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 462,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 463,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 464,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 465,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 466,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 467,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 468,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 469,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 470,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 471,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 472,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 473,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 474,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 475,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 476,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 477,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 478,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 479,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 480,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 481,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 482,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 483,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 484,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 485,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 486,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 487,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 488,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 489,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 490,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 491,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 492,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 493,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 494,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 495,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    },
+    {
+      "auth_seq_id": 496,
+      "chain_id": "A",
+      "insertion_code": "",
+      "rmsf_A": 0.0
+    }
+  ],
+  "schema_version": "1.1",
+  "scientific_scope": {
+    "claim_boundary": "Conformational resemblance is not biochemical activity.",
+    "qualification_gate": "qualification_v2_held_out_panel_pending",
+    "release_blocking": true,
+    "scientific_state": "prototype",
+    "scope_id": "abl_family",
+    "supported_subject_class": "ABL-family conformational resemblance"
+  },
+  "subject": {
+    "id": "P00519"
+  }
+}

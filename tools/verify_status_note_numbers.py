@@ -47,6 +47,7 @@ PROSE_NAME = {
     "site-context": "functional_site_state",
     "assembly-context": "assembly_interface",
     "membrane": "membrane_orientation",
+    "state-atlas": "conformational_state",
 }
 
 

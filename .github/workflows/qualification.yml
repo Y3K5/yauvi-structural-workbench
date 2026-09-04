@@ -112,6 +112,19 @@ jobs:
             --panel ADOPTION_DRAFT_SITECONTEXT.json \
             --out results/execution-sitecontext
 
+      # ABL executes from its adoption draft, like the panels above: adoption
+      # protocol rule 7 wants cross-machine reproduction *before* a stratum is
+      # called adopted, so the records stay out of PANEL_MANIFEST.json until this
+      # reproduces. state-atlas shells out to nothing, so unlike sf-csa this
+      # needs no pinned external runtime.
+      - name: Execute the ABL state-atlas panel offline
+        if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          python run_execution.py \
+            --panel ADOPTION_DRAFT_ABL.json \
+            --out results/execution-abl
+
       # Reduce this runner's four results to one readable document. On CI this
       # is the interesting artifact: the panels just executed on a machine that
       # did not record the expectations, so the drift deltas it carries are the

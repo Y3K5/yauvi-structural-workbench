@@ -1,0 +1,46 @@
+{
+  "input_sha256": {
+    "alignment_map": "25db5f3e8c36c7d992f857dcdd2247c85845a99fbbeb2b0c7b8ffcb4d4fc68e3",
+    "reference_ACTIVE_4XEY": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+    "reference_ACTIVE_7W7X": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+    "reference_INACTIVE_2E2B": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+    "reference_INACTIVE_3QRK": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+    "reference_set": "2a0def2a6f4efa3e1f1da3bba66c5785d9d49830652af852b90c0c5209cd4eb3",
+    "structure": "dd4ebaccda3bceeb891013f1906f20c133abde2c1343f740e5d475c40f72324e",
+    "structure_evidence_manifest": "6810da8fc2e16c8d156a259d1e31405384aba6c72714dbd92a1bea04826c3cb6"
+  },
+  "limitations": [
+    "Conformational resemblance is not biochemical activity."
+  ],
+  "missing_evidence": [
+    "interpretable_state_frames",
+    "qualification_v2_held_out_panel"
+  ],
+  "module_id": "conformational_state",
+  "optional_runtimes": {
+    "mdanalysis": "available_not_invoked"
+  },
+  "outputs": [
+    "STATE_ENSEMBLE.json",
+    "FRAME_METRICS.tsv",
+    "CLUSTERS.tsv",
+    "STATE_LAYER.json"
+  ],
+  "parameters": {
+    "alignment_map_sha256": "25db5f3e8c36c7d992f857dcdd2247c85845a99fbbeb2b0c7b8ffcb4d4fc68e3",
+    "chain": "A",
+    "cluster_cutoff_A": 2.0,
+    "ensemble_alignment_residue_count": 249,
+    "pbc": null,
+    "selection": "protein and name CA",
+    "stride": 1
+  },
+  "runtime_versions": {
+    "biopython": "1.78",
+    "numpy": "1.26.4",
+    "python": "3.12.7",
+    "scipy": "1.14.1"
+  },
+  "schema_version": "1.1",
+  "version": "0.2.0"
+}

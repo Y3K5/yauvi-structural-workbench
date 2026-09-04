@@ -775,70 +775,184 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     ],
     "scientific_execution": {
       "all_release_blocking_scopes_qualified": false,
-      "cases_passed": 53,
+      "cases_passed": 67,
       "cases_required": 110,
       "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "counts_are_single_machine": true,
       "every_executed_panel_passed": false,
       "panels": [
         {
+          "cases": {
+            "failed": 0,
+            "passed": 14,
+            "total": 14
+          },
+          "cases_adopted": 14,
+          "cases_required": 14,
+          "controls": {
+            "passed": 1,
+            "total": 1
+          },
+          "coverage": {
+            "required": 6,
+            "unmet": [],
+            "unwitnessable": [],
+            "witnessed": 6
+          },
+          "drift": {},
+          "panel_id": "qualification-v2-abl-state-atlas",
+          "release_blocking": true,
+          "strata_executed": [
+            "active",
+            "inactive"
+          ],
+          "stratum_scope": "both_abl_state_strata",
+          "stratum_state": "passed",
+          "workflow": "conformational_state"
+        },
+        {
+          "cases": {
+            "failed": 0,
+            "passed": 16,
+            "total": 16
+          },
           "cases_adopted": 16,
-          "cases_passed": 16,
           "cases_required": 16,
-          "controls_passed": 0,
-          "controls_total": 0,
-          "coverage_required": 6,
-          "coverage_unwitnessable": [],
-          "coverage_witnessed": 6,
+          "controls": {
+            "passed": 0,
+            "total": 0
+          },
+          "coverage": {
+            "required": 6,
+            "unmet": [],
+            "unwitnessable": [],
+            "witnessed": 6
+          },
+          "drift": {},
+          "panel_id": "qualification-v2-assembly-context",
+          "release_blocking": true,
+          "strata_executed": [
+            "heterooligomer",
+            "higher_order",
+            "homodimer",
+            "tetramer"
+          ],
           "stratum_scope": "all_four_assembly_strata",
           "stratum_state": "passed",
           "workflow": "assembly_interface"
         },
         {
+          "cases": {
+            "failed": 11,
+            "passed": 5,
+            "total": 16
+          },
           "cases_adopted": 16,
-          "cases_passed": 5,
           "cases_required": 32,
-          "controls_passed": 0,
-          "controls_total": 0,
-          "coverage_required": 6,
-          "coverage_unwitnessable": [],
-          "coverage_witnessed": 6,
+          "controls": {
+            "passed": 0,
+            "total": 0
+          },
+          "coverage": {
+            "required": 6,
+            "unmet": [],
+            "unwitnessable": [],
+            "witnessed": 6
+          },
+          "drift": {
+            "drift.fitted_half_thickness_A": {
+              "cases": 16,
+              "max": 0.0,
+              "median": 0.0
+            },
+            "drift.mean_jaccard": {
+              "cases": 16,
+              "max": 0.019000000000000017,
+              "median": 0.0
+            },
+            "drift.n_reference_extracellular": {
+              "cases": 16,
+              "max": 0.0,
+              "median": 0.0
+            }
+          },
+          "panel_id": "qualification-v2-membrane",
+          "release_blocking": false,
+          "strata_executed": [
+            "beta_barrel"
+          ],
           "stratum_scope": "beta_barrel",
           "stratum_state": "failed",
           "workflow": "membrane_orientation"
         },
         {
+          "cases": {
+            "failed": 0,
+            "passed": 16,
+            "total": 16
+          },
           "cases_adopted": 16,
-          "cases_passed": 16,
           "cases_required": 16,
-          "controls_passed": 1,
-          "controls_total": 1,
-          "coverage_required": 8,
-          "coverage_unwitnessable": [
-            "curated_residue_missing_coordinates"
+          "controls": {
+            "passed": 1,
+            "total": 1
+          },
+          "coverage": {
+            "required": 8,
+            "unmet": [],
+            "unwitnessable": [
+              "curated_residue_missing_coordinates"
+            ],
+            "witnessed": 8
+          },
+          "drift": {},
+          "panel_id": "qualification-v2-site-context",
+          "release_blocking": true,
+          "strata_executed": [
+            "acid_base",
+            "apo_modified_or_incomplete",
+            "metal_or_cofactor",
+            "nucleophile_or_covalent"
           ],
-          "coverage_witnessed": 8,
           "stratum_scope": "all_four_site_context_strata",
           "stratum_state": "passed",
           "workflow": "functional_site_state"
         },
         {
+          "cases": {
+            "failed": 0,
+            "passed": 16,
+            "total": 16
+          },
           "cases_adopted": 16,
-          "cases_passed": 16,
           "cases_required": 16,
-          "controls_passed": 2,
-          "controls_total": 2,
-          "coverage_required": 7,
-          "coverage_unwitnessable": [
-            "modified_residues"
+          "controls": {
+            "passed": 2,
+            "total": 2
+          },
+          "coverage": {
+            "required": 7,
+            "unmet": [],
+            "unwitnessable": [
+              "modified_residues"
+            ],
+            "witnessed": 7
+          },
+          "drift": {},
+          "panel_id": "qualification-v2-structqc",
+          "release_blocking": true,
+          "strata_executed": [
+            "alphafold",
+            "cryo_em",
+            "nmr",
+            "x_ray"
           ],
-          "coverage_witnessed": 7,
           "stratum_scope": "all_four_structqc_strata",
           "stratum_state": "passed",
           "workflow": "structure_qc"
         }
       ],
-      "panels_executed": 4,
+      "panels_executed": 5,
       "panels_total": 6,
       "recorded_on": [
         {
@@ -847,16 +961,17 @@ window.YAUVI_PUBLIC_SHOWCASE = {
           "python": "3.12.7"
         }
       ],
-      "scope_qualification_note": "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. This summary reports execution only. 2 of 6 panels are unadopted and no second-machine reproduction is recorded, so no scope is qualified.",
+      "scientific_execution_performed": true,
+      "scope_qualification_note": "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. This summary reports execution only. 1 of 6 panels are unadopted and no second-machine reproduction is recorded, so no scope is qualified.",
       "second_machine_reproduction": "not_recorded",
       "workflows_executed": [
         "assembly_interface",
+        "conformational_state",
         "functional_site_state",
         "membrane_orientation",
         "structure_qc"
       ],
       "workflows_not_executed": [
-        "conformational_state",
         "sf_csa"
       ]
     },
