@@ -229,3 +229,48 @@ tolerance, which is the quantity the second-machine gate will have to reproduce.
 
 Independent reproduction on a second machine, and review of the state assignments
 by someone other than their author.
+
+
+---
+
+## 2HYY re-locked after a wwPDB re-release — 2026-09-04
+
+Found by verifying every ABL source URL against its locked digest *before*
+merging the entries into `SOURCE_LOCK.json`, which is the check Finding 8 (in
+`SF_CSA_PREADOPTION_FINDINGS.md`) established was missing. Fifteen of sixteen
+fetchable entries returned their locked bytes. One did not:
+
+    sources/wwpdb/2HYY.cif
+      locked   176261fa...   884,736 bytes
+      fetched  4845da16...   899,620 bytes
+
+Not a truncation: three consecutive fetches returned the identical larger file
+with a stable digest. wwPDB re-released the entry with expanded metadata.
+
+**The coordinates are unchanged, and that was verified rather than inferred from
+the atom count.** Extracting every ATOM and HETATM record from both files gives
+8,702 records each, byte-identical as an ordered list, with the same sha256 over
+the concatenated block:
+
+    coordinate-block sha256   50f186a64183bf4d2ba0fe12   (both files)
+
+The record `v2-stateatlas-inactive-held_out-2HYY` is therefore re-locked to the
+re-released file: three occurrences of the digest updated — the source-lock
+entry, the record checksum, and the `source_artifact_checksum` inside the
+recorded expectation. The panel was then re-executed against the new file rather
+than assumed equivalent, and returns **14/14 cases, 1/1 control, 6/6 coverage**,
+unchanged.
+
+Nothing adopted was edited: the panel is `draft_state: not_adopted`, so no
+adopted checksum moved and no collection version is required. Recorded here
+because a checksum that changed without the measurement changing is exactly the
+kind of edit that should not be silent.
+
+**The general point.** `files.rcsb.org/download/XXXX.cif` is not immutable —
+wwPDB remediation re-releases entries, and a lock against that URL rots on the
+provider's schedule rather than the project's. An audit of all 106 pre-existing
+RCSB entries in the lock found no other drift today, and the nineteen apparent
+failures in a first pass were `IncompleteRead` truncations that the acquirer's
+retry loop already handles, not digest changes. But the class is live, and the
+lock-health check proposed in Finding 8 would surface the next one before a push
+rather than after.
