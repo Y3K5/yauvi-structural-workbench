@@ -142,3 +142,385 @@ the module.
   gate plus a total recall failure (Finding 2).
 
 Both original statements are left in place in the draft, with a pointer here.
+
+---
+
+## Finding 3 — the flag is not pairwise, so a naive fix produces a working defect
+
+Found 2026-09-01 while implementing the decision below, by reading the call site
+rather than the classifier.
+
+`target_meta = {q["accession"]: q for q in validated}` (`core.py:533`) is keyed by
+**target accession alone**, and `classify_hit` read `target_meta.get("rbh")` off
+that row. Reciprocal-best-hit is a relation between one query and one target: the
+same target may be reciprocal for query A and not for query B.
+
+So an `rbh` flag stored on a target row is query-independent by construction. The
+repair implied by Findings 1 and 2 — move the RBH computation earlier and write
+it into `target_meta` — would have produced a path that runs, returns the label,
+and is still wrong: the first query to establish RBH against a target would flag
+that target for every other query hitting it.
+
+This is why "wrong order, wrong destination" was an incomplete diagnosis. There
+were three defects, and the third is the only one that survives a fix aimed at
+the first two.
+
+## Decisions — 2026-09-01, Yuvraj
+
+**§4: fix the module first.** Not A, B or C as drafted. With the module repaired,
+the question the three options were dividing no longer exists: the label becomes
+reachable by measurement and unreachable by assertion, so `homologous_superfamily`
+can map to it on evidence, and the panel needs no control to route around a
+defect that is gone. Option A's objection — that it "leaves the fail-open manifest
+path unmeasured and undocumented" — is answered by the manifest gate below rather
+than by a curated record.
+
+**The gate `structural_and_sequence_outputs = separate` is labelled a contract
+check**, not a scientific gate. A passing panel reads as three scientific results
+plus one contract check. See `SF_CSA_PANEL_SCOPE.draft.md` §1, which already said
+this and is now binding.
+
+**The periodontal table control is a control, not a family.** See
+`SF_CSA_RECORD_SELECTION.md` §1. The four families stay uniformly SCOP-derived.
+
+### What was changed in the module
+
+Three changes, `sf-csa`, all covered by `tests/test_rbh_provenance.py` (8 tests,
+written red before the fix and failing for the three predicted reasons):
+
+1. `classify_hit` takes `rbh` as an explicit keyword-only argument and no longer
+   reads it from `target_meta`. Absence defaults to unpromoted.
+2. The sequence leg — proteome universe, DIAMOND, reciprocal best hits — now runs
+   *before* structural classification, and RBH is carried as
+   `rbh_targets[query_accession] -> {target accessions}`. Pairwise by
+   construction; the shared target row can no longer carry it.
+3. `reject_reserved_fields` refuses any curator record declaring `rbh`,
+   `orthology_status`, `identity_status`, `sequence_length`,
+   `structure_residue_count`, `geometry` or `uniprot_annotation`. Applied to
+   query records in `run_pipeline` and to campaign spec targets in
+   `read_campaign_spec`. Assertion and measurement are now separable at read
+   time, which is the property the false-positive gate depends on.
+
+### A finding about the test suite, recorded rather than dropped
+
+Two existing tests asserted the fail-open behaviour as correct
+(`test_rbh_plus_whole_architecture_reaches_probable_same_function`,
+`test_the_title_trap_is_a_release_audit_not_a_classifier_guard`), and both went
+red on the fix. Ten further call sites passed `"rbh"` inside `target_meta` while
+asserting *non*-promotion; those stayed green and would have continued to pass
+while exercising nothing, since the classifier no longer reads the key. All
+twelve were migrated to the real parameter. The suite is 119 passing.
+
+This is the membrane failure mode inside the test suite: assertions that look
+like coverage of a path and do not touch it. Worth stating because the panel's
+own gates are only as good as the same distinction.
+
+---
+
+## Finding 4 — two search filters act in series, and only one is visible
+
+Found 2026-09-01 by running the campaign, not by reading the manifest.
+
+Under collection 2.5 settings, **eight of the sixteen declared judgments produced
+no Foldseek row at all** — every `fold_analogy` and every `unrelated` pair. The
+panel's own missing-evidence rule says a pair below the structural threshold still
+yields a row saying so, and that an absent row means the release never compared
+the pair. That distinction was unobservable, because absence covered both.
+
+The cause is not the e-value. Foldseek prefilters before scoring, and the
+prefilter ignores the e-value; the e-value then applies to whatever survives.
+Measured for P00198 against the twelve-entry campaign database:
+
+    -e 0.01                            2 rows
+    -e 10000                           2 rows     prefilter, e-value irrelevant
+    -e 0.01   --exhaustive-search      2 rows     no prefilter, e-value binds
+    -e 10000  --exhaustive-search     12 rows
+
+Neither setting alone reports a distant pair. Collection 2.6 sets both, and moves
+filtering to `same_fold_tm` (0.5) and `whole_architecture_coverage` (0.7) — the
+thresholds this panel actually declares — rather than leaving it to a search
+heuristic that was never intended as a scientific gate. Both scientific thresholds
+are unchanged.
+
+### Result, against the frozen expectation
+
+All sixteen judgments now produce a row, and all sixteen pass:
+
+    exact                    4/4   exact_function_supported recovered
+    homologous_superfamily   4/4   same_mechanism_class recovered
+    fold_analogy             4/4   no promotion to a function claim
+    unrelated                4/4   no promotion to a function claim
+    analogy or unrelated promoted to a function claim: 0   (the bound allows 0)
+
+A fresh re-run reproduces the previous run exactly: 144 rows compared, zero
+TM-score differences. That is same-machine determinism only, and says nothing
+about the cross-machine question.
+
+Six of the sixteen are `unresolved_or_conflicted` rather than
+`structural_analogy_only`, and that is the honest answer: 1CSP→1E6A at TM 0.314
+and 1CGN→1C02 at TM 0.393 are genuinely below the declared `same_fold_tm` of 0.5.
+SCOP calls those pairs same-fold; the geometry does not support it at this
+threshold, and the module says so instead of splitting the difference.
+
+## Withdrawn — a mis-scoring of the run above
+
+**Claimed:** ten of sixteen judgments matched their stratum and six were
+mismatches.
+
+**Actual:** sixteen of sixteen pass. The comparison was made against an
+expected-label table written from memory, which demanded `structural_analogy_only`
+for `fold_analogy` and `unrelated`. The panel's frozen
+`stratum_expected_label` requires **"any label outside `function_claim_labels`"**
+for both — a false-positive bound, not an exact-label match — and
+`unresolved_or_conflicted` satisfies it exactly as `structural_analogy_only` does.
+
+The module was correct throughout; the scoring was not. Recorded because it is the
+failure mode this programme exists to catch: a measurement built to fit the story
+already in hand, and reported before it was checked against the frozen artifact.
+It was caught by Yuvraj, not by a second measurement, which is the weaker of the
+two ways to find it.
+
+---
+
+## Finding 5 — five queries can never have a sequence leg. The panel is blocked.
+
+Found 2026-09-01 while recording expectations. The records are built and execute,
+and they must not be frozen.
+
+**Symptom.** Thirteen of sixteen records report `sequence_comparison` in
+`missing_evidence`, against a declared expectation of nothing missing in any
+stratum. Two of the thirteen are `exact` self-matches — a protein compared with
+itself cannot lack sequence similarity, which is what showed this was a data
+question rather than a biological one.
+
+**Cause.** Six of the twelve queries do not appear in the proteome they declare:
+
+    P00193  UP000192368   0 occurrences      P26394  UP000002695   0 occurrences
+    P23370  UP000000532   0 occurrences      P00138  UP000595916   0 occurrences
+    P45850  UP000011116   0 occurrences      P00147  UP000002361   0 occurrences
+
+The files exist and load; they simply do not contain the protein. `run_pipeline`
+raises only when the file is absent, so this passed silently.
+
+**Why it cannot be fixed by pointing at a different file.** Checked against
+UniProt: **five of the six belong to no reference proteome at all.**
+
+    P00193  Peptoniphilus asaccharolyticus   none
+    P23370  Thermus thermophilus             none
+    P45850  Hordeum vulgare                  none
+    P00138  Alcaligenes xylosoxydans         none
+    P00147  Rhodobacter capsulatus           none
+    P26394  Salmonella typhimurium LT2       UP000001014  -- wrong file declared
+
+Only P26394 is a pointer error, and the correct proteome is the one
+`SF_CSA_RECORD_SELECTION.md` already names for 1DZR. The other five are classic
+Swiss-Prot entries whose organisms or strains carry no reference proteome, so no
+file exists that would give them a sequence leg.
+
+**What the selection gate actually checked.** The fourth gate was written as "the
+organism must have a reference proteome", and it removed 2HMZ, 2MHR and 1JUH on
+that basis. It verified that a proteome *exists*, never that the query is *in* it.
+Five entries passed a gate that was measuring the wrong thing — the same shape of
+error as the membrane panel, in the curation step rather than the gate.
+
+**Scope of the damage.** Two of the four family anchor queries are affected:
+P45850 (1FI2, ds beta-helix) and P00138 (1CGN, four-helical bundle). Each anchors
+four judgments, so **eight of the sixteen records belong to families that cannot
+produce the panel's second evidence leg.** The panel's own coverage rule requires
+that "Foldseek and DIAMOND execute as separate checksum-bound evidence legs";
+for half the panel, DIAMOND contributes nothing.
+
+**This is a curation decision, not an engineering one.** Three ways out, and the
+choice belongs to Yuvraj:
+
+1. **Re-select the two affected families** with proteins that are in a reference
+   proteome, adding "the query appears in its declared proteome" as a fifth,
+   stated selection gate. Preserves the four-family rule and both legs.
+2. **Accept single-leg records** for those families and declare it. Cheapest, and
+   it weakens the claim the panel exists to support.
+3. **Reduce the family count** — but the coverage rule requires exactly four
+   unrelated families, so this is a rule change and a new collection version.
+
+Recommendation is 1. Nothing should be frozen until it is settled: the recorded
+expectations in `ADOPTION_DRAFT_SFCSA.json` are real measurements of a panel that
+is half-evidenced, and adopting them would freeze that in.
+
+---
+
+## Finding 6 — the reselection fixed the data, and exposed a semantics error
+
+The twelve queries were reselected on 2026-09-02 with the missing fifth gate
+applied: the accession must appear in the proteome it declares, not merely belong
+to an organism that has one. All twelve pass all five gates, and the structural
+side is clean:
+
+    located 16/16 | passing the frozen expectation 16/16 | promotions 0 (bound 0)
+
+**The data-integrity failure is gone.** Every query now finds itself in its own
+proteome as a reciprocal best hit, and the queries that previously produced
+nothing now produce real homology: P00198 finds a ferredoxin at 55.9 percent
+identity, P26394 finds three homologs between 57 and 65 percent.
+
+**Eleven of sixteen judgments still carry no sequence-leg row, and that is a
+different fact from before.** It is now the declared search reporting no homology,
+not a broken input. Measured per pair:
+
+- `fold_analogy` and `unrelated` pairs have no sequence homology. That is the
+  point of those strata; a row would be the surprise.
+- Of the three `homologous_superfamily` pairs, two are below the declared
+  thresholds and are correctly absent: 1DZR→1J1L at 24.5 percent identity over
+  29.0 percent of the query, and 1C02→2OOC at 34.8 percent over 13.8 percent,
+  against declared minima of 20 percent identity and 40 percent coverage.
+- 1FDN→1BLU is the interesting one. A local alignment scores it 50.9 percent
+  identity at 98.2 percent coverage, which looks like it should be found — and
+  **DIAMOND does not find it at any e-value.** Rerun at `--evalue 10` against the
+  same database it still returns two hits, neither of them P00208. The seed
+  filter does not reach this pair. The local-alignment number was the misleading
+  one, not the tool.
+
+### What this means for the panel, and it is a decision
+
+`expected_missing_by_stratum` declares that nothing may be missing in any
+stratum. That is false as written, and it is the sequence-side twin of Finding 4:
+the module treats an absent row as missing evidence, which conflates *searched
+and found nothing* with *never searched*. On the structural side that was fixed by
+making the search exhaustive, so every declared pair yields a row saying where it
+fell. **There is no equivalent for DIAMOND** — a sequence aligner does not emit
+non-hits, and forcing it to would not mean anything.
+
+So the fix has to be in the semantics rather than the search:
+
+1. **Declare the sequence leg legitimately absent for `fold_analogy` and
+   `unrelated`.** No sequence homology is the expected finding for those strata.
+2. **Record it per record for `homologous_superfamily`**, with the measured
+   identity and coverage, so a reader sees *why* a homolog produced no sequence
+   row rather than inferring a fault.
+3. Keep the coverage rule that both legs execute — DIAMOND does execute for every
+   query. What varies is whether it finds anything, and that is a result.
+
+This changes what a green panel asserts, so it belongs to Yuvraj rather than to
+whoever is next at the keyboard. Nothing is frozen until it is settled.
+
+---
+
+## Records built and falsified — 2026-09-02, collection 2.7
+
+`ADOPTION_DRAFT_SFCSA.json`: sixteen records, four families by four strata,
+expectations recorded by execution. **Not merged into `PANEL_MANIFEST.json`** —
+adoption needs independent reproduction on a second machine.
+
+    16/16 cases passed | 8/8 coverage features witnessed | promotions 0 (bound 0)
+    strata executed: exact, fold_analogy, homologous_superfamily, unrelated
+
+### Protocol rule 2, twice
+
+**A — an exception stripped of its justification.** A record legitimately
+declaring `expected_missing: [sequence_comparison]` had its measurement deleted
+on a copy:
+
+    15/16 passed; v2-sfcsa-homologous_superfamily-ferredoxin_like-1FDN-1BLU failed
+      record_expected_missing_is_justified            observed None
+      missing_evidence_matches_stratum_expectation    expected [], observed [sequence_comparison]
+
+It fails **twice**: once for claiming an exception without evidence, and again
+because the strict stratum expectation snaps back when the justification is gone.
+That is the property the mechanism needed. Had it failed only the first check, or
+passed, the per-record exception added the same day would have been a hole in the
+gate rather than a way to state a measured fact.
+
+**B — an unrelated pair relabelled a homolog.** 1CSP→1DZR, which has no homology,
+recurated as `homologous_superfamily` on a copy:
+
+    15/16 passed; v2-sfcsa-unrelated-ob_fold-1CSP-1DZR failed
+      homologous_superfamily_control_recovered   expected same_mechanism_class,
+                                                 observed unresolved_or_conflicted
+
+The recall gate catches a curator claiming ancestry the evidence does not support,
+which is the direction that would flatter the panel.
+
+### What a green panel here does and does not assert
+
+It asserts that four exact self-matches are recovered, that four homologous
+superfamily pairs are recovered as `same_mechanism_class`, and that **no fold
+analogy and no unrelated pair was promoted to a functional claim** — the absolute
+bound, held at zero.
+
+It does not assert that both evidence legs support every judgment. No
+`homologous_superfamily` record in this selection carries a DIAMOND row, so that
+stratum rests on structural evidence alone, and `probable_same_function` is
+unreachable in this campaign at all. Both are recorded in
+`gate_semantics.sf_csa.labels_not_exercised` and
+`.sequence_leg_measurements` rather than left for a reader to infer from a
+passing summary line.
+
+---
+
+## Finding 7 — the panel's load-bearing gate cannot fail
+
+Found 2026-09-02 by running a held-out test on proteins the module had never seen,
+at Yuvraj's instruction. The test passed. What it exposed is the finding.
+
+### The held-out test
+
+SCOP fold `d.15` (beta-Grasp), untouched by the four panel families. Four
+judgments, predictions written down in `SF_CSA_HELDOUT_PREREGISTRATION.md` before
+the data was acquired, compared once:
+
+    exact                   1DOI->1DOI  exact_function_supported    PASS
+    homologous_superfamily  1DOI->1DOX  same_mechanism_class        PASS
+    fold_analogy            1DOI->1EO6  not a function claim        PASS
+    unrelated               1DOI->1CSP  not a function claim        PASS
+
+    4/4 predictions met, 0 rows missing, 0 promotions
+
+The recall gates generalise: an unseen homolog pair in an unseen fold is recovered
+as `same_mechanism_class` at 0.915 query coverage, and an unseen self-match is
+recovered exactly.
+
+### What passing revealed
+
+Predictions 3 and 4 passed, and **they could not have failed.**
+
+`classify_hit` promotes only when `qgroup == tgroup`. The curated mechanism group
+*is* the SCOP superfamily — that is the design decision recorded in
+`sf_csa_build_campaign.py`, made so that homologs share a group and analogues do
+not. But `fold_analogy` and `unrelated` are *defined* as different superfamily.
+So for every record in those strata `qgroup != tgroup` holds by construction, and
+promotion is unreachable at any structural score.
+
+Demonstrated directly rather than argued:
+
+    analogy pair, perfect whole_architecture_match, rbh=False -> structural_analogy_only
+    analogy pair, perfect whole_architecture_match, rbh=True  -> structural_analogy_only
+    same-group pair, identical structural input,    rbh=True  -> probable_same_function
+
+The structure is as promotable as it can be made. The label does not move.
+
+### Consequence
+
+`analogy_or_unrelated_promoted_to_function_max = 0` is described in the panel's
+own gate semantics as **"the scientifically load-bearing one … an absolute bound,
+not a tolerance"**. It is satisfied by the definition of the strata, not by
+anything the module computed. By protocol rule 2 — *a gate that cannot fail is not
+a gate* — it is not currently a gate.
+
+This is Finding 2's shape returning at the centre of the panel. There, an
+unoverridden mechanism table made the same bound pass vacuously while recall
+failed 16/16. The tables were overridden and recall was fixed; the bound stayed
+vacuous for a different reason, and the fix hid it rather than removing it.
+
+### What would make it a real gate
+
+Not a threshold change. The bound needs a case where the module could plausibly
+promote and must not, which means a pair whose *target* group is inferred rather
+than curated. That is the query-versus-experimental-PDB axis, which
+`gate_semantics.sf_csa.comparison_axis` currently declares out of scope: off the
+campaign axis the target's group comes from the mechanism-family regex over a PDB
+title, and a title that matches the query's family would produce `qgroup ==
+tgroup` on a pair with no curated relationship. That is exactly the promotion the
+bound claims to forbid, and it is the only route by which it can occur.
+
+Whether to bring that axis into scope is a scientific decision and Yuvraj's.
+Until then the gate should be **relabelled from scientific to definitional**, so a
+green panel is not read as three scientific results plus a contract check when one
+of the three cannot fail.

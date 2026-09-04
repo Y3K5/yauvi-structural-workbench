@@ -1,0 +1,2125 @@
+{
+ "schema_version": "1.0",
+ "draft_state": "not_adopted",
+ "panel_id": "qualification-v2-sf-csa",
+ "workflow": "sf_csa",
+ "collection_version": "2.8",
+ "policy": "A draft. Nothing is adopted; PANEL_MANIFEST.json records are unchanged until expectations are recorded by execution, reviewed, and reproduced on a second machine.",
+ "stratum": "all_four_sf_csa_strata",
+ "gate_semantics": {
+  "sf_csa": {
+   "decision_date": "2026-08-31",
+   "decision_basis": "SF_CSA_PANEL_SCOPE.draft.md as corrected by SF_CSA_PREADOPTION_FINDINGS.md. Frozen before any record was curated.",
+   "gate_kinds": {
+    "exact_controls_recovered": "scientific",
+    "structural_homolog_controls_recovered": "scientific",
+    "analogy_or_unrelated_promoted_to_function_max": "definitional",
+    "structural_and_sequence_outputs": "contract",
+    "note": "Two of these four gates are scientific results. structural_and_sequence_outputs asserts that the module kept its two evidence legs apart, which is a property of the output shape and not a result about proteins. analogy_or_unrelated_promoted_to_function_max is definitional on the campaign axis: fold_analogy and unrelated are defined as different curated mechanism group, classify_hit promotes only when the groups match, so the bound is satisfied by the definition of the strata rather than by anything the module computed. A green panel therefore reads as two scientific results, one definitional check and one contract check, and not as four scientific results. See threshold_revisions collection 2.8 and SF_CSA_PREADOPTION_FINDINGS.md Finding 7."
+   },
+   "comparison_axis": {
+    "axis": "campaign_models",
+    "rule": "Every judged pair is between two campaign queries. Query-to-experimental-PDB hits are produced by the release but are not gated.",
+    "basis": "target_meta contains campaign query accessions only, so for an experimental-PDB hit the target's mechanism group is not the curated one but whatever the mechanism-family regex reads out of the PDB title. On the campaign axis the group is curator-supplied on both sides and the classifier separates the strata; off it, the panel would be gating a regex over free-text headers.",
+    "measured": "A true homolog and an unrelated pair both classify structural_analogy_only off this axis when the tables do not cover the biology."
+   },
+   "stratum_definition": {
+    "exact": "The same protein: an identical sequence, reached either as a self-match or under a second accession. Distinguished by accession identity before any structural reasoning.",
+    "homologous_superfamily": "Two proteins of one curated mechanism group with accepted common ancestry, matching across the whole architecture.",
+    "fold_analogy": "Two proteins whose folds match above threshold but which are not homologous and carry different curated mechanism groups. Convergence, not descent.",
+    "unrelated": "Neither homologous nor structurally similar above the release's threshold.",
+    "note": "Homology is a curatorial judgment taken from the literature, recorded per record with its citation. It is never inferred from the TM-score the panel is testing, which would make the gate circular."
+   },
+   "stratum_expected_label": {
+    "exact": "exact_function_supported",
+    "homologous_superfamily": "same_mechanism_class",
+    "fold_analogy": "any label outside function_claim_labels",
+    "unrelated": "any label outside function_claim_labels"
+   },
+   "function_claim_labels": [
+    "exact_function_supported",
+    "probable_same_function"
+   ],
+   "function_claim_note": "same_mechanism_class is deliberately excluded. The module's contract says substrate, activity, virulence and vaccine suitability are not transferred by it, so it is a bounded mechanism inference rather than a functional claim.",
+   "absolute_bound": {
+    "gate": "analogy_or_unrelated_promoted_to_function_max",
+    "value": 0,
+    "rule": "A single promotion of a fold analogy or an unrelated pair to a functional claim fails the panel. This is a bound, not a tolerance, and it is not relaxed for any family.",
+    "reachability": "Unreachable on the campaign axis, recorded 2026-09-03. Every judged pair is between two campaign queries whose mechanism group is curator-supplied, and the fold_analogy and unrelated strata are defined as different group, so qgroup != tgroup holds by construction and no structural score can promote them. The rule above is retained unchanged because it still constrains any selection in which a target group is inferred rather than curated; what changed is the claim about what a pass demonstrates. The gate stays required at a bound of 0."
+   },
+   "mechanism_tables": {
+    "requirement": "The database manifest must carry mechanism_families, contested_groups and divergence_sets explicitly, built by `sf-csa build-manifests` from the campaign spec.",
+    "why": "core.DEFAULT_MECHANISM_FAMILIES is periodontal and Bacteroidetes outer-membrane biology. With it left in place for non-periodontal families, classify_title returns 'unknown', the qgroup == tgroup branch is never entered, structural_homolog_controls_recovered fails on every case, and analogy_or_unrelated_promoted_to_function_max passes without anything being able to violate it. Overriding the tables is a precondition for the panel measuring anything, not a tidiness precaution.",
+    "checkable": "build-manifests writes the tables into the database manifest with setdefault, so the manifest states which biology was used whether or not the spec overrode it. Pinning the manifest checksum therefore pins the tables. Verified by reading manifests.build_database_manifest.",
+    "families": [
+     {
+      "family": "serine_protease_chymotrypsin",
+      "default_tables_cover_it": false
+     },
+     {
+      "family": "tim_barrel",
+      "default_tables_cover_it": false
+     },
+     {
+      "family": "immunoglobulin_like",
+      "default_tables_cover_it": false
+     },
+     {
+      "family": "omp85_bama",
+      "default_tables_cover_it": true,
+      "role": "table control: the one family the periodontal defaults already handle. It must classify identically with the defaults and with the override, which is the evidence that the override changed the biology it was meant to change and nothing else."
+     }
+    ],
+    "frozen_groups": [
+     "scop_d58_1_ferredoxin_4fe4s",
+     "scop_d58_14_ribosomal_s6",
+     "scop_b40_4_nucleic_acid_binding",
+     "scop_b40_5_inorganic_pyrophosphatase",
+     "scop_b82_1_rmlc_cupins",
+     "scop_b82_2_clavaminate_synthase_like",
+     "scop_a24_3_cytochromes",
+     "scop_a24_10_hpt_domain"
+    ],
+    "granularity": "SCOP superfamily, not fold. classify_hit promotes only when query and target share a mechanism group, so grouping at fold granularity would make every fold analogy share a group with its reference and be reported same_mechanism_class -- the panel would then agree with itself by construction. At superfamily granularity homologs share a group and analogues do not, which is the distinction under test."
+   },
+   "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+   "database_manifest_note": "Frozen 2026-09-01 from config/sf_csa/database_manifest.json, built by `sf-csa build-manifests` from sf_csa_campaign.json. The manifest carries eight SCOP-superfamily mechanism groups and none of the periodontal defaults, verified by value rather than by trusting the override; pinning this checksum pins that biology. The gate fails closed while this is null, deliberately. Re-pinned 2026-09-01 for collection 2.6 after the structure-search settings changed; the mechanism groups, same_fold_tm and whole_architecture_coverage are unchanged.",
+   "controls": {
+    "status": "both original controls retired 2026-09-01; see labels_not_exercised",
+    "rbh_computed_path": {
+     "previous_expectation": "orthology_status == reciprocal_best_hit and the label is not probable_same_function.",
+     "why_retired": "Its own note said it would fail the day the module is fixed. The module was fixed. The expectation was inverted in run_execution.py to assert the computed path reaches the label -- and then found to be uncuratable in this campaign, for the reason below."
+    },
+    "rbh_asserted_rejected": {
+     "previous_expectation": "the module emits probable_same_function while orthology_status is not reciprocal_best_hit, and the panel records that as a promotion without computed support.",
+     "why_retired": "No longer curatable at all: reject_reserved_fields refuses the rbh key at manifest read time, so the control's input never reaches classification. The guard now lives where it is enforced, in sf-csa/tests/test_rbh_provenance.py."
+    }
+   },
+   "known_defect": {
+    "id": "probable_same_function_unsupported_promotion",
+    "state": "closed 2026-09-01 by module repair, not routed around",
+    "summary_when_open": "probable_same_function is unreachable through the computed reciprocal-best-hit path and reachable through the queries manifest. classify_hit reads target_meta['rbh'] (core.py:348); the RBH computation runs after classification and writes to h['orthology_status'] on sequence rows (core.py:591-598); validated query rows are built as {**q, ...} (core.py:517) and become target_meta (core.py:533); manifest validation checks only for missing required fields (manifests.py:89) and never rejects unknown keys.",
+    "fix": [
+     "classify_hit takes rbh as an explicit keyword-only argument and no longer reads it from target_meta",
+     "the sequence leg runs before structural classification and RBH is carried as rbh_targets[query] -> {targets}, pairwise by construction",
+     "reject_reserved_fields refuses rbh and every other pipeline-computed field in a curator record, in run_pipeline and read_campaign_spec"
+    ],
+    "evidence": "sf-csa/tests/test_rbh_provenance.py, eight tests written red before the fix and failing for the three predicted reasons. sf-csa/CHANGES.md carries the full record.",
+    "superseded_decision": "Option C is void. It divided a question that no longer exists: the label is now reachable by measurement and unreachable by assertion."
+   },
+   "database_manifest_supersedes": [
+    {
+     "superseded_sha256": "11511836a4d3e569e295bbff6d60808053764ca5fa634a37690f00b21dfbf7e3",
+     "reason": "Frozen once before the manifest had been shown to run. `run_pipeline` aborts without `required_foldseek_version`, so the first manifest could never have executed and the checksum pinned a manifest that does not work. Corrected the same day, before any record was curated and before any expectation was recorded against it. The lesson is in the ordering: freeze a checksum after the artifact is proven to execute, not when it is first written.",
+     "date": "2026-09-01"
+    },
+    {
+     "superseded_sha256": "c53c2adc2e58c2b4eb32261890864fdd5b6d87c7087547e563190afde5c691fa",
+     "reason": "Structure-search settings changed in collection 2.6: exhaustive_structure_search added and structure_evalue raised from 0.01 to 10000. Eight of the sixteen declared judgments produced no Foldseek row at all under the previous settings, so the panel could not distinguish a pair rejected below threshold from a pair never compared. No scientific threshold moved.",
+     "superseded_on": "2026-09-01"
+    },
+    {
+     "superseded_sha256": "4f145ce381f4afcd0ed2af8af8162de6b1b19e7896461acb408ccde92f8306b5",
+     "reason": "Collection 2.7 reselection: twelve queries replaced, mechanism families, structure database and proteome set rebuilt.",
+     "superseded_on": "2026-09-02"
+    }
+   ],
+   "labels_not_exercised": {
+    "probable_same_function": {
+     "reachable_in_the_module": true,
+     "reachable_in_this_campaign": false,
+     "measured": "Across all twelve queries, every target carrying orthology_status == reciprocal_best_hit is the query itself. classify_hit settles a self-match by accession identity before the RBH branch runs, so the label cannot be emitted here. Zero RBH targets are non-self structural targets.",
+     "consequence": "The repaired computed path is not exercised by this panel, so the panel cannot detect a regression in it. That coverage lives in sf-csa/tests/test_rbh_provenance.py and, since 2026-09-01, in the offline fixture at tools/fixtures/sfcsa, whose main and trap scenarios both reach the label by a computed reciprocal best hit.",
+     "not_a_defect": "This is a property of the campaign's data, not of the module. The reciprocal best hits found are between a query and proteins in its own reference proteome, and those proteins have no structures in the twelve-entry structure database, so no structural row exists to carry the label.",
+     "to_exercise_it": "A campaign entry would have to be added whose reciprocal best hit is another entry with a structure. That is a curation change, and it belongs to a future collection rather than to this one."
+    },
+    "candidate_functional_divergence": {
+     "reachable_in_this_campaign": false,
+     "measured": "divergence_sets is empty in the database manifest, so the branch is never entered.",
+     "consequence": "Four of the six vocabulary labels are exercised by this panel: exact_function_supported, same_mechanism_class, structural_analogy_only and unresolved_or_conflicted."
+    }
+   },
+   "sequence_leg_measurements": {
+    "basis": "Measured 2026-09-02 by local pairwise alignment (BLOSUM62) between the two UniProt sequences, independent of the DIAMOND search whose behaviour it explains.",
+    "thresholds": {
+     "minimum_identity_percent": 20,
+     "minimum_query_coverage_percent": 40
+    },
+    "homologous_superfamily": [
+     {
+      "pair": "1FDN->1BLU",
+      "query": "P00198",
+      "target": "P00208",
+      "identity_percent": 50.9,
+      "query_coverage_percent": 98.2,
+      "above_thresholds": true,
+      "diamond_row": false,
+      "note": "Above both thresholds and still not returned, at any e-value: rerun at --evalue 10 against the same database DIAMOND returns two hits and neither is P00208. Its seed filter does not reach this pair. The local-alignment score is the misleading number here, not the tool, and the panel records the tool's behaviour because the tool is what the declared leg is."
+     },
+     {
+      "pair": "1DZR->1J1L",
+      "query": "P26394",
+      "target": "O00625",
+      "identity_percent": 24.5,
+      "query_coverage_percent": 29.0,
+      "above_thresholds": false,
+      "diamond_row": false,
+      "note": "Below the coverage minimum. Correctly absent."
+     },
+     {
+      "pair": "1C02->2OOC",
+      "query": "Q07688",
+      "target": "Q9A980",
+      "identity_percent": 34.8,
+      "query_coverage_percent": 13.8,
+      "above_thresholds": false,
+      "diamond_row": false,
+      "note": "Below the coverage minimum. Correctly absent."
+     }
+    ],
+    "consequence": "No homologous_superfamily record in this selection carries a sequence row. The stratum is recovered on structural evidence alone, and the panel says so rather than implying two legs where there is one."
+   }
+  },
+  "missing_evidence_behavior": {
+   "mode": "fail_closed",
+   "expected_missing_by_stratum": {
+    "exact": [],
+    "homologous_superfamily": [],
+    "fold_analogy": [
+     "sequence_comparison"
+    ],
+    "unrelated": [
+     "sequence_comparison"
+    ]
+   },
+   "legs": [
+    "structural_comparison",
+    "sequence_comparison",
+    "reciprocal_best_hit"
+   ],
+   "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated. The unrelated stratum is expected to produce both legs: a pair below the structural threshold still yields a row saying so, and an absent row means the release did not compare the pair at all, which is a different fact.",
+   "derivation_note": "sf-csa writes no RUN_MANIFEST.json and has no missing-evidence concept of its own. The runner derives one from the release rather than assuming nothing is missing, which would make this gate unfalsifiable. A leg counts as missing only when the release carries no row for the judged pair.",
+   "sequence_leg_semantics": {
+    "rule": "DIAMOND executes for every query. Whether it returns a row for a given pair is a result, not a measure of whether the comparison happened, and the two must not be conflated.",
+    "why_this_differs_from_the_structural_leg": "Finding 4 fixed the same conflation on the structural side by making the Foldseek search exhaustive, so every declared pair yields a row stating where it fell. There is no equivalent for a sequence aligner: DIAMOND does not emit non-hits, and forcing it to would produce rows that mean nothing. The distinction therefore lives here, in what the panel expects, rather than in the search.",
+    "fold_analogy_and_unrelated": "Absent by expectation. These strata are defined by the absence of homology; a sequence row for them would be the finding, not its lack.",
+    "homologous_superfamily": "Absent only when the pair falls below the declared minima of 20 percent identity and 40 percent query coverage. A record whose sequence leg is absent must carry the measured identity and coverage, so a reader sees why rather than inferring a fault.",
+    "exact": "Never absent. A protein compared with itself is a self-match at 100 percent identity, and its absence means the query is not in its own proteome -- which is exactly the data-integrity failure of Finding 5 and must fail the panel."
+   }
+  },
+  "coverage_requirements": {
+   "mode": "witnessed_by_at_least_one_executed_case",
+   "required_features": [
+    "cross_query_matrix_written",
+    "structural_leg_written",
+    "sequence_leg_written",
+    "whole_architecture_match_observed",
+    "below_threshold_observed",
+    "exact_identity_recovered",
+    "mechanism_class_recovered",
+    "analogy_withheld_from_function"
+   ],
+   "rationale": "analogy_withheld_from_function is the discriminating witness: a structural match above threshold that was still refused a functional claim. A release that never produces it has not exercised the behaviour the panel exists to test."
+  }
+ },
+ "records": [
+  {
+   "record_id": "v2-sfcsa-exact-ferredoxin_like-1FDN-1FDN",
+   "record_kind": "relationship_judgment",
+   "stratum": "exact",
+   "split": "curator_frozen",
+   "family": "ferredoxin_like",
+   "scop_fold": "d.58",
+   "pair": {
+    "query_pdb": "1FDN",
+    "target_pdb": "1FDN",
+    "query_accession": "P00198",
+    "target_accession": "P00198"
+   },
+   "artifact": "sources/campaign_models/P00198.pdb",
+   "checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "target_artifact": "sources/campaign_models/P00198.pdb",
+   "target_checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P00198",
+    "target_uniprot": "P00198",
+    "query_source_proteome": "sources/proteomes/UP000006094.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "accession identity",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "complete: every declared evidence leg was supplied",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P00198",
+     "target": "P00198"
+    },
+    "missing_evidence": [],
+    "judgment": {
+     "query_id": "P00198",
+     "target_id": "P00198",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "exact_function_supported",
+     "classification_basis": "exact accession self-match",
+     "evidence_class": "E1_exact_identity",
+     "limitation": "self-match is a control, not an independent function experiment"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ferredoxin_like-1FDN-1FDN/targets/P00198/structure_hits.tsv",
+     "aligned_tm_score": "1.018E+00",
+     "query_coverage": "1.000",
+     "target_coverage": "1.000",
+     "rmsd": "6.865E-03"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ferredoxin_like-1FDN-1FDN/targets/P00198/species_comparison.tsv",
+     "orthology_status": "reciprocal_best_hit",
+     "percent_identity": "100",
+     "evalue": "2.66e-24",
+     "query_coverage_hsp": "100"
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-homologous_superfamily-ferredoxin_like-1FDN-1BLU",
+   "record_kind": "relationship_judgment",
+   "stratum": "homologous_superfamily",
+   "split": "curator_frozen",
+   "family": "ferredoxin_like",
+   "scop_fold": "d.58",
+   "pair": {
+    "query_pdb": "1FDN",
+    "target_pdb": "1BLU",
+    "query_accession": "P00198",
+    "target_accession": "P00208"
+   },
+   "artifact": "sources/campaign_models/P00198.pdb",
+   "checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "target_artifact": "sources/campaign_models/P00208.pdb",
+   "target_checksum": "14481d8c43dcedede1d6eb96f7aeca720688272c00d5aaf70a1c29e4e4862ef5",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P00198",
+    "target_uniprot": "P00208",
+    "query_source_proteome": "sources/proteomes/UP000006094.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "both SCOP d.58.1.1, 4Fe-4S ferredoxins",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P00198",
+     "target": "P00208"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P00198",
+     "target_id": "P00208",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "same_mechanism_class",
+     "classification_basis": "compatible structural architecture and independently named mechanism class",
+     "evidence_class": "E3_or_E4_bounded_inference",
+     "limitation": "substrate, activity, virulence and vaccine suitability are not transferred"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ferredoxin_like-1FDN-1BLU/targets/P00198/structure_hits.tsv",
+     "aligned_tm_score": "9.872E-01",
+     "query_coverage": "1.000",
+     "target_coverage": "0.747",
+     "rmsd": "5.986E-01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ferredoxin_like-1FDN-1BLU/targets/P00198/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   },
+   "sequence_leg_measurement": {
+    "identity_percent": 50.9,
+    "query_coverage_percent": 98.2,
+    "above_thresholds": true,
+    "diamond_row": false,
+    "note": "Above both declared minima and still not seeded by DIAMOND at any e-value; verified at --evalue 10."
+   },
+   "expected_missing": [
+    "sequence_comparison"
+   ]
+  },
+  {
+   "record_id": "v2-sfcsa-fold_analogy-ferredoxin_like-1FDN-1APS",
+   "record_kind": "relationship_judgment",
+   "stratum": "fold_analogy",
+   "split": "curator_frozen",
+   "family": "ferredoxin_like",
+   "scop_fold": "d.58",
+   "pair": {
+    "query_pdb": "1FDN",
+    "target_pdb": "1APS",
+    "query_accession": "P00198",
+    "target_accession": "P00818"
+   },
+   "artifact": "sources/campaign_models/P00198.pdb",
+   "checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "target_artifact": "sources/campaign_models/P00818.pdb",
+   "target_checksum": "b4de549b0a7592ee5847a7d4c4349c7f3b493495aedfd504a130d4de8cea0503",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P00198",
+    "target_uniprot": "P00818",
+    "query_source_proteome": "sources/proteomes/UP000006094.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP fold d.58; d.58.1 vs d.58.10 acylphosphatase/BLUF-like",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P00198",
+     "target": "P00818"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P00198",
+     "target_id": "P00818",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ferredoxin_like-1FDN-1APS/targets/P00198/structure_hits.tsv",
+     "aligned_tm_score": "3.258E-01",
+     "query_coverage": "0.536",
+     "target_coverage": "0.374",
+     "rmsd": "4.854E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ferredoxin_like-1FDN-1APS/targets/P00198/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-unrelated-ferredoxin_like-1FDN-1CSP",
+   "record_kind": "relationship_judgment",
+   "stratum": "unrelated",
+   "split": "curator_frozen",
+   "family": "ferredoxin_like",
+   "scop_fold": "d.58",
+   "pair": {
+    "query_pdb": "1FDN",
+    "target_pdb": "1CSP",
+    "query_accession": "P00198",
+    "target_accession": "P32081"
+   },
+   "artifact": "sources/campaign_models/P00198.pdb",
+   "checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "target_artifact": "sources/campaign_models/P32081.pdb",
+   "target_checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P00198",
+    "target_uniprot": "P32081",
+    "query_source_proteome": "sources/proteomes/UP000006094.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP folds d.58 vs b.40",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P00198",
+     "target": "P32081"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P00198",
+     "target_id": "P32081",
+     "structural_category": "domain_or_partial_match",
+     "function_classification": "structural_analogy_only",
+     "classification_basis": "partial structural similarity without concordant independent function evidence",
+     "evidence_class": "E4_computational",
+     "limitation": "partial fold similarity is not functional equivalence"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ferredoxin_like-1FDN-1CSP/targets/P00198/structure_hits.tsv",
+     "aligned_tm_score": "6.938E-01",
+     "query_coverage": "0.214",
+     "target_coverage": "0.179",
+     "rmsd": "1.239E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ferredoxin_like-1FDN-1CSP/targets/P00198/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-exact-ob_fold-1CSP-1CSP",
+   "record_kind": "relationship_judgment",
+   "stratum": "exact",
+   "split": "curator_frozen",
+   "family": "ob_fold",
+   "scop_fold": "b.40",
+   "pair": {
+    "query_pdb": "1CSP",
+    "target_pdb": "1CSP",
+    "query_accession": "P32081",
+    "target_accession": "P32081"
+   },
+   "artifact": "sources/campaign_models/P32081.pdb",
+   "checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "target_artifact": "sources/campaign_models/P32081.pdb",
+   "target_checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P32081",
+    "target_uniprot": "P32081",
+    "query_source_proteome": "sources/proteomes/UP000001570.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "accession identity",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "complete: every declared evidence leg was supplied",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P32081",
+     "target": "P32081"
+    },
+    "missing_evidence": [],
+    "judgment": {
+     "query_id": "P32081",
+     "target_id": "P32081",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "exact_function_supported",
+     "classification_basis": "exact accession self-match",
+     "evidence_class": "E1_exact_identity",
+     "limitation": "self-match is a control, not an independent function experiment"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ob_fold-1CSP-1CSP/targets/P32081/structure_hits.tsv",
+     "aligned_tm_score": "1.015E+00",
+     "query_coverage": "1.000",
+     "target_coverage": "1.000",
+     "rmsd": "0.000E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ob_fold-1CSP-1CSP/targets/P32081/species_comparison.tsv",
+     "orthology_status": "reciprocal_best_hit",
+     "percent_identity": "100",
+     "evalue": "5.66e-44",
+     "query_coverage_hsp": "100"
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-homologous_superfamily-ob_fold-1CSP-1MJC",
+   "record_kind": "relationship_judgment",
+   "stratum": "homologous_superfamily",
+   "split": "curator_frozen",
+   "family": "ob_fold",
+   "scop_fold": "b.40",
+   "pair": {
+    "query_pdb": "1CSP",
+    "target_pdb": "1MJC",
+    "query_accession": "P32081",
+    "target_accession": "P0A9X9"
+   },
+   "artifact": "sources/campaign_models/P32081.pdb",
+   "checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "target_artifact": "sources/campaign_models/P0A9X9.pdb",
+   "target_checksum": "50dea5670ba036aa814c57203d0a35e787d26f292f65eb3951945c706eb06e09",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P32081",
+    "target_uniprot": "P0A9X9",
+    "query_source_proteome": "sources/proteomes/UP000001570.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "both SCOP b.40.4.5, nucleic-acid-binding",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "complete: every declared evidence leg was supplied",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P32081",
+     "target": "P0A9X9"
+    },
+    "missing_evidence": [],
+    "judgment": {
+     "query_id": "P32081",
+     "target_id": "P0A9X9",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "same_mechanism_class",
+     "classification_basis": "compatible structural architecture and independently named mechanism class",
+     "evidence_class": "E3_or_E4_bounded_inference",
+     "limitation": "substrate, activity, virulence and vaccine suitability are not transferred"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ob_fold-1CSP-1MJC/targets/P32081/structure_hits.tsv",
+     "aligned_tm_score": "9.897E-01",
+     "query_coverage": "0.970",
+     "target_coverage": "0.943",
+     "rmsd": "6.343E-01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ob_fold-1CSP-1MJC/targets/P32081/species_comparison.tsv",
+     "orthology_status": "paralog_or_secondary_candidate",
+     "percent_identity": "62.5",
+     "evalue": "2.86e-22",
+     "query_coverage_hsp": "94.0"
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-fold_analogy-ob_fold-1CSP-1E6A",
+   "record_kind": "relationship_judgment",
+   "stratum": "fold_analogy",
+   "split": "curator_frozen",
+   "family": "ob_fold",
+   "scop_fold": "b.40",
+   "pair": {
+    "query_pdb": "1CSP",
+    "target_pdb": "1E6A",
+    "query_accession": "P32081",
+    "target_accession": "P00817"
+   },
+   "artifact": "sources/campaign_models/P32081.pdb",
+   "checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "target_artifact": "sources/campaign_models/P00817.pdb",
+   "target_checksum": "57ed0f43c3fb0f48b4b2924947ae9cbc5708c9a3b1e608e4aa39111aa6375a0a",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P32081",
+    "target_uniprot": "P00817",
+    "query_source_proteome": "sources/proteomes/UP000001570.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP fold b.40; b.40.4 vs b.40.5 inorganic pyrophosphatase",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P32081",
+     "target": "P00817"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P32081",
+     "target_id": "P00817",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ob_fold-1CSP-1E6A/targets/P32081/structure_hits.tsv",
+     "aligned_tm_score": "3.137E-01",
+     "query_coverage": "0.910",
+     "target_coverage": "0.206",
+     "rmsd": "1.064E+01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ob_fold-1CSP-1E6A/targets/P32081/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-unrelated-ob_fold-1CSP-1DZR",
+   "record_kind": "relationship_judgment",
+   "stratum": "unrelated",
+   "split": "curator_frozen",
+   "family": "ob_fold",
+   "scop_fold": "b.40",
+   "pair": {
+    "query_pdb": "1CSP",
+    "target_pdb": "1DZR",
+    "query_accession": "P32081",
+    "target_accession": "P26394"
+   },
+   "artifact": "sources/campaign_models/P32081.pdb",
+   "checksum": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "target_artifact": "sources/campaign_models/P26394.pdb",
+   "target_checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P32081",
+    "target_uniprot": "P26394",
+    "query_source_proteome": "sources/proteomes/UP000001570.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP folds b.40 vs b.82",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P32081",
+     "target": "P26394"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P32081",
+     "target_id": "P26394",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ob_fold-1CSP-1DZR/targets/P32081/structure_hits.tsv",
+     "aligned_tm_score": "2.935E-01",
+     "query_coverage": "0.313",
+     "target_coverage": "0.120",
+     "rmsd": "7.167E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ob_fold-1CSP-1DZR/targets/P32081/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-exact-ds_beta_helix-1DZR-1DZR",
+   "record_kind": "relationship_judgment",
+   "stratum": "exact",
+   "split": "curator_frozen",
+   "family": "ds_beta_helix",
+   "scop_fold": "b.82",
+   "pair": {
+    "query_pdb": "1DZR",
+    "target_pdb": "1DZR",
+    "query_accession": "P26394",
+    "target_accession": "P26394"
+   },
+   "artifact": "sources/campaign_models/P26394.pdb",
+   "checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "target_artifact": "sources/campaign_models/P26394.pdb",
+   "target_checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P26394",
+    "target_uniprot": "P26394",
+    "query_source_proteome": "sources/proteomes/UP000001014.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "accession identity",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "complete: every declared evidence leg was supplied",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P26394",
+     "target": "P26394"
+    },
+    "missing_evidence": [],
+    "judgment": {
+     "query_id": "P26394",
+     "target_id": "P26394",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "exact_function_supported",
+     "classification_basis": "exact accession self-match",
+     "evidence_class": "E1_exact_identity",
+     "limitation": "self-match is a control, not an independent function experiment"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ds_beta_helix-1DZR-1DZR/targets/P26394/structure_hits.tsv",
+     "aligned_tm_score": "1.005E+00",
+     "query_coverage": "1.000",
+     "target_coverage": "1.000",
+     "rmsd": "0.000E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-ds_beta_helix-1DZR-1DZR/targets/P26394/species_comparison.tsv",
+     "orthology_status": "reciprocal_best_hit",
+     "percent_identity": "100",
+     "evalue": "8.92e-132",
+     "query_coverage_hsp": "100"
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-homologous_superfamily-ds_beta_helix-1DZR-1J1L",
+   "record_kind": "relationship_judgment",
+   "stratum": "homologous_superfamily",
+   "split": "curator_frozen",
+   "family": "ds_beta_helix",
+   "scop_fold": "b.82",
+   "pair": {
+    "query_pdb": "1DZR",
+    "target_pdb": "1J1L",
+    "query_accession": "P26394",
+    "target_accession": "O00625"
+   },
+   "artifact": "sources/campaign_models/P26394.pdb",
+   "checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "target_artifact": "sources/campaign_models/O00625.pdb",
+   "target_checksum": "2051d43f8c5c583d59062b955260583cc64cfaa7071a6564a8296c453b05a670",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P26394",
+    "target_uniprot": "O00625",
+    "query_source_proteome": "sources/proteomes/UP000001014.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP superfamily b.82.1; families .1 vs .12",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P26394",
+     "target": "O00625"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P26394",
+     "target_id": "O00625",
+     "structural_category": "domain_or_partial_match",
+     "function_classification": "same_mechanism_class",
+     "classification_basis": "compatible structural architecture and independently named mechanism class",
+     "evidence_class": "E3_or_E4_bounded_inference",
+     "limitation": "substrate, activity, virulence and vaccine suitability are not transferred"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ds_beta_helix-1DZR-1J1L/targets/P26394/structure_hits.tsv",
+     "aligned_tm_score": "5.125E-01",
+     "query_coverage": "0.721",
+     "target_coverage": "0.359",
+     "rmsd": "1.332E+01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-ds_beta_helix-1DZR-1J1L/targets/P26394/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   },
+   "sequence_leg_measurement": {
+    "identity_percent": 24.5,
+    "query_coverage_percent": 29.0,
+    "above_thresholds": false,
+    "diamond_row": false,
+    "note": "Below the 40 percent query-coverage minimum. Correctly absent."
+   },
+   "expected_missing": [
+    "sequence_comparison"
+   ]
+  },
+  {
+   "record_id": "v2-sfcsa-fold_analogy-ds_beta_helix-1DZR-1OS7",
+   "record_kind": "relationship_judgment",
+   "stratum": "fold_analogy",
+   "split": "curator_frozen",
+   "family": "ds_beta_helix",
+   "scop_fold": "b.82",
+   "pair": {
+    "query_pdb": "1DZR",
+    "target_pdb": "1OS7",
+    "query_accession": "P26394",
+    "target_accession": "P37610"
+   },
+   "artifact": "sources/campaign_models/P26394.pdb",
+   "checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "target_artifact": "sources/campaign_models/P37610.pdb",
+   "target_checksum": "2fbd7e5e025c21429c5d4007efebf4a943820ed24be11fae2c5a528add694ae9",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P26394",
+    "target_uniprot": "P37610",
+    "query_source_proteome": "sources/proteomes/UP000001014.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP fold b.82; b.82.1 vs b.82.2 clavaminate synthase-like",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P26394",
+     "target": "P37610"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P26394",
+     "target_id": "P37610",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ds_beta_helix-1DZR-1OS7/targets/P26394/structure_hits.tsv",
+     "aligned_tm_score": "2.870E-01",
+     "query_coverage": "0.612",
+     "target_coverage": "0.809",
+     "rmsd": "1.395E+01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-ds_beta_helix-1DZR-1OS7/targets/P26394/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-unrelated-ds_beta_helix-1DZR-1C02",
+   "record_kind": "relationship_judgment",
+   "stratum": "unrelated",
+   "split": "curator_frozen",
+   "family": "ds_beta_helix",
+   "scop_fold": "b.82",
+   "pair": {
+    "query_pdb": "1DZR",
+    "target_pdb": "1C02",
+    "query_accession": "P26394",
+    "target_accession": "Q07688"
+   },
+   "artifact": "sources/campaign_models/P26394.pdb",
+   "checksum": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "target_artifact": "sources/campaign_models/Q07688.pdb",
+   "target_checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "P26394",
+    "target_uniprot": "Q07688",
+    "query_source_proteome": "sources/proteomes/UP000001014.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP folds b.82 vs a.24",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "P26394",
+     "target": "Q07688"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "P26394",
+     "target_id": "Q07688",
+     "structural_category": "domain_or_partial_match",
+     "function_classification": "structural_analogy_only",
+     "classification_basis": "partial structural similarity without concordant independent function evidence",
+     "evidence_class": "E4_computational",
+     "limitation": "partial fold similarity is not functional equivalence"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ds_beta_helix-1DZR-1C02/targets/P26394/structure_hits.tsv",
+     "aligned_tm_score": "9.233E-01",
+     "query_coverage": "0.066",
+     "target_coverage": "0.072",
+     "rmsd": "6.064E-01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-ds_beta_helix-1DZR-1C02/targets/P26394/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-exact-four_helical_bundle-1C02-1C02",
+   "record_kind": "relationship_judgment",
+   "stratum": "exact",
+   "split": "curator_frozen",
+   "family": "four_helical_bundle",
+   "scop_fold": "a.24",
+   "pair": {
+    "query_pdb": "1C02",
+    "target_pdb": "1C02",
+    "query_accession": "Q07688",
+    "target_accession": "Q07688"
+   },
+   "artifact": "sources/campaign_models/Q07688.pdb",
+   "checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "target_artifact": "sources/campaign_models/Q07688.pdb",
+   "target_checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "Q07688",
+    "target_uniprot": "Q07688",
+    "query_source_proteome": "sources/proteomes/UP000002311.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "accession identity",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "complete: every declared evidence leg was supplied",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "Q07688",
+     "target": "Q07688"
+    },
+    "missing_evidence": [],
+    "judgment": {
+     "query_id": "Q07688",
+     "target_id": "Q07688",
+     "structural_category": "whole_architecture_match",
+     "function_classification": "exact_function_supported",
+     "classification_basis": "exact accession self-match",
+     "evidence_class": "E1_exact_identity",
+     "limitation": "self-match is a control, not an independent function experiment"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-four_helical_bundle-1C02-1C02/targets/Q07688/structure_hits.tsv",
+     "aligned_tm_score": "1.006E+00",
+     "query_coverage": "1.000",
+     "target_coverage": "1.000",
+     "rmsd": "4.520E-03"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-exact-four_helical_bundle-1C02-1C02/targets/Q07688/species_comparison.tsv",
+     "orthology_status": "reciprocal_best_hit",
+     "percent_identity": "100",
+     "evalue": "5.27e-114",
+     "query_coverage_hsp": "100"
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-homologous_superfamily-four_helical_bundle-1C02-2OOC",
+   "record_kind": "relationship_judgment",
+   "stratum": "homologous_superfamily",
+   "split": "curator_frozen",
+   "family": "four_helical_bundle",
+   "scop_fold": "a.24",
+   "pair": {
+    "query_pdb": "1C02",
+    "target_pdb": "2OOC",
+    "query_accession": "Q07688",
+    "target_accession": "Q9A980"
+   },
+   "artifact": "sources/campaign_models/Q07688.pdb",
+   "checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "target_artifact": "sources/campaign_models/Q9A980.pdb",
+   "target_checksum": "ed7aa7aed387a9e67873c4057feda48288548e9595a04eb85d45757c9da87080",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "Q07688",
+    "target_uniprot": "Q9A980",
+    "query_source_proteome": "sources/proteomes/UP000002311.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP superfamily a.24.10; families .2 vs .6",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "Q07688",
+     "target": "Q9A980"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "Q07688",
+     "target_id": "Q9A980",
+     "structural_category": "domain_or_partial_match",
+     "function_classification": "same_mechanism_class",
+     "classification_basis": "compatible structural architecture and independently named mechanism class",
+     "evidence_class": "E3_or_E4_bounded_inference",
+     "limitation": "substrate, activity, virulence and vaccine suitability are not transferred"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-four_helical_bundle-1C02-2OOC/targets/Q07688/structure_hits.tsv",
+     "aligned_tm_score": "6.156E-01",
+     "query_coverage": "0.515",
+     "target_coverage": "0.661",
+     "rmsd": "3.505E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-homologous_superfamily-four_helical_bundle-1C02-2OOC/targets/Q07688/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   },
+   "sequence_leg_measurement": {
+    "identity_percent": 34.8,
+    "query_coverage_percent": 13.8,
+    "above_thresholds": false,
+    "diamond_row": false,
+    "note": "Below the 40 percent query-coverage minimum. Correctly absent."
+   },
+   "expected_missing": [
+    "sequence_comparison"
+   ]
+  },
+  {
+   "record_id": "v2-sfcsa-fold_analogy-four_helical_bundle-1C02-1JOG",
+   "record_kind": "relationship_judgment",
+   "stratum": "fold_analogy",
+   "split": "curator_frozen",
+   "family": "four_helical_bundle",
+   "scop_fold": "a.24",
+   "pair": {
+    "query_pdb": "1C02",
+    "target_pdb": "1JOG",
+    "query_accession": "Q07688",
+    "target_accession": "P43934"
+   },
+   "artifact": "sources/campaign_models/Q07688.pdb",
+   "checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "target_artifact": "sources/campaign_models/P43934.pdb",
+   "target_checksum": "8be849113c25b95aeac490a6385b496c2eab9553784c46a8afa608dae4c6f675",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "Q07688",
+    "target_uniprot": "P43934",
+    "query_source_proteome": "sources/proteomes/UP000002311.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP fold a.24; a.24.10 vs a.24.16 nucleotidyltransferase substrate binding",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "Q07688",
+     "target": "P43934"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "Q07688",
+     "target_id": "P43934",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-four_helical_bundle-1C02-1JOG/targets/Q07688/structure_hits.tsv",
+     "aligned_tm_score": "4.321E-01",
+     "query_coverage": "0.491",
+     "target_coverage": "0.616",
+     "rmsd": "1.334E+01"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-fold_analogy-four_helical_bundle-1C02-1JOG/targets/Q07688/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  },
+  {
+   "record_id": "v2-sfcsa-unrelated-four_helical_bundle-1C02-1FDN",
+   "record_kind": "relationship_judgment",
+   "stratum": "unrelated",
+   "split": "curator_frozen",
+   "family": "four_helical_bundle",
+   "scop_fold": "a.24",
+   "pair": {
+    "query_pdb": "1C02",
+    "target_pdb": "1FDN",
+    "query_accession": "Q07688",
+    "target_accession": "P00198"
+   },
+   "artifact": "sources/campaign_models/Q07688.pdb",
+   "checksum": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "target_artifact": "sources/campaign_models/P00198.pdb",
+   "target_checksum": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "source_release": {
+    "provider": "AlphaFold DB v6 model of the UniProt entry; SCOP strata via PDBe SIFTS",
+    "query_uniprot": "Q07688",
+    "target_uniprot": "P00198",
+    "query_source_proteome": "sources/proteomes/UP000002311.fasta"
+   },
+   "license": "AlphaFold DB CC-BY-4.0; UniProt CC BY 4.0; wwPDB CC0 1.0",
+   "citation": {
+    "stratum_definition": "Russell, Saqi, Sayle, Bates and Sternberg, J Mol Biol 1997 \u2014 same superfamily is homologous_superfamily; same fold, other superfamily is fold_analogy; different fold is unrelated.",
+    "classification_source": "SCOP fold and superfamily via the PDBe SIFTS mapping, screened by sf_csa_screen_candidates.py.",
+    "caution": "Wright, Genome Biol Evol 2025 \u2014 structural resemblance alone does not establish homology in either direction. A fold_analogy record means same fold, different superfamily in SCOP, not proven independent origin."
+   },
+   "stratum_basis": "SCOP folds a.24 vs d.58",
+   "homology_is_curatorial": "The stratum is assigned from SCOP, never from the TM-score this panel tests. Deriving it from the gated geometry would make the gate circular.",
+   "expected_result": {
+    "cli_exit_code": 0,
+    "exit_code_reason": "scientifically incomplete, missing: sequence_comparison",
+    "invocation": {
+     "queries": "config/sf_csa/target_manifest.json",
+     "databases": "config/sf_csa/database_manifest.json",
+     "query": "Q07688",
+     "target": "P00198"
+    },
+    "missing_evidence": [
+     "sequence_comparison"
+    ],
+    "judgment": {
+     "query_id": "Q07688",
+     "target_id": "P00198",
+     "structural_category": "below_structural_similarity_threshold",
+     "function_classification": "unresolved_or_conflicted",
+     "classification_basis": "structural threshold not met",
+     "evidence_class": "E4_computational",
+     "limitation": "no same-fold interpretation allowed"
+    },
+    "structural_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-four_helical_bundle-1C02-1FDN/targets/Q07688/structure_hits.tsv",
+     "aligned_tm_score": "2.894E-01",
+     "query_coverage": "0.102",
+     "target_coverage": "0.339",
+     "rmsd": "5.195E+00"
+    },
+    "sequence_leg": {
+     "source": "/private/tmp/claude-502/sfcsa_rec2/v2-sfcsa-unrelated-four_helical_bundle-1C02-1FDN/targets/Q07688/species_comparison.tsv",
+     "orthology_status": null,
+     "percent_identity": null,
+     "evalue": null,
+     "query_coverage_hsp": null
+    },
+    "release_provenance": {
+     "tools": {
+      "sf_csa": "1.0.0",
+      "foldseek": "10.941cd33",
+      "diamond": "diamond version 2.1.11"
+     },
+     "thresholds": {
+      "structure_evalue": "10000",
+      "exhaustive_structure_search": true,
+      "same_fold_tm": 0.5,
+      "whole_architecture_coverage": 0.7,
+      "max_structure_hits": 50,
+      "sequence_evalue": "1e-5",
+      "sequence_min_identity": 20,
+      "sequence_min_query_coverage": 40,
+      "sequence_max_hits": 5000,
+      "sequence_hits_per_proteome": 10
+     },
+     "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+     "query_manifest_sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74"
+    }
+   }
+  }
+ ],
+ "source_lock_additions": [
+  {
+   "source_id": "SFCSA:queries_manifest",
+   "artifact": "config/sf_csa/target_manifest.json",
+   "provider": "authored for this collection",
+   "sha256": "198c6bbc7ff4bf16a4a37871a399bb1152ab4a0a64d7c0290c2f9c4c09eb1c74",
+   "acquisition": "committed_in_repository"
+  },
+  {
+   "source_id": "SFCSA:database_manifest",
+   "artifact": "config/sf_csa/database_manifest.json",
+   "provider": "authored for this collection",
+   "sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+   "acquisition": "committed_in_repository"
+  },
+  {
+   "source_id": "ALPHAFOLD:P00198",
+   "artifact": "sources/campaign_models/P00198.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "68dc8fc71ca9c5fa730cfa6d5942111769e7c2be64ab97173c0db2cebefd356b",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P00198-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P00198",
+   "artifact": "sources/uniprot/P00198.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "33bd9ce017389ac6e5bcd463ea1ddb5b25e0aa3502bfeeb1e2f2a2ef0f10ed3c",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P00198.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P00208",
+   "artifact": "sources/campaign_models/P00208.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "14481d8c43dcedede1d6eb96f7aeca720688272c00d5aaf70a1c29e4e4862ef5",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P00208-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P00208",
+   "artifact": "sources/uniprot/P00208.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "4a73700403b7d8be7e46356d18b78e29476ec5dec639ca4bb8945f4d3c52b881",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P00208.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P00818",
+   "artifact": "sources/campaign_models/P00818.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "b4de549b0a7592ee5847a7d4c4349c7f3b493495aedfd504a130d4de8cea0503",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P00818-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P00818",
+   "artifact": "sources/uniprot/P00818.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "e17e5cb2fa00e1a76231cfd8a78b513d35783f4351f5e2fd3a6ba24d13550f19",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P00818.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P32081",
+   "artifact": "sources/campaign_models/P32081.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "6a092e6b75c9116d05734f35318fa3b6801520e1e05e13c2bdcf7da7590132cd",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P32081-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P32081",
+   "artifact": "sources/uniprot/P32081.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "0b43e4fe367ee82020f672b35f492ca64c072485ec240d21a5edfec967d931ed",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P32081.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P0A9X9",
+   "artifact": "sources/campaign_models/P0A9X9.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "50dea5670ba036aa814c57203d0a35e787d26f292f65eb3951945c706eb06e09",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P0A9X9-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P0A9X9",
+   "artifact": "sources/uniprot/P0A9X9.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "860337086887b8bd2979d240f2b96f8ee158ee3832bbe60d3e796b7a2d00acce",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P0A9X9.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P00817",
+   "artifact": "sources/campaign_models/P00817.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "57ed0f43c3fb0f48b4b2924947ae9cbc5708c9a3b1e608e4aa39111aa6375a0a",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P00817-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P00817",
+   "artifact": "sources/uniprot/P00817.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "357e6c1b187a3e410eae89b4db0ee9a47ae468bbe37d30a2a0cb6dc5ce9b7567",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P00817.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P26394",
+   "artifact": "sources/campaign_models/P26394.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "350211d826663f2491739382462bdc06630ba9ab66dad6e013d31f7045240bcc",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P26394-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P26394",
+   "artifact": "sources/uniprot/P26394.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "071077cde40314639b0069f610bf9841ede38b2d8804df3b06169bf6bd866ac5",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P26394.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:O00625",
+   "artifact": "sources/campaign_models/O00625.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "2051d43f8c5c583d59062b955260583cc64cfaa7071a6564a8296c453b05a670",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-O00625-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:O00625",
+   "artifact": "sources/uniprot/O00625.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "aee9b0726e4f72521e26c9ec085635a4ba0d02821c1e929dd4976adf3d99db0b",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/O00625.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P37610",
+   "artifact": "sources/campaign_models/P37610.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "2fbd7e5e025c21429c5d4007efebf4a943820ed24be11fae2c5a528add694ae9",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P37610-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P37610",
+   "artifact": "sources/uniprot/P37610.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "004a2531342e0c9e2eb5273e32accb53c10a6ed838bf4cb24122ad3a3783ee55",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P37610.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:Q07688",
+   "artifact": "sources/campaign_models/Q07688.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "1e1cb1910caeaae1888d9bbf199d878e0e2ac9952a3a8c748405e40ce4df4903",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-Q07688-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:Q07688",
+   "artifact": "sources/uniprot/Q07688.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "3dc551667356eecf4147242aaad5e05837a29e0d182c05e373716f57cf17cfaa",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/Q07688.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:Q9A980",
+   "artifact": "sources/campaign_models/Q9A980.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "ed7aa7aed387a9e67873c4057feda48288548e9595a04eb85d45757c9da87080",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-Q9A980-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:Q9A980",
+   "artifact": "sources/uniprot/Q9A980.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "12c1cf81bfb5c7e85349fcd79e40ce2624f7441cb7402742dd37263262851178",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/Q9A980.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "ALPHAFOLD:P43934",
+   "artifact": "sources/campaign_models/P43934.pdb",
+   "provider": "AlphaFold DB v6",
+   "sha256": "8be849113c25b95aeac490a6385b496c2eab9553784c46a8afa608dae4c6f675",
+   "license": "CC-BY-4.0",
+   "url": "https://alphafold.ebi.ac.uk/files/AF-P43934-F1-model_v6.pdb",
+   "acquisition": "fetch_from_url"
+  },
+  {
+   "source_id": "UNIPROT:P43934",
+   "artifact": "sources/uniprot/P43934.fasta",
+   "provider": "UniProt / UniProtKB",
+   "sha256": "c9f8e5e095a067c3d127b6690bb521d7f5f90cd69cb607ed66efaa6e3e903a27",
+   "license": "CC BY 4.0",
+   "url": "https://rest.uniprot.org/uniprotkb/P43934.fasta",
+   "acquisition": "fetch_from_url",
+   "digest_note": "file digest; an earlier draft recorded the sequence-string digest from the queries manifest, which is a different quantity"
+  },
+  {
+   "source_id": "PROTEOME:UP000000579",
+   "artifact": "sources/proteomes/UP000000579.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "b0035bf88ec238b85e9bcf2f02e8e9bbf61ed6e56639f29675d8194a46bee809",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000000579%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000000625",
+   "artifact": "sources/proteomes/UP000000625.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "edc6d75adaefc4c496e811df6cbfa1406aa005a3394a1362c7f5500b24a32831",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000000625%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000001014",
+   "artifact": "sources/proteomes/UP000001014.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "65f3d97a52f6d35b6c62c390c059f19c9fe2bf2130a6bd88118cb22e3f1f6804",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000001014%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000001441",
+   "artifact": "sources/proteomes/UP000001441.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "62d4f105b94b7cc6695c04a324b717d7068d2e48d36cd9fb23733d5fa3a26a74",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000001441%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000001570",
+   "artifact": "sources/proteomes/UP000001570.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "58e05a684e9bde3bdf1ae40dfc15ed808168ba14ea2d51722a049266d41112fb",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000001570%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000001816",
+   "artifact": "sources/proteomes/UP000001816.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "d0460f1be0f602e9d667367d06f024ca53cfc33d71705a6919e4abe392771fd5",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000001816%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000002281",
+   "artifact": "sources/proteomes/UP000002281.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "b81138e51786d05ee5a76e200c59f32185701163c45f4984216bb7d6b0d45917",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000002281%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000002311",
+   "artifact": "sources/proteomes/UP000002311.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "cd294d638d8b3b0cf01487a68b24f26c2d09b72d6e703414aaaf468dcb94dd43",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000002311%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000005640",
+   "artifact": "sources/proteomes/UP000005640.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "eb9a0f1cd363c8e7afa20517c46c7ae517ff80564cbfbe4d73db956f78118f7d",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000005640%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PROTEOME:UP000006094",
+   "artifact": "sources/proteomes/UP000006094.fasta",
+   "provider": "UniProt reference proteome",
+   "sha256": "402c2b8234f4cdd840ad5791312b81a4a4a5109b1f02cbc8e6d6d3307835fa8e",
+   "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28proteome%3AUP000006094%29&format=fasta",
+   "acquisition": "fetch_from_url",
+   "license": "CC BY 4.0",
+   "note": "Part of the declared search space: coverage_boundary states the search is exhaustive only within these proteomes, so a different file is a different measurement."
+  },
+  {
+   "source_id": "PDB:1APS",
+   "artifact": "sources/structure_db/1APS.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "5d9e17a1441c4f36bec9a42e079fc11342929abe002922efc458bbca714fd97f",
+   "url": "https://files.rcsb.org/download/1APS.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1BLU",
+   "artifact": "sources/structure_db/1BLU.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "9f7f93b957c2a74429d084ddba8c9e5ce64273a76c630d13d3519165b13a4455",
+   "url": "https://files.rcsb.org/download/1BLU.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1C02",
+   "artifact": "sources/structure_db/1C02.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "d47f65f58fd5d78738a953d1d4708c4dda1ca54b4ac073932ea0d54c9f4d66fc",
+   "url": "https://files.rcsb.org/download/1C02.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1CSP",
+   "artifact": "sources/structure_db/1CSP.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "0b3335beb32172e4e8fab1cf6533db795f88de71f46192904aff67a23a6f5b9e",
+   "url": "https://files.rcsb.org/download/1CSP.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1DZR",
+   "artifact": "sources/structure_db/1DZR.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "c8db87c653f431c0eb62a4ef4d0ed0aa0114f335ff94931737f8dd999746f6d3",
+   "url": "https://files.rcsb.org/download/1DZR.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1E6A",
+   "artifact": "sources/structure_db/1E6A.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "f6b9b8c4166222d0df212d97aee523481d14e27d6347aaf927c311db35599f5e",
+   "url": "https://files.rcsb.org/download/1E6A.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1FDN",
+   "artifact": "sources/structure_db/1FDN.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "a9d7d60efefbe628707987f96f438061801a3ebd6a042d521655dec5ecf738d8",
+   "url": "https://files.rcsb.org/download/1FDN.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1J1L",
+   "artifact": "sources/structure_db/1J1L.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "bc1376f551ddbb9f9ff10bcec77349552ea89bad4c1cb1b6a5d239239ef23d44",
+   "url": "https://files.rcsb.org/download/1J1L.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1JOG",
+   "artifact": "sources/structure_db/1JOG.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "e8f15dddcdc3321c9bd93c032f5fb6d9469e8d69abcdb70696075a8dfeb02df9",
+   "url": "https://files.rcsb.org/download/1JOG.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1MJC",
+   "artifact": "sources/structure_db/1MJC.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "f945636068adbd1006fc1a1b0c7131e0fb8f8113f90401e28be45b3896ec9aa1",
+   "url": "https://files.rcsb.org/download/1MJC.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:1OS7",
+   "artifact": "sources/structure_db/1OS7.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "9e6b66cdec70c4eda9b3081b28529555de04bba94bef4a70cd43dec0aebe36f9",
+   "url": "https://files.rcsb.org/download/1OS7.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  },
+  {
+   "source_id": "PDB:2OOC",
+   "artifact": "sources/structure_db/2OOC.pdb",
+   "provider": "wwPDB/RCSB PDB",
+   "sha256": "51d52028193e57f237483381d4201925a0de4ed7fb2840de4ad974c5cc49e8f5",
+   "url": "https://files.rcsb.org/download/2OOC.pdb",
+   "acquisition": "fetch_from_url",
+   "license": "CC0 1.0 Universal"
+  }
+ ],
+ "controls": [],
+ "controls_note": "No controls. Both controls this panel declared were retired on 2026-09-01; probable_same_function cannot be emitted in this campaign because every reciprocal-best-hit target is a self-match, which classify_hit settles by accession identity before the RBH branch runs. See gate_semantics.sf_csa.controls and .labels_not_exercised."
+}

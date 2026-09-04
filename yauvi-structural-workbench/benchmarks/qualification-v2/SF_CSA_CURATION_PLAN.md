@@ -170,3 +170,40 @@ formality, and `acquire_sources.py` is where it belongs.
 7. Reproduce on a second machine before calling the scope adopted.
 
 Steps 1 and 3 are the long ones. Nothing before step 7 qualifies the scope.
+
+---
+
+## Superseded in part — 2026-09-01
+
+Two of the three decisions this plan was written against have changed, and the
+control inventory above changes with them.
+
+**Decision 1 is no longer Option C.** Yuvraj chose to fix the module instead. The
+RBH computation now runs before classification and the flag is pairwise, so
+`probable_same_function` is reachable by measurement; and `reject_reserved_fields`
+refuses a curator-supplied `rbh` at manifest read time, so it is unreachable by
+assertion. The question Options A, B and C were dividing no longer exists. See
+`SF_CSA_PREADOPTION_FINDINGS.md`, Finding 3 and "Decisions — 2026-09-01".
+
+**Decision 2 changed.** The periodontal table control is a *control*, not a
+family: the four families stay uniformly SCOP-derived. See
+`SF_CSA_RECORD_SELECTION.md` section "Resolved — 2026-09-01".
+
+Decision 3 is unchanged and was already implemented in `gate_semantics`.
+
+**Consequences for the control inventory.** The two Option C controls are gone:
+
+- `rbh_computed_path` survives with its expectation inverted. It asserted that a
+  genuine reciprocal best hit was *not* promoted, and said in its own note that
+  it would fail the day the defect was fixed. It now asserts the computed path
+  reaches the label.
+- `rbh_asserted_rejected` is retired. Its input is refused by the manifest reader
+  before classification, so it cannot be curated as a record at all. The guard is
+  enforced in `sf-csa/tests/test_rbh_provenance.py` instead.
+- `rbh_without_whole_architecture` replaces it: a genuine reciprocal best hit on a
+  pair that is not a whole-architecture match must still not be promoted. This
+  keeps a false-positive bound inside the panel, observed rather than assumed.
+
+The 18-record inventory in section 1 therefore becomes **16 judgments plus the
+periodontal table control plus these two RBH controls**, and the record shape
+below stands unchanged.

@@ -133,3 +133,25 @@ afterwards.
 - Whether `structural_and_sequence_outputs = separate` should be labelled a
   contract check rather than a scientific gate, so a passing panel is not read as
   four scientific results when it is three plus one.
+
+---
+
+## Resolved — 2026-09-01
+
+- **§4 (the unreachable label): superseded by a module fix.** Not A, B or C. The
+  three defects behind the question — RBH computed after classification, written
+  to the wrong structure, and stored per-target when the relation is pairwise —
+  are repaired in `sf-csa`, and a manifest gate now rejects curator-supplied
+  `rbh`. `probable_same_function` is reachable by measurement and unreachable by
+  assertion. Record and rationale:
+  `SF_CSA_PREADOPTION_FINDINGS.md`, Finding 3 and "Decisions — 2026-09-01".
+- **§6, gate labelling: `structural_and_sequence_outputs = separate` is a
+  contract check.** §1 already said so; it is now binding, and a passing panel
+  reads as three scientific results plus one contract check.
+- **§6, families: unchanged as SCOP-derived**, with the periodontal table control
+  moved out of the family slots and into `controls`. See
+  `SF_CSA_RECORD_SELECTION.md` §1.
+
+§5's blocking list stands, with item 1 discharged. Items 2 (register `sf_csa` in
+the runner's `ENGINES`), 3 (write `gate_semantics`), 4 (curate 16 records) and 5
+(cross-machine reproduction) are untouched.

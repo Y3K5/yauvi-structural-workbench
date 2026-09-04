@@ -1,0 +1,87 @@
+{
+ "schema_version": 1,
+ "path_base": "../..",
+ "required_foldseek_version": "10.941cd33",
+ "required_diamond_version_unenforced": "2.1.11",
+ "pdb_database": "sources/control_structdb",
+ "pdb_database_version": "control-title-inferred-group-1",
+ "campaign_structure_roots": [
+  "sources/campaign_models"
+ ],
+ "proteome_globs": [
+  "sources/proteomes/*.fasta"
+ ],
+ "thresholds": {
+  "structure_evalue": "10000",
+  "exhaustive_structure_search": true,
+  "same_fold_tm": 0.5,
+  "whole_architecture_coverage": 0.7,
+  "max_structure_hits": 50,
+  "sequence_evalue": "1e-5",
+  "sequence_min_identity": 20,
+  "sequence_min_query_coverage": 40,
+  "sequence_max_hits": 5000,
+  "sequence_hits_per_proteome": 10
+ },
+ "mechanism_families": [
+  {
+   "group": "scop_d58_1_ferredoxin_4fe4s",
+   "pattern": "ferredoxin|4fe-4s|4fe4s"
+  },
+  {
+   "group": "scop_d58_10_acylphosphatase",
+   "pattern": "acylphosphatase|acyl[- ]phosphatase|\\bacyp\\b"
+  },
+  {
+   "group": "scop_b40_4_nucleic_acid_binding",
+   "pattern": "cold[- ]shock|nucleic acid[- ]binding"
+  },
+  {
+   "group": "scop_b40_5_inorganic_pyrophosphatase",
+   "pattern": "inorganic pyrophosphatase|ppase"
+  },
+  {
+   "group": "scop_b82_1_rmlc_cupins",
+   "pattern": "cupin|germin|oxalate oxidase|epimerase|rmlc"
+  },
+  {
+   "group": "scop_b82_2_clavaminate_synthase_like",
+   "pattern": "taurine dioxygenase|clavaminate|tfda|\\btaud\\b"
+  },
+  {
+   "group": "scop_a24_16_nucleotidyltransferase_substrate_binding",
+   "pattern": "nucleotidyltransferase|kanamycin nucleotidyl|\\bknt\\b"
+  },
+  {
+   "group": "scop_a24_10_hpt_domain",
+   "pattern": "histidine[- ]containing phosphotransfer|\\bhpt\\b|ypd1"
+  }
+ ],
+ "contested_groups": [],
+ "divergence_sets": [],
+ "coverage_boundary": "Control campaign, not a release. One query against a single experimental entry whose PDB title matches the query's mechanism-family pattern while its SCOP fold does not. Exists to measure what the regex does on the axis the panel declares out of scope.",
+ "pdb_database_checksum": "58554eb8cc1758577b002733f97ef7c570fb9f490de4d8c3f9f1cd2f9103cc74",
+ "pdb_database_file_checksums": {
+  "1DOI.pdb": "cd3760969eeff6ebaede3dc8bdf55b585d4d45a8f69939ea430e4016198dcd5e"
+ },
+ "classification_vocabulary": [
+  "exact_function_supported",
+  "probable_same_function",
+  "same_mechanism_class",
+  "structural_analogy_only",
+  "candidate_functional_divergence",
+  "unresolved_or_conflicted"
+ ],
+ "release_expectations": {
+  "query_count": 12,
+  "title_traps": [
+   {
+    "substring": "toluene",
+    "must_not_promote_to": [
+     "exact_function_supported",
+     "probable_same_function"
+    ]
+   }
+  ]
+ }
+}

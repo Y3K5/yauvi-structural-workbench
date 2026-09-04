@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "path_base": "../..",
+  "required_foldseek_version": "10.941cd33",
+  "required_diamond_version_unenforced": "2.1.11",
+  "pdb_database": "sources/structure_db",
+  "pdb_database_version": "qualification-v2-sf-csa-structdb-1",
+  "campaign_structure_roots": [
+    "sources/campaign_models"
+  ],
+  "proteome_globs": [
+    "sources/proteomes/*.fasta"
+  ],
+  "thresholds": {
+    "structure_evalue": "10000",
+    "exhaustive_structure_search": true,
+    "same_fold_tm": 0.5,
+    "whole_architecture_coverage": 0.7,
+    "max_structure_hits": 50,
+    "sequence_evalue": "1e-5",
+    "sequence_min_identity": 20,
+    "sequence_min_query_coverage": 40,
+    "sequence_max_hits": 5000,
+    "sequence_hits_per_proteome": 10
+  },
+  "mechanism_families": [
+    {
+      "group": "scop_d58_1_ferredoxin_4fe4s",
+      "pattern": "ferredoxin|4fe-4s|4fe4s"
+    },
+    {
+      "group": "scop_d58_10_acylphosphatase",
+      "pattern": "acylphosphatase|acyl[- ]phosphatase|\\bacyp\\b"
+    },
+    {
+      "group": "scop_b40_4_nucleic_acid_binding",
+      "pattern": "cold[- ]shock|nucleic acid[- ]binding"
+    },
+    {
+      "group": "scop_b40_5_inorganic_pyrophosphatase",
+      "pattern": "inorganic pyrophosphatase|ppase"
+    },
+    {
+      "group": "scop_b82_1_rmlc_cupins",
+      "pattern": "cupin|germin|oxalate oxidase|epimerase|rmlc"
+    },
+    {
+      "group": "scop_b82_2_clavaminate_synthase_like",
+      "pattern": "taurine dioxygenase|clavaminate|tfda|\\btaud\\b"
+    },
+    {
+      "group": "scop_a24_16_nucleotidyltransferase_substrate_binding",
+      "pattern": "nucleotidyltransferase|kanamycin nucleotidyl|\\bknt\\b"
+    },
+    {
+      "group": "scop_a24_10_hpt_domain",
+      "pattern": "histidine[- ]containing phosphotransfer|\\bhpt\\b|ypd1"
+    }
+  ],
+  "contested_groups": [],
+  "divergence_sets": [],
+  "coverage_boundary": "Search is exhaustive only within the twelve-entry structure database and the ten reference proteomes named here. A protein without a model is reported as missing evidence, never as a structural negative.",
+  "pdb_database_checksum": "6a3ff239c3c769544456a1414c246dcfd2c78bfb8aa6df0996aea3a46dc6b713",
+  "pdb_database_file_checksums": {
+    "1APS.pdb": "5d9e17a1441c4f36bec9a42e079fc11342929abe002922efc458bbca714fd97f",
+    "1BLU.pdb": "9f7f93b957c2a74429d084ddba8c9e5ce64273a76c630d13d3519165b13a4455",
+    "1C02.pdb": "d47f65f58fd5d78738a953d1d4708c4dda1ca54b4ac073932ea0d54c9f4d66fc",
+    "1CSP.pdb": "0b3335beb32172e4e8fab1cf6533db795f88de71f46192904aff67a23a6f5b9e",
+    "1DZR.pdb": "c8db87c653f431c0eb62a4ef4d0ed0aa0114f335ff94931737f8dd999746f6d3",
+    "1E6A.pdb": "f6b9b8c4166222d0df212d97aee523481d14e27d6347aaf927c311db35599f5e",
+    "1FDN.pdb": "a9d7d60efefbe628707987f96f438061801a3ebd6a042d521655dec5ecf738d8",
+    "1J1L.pdb": "bc1376f551ddbb9f9ff10bcec77349552ea89bad4c1cb1b6a5d239239ef23d44",
+    "1JOG.pdb": "e8f15dddcdc3321c9bd93c032f5fb6d9469e8d69abcdb70696075a8dfeb02df9",
+    "1MJC.pdb": "f945636068adbd1006fc1a1b0c7131e0fb8f8113f90401e28be45b3896ec9aa1",
+    "1OS7.pdb": "9e6b66cdec70c4eda9b3081b28529555de04bba94bef4a70cd43dec0aebe36f9",
+    "2OOC.pdb": "51d52028193e57f237483381d4201925a0de4ed7fb2840de4ad974c5cc49e8f5"
+  },
+  "classification_vocabulary": [
+    "exact_function_supported",
+    "probable_same_function",
+    "same_mechanism_class",
+    "structural_analogy_only",
+    "candidate_functional_divergence",
+    "unresolved_or_conflicted"
+  ],
+  "release_expectations": {
+    "query_count": 12,
+    "title_traps": [
+      {
+        "substring": "toluene",
+        "must_not_promote_to": [
+          "exact_function_supported",
+          "probable_same_function"
+        ]
+      }
+    ]
+  }
+}
