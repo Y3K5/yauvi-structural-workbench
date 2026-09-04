@@ -17,7 +17,7 @@ are outside this release.
 ## Fresh software evidence
 
 - Current macOS Python 3.12 workspace and offline dependency set exercised.
-- Current reviewer-scope offline result: **495 passed and 6 network/adapter
+- Current reviewer-scope offline result: **526 passed and 6 network/adapter
   tests deselected** on Python 3.12.7.
 - Canonical module CLIs and SF-CSA deterministic fixture were included in the
   run; suites ran in separate processes to avoid legacy pytest basename
@@ -55,7 +55,7 @@ Software-test success is not external biological validation.
 2. The recorded 655-test baseline mixed 175 unrelated private platform tests
    into the JOSS reviewer count. The clean reviewer/controller baseline is now
    previously recorded as 508 passed, 5 deselected, and 1 skipped. Qualification
-   v2 guards bring the current local reviewer selection to 495 passed and 6
+   v2 guards bring the current local reviewer selection to 526 passed and 6
    deselected.
 3. The build backend rejected the newer bare SPDX license form. The root and
    standalone packages now use backend-compatible Apache-2.0 metadata, the root
@@ -82,16 +82,20 @@ Software-test success is not external biological validation.
    mappings with at least 90 percent coverage and rejects non-default static
    selections. The ABL held-out Qualification v2 panel is not yet adopted or
    executed, so the scope remains prototype.
-3. **ActState catalytic-residue screen:** the generic residue set is not
-   role-aware and does not compare with an experimentally validated active
-   ortholog or position-specific expected residue. The legacy
-   `active_site_disrupted` label is stronger than this evidence supports.
+3. **ActState catalytic-residue screen: narrowed 2026-09-02.** The generic
+   residue set is still not role-aware, and it no longer decides a label on its
+   own. `active_site_disrupted` now requires a position-specific expected
+   residue from an experimentally validated reference; without one a
+   non-competent residue is reported as contradicting evidence and caps the
+   label at `indeterminate`. The narrowing also closed the defect in the other
+   direction: a substitution inside the competence set, which the generic screen
+   could not see, is caught wherever an expectation is supplied.
 4. **ActState occupancy:** a non-solvent heteroatom is detected, but identity is
    not yet proven against the declared cofactor in every case.
-5. **SF-CSA RBH integration:** reciprocal-best-hit evidence is computed after
-   structural classification and does not reach the documented
-   `probable_same_function` gate during ordinary execution. The current failure
-   direction is conservative.
+5. **SF-CSA RBH integration: fixed 2026-09-01.** Reciprocal-best-hit evidence
+   is computed before structural classification and reaches the documented
+   `probable_same_function` gate by measurement. `rbh` is an explicit
+   keyword-only argument that a curator cannot set through a manifest field.
 6. **SF-CSA parser consistency:** blank and non-numeric similarity fields do not
    yet share one explicit invalid-input policy.
 7. Four passed v1 public qualification cases are still named cases, not broad

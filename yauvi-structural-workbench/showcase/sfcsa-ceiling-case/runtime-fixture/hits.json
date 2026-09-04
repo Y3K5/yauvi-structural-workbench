@@ -212,12 +212,26 @@
       "evalue": "1e-36",
       "bitscore": "285.0",
       "stitle": "SYN029 synthetic protein seed 29 [SYN_PROTEOME_1]"
+    },
+    {
+      "_comment": "QRY_A -> QRY_B in proteome 1. Scored above SYN011 deliberately: reciprocal_best_hits takes only the single best hit from each comparison proteome as a candidate, so QRY_B has to be that hit for the computed RBH to reach it. SYN041 stays the best hit in proteome 2 and stays non-reciprocal, so both statuses still appear in the golden output.",
+      "qseqid": "QRY_A",
+      "sseqid": "p000|QRY_B",
+      "pident": "97.0",
+      "length": "55",
+      "qlen": "60",
+      "slen": "55",
+      "qcovhsp": "92",
+      "evalue": "3e-38",
+      "bitscore": "340.0",
+      "stitle": "QRY_B synthetic barrel B [SYN_PROTEOME_1]"
     }
   ],
   "reverse_best_hit": {
-    "_comment": "Subject UID -> what the reverse search calls its best hit. Equal to the original query means reciprocal; anything else means best_hit_nonreciprocal. SYN041 is deliberately non-reciprocal so both statuses appear in the golden output.",
+    "_comment": "Subject UID -> what the reverse search calls its best hit. Equal to the original query means reciprocal; anything else means best_hit_nonreciprocal. SYN041 is deliberately non-reciprocal so both statuses appear in the golden output. QRY_B points back at QRY_A, making that pair reciprocal: added 2026-09-01 so the repaired computed path is exercised by the fixture rather than only by unit tests.",
     "p000|SYN011": "QRY_A",
     "p000|SYN029": "QRY_B",
-    "p001|SYN041": "SOMETHING_ELSE"
+    "p001|SYN041": "SOMETHING_ELSE",
+    "p000|QRY_B": "QRY_A"
   }
 }

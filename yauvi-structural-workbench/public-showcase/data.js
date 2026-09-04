@@ -1,10 +1,10 @@
 window.YAUVI_PUBLIC_SHOWCASE = {
   "baseline": {
-    "baseline_id": "structural-workbench-offline-qualification-v2-2026-08-26",
+    "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-02",
     "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks.",
     "selection": "not network and not adapter",
     "total_deselected": 6,
-    "total_passed": 495
+    "total_passed": 526
   },
   "cases": [
     {
@@ -289,22 +289,22 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "SF_CSA_RELEASE_MANIFEST.json",
           "path": "evidence/HUC-06/release/SF_CSA_RELEASE_MANIFEST.json",
-          "sha256": "a691d1364cce0b70e9a119549ba781f875a0f1bf4404ee87b929192e50de75a0"
+          "sha256": "bf602f1d002020f6b00a63f1a6d83639f9e36be23399a327834c7958bf88e56f"
         },
         {
           "label": "RELEASE_COMPARISON_MATRIX.tsv",
           "path": "evidence/HUC-06/release/RELEASE_COMPARISON_MATRIX.tsv",
-          "sha256": "80f326307e5b9f8b8984afcacd0cb60a535a496dec155febac5bc57e94559cdb"
+          "sha256": "bf99141cf0f2c801068a9eb0171fc315e9a8656aadcaaa8173c6866ce7eebb32"
         },
         {
           "label": "targets · QRY_A · structure_hits.tsv",
           "path": "evidence/HUC-06/release/targets/QRY_A/structure_hits.tsv",
-          "sha256": "e6eafe75bba0763b250f0546b190c6076479f80d970807f40626c7552602788e"
+          "sha256": "d6aac938235a7d15ff126a7a60ef2cd58c6c552d3c08f15cac01cc75ddaf9e9e"
         },
         {
           "label": "targets · QRY_A · species_comparison.tsv",
           "path": "evidence/HUC-06/release/targets/QRY_A/species_comparison.tsv",
-          "sha256": "5beccaa6df68fa793919e23bcec14b93783b1866cf2b3597f3ad14961ee8da88"
+          "sha256": "318a7a25bee37623d7a6ae42a37340260739403d132c7f992efec88ff4d26836"
         },
         {
           "label": "targets · QRY_B · structure_hits.tsv",
@@ -319,7 +319,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "CHECKSUMS.json",
           "path": "evidence/HUC-06/release/CHECKSUMS.json",
-          "sha256": "eb83999d30d1c2ddb9e0dae01a50b9e0e7df3c2fd76d52589f2a5f2f2f2e348f"
+          "sha256": "4a9f46c8c184b4843348af15ce004b1be3b15d76df60ddc0a1f1c0132514e822"
         }
       ],
       "human_benefits": [
@@ -336,7 +336,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "inputs/queries/QRY_B.faa": "d0bd2cb71218974e243bad81a28b8e69656d4ec1122f46ce70c2c23d877c9096",
         "inputs/queries/QRY_B.pdb": "ed2eba7ea57ef77e13eee2dc644c7c5840d878c6029686993de267447e52a8b9",
         "inputs/query_manifest.json": "907364e1957383cf5abbfc7328b5fc9a85c524fbf04f5d4147755a6d2405c56d",
-        "runtime-fixture/hits.json": "447fc07fe07dfd6aad9fa78ee2a7dbba30eeeb09d7c05a1d93e8308d0672aa24"
+        "runtime-fixture/hits.json": "86b240537942aa8ad13a728c71e6bb9c15bffdd23c510aa4d3d113370cd70de2"
       },
       "known_findings": [
         "The title-trap protection currently acts during release verification, not direct classify_hit calls.",
@@ -362,7 +362,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "help": "Canned DIAMOND-shaped rows retained in a separate table",
           "label": "Sequence rows",
-          "value": "3"
+          "value": "4"
         },
         {
           "help": "Structural similarity and sequence homology are not merged",
@@ -727,7 +727,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "path": "qualification-v2/EXECUTION_SUMMARY.json"
       }
     ],
-    "missing_records": 50,
+    "missing_records": 46,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
@@ -739,7 +739,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       },
       {
         "execution_state": "not_executed",
-        "missing_count": 18,
+        "missing_count": 14,
         "record_count": 0,
         "state": "blocked_panel_incomplete",
         "workflow": "conformational_state"
@@ -776,7 +776,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "scientific_execution": {
       "all_release_blocking_scopes_qualified": false,
       "cases_passed": 53,
-      "cases_required": 114,
+      "cases_required": 110,
       "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "counts_are_single_machine": true,
       "every_executed_panel_passed": false,

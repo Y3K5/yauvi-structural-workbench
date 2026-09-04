@@ -37,16 +37,16 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "b0a0730e38ea3a81a655dfe5c1a21af4f5237b845328e8a9e0d25df37a97d739",
+      "panel_manifest_sha256": "d6267917e8ac86a60c565ab7c023c5f5270858f8da57592e9d25a4549c371805",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
       "source_lock_sha256": "e8ea5c8c2aa8a45828a9951b23f02dc3cfc02adc02fccd66c018760f4011fb81",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "5c18c88d7dd179db9eeed45c523db2b7c6bf0bae71c8a2771f46dc336c9278c8",
+      "results_sha256": "1a7966ffbbdd5a607a8a1d50822f7b1478a502cf3270b0080a49d19413853857",
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
       "execution_summary": "benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
-      "execution_summary_sha256": "52af4657d51b14ad6088c5ead1ab243e67077a09e3e73306fa6ce9017f3c2280",
+      "execution_summary_sha256": "57f2a37279f90202d788350ad00e2d94518004a25681fb0290982bf92fae49b0",
       "execution_results": {
         "structure_qc": "benchmarks/qualification-v2/results/execution-structqc/EXECUTION_STATUS.json",
         "functional_site_state": "benchmarks/qualification-v2/results/execution-sitecontext/EXECUTION_STATUS.json",
@@ -82,11 +82,19 @@
           "beta_barrel"
         ]
       },
-      "scientific_execution_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "scientific_execution_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 53 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
       "membrane_objective_findings": "benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
-      "results_note": "Each execution writes its results document beside its own case outputs. A shared filename keyed on the panel id separated different panels but not two runs of the same panel, and an adversarial run overwrote the real membrane evidence with its own deliberate failures."
+      "results_note": "Each execution writes its results document beside its own case outputs. A shared filename keyed on the panel id separated different panels but not two runs of the same panel, and an adversarial run overwrote the real membrane evidence with its own deliberate failures.",
+      "scientific_execution_note_correction": {
+        "date": "2026-09-03",
+        "corrects": "the membrane figure in scientific_execution_note, and the collection it reasoned from",
+        "claimed": "membrane 14/16 of the adopted beta_barrel stratum, with 1BXW failing accuracy at 6.197 degrees against the collection 2.1 bound of 1.0 and 1QD6 at 8.391 degrees once collection 2.2 raised the rotation count from 5 to 8",
+        "measured": "5/16. results/EXECUTION_SUMMARY.json records membrane_orientation as 5 passed and 11 failed and has done since the collection 2.3 gate was added on 2026-08-31.",
+        "why_it_persisted": "The note is prose maintained by hand while the numbers beside it are generated. verify_release_status_digests.py confirms that each recorded digest matches its file, which is a different question: a digest can be perfectly current beside a sentence that is two collections stale. external_benchmarks.membrane_orientation carried the correct 5_of_16 for the same period, so this file disagreed with itself. tools/verify_status_note_numbers.py now compares the two.",
+        "superseded_text": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate."
+      }
     }
   },
   "gates": {

@@ -32,7 +32,7 @@ only after a public repository and independent research use exist.
   demonstrations, six separate public qualification narratives, biological
   context, raw evidence, reviewer quickstart, and a gated publication roadmap.
 - Public cases passed for StructQC, functional-site mapping, AssemblyContext,
-  and SF-CSA; the current Python 3.12.7 reviewer selection reports 495 passed
+  and SF-CSA; the current Python 3.12.7 reviewer selection reports 526 passed
   and 6 network/adapter tests deselected.
 - FreeSASA (version not captured by the runner), Foldseek 10.941cd33, and
   DIAMOND 2.1.11 were invoked in the
@@ -49,14 +49,16 @@ only after a public repository and independent research use exist.
 
 ## Required before `local_release_candidate`
 
-- Adopt and execute every source-locked Qualification v2 case and pass all six
-  Mark 1 release-blocking scopes, of which there are now **five**. Collection 2.4
-  moved `membrane_orientation` to non-blocking, both strata: Mark 1 makes no
-  accuracy claim for membrane orientation, and the scope is research-only.
+- Adopt and execute every source-locked Qualification v2 case and pass all
+  **five** Mark 1 release-blocking scopes. Collection 2.4 moved
+  `membrane_orientation` to non-blocking, both strata: Mark 1 makes no accuracy
+  claim for membrane orientation, and the scope is research-only.
 
   Of the blocking scopes, three are adopted and pass: StructQC 16/16 with 2
   controls, site-context 16/16 with 1 control, assembly-context 16/16. ABL
-  StateAtlas (18) and SF-CSA (16) remain unadopted.
+  StateAtlas (14 records since the 2026-09-01 requirement revision, which took
+  the collection from 114 required cases to 110) and SF-CSA (16) remain
+  unadopted.
 
   Membrane continues to execute and report, at 5/16. Collection 2.3 added the
   panel's first orientation-accuracy gate; before it every normal gate measured
@@ -73,12 +75,16 @@ only after a public repository and independent research use exist.
 - Pass the exact-mapped ABL-family StateAtlas held-out gate; other protein
   families remain prototype-only.
 - Complete the third-party license and redistribution audit.
-- Resolve or explicitly narrow the ActState generic catalytic-residue screen;
-  membership in a broad residue set is not a position-specific chemistry test
-  and cannot by itself establish that an annotated site is disrupted.
-- Resolve the SF-CSA reciprocal-best-hit integration: the pipeline currently
-  writes RBH status after structural classification, so
-  `probable_same_function` is not reached by normal end-to-end execution.
+- Resolve the ActState occupancy caveat: a non-solvent heteroatom is detected,
+  but its identity is not yet proven against the declared cofactor in every
+  case. (The generic catalytic-residue screen was narrowed on 2026-09-02:
+  `active_site_disrupted` now requires a position-specific expected residue, and
+  membership in a broad residue set caps the label at `indeterminate` instead of
+  establishing disruption.)
+- ~~Resolve the SF-CSA reciprocal-best-hit integration.~~ Done 2026-09-01: the
+  sequence leg runs before structural classification, `rbh` is an explicit
+  keyword-only argument, and reserved fields a curator might declare are
+  refused. See `sf-csa/CHANGES.md`.
 
 ## Required before `submission_eligible`
 

@@ -115,3 +115,127 @@ Requires decisions or scientific work, not edits: the absent repository, the
 self-disqualifying impact statement, COI/funding/AI-disclosure approval, the
 ActState labelling and SF-CSA reciprocal-best-hit ordering defects, and an
 automated independent digest-verification test.
+
+---
+
+# 2026-09-02 — CI gating, the digest chain, and stale current-state claims
+
+A later pass, after the membrane investigation and the collections 2.3/2.4
+threshold revisions. Two of the items the section above listed as *not*
+addressed are addressed here.
+
+## A non-blocking scope was failing every CI run
+
+Collection 2.4 moved `membrane_orientation` to non-blocking, research-only,
+both strata — Mark 1 makes no accuracy claim for it. `summarize_execution.py`
+went on returning 1 whenever *any* executed panel failed, so all six OS/Python
+jobs of the Qualification v2 workflow went red on every push and on the weekly
+schedule for a scope the manifest itself says does not gate the release. The
+three release-blocking panels that pass 16/16 were invisible behind it.
+
+- `summarize_execution.py` now reads `non_blocking_scopes` from the manifest and
+  exits 1 only when a **release-blocking** panel fails. A non-blocking failure
+  is printed and recorded, and does not change the exit code. Blocking status is
+  decided per executed stratum and fails closed for a panel that records none,
+  so executing `conformational_state:other_proteins` cannot exempt
+  `conformational_state:abl_family`.
+- `EXECUTION_SUMMARY.json` gained `every_executed_release_blocking_panel_passed`,
+  `release_blocking_panels_failed`, `non_blocking_panels_failed`, and a per-panel
+  `release_blocking` flag — so "a panel failed" and "nothing that gates the
+  release failed" are both readable without inferring either from the exit code.
+- `.github/workflows/qualification.yml`: the membrane execution step is
+  `continue-on-error`, for the same reason and with the reasoning recorded at
+  the step. It still runs, still writes its evidence, and still shows red on its
+  own line.
+- Falsification, per adoption protocol rule 2, on a copy: with a blocking panel
+  corrupted to `failed` the summarizer exits 1; unmodified it exits 0.
+
+## Three of eight recorded digests were stale
+
+`RELEASE_STATUS.json` records a sha256 beside each v2 evidence document and
+nothing compared them — the exact defect adoption protocol rule 2 was written
+for, and the "automated independent digest-verification test" the section above
+deferred.
+
+- `PANEL_MANIFEST.json`, `QUALIFICATION_V2_STATUS.json` and
+  `EXECUTION_SUMMARY.json` no longer matched their recorded digests. The
+  manifest had been revised twice without the audit or the summary being
+  regenerated against it, so the committed summary still described a 114-case
+  collection after the 2026-09-01 ABL requirement change took it to **110**.
+- Both documents were regenerated from the unchanged execution results, and the
+  three digests re-recorded. No execution evidence changed: the four
+  `EXECUTION_STATUS.json` digests were already correct and still are.
+- New `tools/verify_release_status_digests.py` verifies the whole chain, with
+  `--update` for evidence you meant to regenerate. New test
+  `test_release_status_digest_chain_matches_the_files` runs it in the reviewer
+  suite, so this cannot drift silently again.
+
+## Current-state claims that had gone stale
+
+Each of these understated or misstated the project's own position:
+
+- `README.md`: "requires 114 cases across six panels and **0 are adopted**", with
+  adoption and the executor described as outstanding. Four panels are adopted
+  and executed, three release-blocking panels pass 16/16 on six OS/Python
+  combinations, and the executor runs in CI. Restated with the counts derived
+  from `EXECUTION_SUMMARY.json`, and with the second-machine gate — untouched by
+  any of it — stated as the reason no scope is qualified.
+- `README.md`: the SF-CSA reciprocal-best-hit defect was listed as open. It was
+  fixed on 2026-09-01; see `sf-csa/CHANGES.md`. ActState's over-labelling
+  screen remains open and is now listed alone.
+- `START_HERE.md`: "0 of 114 required cases are adopted and no v2 scientific
+  execution has occurred."
+- `paper/paper.md`: "Its public cases have not yet been adopted or executed",
+  and "all six Mark 1 release-blocking scopes" where collection 2.4 left five.
+- `docs/benchmarks.md`: "zero v2 cases have been adopted, and no v2 scientific
+  execution has occurred", and the same six/five error.
+- `JOSS_CHECKLIST.md`: "pass all six ... of which there are now five" read as a
+  contradiction; ABL StateAtlas is 14 records, not 18, since 2026-09-01.
+- Test counts: the reviewer selection is **526 passed**, 6 deselected, 1 skipped,
+  not 495 — `BASELINE.json` (regenerated from the run, per-suite), `README.md`,
+  `CONTRIBUTING.md`, `JOSS_CHECKLIST.md`, `PREPUBLIC_AUDIT.md`, and the pull
+  request template. `CHANGES.md` above is a dated record of an earlier pass and
+  keeps its own numbers.
+
+## The ActState over-claim
+
+`active_site_disrupted`, the strongest negative label in the closed vocabulary,
+was reached whenever a residue at an annotated `ACT_SITE` position fell outside
+`CATALYTICALLY_COMPETENT` — a 13-letter set that knows nothing about the role
+the position plays or which residue the annotation expects there. Wrong in both
+directions: it over-claimed on seven residues without a reference to compare
+against, and it was blind to the commoner degradations that stay inside the set
+(catalytic Cys to Ser, His to Asn).
+
+The label now requires a position-specific expected residue from an
+experimentally validated reference, supplied per accession via
+`actstate run --expected-residues`. Without one, a non-competent residue is
+still reported `contradicted` and the label caps at `indeterminate`: the
+observation is kept, the rationale names the positions that would need an
+expectation, and the branch returns immediately so no downstream signal can lift
+it into a positive claim. Expectations the pipeline cannot check are rejected,
+named, and printed rather than silently ignored. Full record, including the four
+existing tests that asserted the old behaviour and how property P3 was restated,
+in `activity-state/CHANGES.md`.
+
+This was the second of the two interpretation defects the pre-public audit
+recorded, and the last one open. `PREPUBLIC_AUDIT.md`, `JOSS_CHECKLIST.md`,
+`README.md`, the workbench README, `docs/code-walkthrough.md`, and the actstate
+README are updated to match. ActState's occupancy caveat is untouched and still
+open.
+
+## Tooling
+
+- `tools/verify_sfcsa_showcase_case.py` raised `FileNotFoundError` from inside a
+  checksum comparison in any published checkout, because the reviewed source
+  archive it hashes is deliberately not redistributed. It now fails with a
+  message naming the archive, why it is absent, and its recorded digest. It
+  still fails: an absent archive is unverified provenance.
+
+## Still not addressed
+
+ActState's occupancy caveat — a non-solvent heteroatom is detected, but its
+identity is not proven against the declared cofactor; the exact Anthropic
+model/version for the AI usage disclosure, which is a record only the author
+holds; public history, independent installation and research-use evidence; and
+the second-machine reproduction gate, which no scope has completed.

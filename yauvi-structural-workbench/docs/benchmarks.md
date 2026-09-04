@@ -24,11 +24,12 @@ The current release gate is
 [`benchmarks/qualification-v2/`](../benchmarks/qualification-v2/README.md).
 Qualification v2 freezes scope-specific readiness, the full stratified panel,
 development and held-out splits, exact ABL mappings, and unchanged numerical
-gates. Its current audit state is `blocked_panel_incomplete`: zero v2 cases have
-been adopted, and no v2 scientific execution has occurred. That visible block
-prevents historical demonstrations or absent data from becoming a favorable
-release result.
+gates. Its current audit state is `blocked_panel_incomplete`: four of six panels
+are adopted and executed, and two -- ABL StateAtlas and SF-CSA, both
+release-blocking -- are not. That visible block prevents historical
+demonstrations or absent data from becoming a favorable release result, and it
+holds regardless of how the executed panels performed.
 
-All six Mark 1 release-blocking scopes must pass v2 and reproduce on a second
+All five Mark 1 release-blocking scopes must pass v2 and reproduce on a second
 machine before `local_release_candidate`. Alpha-helical membrane orientation is
 an experimental, non-blocking scope and cannot appear qualified.

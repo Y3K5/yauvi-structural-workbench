@@ -48,8 +48,10 @@ across six analysis workflows.
 **Status statement:** Mark 1 is a pre-public scientific build. In the historical
 v1 public qualification collection, four cases passed and two remain partial.
 The current release gate is Qualification v2, whose audit state is
-`blocked_panel_incomplete`: **0 of 114 required cases are adopted and no v2
-scientific execution has occurred.** No scope is qualified for release.
+`blocked_panel_incomplete`: **four of six panels are adopted and executed, two
+are not, and no scope has reproduced on an independent second machine.** 53 of
+110 required cases have been executed and passed. No scope is qualified for
+release.
 
 **Non-claim:** It is not a clinical tool, a biochemical activity assay, or a
 universal protein-scoring system. Passing local tests is not JOSS acceptance and

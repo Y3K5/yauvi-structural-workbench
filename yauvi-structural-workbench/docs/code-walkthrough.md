@@ -32,7 +32,7 @@ that produced it.
 | Membrane frame | `Membrane Orientor/memorient/src/memorient/` | Context-declared orientation geometry and residue zones |
 | State comparison | `state-atlas/src/state_atlas/` | Sequence-mapped Kabsch comparisons, RMSD/RMSF, clustering, and bounded state resemblance |
 | Site context | `site-context/src/site_context/` | Exact annotation-to-coordinate mapping, ligand/cofactor context, and separate pocket evidence |
-| Activity-state screen | `activity-state/src/actstate/` | Separate completeness, geometry, occupancy, conformation, and assembly signals; one legacy label remains under review |
+| Activity-state screen | `activity-state/src/actstate/` | Separate completeness, geometry, occupancy, conformation, and assembly signals; `active_site_disrupted` requires a position-specific expected residue |
 | Assembly context | `assembly-context/src/assembly_context/` | Contacts, interface residues, assembly evidence, method-specific SASA and burial |
 | Structure/function comparison | `sf-csa/src/sf_csa/` | Frozen Foldseek and DIAMOND search universes, separate evidence legs, bounded interpretation vocabulary |
 
@@ -73,9 +73,12 @@ SiteContext maps reference-sequence annotations onto exact coordinate residues
 and keeps curated catalytic roles, observed components, geometry, and predicted
 pockets separate. ActState combines five named signals without adding them into
 a universal score. Its generic catalytic-residue membership screen is not
-position-specific chemistry and is recorded as a release blocker; the legacy
-`active_site_disrupted` label must not be interpreted as observed loss of
-catalysis.
+position-specific chemistry, and since 2026-09-02 it can no longer reach the
+`active_site_disrupted` label on its own: that label requires an expected
+residue for the position from an experimentally validated reference, and
+without one a non-competent residue is reported as contradicting evidence and
+caps the label at `indeterminate`. Even so, the label reports a residue
+mismatch against a reference, not observed loss of catalysis.
 
 ### AssemblyContext
 

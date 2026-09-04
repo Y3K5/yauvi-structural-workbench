@@ -3,7 +3,8 @@
   "case_id": "HUC-06",
   "classification_counts": {
     "exact_function_supported": 1,
-    "same_mechanism_class": 3,
+    "probable_same_function": 1,
+    "same_mechanism_class": 2,
     "structural_analogy_only": 1,
     "unresolved_or_conflicted": 1
   },
@@ -17,11 +18,11 @@
     "release/CHECKSUMS.json"
   ],
   "evidence_sha256": {
-    "release/CHECKSUMS.json": "eb83999d30d1c2ddb9e0dae01a50b9e0e7df3c2fd76d52589f2a5f2f2f2e348f",
-    "release/RELEASE_COMPARISON_MATRIX.tsv": "80f326307e5b9f8b8984afcacd0cb60a535a496dec155febac5bc57e94559cdb",
-    "release/SF_CSA_RELEASE_MANIFEST.json": "a691d1364cce0b70e9a119549ba781f875a0f1bf4404ee87b929192e50de75a0",
-    "release/targets/QRY_A/species_comparison.tsv": "5beccaa6df68fa793919e23bcec14b93783b1866cf2b3597f3ad14961ee8da88",
-    "release/targets/QRY_A/structure_hits.tsv": "e6eafe75bba0763b250f0546b190c6076479f80d970807f40626c7552602788e",
+    "release/CHECKSUMS.json": "4a9f46c8c184b4843348af15ce004b1be3b15d76df60ddc0a1f1c0132514e822",
+    "release/RELEASE_COMPARISON_MATRIX.tsv": "bf99141cf0f2c801068a9eb0171fc315e9a8656aadcaaa8173c6866ce7eebb32",
+    "release/SF_CSA_RELEASE_MANIFEST.json": "bf602f1d002020f6b00a63f1a6d83639f9e36be23399a327834c7958bf88e56f",
+    "release/targets/QRY_A/species_comparison.tsv": "318a7a25bee37623d7a6ae42a37340260739403d132c7f992efec88ff4d26836",
+    "release/targets/QRY_A/structure_hits.tsv": "d6aac938235a7d15ff126a7a60ef2cd58c6c552d3c08f15cac01cc75ddaf9e9e",
     "release/targets/QRY_B/species_comparison.tsv": "f134549abd96dc4969018881105c164281039eb6dd9f778ee3b27d905b7d048e",
     "release/targets/QRY_B/structure_hits.tsv": "04ba36169e12b9baf4486a12e456acc99d98faa8117f6d31ff76bb48672f33bd"
   },
@@ -43,7 +44,7 @@
     "inputs/queries/QRY_B.faa": "d0bd2cb71218974e243bad81a28b8e69656d4ec1122f46ce70c2c23d877c9096",
     "inputs/queries/QRY_B.pdb": "ed2eba7ea57ef77e13eee2dc644c7c5840d878c6029686993de267447e52a8b9",
     "inputs/query_manifest.json": "907364e1957383cf5abbfc7328b5fc9a85c524fbf04f5d4147755a6d2405c56d",
-    "runtime-fixture/hits.json": "447fc07fe07dfd6aad9fa78ee2a7dbba30eeeb09d7c05a1d93e8308d0672aa24"
+    "runtime-fixture/hits.json": "86b240537942aa8ad13a728c71e6bb9c15bffdd23c510aa4d3d113370cd70de2"
   },
   "known_findings": [
     "The title-trap protection currently acts during release verification, not direct classify_hit calls.",
@@ -69,7 +70,7 @@
     {
       "help": "Canned DIAMOND-shaped rows retained in a separate table",
       "label": "Sequence rows",
-      "value": "3"
+      "value": "4"
     },
     {
       "help": "Structural similarity and sequence homology are not merged",

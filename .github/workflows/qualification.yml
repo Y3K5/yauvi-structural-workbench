@@ -86,8 +86,18 @@ jobs:
 
       # The membrane panel is the slowest: memorient runs a rotation series per
       # case, so sixteen cases take roughly six minutes on top of the others.
+      #
+      # continue-on-error because collection 2.4 moved membrane orientation to
+      # non-blocking, research-only, both strata: Mark 1 makes no accuracy claim
+      # for it, and eleven of sixteen fitted orientations sit 2.5 to 17.4 degrees
+      # from OPM under the collection 2.3 accuracy gate. The runner still
+      # executes it, still writes its evidence, and the step still shows red on
+      # its own -- but a scope the manifest says does not gate the release must
+      # not fail the job. `summarize_execution.py` enforces the same split from
+      # `non_blocking_scopes` and is what actually decides this job's outcome.
       - name: Execute the membrane panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
+        continue-on-error: true
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: |
           python run_execution.py \
@@ -110,7 +120,9 @@ jobs:
       # if: always() because a failing panel is exactly when this is worth
       # having. Without it the summary is skipped on the runs that need
       # explaining and the uploaded artifact carries no overview. The script
-      # exits 1 when an executed panel failed, so the job stays red.
+      # exits 1 when an executed *release-blocking* panel failed, so the job
+      # stays red for a failure that gates the release and green for a recorded
+      # finding in a research-only scope.
       - name: Summarize the executed evidence
         if: always()
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2

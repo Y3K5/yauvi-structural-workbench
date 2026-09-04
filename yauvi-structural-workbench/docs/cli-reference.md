@@ -519,6 +519,7 @@ options:
 usage: actstate run [-h] [--in INPUT] [--annotation ANNOTATION]
                     [--fasta FASTA] [--structures STRUCTURES] --out OUTPUT
                     [--chain CHAIN] [--fold-state FOLD_STATE]
+                    [--expected-residues EXPECTED_RESIDUES]
                     [--reference-comparison REFERENCE_COMPARISON]
                     [--max-separation MAX_SEPARATION]
 
@@ -534,6 +535,10 @@ options:
   --chain CHAIN         restrict geometry to one chain
   --fold-state FOLD_STATE
                         JSON of fold_state records, keyed by accession
+  --expected-residues EXPECTED_RESIDUES
+                        JSON of expected catalytic residues, keyed by
+                        accession then position. Required to reach
+                        active_site_disrupted.
   --reference-comparison REFERENCE_COMPARISON
                         JSON of reference-state comparisons, keyed by
                         accession

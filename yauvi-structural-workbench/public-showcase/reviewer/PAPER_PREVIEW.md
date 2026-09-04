@@ -113,14 +113,21 @@ case, a deposited assembly evaluated with FreeSASA, and a CATH-labeled SF-CSA
 mini-database searched by Foldseek and DIAMOND. Four public cases pass their
 predeclared gates and two remain partial. Qualification v2 separately freezes
 scope-specific strata, development and held-out splits, evidence requirements,
-and unchanged gates. Its public cases have not yet been adopted or executed. No
-release qualification is claimed until all six Mark 1 release-blocking scopes
-pass v2 and reproduce independently.
+and unchanged gates. Four of its six panels are adopted and executed
+offline against checksum-verified artifacts on six operating-system and Python
+combinations; 53 of 110 required cases pass. Coordinate quality, functional-site
+context and assembly interfaces pass 16 of 16 each; two release-blocking panels
+are unadopted; and membrane orientation passes 5 of 16 against the accuracy gate
+added in collection 2.3, and is therefore recorded as non-blocking and
+research-only, with no Mark 1 accuracy claim. Executed panels passing is not
+scope qualification. No release qualification is claimed until all five Mark 1
+release-blocking scopes pass v2 and reproduce on an independent second machine,
+which none has done.
 
 # Research impact statement
 
 At this pre-public stage, the project has not recorded independent adoption,
-published research use, or six completed external benchmark gates. The software
+published research use, or five completed external benchmark gates. The software
 is therefore not presented as JOSS submission-eligible. Current reproducible
 benchmark records expose both successful cases and scientific limitations; they
 do not substitute for documented use in real structural-biology analyses,

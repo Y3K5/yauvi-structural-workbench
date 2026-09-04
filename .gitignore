@@ -5,6 +5,14 @@
 yauvi-structural-workbench/benchmarks/*/sources/
 yauvi-structural-workbench/benchmarks/*/build/
 
+# The same rule, for where an engine writes its own intermediates. The sf-csa
+# campaign leaves 109 MB under `results/sf_csa/release-1/work/`: the downloaded
+# UniProt proteomes it searched and the DIAMOND indices built from them. Same
+# class of bytes as `sources/`, arriving by a path the two rules above do not
+# cover. Nothing checksums them -- `CHECKSUMS.json` covers the 112 evidence
+# files and no entry names `work/` -- and they rebuild from the source lock.
+yauvi-structural-workbench/benchmarks/*/results/**/work/
+
 # --- Build outputs -------------------------------------------------------
 build/
 dist/

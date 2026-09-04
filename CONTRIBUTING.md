@@ -27,7 +27,7 @@ Use that runner, not bare `pytest`. Suites are invoked in separate processes
 because several contain duplicate test-module and `conftest` basenames, and a
 plain `pytest` invocation fails on the collision.
 
-Expect 495 passed, 6 network/adapter deselected, 1 skipped.
+Expect 526 passed, 6 network/adapter deselected, 1 skipped.
 
 If you change a CLI's arguments, regenerate the command reference and commit it:
 

@@ -129,11 +129,15 @@ public cases and two partial cases. The current v2 audit is
 a claim of workflow-general accuracy. Publication, repository creation, and
 JOSS submission require separate approval.
 
-The pre-public audit also records two code-interpretation decisions that must be
-resolved or explicitly narrowed before submission: ActState's generic
-catalytic-residue screen currently supports a stronger label than its evidence,
-and SF-CSA computes reciprocal-best-hit evidence after structural classification
-instead of feeding it into the `probable_same_function` gate.
+The pre-public audit recorded two code-interpretation decisions that had to be
+resolved or explicitly narrowed before submission. Both are now narrowed:
+ActState's generic catalytic-residue screen can no longer reach
+`active_site_disrupted` without a position-specific expected residue
+(2026-09-02), and SF-CSA computes reciprocal-best-hit evidence before structural
+classification so it reaches the `probable_same_function` gate by measurement
+rather than by a manifest field (2026-09-01). The audit's remaining open items
+stand, including ActState's occupancy caveat: a non-solvent heteroatom is
+detected, but its identity is not proven against the declared cofactor.
 
 ## License and citation
 

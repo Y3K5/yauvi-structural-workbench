@@ -32,7 +32,7 @@ showcases that a JOSS reviewer would receive.
 Every claim below was executed in this folder, offline:
 
 - `pip install -e ".[dev]"` succeeds; all nine console scripts land on `PATH`
-- **495 tests pass, 0 fail** (6 network/adapter deselected, 1 skipped)
+- **526 tests pass, 0 fail** (6 network/adapter deselected, 1 skipped)
 - A real StructQC analysis runs to completion and is **byte-identical across two runs**
 - The fail-closed path exits `1` and names its missing evidence rather than scoring around it
 - The wheel builds offline and contains only canonical structural namespaces
@@ -65,19 +65,36 @@ blocks submission:
 - **Public development has only just begun** (first public commit 2026-08-27).
   JOSS expects sustained public history, tagged releases, and evidence of
   independent use. None of that exists yet.
-- **No scope is scientifically qualified.** Qualification v2 requires 114 cases
-  across six panels and **0 are adopted** into the frozen panel manifest. The
-  four x-ray StructQC cases are drafted, acquired, and measured
-  ([`ADOPTION_DRAFT_XRAY.json`](yauvi-structural-workbench/benchmarks/qualification-v2/ADOPTION_DRAFT_XRAY.json)),
-  but adoption and the executor that evaluates the gates are both outstanding.
-  The historical v1 collection passed four public cases and left two partial;
-  those are named cases, not workflow-general accuracy evidence.
+- **No scope is scientifically qualified.** Qualification v2 requires 110 cases
+  across six panels. Four panels are adopted and executed and **two are not** --
+  ABL StateAtlas and SF-CSA, both release-blocking -- so the collection's
+  composition state is `blocked_panel_incomplete` and no scope can be qualified
+  whatever the executed panels report. Of the five release-blocking scopes,
+  three are adopted and pass their predeclared gates offline on six OS/Python
+  combinations in CI: StructQC 16/16 with 2 controls, site-context 16/16 with 1
+  control, assembly-context 16/16. Membrane orientation executes at 5/16 against
+  the accuracy gate collection 2.3 added, and collection 2.4 moved it to
+  non-blocking, research-only, both strata: Mark 1 makes no accuracy claim for
+  it. **No scope has completed the independent second-machine reproduction
+  gate**, which is required on its own and is untouched by any of the above.
+  Counts here come from
+  [`EXECUTION_SUMMARY.json`](yauvi-structural-workbench/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json),
+  derived from the executed evidence rather than typed. The historical v1
+  collection passed four public cases and left two partial; those are named
+  cases, not workflow-general accuracy evidence.
 - **The paper still states its own ineligibility** and carries unresolved
   conflict-of-interest and funding statements.
 - No independent installation or research-use evidence is recorded.
-- Two known interpretation defects remain open: ActState's catalytic-residue
-  screen over-labels, and SF-CSA computes reciprocal-best-hit after structural
-  classification, so `probable_same_function` is unreachable end-to-end.
+- Both interpretation defects the pre-public audit recorded are now closed.
+  SF-CSA computed reciprocal-best-hit after structural classification, so
+  `probable_same_function` was unreachable end-to-end; fixed 2026-09-01
+  ([`sf-csa/CHANGES.md`](sf-csa/CHANGES.md)). ActState reached
+  `active_site_disrupted` from membership in a broad residue set, which is not a
+  position-specific chemistry test; narrowed 2026-09-02 to require an expected
+  residue from a validated reference
+  ([`activity-state/CHANGES.md`](activity-state/CHANGES.md)). ActState's
+  occupancy caveat is unchanged and still open: a non-solvent heteroatom is
+  detected, but its identity is not proven against the declared cofactor.
 
 Community channels are in place — see [`CONTRIBUTING.md`](CONTRIBUTING.md),
 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md),
