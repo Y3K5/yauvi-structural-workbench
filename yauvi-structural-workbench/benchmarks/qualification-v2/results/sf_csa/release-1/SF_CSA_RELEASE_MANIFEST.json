@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "release_id": "release-1",
+  "status": "COMPUTATIONAL_STRUCTURE_FUNCTION_COMPARISON_NOT_EXPERIMENTAL_VALIDATION",
+  "queries": [
+    "P00198",
+    "P00193",
+    "P23370",
+    "P32081",
+    "P0A9X9",
+    "P00817",
+    "P45850",
+    "P26394",
+    "P37610",
+    "P00138",
+    "P00147",
+    "Q07688"
+  ],
+  "query_count": 12,
+  "target_statuses": {
+    "P00198": "SELECTED",
+    "P00193": "SELECTED",
+    "P23370": "SELECTED",
+    "P32081": "SELECTED",
+    "P0A9X9": "SELECTED",
+    "P00817": "SELECTED",
+    "P45850": "SELECTED",
+    "P26394": "SELECTED",
+    "P37610": "SELECTED",
+    "P00138": "SELECTED",
+    "P00147": "SELECTED",
+    "Q07688": "SELECTED"
+  },
+  "tools": {
+    "sf_csa": "1.0.0",
+    "foldseek": "10.941cd33",
+    "diamond": "diamond version 2.1.11"
+  },
+  "database_manifest_sha256": "c53c2adc2e58c2b4eb32261890864fdd5b6d87c7087547e563190afde5c691fa",
+  "query_manifest_sha256": "631b3708bda07db1c7227d9426009d7ea5be40948a3a3395f91ba1f2c3e6debc",
+  "pdb_database": {
+    "path_record": "sources/structure_db",
+    "version": "qualification-v2-sf-csa-structdb-1",
+    "checksum": "dacf117ea86912a7f95a55fbec0425a533911f7b59e41288f8a1e46dd956107a"
+  },
+  "campaign_structure_count": 12,
+  "proteome_count": 10,
+  "protein_count": 73013,
+  "thresholds": {
+    "structure_evalue": "0.01",
+    "same_fold_tm": 0.5,
+    "whole_architecture_coverage": 0.7,
+    "max_structure_hits": 50,
+    "sequence_evalue": "1e-5",
+    "sequence_min_identity": 20,
+    "sequence_min_query_coverage": 40,
+    "sequence_max_hits": 5000,
+    "sequence_hits_per_proteome": 10
+  },
+  "classification_vocabulary": [
+    "exact_function_supported",
+    "probable_same_function",
+    "same_mechanism_class",
+    "structural_analogy_only",
+    "candidate_functional_divergence",
+    "unresolved_or_conflicted"
+  ],
+  "scientific_boundaries": [
+    "fold similarity does not establish direct functional equivalence",
+    "predicted orientation is not native surface-exposure proof",
+    "proteins without structures are missing evidence, not structural negatives",
+    "target decisions are not changed automatically"
+  ]
+}
