@@ -147,12 +147,34 @@ jobs:
       # under results/, which go away with the runner. Uploading them is what
       # makes a run's numbers readable afterwards, and the cross-machine drift
       # figures are the reason this matrix exists.
+      #
+      # Uploaded as one archive rather than as a directory. results/ now holds
+      # roughly 790 files, and upload-artifact registers and transfers them
+      # individually: on run #46 the CreateArtifact call timed out through all
+      # five of its retries on one runner, failing a job whose panels had all
+      # passed. One compressed file is a single transfer, and the evidence
+      # compresses well because it is JSON and TSV.
+      - name: Archive the execution evidence
+        if: always()
+        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        run: |
+          set -euo pipefail
+          # work/ is pipeline scratch, excluded from the repository for the same
+          # reason it is excluded here: it is not part of the evidence.
+          tar --exclude='work' -czf "${RUNNER_TEMP}/execution-evidence.tar.gz" results
+          ls -lh "${RUNNER_TEMP}/execution-evidence.tar.gz"
+
+      # continue-on-error because the artifact service is not evidence about the
+      # software. summarize_execution.py decides this job's scientific outcome;
+      # a transfer that GitHub could not complete should show red on its own step
+      # and leave that verdict alone. Same reasoning as the membrane step above.
       - name: Upload the execution evidence
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v5
         with:
           name: execution-evidence-py${{ matrix.python }}-${{ matrix.os }}
-          path: yauvi-structural-workbench/benchmarks/qualification-v2/results/
+          path: ${{ runner.temp }}/execution-evidence.tar.gz
           retention-days: 90
 
       # Asserted a bare exit 1, which pins CI to an incomplete panel and breaks
