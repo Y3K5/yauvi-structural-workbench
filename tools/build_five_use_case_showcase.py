@@ -733,14 +733,61 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     write_text(public_output / "CHECKSUMS.json", canonical(checksums))
 
 
+def preflight(python: str) -> list[str]:
+    """Confirm every engine this builder invokes actually imports, before anything is deleted.
+
+    `--replace` calls `shutil.rmtree(output)` before the first engine runs, so a
+    module that fails to import at step five leaves the showcase deleted and
+    nothing rebuilt. That happened twice on 2026-09-05, in the workspace and
+    again in the publish repository: `assembly_context` imports
+    `Bio.PDB.SASA`, which arrived in Biopython 1.79, and both environments had
+    1.78 against a declared floor of `>=1.81`. The traceback named a missing
+    ASSEMBLY_CONTEXT.json, which is the symptom four steps downstream of the
+    cause, and the tree had already been wiped by then.
+
+    Importing is the right check rather than "is the CLI on PATH": every one of
+    these was on PATH and one of them still could not run.
+    """
+    modules = ("structqc.cli", "memorient.cli", "state_atlas.cli",
+               "site_context.cli", "assembly_context.cli")
+    problems: list[str] = []
+    for module in modules:
+        completed = subprocess.run([python, "-c", f"import {module}"],
+                                   capture_output=True, text=True)
+        if completed.returncode != 0:
+            last = (completed.stderr.strip().splitlines() or ["import failed"])[-1]
+            problems.append(f"{module}: {last}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--public-out", type=Path)
     parser.add_argument("--sfcsa-out", type=Path)
     parser.add_argument("--replace", action="store_true")
+    parser.add_argument("--skip-preflight", action="store_true",
+                        help="Delete and rebuild even if an engine does not import. "
+                             "A failure part way through leaves the showcase gone.")
     args = parser.parse_args()
     output = args.out.resolve()
+
+    # Before the rmtree below, not after: this is the difference between
+    # refusing to start and destroying the showcase to discover a problem.
+    problems = preflight(sys.executable)
+    if problems:
+        for problem in problems:
+            print(f"[ENV] {problem}", file=sys.stderr)
+        if not args.skip_preflight:
+            print("\nAn engine this builder invokes does not import, so the rebuild would "
+                  "fail part way and leave the showcase deleted. Nothing has been touched. "
+                  "Fix the environment -- most often a dependency below the floor its "
+                  "pyproject declares -- or pass --skip-preflight to proceed anyway.",
+                  file=sys.stderr)
+            return 1
+        print("[ENV] --skip-preflight given; a failure now leaves the showcase deleted.\n",
+              file=sys.stderr)
+
     if output.exists():
         if not args.replace:
             parser.error(f"output already exists: {output}; pass --replace for generated showcase data")

@@ -65,6 +65,21 @@ def read_tsv(path: Path) -> list[dict[str, str]]:
 
 def build(output: Path, *, replace: bool = False) -> dict[str, Any]:
     output = output.resolve()
+
+    # Ahead of the rmtree below, for the reason its sibling builder learned the
+    # hard way on 2026-09-05: --replace deletes the target before the first
+    # engine runs, so an engine that cannot import leaves the case deleted and
+    # nothing rebuilt. Only sf_csa is invoked here and it imports today; the
+    # check costs a subprocess and removes the failure mode rather than relying
+    # on that staying true.
+    probe = subprocess.run([sys.executable, "-c", "import sf_csa.cli"],
+                           capture_output=True, text=True)
+    if probe.returncode != 0:
+        last = (probe.stderr.strip().splitlines() or ["import failed"])[-1]
+        raise RuntimeError(
+            f"sf_csa.cli does not import ({last}); refusing to delete {output} for a "
+            "rebuild that would fail. Nothing has been touched.")
+
     if output.exists():
         if not replace:
             raise ValueError(f"output already exists: {output}; pass --replace")
