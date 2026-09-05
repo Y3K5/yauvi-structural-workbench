@@ -17,7 +17,7 @@
   "external_benchmarks": {
     "structure_qc": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "membrane_orientation": "NON_BLOCKING_from_collection_2_4_research_only_beta_barrel_executes_at_5_of_16_under_the_2_3_accuracy_gate_eleven_cases_sit_2_5_to_17_4_deg_from_OPM_mark_1_makes_no_accuracy_claim_for_membrane_orientation",
-    "conformational_state": "abl_exact_mapping_v2_panel_executes_14_of_14_with_1_control_from_ADOPTION_DRAFT_ABL_json_records_not_yet_in_PANEL_MANIFEST_second_machine_gate_outstanding",
+    "conformational_state": "v2_panel_ADOPTED_collection_2_9_all_14_records_and_1_control_in_PANEL_MANIFEST_executes_14_of_14_reproduced_on_six_runners_in_qualification_run_44_independent_second_machine_gate_outstanding",
     "functional_site_state": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "assembly_interface": "v2_panel_fully_composed_all_four_strata_executed_and_passed_second_machine_gate_outstanding",
     "sf_csa": "qualification_v1_public_case_passed_real_engines_v2_four_family_panel_unadopted"
@@ -37,11 +37,11 @@
     "current_v2": {
       "runner": "benchmarks/qualification-v2/run_qualification.py",
       "panel_manifest": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
-      "panel_manifest_sha256": "d6267917e8ac86a60c565ab7c023c5f5270858f8da57592e9d25a4549c371805",
+      "panel_manifest_sha256": "68bbfa1ffcfe6e06e021c31d968dc9787311d0f7a89660cc1ca43531661876bf",
       "source_lock": "benchmarks/qualification-v2/SOURCE_LOCK.json",
       "source_lock_sha256": "edab2d78577ab693967b5b5ce71c7715dd70e5c1c20619f76634604c7afef96d",
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
-      "results_sha256": "18d93f6ad3a77b2fe9b6b4dfbeafe1457b8684adfa2eabd3480cce795e7e23f0",
+      "results_sha256": "0cb5d3390d9c26da7fb0b8fbbddb8c60d84a241b937873bbccd00879e144b7e5",
       "overall_state": "blocked_panel_incomplete",
       "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
@@ -82,7 +82,7 @@
           "beta_barrel"
         ]
       },
-      "scientific_execution_note": "Four panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6, executing from ADOPTION_DRAFT_ABL.json; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. sf_csa is the one workflow not executed: its ten reference-proteome sources are UniProt stream queries that no sha256 can lock, recorded as Finding 8 in SF_CSA_PREADOPTION_FINDINGS.md. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 67 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum and sf-csa remain unadopted, ABL and membrane execute from drafts rather than adopted records, and no scope has completed the independent second-machine gate.",
+      "scientific_execution_note": "Four panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6, adopted into PANEL_MANIFEST.json as collection 2.9 after Qualification v2 run #44 reproduced it on all six runners; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. sf_csa is the one workflow not executed: its ten reference-proteome sources are UniProt stream queries that no sha256 can lock, recorded as Finding 8 in SF_CSA_PREADOPTION_FINDINGS.md. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 67 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum and sf-csa remain unadopted, membrane executes from a draft rather than adopted records, and no scope has completed the independent second-machine gate.",
       "membrane_objective_findings": "benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",

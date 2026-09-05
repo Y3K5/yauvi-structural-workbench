@@ -1,7 +1,7 @@
 {
  "schema_version": "2.0",
  "collection_id": "yauvi-structural-public-qualification-v2",
- "collection_version": "2.8",
+ "collection_version": "2.9",
  "manifest_state": "source_adoption_required",
  "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
  "threshold_revisions": [
@@ -220,6 +220,24 @@
    },
    "records_unaffected": true,
    "verdicts_unaffected": "No case verdict changes. The panel's recorded result stays 16 of 16 with 0 promotions against a bound of 0; only how that result is read changes."
+  },
+  {
+   "collection_version": "2.9",
+   "date": "2026-09-04",
+   "scope": "conformational_state adoption only. No threshold, gate, coverage rule or expectation value changes; the fourteen records and one control move from ADOPTION_DRAFT_ABL.json into the panel exactly as executed. No other panel is touched.",
+   "change": [
+    "conformational_state.records: 0 -> 14 (4 reference, 10 held_out; 7 active, 7 inactive)",
+    "conformational_state.controls: 0 -> 1 (v2-stateatlas-control-uninterpretable-5HU9)",
+    "ADOPTION_DRAFT_ABL.json draft_state: not_adopted -> adopted",
+    "conformational_state records gain homolog_group and exclusion_rationale, which run_qualification.py requires of every record"
+   ],
+   "evidence": "Adoption protocol rule 7 asks for reproduction on a machine that did not record the expectations. Qualification v2 run #44, on commit 0872a33, executed the panel from its adoption draft across the full matrix -- ubuntu-latest and macos-latest on Python 3.10, 3.11 and 3.12 -- and all six jobs passed. conformational_state is release-blocking, so summarize_execution.py would have failed the job had the panel failed on any runner. Single-machine the panel reports 14/14 cases, 1/1 control and 6/6 coverage features witnessed; the matrix reproduces it.",
+   "why_now": "The records were curated and their expectations recorded on 2026-09-01 and deliberately held in the draft, because rule 7 wants cross-machine evidence before a stratum is called adopted rather than after. Run #44 is that evidence.",
+   "records_unaffected": true,
+   "what_this_does_not_assert": "Adoption is not qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. independent_second_machine_reproduction_passed remains false, and the collection stays blocked_panel_incomplete while sf_csa holds no records.",
+   "one_source_re_locked": "2HYY.cif was re-locked the same day after a wwPDB re-release. The coordinate block is byte-identical across both files -- 8,702 ATOM/HETATM records, same sha256 over the block -- and the panel was re-executed rather than assumed equivalent. See ABL_RECORD_SELECTION.draft.md.",
+   "required_fields_note": "REQUIRED_RECORD_FIELDS is one global set applied to every panel, so adoption needed two fields the ABL draft did not carry. Neither was invented. homolog_group is 'abl1_kinase' on all fourteen, which is the literal truth -- every record is the human ABL1 kinase domain, UniProt P00519 -- and is the slug structure_qc already uses for its two ABL entries. exclusion_rationale is derived per record from the state_evidence.basis already recorded beside it, stating the record's role in the two-sided set and the evidence its state was assigned from. Worth a curator's eye: in the other four panels this field also carries selection provenance -- why this entry rather than another -- and the derived sentences here carry only role and basis.",
+   "a_check_that_cannot_fire": "homolog_group feeds the audit's split-leakage check, which compares the development and held_out splits for a shared group. This panel has no development split and every record is one group, so the check is vacuous here. Recorded rather than left implicit: the field is still worth carrying because it states plainly that the ABL scope has no protein diversity, which is a real limit on what a green panel demonstrates."
   }
  ],
  "execution_policy": {
@@ -1282,7 +1300,1282 @@
     "confident_opposite_state_calls_max": 0,
     "correct_interpretable_coverage_per_state_min": 0.8
    },
-   "records": [],
+   "records": [
+    {
+     "record_id": "v2-stateatlas-active-reference-4XEY",
+     "record_kind": "reference",
+     "stratum": "active",
+     "split": "reference",
+     "pdb_entry_id": "4XEY",
+     "artifact": "sources/wwpdb/4XEY.cif",
+     "checksum": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:4XEY"
+     },
+     "state_evidence": {
+      "basis": "type I ATP-site ligand 1N1 at 2.6 A from the DFG-in reference centroid; DFG-in",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 11,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "c0b86b9dccc495c7f248ac54abfb94a3eeece41c63278cd371ede0a8d2188b09",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/4XEY.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/4XEY.cif",
+       "reference_set": "references/abl/reference_set.4XEY.json",
+       "alignment_map": "references/abl/alignment_map.4XEY.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_4XEY",
+      "best_rmsd_A": 0.0,
+      "margin_A": 3.477103,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 0.0,
+       "ACTIVE_7W7X": 1.121251,
+       "INACTIVE_2E2B": 3.477103,
+       "INACTIVE_3QRK": 5.20337
+      },
+      "alignment_map_sha256": "c0b86b9dccc495c7f248ac54abfb94a3eeece41c63278cd371ede0a8d2188b09",
+      "mapped_residue_count": 250,
+      "chain": "A",
+      "coordinate_sha256": "2d3aebaadf35b8a420ea1dca11ba0aef6292b039fa57483441bda74fc66caded",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Reference structure defining the active side of the two-sided set. State assigned from type I ATP-site ligand 1N1 at 2.6 A from the DFG-in reference centroid; DFG-in."
+    },
+    {
+     "record_id": "v2-stateatlas-active-reference-7W7X",
+     "record_kind": "reference",
+     "stratum": "active",
+     "split": "reference",
+     "pdb_entry_id": "7W7X",
+     "artifact": "sources/wwpdb/7W7X.cif",
+     "checksum": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:7W7X"
+     },
+     "state_evidence": {
+      "basis": "activation-loop phosphotyrosine present; type I ATP-site ligand 8DW at 1.0 A from the DFG-in reference centroid",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 10,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "b928074a89f3c59b637406eedbe25b131a7f568d76fabb24027c8feafdcfb2fb",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/7W7X.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/7W7X.cif",
+       "reference_set": "references/abl/reference_set.7W7X.json",
+       "alignment_map": "references/abl/alignment_map.7W7X.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_7W7X",
+      "best_rmsd_A": 0.0,
+      "margin_A": 3.28678,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 1.121251,
+       "ACTIVE_7W7X": 0.0,
+       "INACTIVE_2E2B": 3.28678,
+       "INACTIVE_3QRK": 5.046267
+      },
+      "alignment_map_sha256": "b928074a89f3c59b637406eedbe25b131a7f568d76fabb24027c8feafdcfb2fb",
+      "mapped_residue_count": 251,
+      "chain": "A",
+      "coordinate_sha256": "e57edf8fdd83daddcdd570135b0c8916a40f0f151fd91b86f64019396983dcc0",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Reference structure defining the active side of the two-sided set. State assigned from activation-loop phosphotyrosine present; type I ATP-site ligand 8DW at 1.0 A from the DFG-in reference centroid."
+    },
+    {
+     "record_id": "v2-stateatlas-active-held_out-2GQG",
+     "record_kind": "benchmark_case",
+     "stratum": "active",
+     "split": "held_out",
+     "pdb_entry_id": "2GQG",
+     "artifact": "sources/wwpdb/2GQG.cif",
+     "checksum": "811b5256aa68712b6b6cc0f61f64438b1d2a1d7dbec121e84e6d621d7e3802b3",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:2GQG"
+     },
+     "state_evidence": {
+      "basis": "activation-loop phosphotyrosine present; type I ATP-site ligand 1N1 at 2.8 A from the DFG-in reference centroid",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 19,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "32532ba1ce78baef95a224502ff1557860fff53c18f9658a20a9eb43e92f4b20",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/2GQG.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/2GQG.cif",
+       "reference_set": "references/abl/reference_set.2GQG.json",
+       "alignment_map": "references/abl/alignment_map.2GQG.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_4XEY",
+      "best_rmsd_A": 1.128825,
+      "margin_A": 2.244835,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 1.128825,
+       "ACTIVE_7W7X": 1.365799,
+       "INACTIVE_2E2B": 3.37366,
+       "INACTIVE_3QRK": 5.20065
+      },
+      "alignment_map_sha256": "32532ba1ce78baef95a224502ff1557860fff53c18f9658a20a9eb43e92f4b20",
+      "mapped_residue_count": 253,
+      "chain": "A",
+      "coordinate_sha256": "811b5256aa68712b6b6cc0f61f64438b1d2a1d7dbec121e84e6d621d7e3802b3",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out active case. State assigned from activation-loop phosphotyrosine present; type I ATP-site ligand 1N1 at 2.8 A from the DFG-in reference centroid."
+    },
+    {
+     "record_id": "v2-stateatlas-active-held_out-7N9G",
+     "record_kind": "benchmark_case",
+     "stratum": "active",
+     "split": "held_out",
+     "pdb_entry_id": "7N9G",
+     "artifact": "sources/wwpdb/7N9G.cif",
+     "checksum": "0de128244856e894e0c4b568c0d22759a75812dbacf035948f5d17b930fd6d75",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "B"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:7N9G"
+     },
+     "state_evidence": {
+      "basis": "type I ATP-site ligand 1N1 at 3.0 A from the DFG-in reference centroid; DFG-in",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 9,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": true,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "70278e773755ccc5cc28bec4e50f79475b65f90e46a5fcf23e5bab3a8bae032c",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/7N9G.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "B"
+       },
+       "structure": "sources/wwpdb/7N9G.cif",
+       "reference_set": "references/abl/reference_set.7N9G.json",
+       "alignment_map": "references/abl/alignment_map.7N9G.json",
+       "chain": "B"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_4XEY",
+      "best_rmsd_A": 1.104728,
+      "margin_A": 2.520451,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 1.104728,
+       "ACTIVE_7W7X": 1.461362,
+       "INACTIVE_2E2B": 3.62518,
+       "INACTIVE_3QRK": 5.276238
+      },
+      "alignment_map_sha256": "70278e773755ccc5cc28bec4e50f79475b65f90e46a5fcf23e5bab3a8bae032c",
+      "mapped_residue_count": 252,
+      "chain": "B",
+      "coordinate_sha256": "0de128244856e894e0c4b568c0d22759a75812dbacf035948f5d17b930fd6d75",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out active case. State assigned from type I ATP-site ligand 1N1 at 3.0 A from the DFG-in reference centroid; DFG-in."
+    },
+    {
+     "record_id": "v2-stateatlas-active-held_out-6BL8",
+     "record_kind": "benchmark_case",
+     "stratum": "active",
+     "split": "held_out",
+     "pdb_entry_id": "6BL8",
+     "artifact": "sources/wwpdb/6BL8.cif",
+     "checksum": "130c2c3f8ff79344b983d7e29571b9075fb78fc7cdd302bf6b67e903fdb7de79",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:6BL8"
+     },
+     "state_evidence": {
+      "basis": "type I ATP-site ligand PVB at 3.5 A from the DFG-in reference centroid; DFG-in",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 9,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/6BL8.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/6BL8.cif",
+       "reference_set": "references/abl/reference_set.6BL8.json",
+       "alignment_map": "references/abl/alignment_map.6BL8.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_7W7X",
+      "best_rmsd_A": 1.019831,
+      "margin_A": 2.630421,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 1.248228,
+       "ACTIVE_7W7X": 1.019831,
+       "INACTIVE_2E2B": 3.650252,
+       "INACTIVE_3QRK": 5.35248
+      },
+      "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+      "mapped_residue_count": 254,
+      "chain": "A",
+      "coordinate_sha256": "130c2c3f8ff79344b983d7e29571b9075fb78fc7cdd302bf6b67e903fdb7de79",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out active case. State assigned from type I ATP-site ligand PVB at 3.5 A from the DFG-in reference centroid; DFG-in."
+    },
+    {
+     "record_id": "v2-stateatlas-active-held_out-4TWP",
+     "record_kind": "benchmark_case",
+     "stratum": "active",
+     "split": "held_out",
+     "pdb_entry_id": "4TWP",
+     "artifact": "sources/wwpdb/4TWP.cif",
+     "checksum": "cb04abcdde5fb7e144768c0326f8016a15232aa2a2746cb2cc0924ca1c14b84a",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "B"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:4TWP"
+     },
+     "state_evidence": {
+      "basis": "type I ATP-site ligand AXI at 1.5 A from the DFG-in reference centroid; DFG-in",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 9,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "f822ad6eaaf831a1d18dce1a25f01cfe972607db0ab97172046a1444088eaebd",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/4TWP.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "B"
+       },
+       "structure": "sources/wwpdb/4TWP.cif",
+       "reference_set": "references/abl/reference_set.4TWP.json",
+       "alignment_map": "references/abl/alignment_map.4TWP.json",
+       "chain": "B"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_4XEY",
+      "best_rmsd_A": 0.980542,
+      "margin_A": 2.348986,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 0.980542,
+       "ACTIVE_7W7X": 1.168837,
+       "INACTIVE_2E2B": 3.329529,
+       "INACTIVE_3QRK": 4.998728
+      },
+      "alignment_map_sha256": "f822ad6eaaf831a1d18dce1a25f01cfe972607db0ab97172046a1444088eaebd",
+      "mapped_residue_count": 254,
+      "chain": "B",
+      "coordinate_sha256": "cb04abcdde5fb7e144768c0326f8016a15232aa2a2746cb2cc0924ca1c14b84a",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out active case. State assigned from type I ATP-site ligand AXI at 1.5 A from the DFG-in reference centroid; DFG-in."
+    },
+    {
+     "record_id": "v2-stateatlas-active-held_out-2G2I",
+     "record_kind": "benchmark_case",
+     "stratum": "active",
+     "split": "held_out",
+     "pdb_entry_id": "2G2I",
+     "artifact": "sources/wwpdb/2G2I.cif",
+     "checksum": "721557e5f6173de1ed6876ce6793c20cc67dc9d2c72b3578f4826e56b468f16a",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:2G2I"
+     },
+     "state_evidence": {
+      "basis": "type I ATP-site ligand ADP at 3.9 A from the DFG-in reference centroid; DFG-in",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 13,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "4e73a3417f398778f1b93fb39d1f7c1e1d74d2a934f1ca94fc0998e7350a3e14",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/2G2I.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/2G2I.cif",
+       "reference_set": "references/abl/reference_set.2G2I.json",
+       "alignment_map": "references/abl/alignment_map.2G2I.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "active_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "active_like",
+      "best_reference": "ACTIVE_4XEY",
+      "best_rmsd_A": 0.976797,
+      "margin_A": 2.413238,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 0.976797,
+       "ACTIVE_7W7X": 1.378419,
+       "INACTIVE_2E2B": 3.390036,
+       "INACTIVE_3QRK": 5.107456
+      },
+      "alignment_map_sha256": "4e73a3417f398778f1b93fb39d1f7c1e1d74d2a934f1ca94fc0998e7350a3e14",
+      "mapped_residue_count": 251,
+      "chain": "A",
+      "coordinate_sha256": "721557e5f6173de1ed6876ce6793c20cc67dc9d2c72b3578f4826e56b468f16a",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out active case. State assigned from type I ATP-site ligand ADP at 3.9 A from the DFG-in reference centroid; DFG-in."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-reference-2E2B",
+     "record_kind": "reference",
+     "stratum": "inactive",
+     "split": "reference",
+     "pdb_entry_id": "2E2B",
+     "artifact": "sources/wwpdb/2E2B.cif",
+     "checksum": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:2E2B"
+     },
+     "state_evidence": {
+      "basis": "type II ligand 406 at 7.4 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 17,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "637bc63af974282bd0d549ee51d4caf0a34f685c403872ba962627602249e3f5",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/2E2B.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/2E2B.cif",
+       "reference_set": "references/abl/reference_set.2E2B.json",
+       "alignment_map": "references/abl/alignment_map.2E2B.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_2E2B",
+      "best_rmsd_A": 0.0,
+      "margin_A": 3.28678,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 3.477103,
+       "ACTIVE_7W7X": 3.28678,
+       "INACTIVE_2E2B": 0.0,
+       "INACTIVE_3QRK": 1.091361
+      },
+      "alignment_map_sha256": "637bc63af974282bd0d549ee51d4caf0a34f685c403872ba962627602249e3f5",
+      "mapped_residue_count": 246,
+      "chain": "A",
+      "coordinate_sha256": "226786f5aa525959d9f1903678e9f8fe321d28c3367c7751c56578910c7e2445",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Reference structure defining the inactive side of the two-sided set. State assigned from type II ligand 406 at 7.4 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-reference-3QRK",
+     "record_kind": "reference",
+     "stratum": "inactive",
+     "split": "reference",
+     "pdb_entry_id": "3QRK",
+     "artifact": "sources/wwpdb/3QRK.cif",
+     "checksum": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:3QRK"
+     },
+     "state_evidence": {
+      "basis": "type II ligand 9DP at 10.3 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 15,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/3QRK.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/3QRK.cif",
+       "reference_set": "references/abl/reference_set.3QRK.json",
+       "alignment_map": "references/abl/alignment_map.3QRK.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_3QRK",
+      "best_rmsd_A": 0.0,
+      "margin_A": 5.046267,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.20337,
+       "ACTIVE_7W7X": 5.046267,
+       "INACTIVE_2E2B": 1.091361,
+       "INACTIVE_3QRK": 0.0
+      },
+      "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+      "mapped_residue_count": 254,
+      "chain": "A",
+      "coordinate_sha256": "b27b250ca96d7d47042ed49e126a544a611378382ee04810fd09f435adf7dd45",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Reference structure defining the inactive side of the two-sided set. State assigned from type II ligand 9DP at 10.3 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-held_out-6NPE",
+     "record_kind": "benchmark_case",
+     "stratum": "inactive",
+     "split": "held_out",
+     "pdb_entry_id": "6NPE",
+     "artifact": "sources/wwpdb/6NPE.cif",
+     "checksum": "f2011e192358154336544384331da1764619d2f293ebf80ca353da26c35887fe",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:6NPE"
+     },
+     "state_evidence": {
+      "basis": "type II ligand STI at 7.3 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 10,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": true,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "2c7bc8fe4a22969337b8846c2fba4d9c37379fc71d51e6907572dcec6b0743fc",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/6NPE.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/6NPE.cif",
+       "reference_set": "references/abl/reference_set.6NPE.json",
+       "alignment_map": "references/abl/alignment_map.6NPE.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_2E2B",
+      "best_rmsd_A": 0.661829,
+      "margin_A": 4.394686,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.223126,
+       "ACTIVE_7W7X": 5.056515,
+       "INACTIVE_2E2B": 0.661829,
+       "INACTIVE_3QRK": 0.880559
+      },
+      "alignment_map_sha256": "2c7bc8fe4a22969337b8846c2fba4d9c37379fc71d51e6907572dcec6b0743fc",
+      "mapped_residue_count": 249,
+      "chain": "A",
+      "coordinate_sha256": "f2011e192358154336544384331da1764619d2f293ebf80ca353da26c35887fe",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out inactive case. State assigned from type II ligand STI at 7.3 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-held_out-3QRJ",
+     "record_kind": "benchmark_case",
+     "stratum": "inactive",
+     "split": "held_out",
+     "pdb_entry_id": "3QRJ",
+     "artifact": "sources/wwpdb/3QRJ.cif",
+     "checksum": "61f3b20a201f6bbc180de5eddc1854bb698393efae510a5651fcccb41271aed4",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "B"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:3QRJ"
+     },
+     "state_evidence": {
+      "basis": "type II ligand 919 at 7.5 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 9,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "f822ad6eaaf831a1d18dce1a25f01cfe972607db0ab97172046a1444088eaebd",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/3QRJ.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "B"
+       },
+       "structure": "sources/wwpdb/3QRJ.cif",
+       "reference_set": "references/abl/reference_set.3QRJ.json",
+       "alignment_map": "references/abl/alignment_map.3QRJ.json",
+       "chain": "B"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_3QRK",
+      "best_rmsd_A": 0.611901,
+      "margin_A": 4.443343,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.222264,
+       "ACTIVE_7W7X": 5.055243,
+       "INACTIVE_2E2B": 1.116654,
+       "INACTIVE_3QRK": 0.611901
+      },
+      "alignment_map_sha256": "f822ad6eaaf831a1d18dce1a25f01cfe972607db0ab97172046a1444088eaebd",
+      "mapped_residue_count": 254,
+      "chain": "B",
+      "coordinate_sha256": "61f3b20a201f6bbc180de5eddc1854bb698393efae510a5651fcccb41271aed4",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out inactive case. State assigned from type II ligand 919 at 7.5 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-held_out-3QRI",
+     "record_kind": "benchmark_case",
+     "stratum": "inactive",
+     "split": "held_out",
+     "pdb_entry_id": "3QRI",
+     "artifact": "sources/wwpdb/3QRI.cif",
+     "checksum": "ebf2e84de66243e841cc2b3c86f9247bf3e39359a70acc096e343ad21605dda0",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:3QRI"
+     },
+     "state_evidence": {
+      "basis": "type II ligand 919 at 7.2 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 18,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/3QRI.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/3QRI.cif",
+       "reference_set": "references/abl/reference_set.3QRI.json",
+       "alignment_map": "references/abl/alignment_map.3QRI.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_3QRK",
+      "best_rmsd_A": 0.510899,
+      "margin_A": 4.51272,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.158023,
+       "ACTIVE_7W7X": 5.023619,
+       "INACTIVE_2E2B": 1.022232,
+       "INACTIVE_3QRK": 0.510899
+      },
+      "alignment_map_sha256": "50b51deff95f672125c5dac1777766e9c911e24ccd04580ee2d9d7cdd409c671",
+      "mapped_residue_count": 254,
+      "chain": "A",
+      "coordinate_sha256": "ebf2e84de66243e841cc2b3c86f9247bf3e39359a70acc096e343ad21605dda0",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out inactive case. State assigned from type II ligand 919 at 7.2 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-held_out-2HYY",
+     "record_kind": "benchmark_case",
+     "stratum": "inactive",
+     "split": "held_out",
+     "pdb_entry_id": "2HYY",
+     "artifact": "sources/wwpdb/2HYY.cif",
+     "checksum": "4845da16db0c39e36f8531657c955dff7e92b78be02fa55c4d50eed4425de018",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:2HYY"
+     },
+     "state_evidence": {
+      "basis": "type II ligand STI at 7.0 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 7,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "c1be884ae8cd6e921a9eab153dc03e244348222659bb11882ba5c44811180356",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/2HYY.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/2HYY.cif",
+       "reference_set": "references/abl/reference_set.2HYY.json",
+       "alignment_map": "references/abl/alignment_map.2HYY.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_2E2B",
+      "best_rmsd_A": 0.412239,
+      "margin_A": 4.536309,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.122806,
+       "ACTIVE_7W7X": 4.948548,
+       "INACTIVE_2E2B": 0.412239,
+       "INACTIVE_3QRK": 1.349032
+      },
+      "alignment_map_sha256": "c1be884ae8cd6e921a9eab153dc03e244348222659bb11882ba5c44811180356",
+      "mapped_residue_count": 253,
+      "chain": "A",
+      "coordinate_sha256": "4845da16db0c39e36f8531657c955dff7e92b78be02fa55c4d50eed4425de018",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out inactive case. State assigned from type II ligand STI at 7.0 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    },
+    {
+     "record_id": "v2-stateatlas-inactive-held_out-3CS9",
+     "record_kind": "benchmark_case",
+     "stratum": "inactive",
+     "split": "held_out",
+     "pdb_entry_id": "3CS9",
+     "artifact": "sources/wwpdb/3CS9.cif",
+     "checksum": "78d740d81dc4c7f922b77bc388c4711f9ebb99ef37a3657674fcc4ccca5e391a",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:3CS9"
+     },
+     "state_evidence": {
+      "basis": "type II ligand NIL at 6.9 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 9,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "85b2920d0cd8d26be9a756dacbbf8cbffcc05151fb51e1aaa31e58a7fa6debe1",
+     "expected_result": {
+      "cli_exit_code": 0,
+      "exit_code_reason": "scientifically incomplete, missing: qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/3CS9.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/3CS9.cif",
+       "reference_set": "references/abl/reference_set.3CS9.json",
+       "alignment_map": "references/abl/alignment_map.3CS9.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "inactive_like",
+      "frames_total": 1,
+      "frames_interpretable": 1,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 1,
+        "fraction_interpretable": 1.0,
+        "fraction_total": 1.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": 0.0,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       }
+      },
+      "call": "inactive_like",
+      "best_reference": "INACTIVE_2E2B",
+      "best_rmsd_A": 0.260428,
+      "margin_A": 4.713831,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 5.172539,
+       "ACTIVE_7W7X": 4.974258,
+       "INACTIVE_2E2B": 0.260428,
+       "INACTIVE_3QRK": 1.095437
+      },
+      "alignment_map_sha256": "85b2920d0cd8d26be9a756dacbbf8cbffcc05151fb51e1aaa31e58a7fa6debe1",
+      "mapped_residue_count": 250,
+      "chain": "A",
+      "coordinate_sha256": "78d740d81dc4c7f922b77bc388c4711f9ebb99ef37a3657674fcc4ccca5e391a",
+      "input_kind": "static_ensemble"
+     },
+     "homolog_group": "abl1_kinase",
+     "exclusion_rationale": "Held-out inactive case. State assigned from type II ligand NIL at 6.9 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out."
+    }
+   ],
    "gate_semantics": {
     "conformational_state": {
      "decision_date": "2026-09-01",
@@ -1356,7 +2649,101 @@
       "mixed_reported": "mixed applies to ensembles and trajectories. Every Mark 1 record is a single experimental frame."
      }
     }
-   }
+   },
+   "controls": [
+    {
+     "record_id": "v2-stateatlas-control-uninterpretable-5HU9",
+     "record_kind": "control_case",
+     "stratum": "inactive",
+     "split": "control",
+     "pdb_entry_id": "5HU9",
+     "artifact": "sources/wwpdb/5HU9.cif",
+     "checksum": "dd4ebaccda3bceeb891013f1906f20c133abde2c1343f740e5d475c40f72324e",
+     "source_release": {
+      "provider": "wwPDB/RCSB PDB",
+      "uniprot_accession": "P00519",
+      "chain": "A"
+     },
+     "license": "CC0 1.0 Universal (wwPDB)",
+     "citation": {
+      "entry": "PDB:5HU9"
+     },
+     "state_evidence": {
+      "basis": "type II ligand 66K at 6.7 A from the DFG-in reference centroid, in the back pocket that exists only when DFG is out",
+      "axis": "ligand binding mode and activation-loop phosphorylation",
+      "independent_of_gated_geometry": true
+     },
+     "quaternary_context": {
+      "n_terminal_residues_present": 17,
+      "sh3_sh2_module_present": false,
+      "myristoyl_site_occupied": false,
+      "note": "Recorded as a covariate. The panel does not gate on it and the mask cannot see it."
+     },
+     "alignment_map_sha256": "25db5f3e8c36c7d992f857dcdd2247c85845a99fbbeb2b0c7b8ffcb4d4fc68e3",
+     "expected_result": {
+      "cli_exit_code": 1,
+      "exit_code_reason": "scientifically incomplete, missing: interpretable_state_frames, qualification_v2_held_out_panel",
+      "invocation": {
+       "upstream": {
+        "workflow": "structure_qc",
+        "structure": "sources/wwpdb/5HU9.cif",
+        "reference_fasta": "sources/uniprot/P00519.fasta",
+        "chain": "A"
+       },
+       "structure": "sources/wwpdb/5HU9.cif",
+       "reference_set": "references/abl/reference_set.5HU9.json",
+       "alignment_map": "references/abl/alignment_map.5HU9.json",
+       "chain": "A"
+      },
+      "missing_evidence": [
+       "interpretable_state_frames",
+       "qualification_v2_held_out_panel"
+      ],
+      "overall_label": "unresolved",
+      "frames_total": 1,
+      "frames_interpretable": 0,
+      "populations": {
+       "active_like": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       },
+       "inactive_like": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       },
+       "mixed": {
+        "count": 0,
+        "fraction_interpretable": null,
+        "fraction_total": 0.0
+       },
+       "unresolved": {
+        "count": 1,
+        "fraction_interpretable": null,
+        "fraction_total": 1.0
+       }
+      },
+      "call": "unresolved",
+      "best_reference": "INACTIVE_2E2B",
+      "best_rmsd_A": 2.883064,
+      "margin_A": 1.306415,
+      "rmsd_by_reference_A": {
+       "ACTIVE_4XEY": 4.189479,
+       "ACTIVE_7W7X": 4.232382,
+       "INACTIVE_2E2B": 2.883064,
+       "INACTIVE_3QRK": 3.419773
+      },
+      "alignment_map_sha256": "25db5f3e8c36c7d992f857dcdd2247c85845a99fbbeb2b0c7b8ffcb4d4fc68e3",
+      "mapped_residue_count": 249,
+      "chain": "A",
+      "coordinate_sha256": "dd4ebaccda3bceeb891013f1906f20c133abde2c1343f740e5d475c40f72324e",
+      "input_kind": "static_ensemble"
+     },
+     "control_purpose": "fail_closed",
+     "control_rationale": "5HU9 sits 2.9-3.4 A from every other pool entry and 2.883 A from its nearest reference, past the 2.5 A interpretability bound. It exists to prove the bound fires: a structure the reference set cannot speak for must be reported unresolved with interpretable_state_frames withheld, not forced onto the nearer side. Chosen for that declared property, not because it failed."
+    }
+   ]
   },
   {
    "workflow": "structure_qc",
