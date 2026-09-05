@@ -1,0 +1,64 @@
+name: Source lock health
+
+# Asks whether every locked source can still be re-acquired from its URL.
+#
+# `acquire_sources.py --verify-only`, which the qualification workflow runs,
+# answers a different question: are the files on this runner the files the lock
+# names. This one asks what the lock actually promises -- that a reviewer can
+# obtain the same bytes. A digest recorded against a URL that has moved on is a
+# claim, not a check.
+#
+# Deliberately not on push. It fetches every locked URL, so running it per
+# commit would be slow, rude to the providers, and would tie an unrelated change
+# to a provider's availability that day. Weekly, plus on demand, is enough: the
+# failure mode it catches is the outside world moving, which happens on the
+# provider's schedule rather than this repository's.
+#
+# Two findings led to it, both caught after a push rather than before:
+#   - Finding 8: ten proteomes locked against UniProt stream queries, an
+#     endpoint with no version parameter. The whole matrix went red at
+#     acquisition, fifteen minutes in, with no science performed.
+#   - 2HYY: wwPDB re-released the entry with expanded metadata. Coordinates
+#     unchanged, digest not.
+
+on:
+  schedule:
+    # Tuesdays, an hour after the qualification schedule, so a provider outage
+    # shows up in one place rather than two at once.
+    - cron: "0 8 * * 2"
+  workflow_dispatch:
+
+concurrency:
+  group: source-lock-health
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    name: Every locked URL still returns its locked bytes
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      # Runs on the standard library alone, so no install step and nothing that
+      # can drift between this job and the check it performs.
+      - name: Check the lock against its providers
+        run: |
+          python tools/verify_source_lock_health.py \
+            --json-out "${RUNNER_TEMP}/source-lock-health.json"
+
+      # if: always() -- a drifted lock is exactly when the detail is worth
+      # keeping, and that is the run where the step above has failed.
+      - name: Upload the health report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: source-lock-health
+          path: ${{ runner.temp }}/source-lock-health.json
+          retention-days: 180

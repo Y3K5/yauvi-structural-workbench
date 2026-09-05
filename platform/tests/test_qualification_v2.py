@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 import re
@@ -146,6 +147,39 @@ def test_release_status_digest_chain_matches_the_files():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     assert module.main([]) == 0, "RELEASE_STATUS.json records a digest that no longer matches its file"
+
+
+def test_lock_health_digests_the_way_the_acquirer_does():
+    """The rule that made a hand-run audit report nineteen false drifts.
+
+    acquire_sources.py decompresses a .gz URL whose artifact path is not .gz
+    before hashing. gzip embeds an mtime, so comparing the compressed bytes
+    reports every validation report as drifted when none of them changed. The
+    health check has to hash what the acquirer hashes or it is an alarm
+    generator.
+    """
+    import gzip
+
+    spec = importlib.util.spec_from_file_location(
+        "verify_source_lock_health", ROOT / "tools" / "verify_source_lock_health.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    payload = b"><header>\nMKVLAA\n"
+    # Two archives of identical content, written a second apart, differ in bytes.
+    early = gzip.compress(payload, mtime=1)
+    late = gzip.compress(payload, mtime=2)
+    assert early != late, "gzip no longer embeds an mtime; this test's premise is gone"
+
+    plain = hashlib.sha256(payload).hexdigest()
+    # A .gz url whose artifact is not .gz: decompress, so both archives agree.
+    assert module.digest_as_acquirer_would(early, "https://x/a.xml.gz", "sources/a.xml") == plain
+    assert module.digest_as_acquirer_would(late, "https://x/a.xml.gz", "sources/a.xml") == plain
+    # A .gz artifact is stored compressed, so the archive itself is the subject.
+    assert module.digest_as_acquirer_would(early, "https://x/a.gz", "sources/a.gz") == \
+        hashlib.sha256(early).hexdigest()
 
 
 def test_status_prose_quotes_the_executed_numbers():
