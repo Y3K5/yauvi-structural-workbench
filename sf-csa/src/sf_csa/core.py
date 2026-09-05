@@ -212,15 +212,45 @@ def transform_pdb(source: Path, destination: Path, rotation: str, translation: s
 
 def write_superposition_html(path: Path, query_pdb: Path, target_pdb: Path, query_id: str,
                              target_id: str, tm_score: str, rmsd: str) -> None:
+    """Write the superposition viewer, and say so when it cannot draw.
+
+    The page loads 3Dmol from `assets/vendor/3Dmol-min.js`, relative to the
+    release. **No release has ever contained that file** -- nothing in this
+    module or in the tooling writes it -- so until one does, every viewer this
+    function has produced shows its caption over an empty panel and fails
+    silently in the console. That reads as a viewer that broke, which is worse
+    than one that was never possible: a reader cannot tell whether the
+    superposition failed or the page did.
+
+    So the page checks for the library and, when it is absent, replaces the
+    viewer with a plain statement of what is missing and where the coordinates
+    are. The structures stay embedded either way: they are the substance, and
+    they are readable in a text editor without any viewer at all.
+
+    Keeping the script tag is deliberate. Drop 3Dmol-min.js into
+    `assets/vendor/` beside a release and every page in it starts rendering,
+    with no regeneration.
+    """
     qp=query_pdb.read_text().replace("`","\\`").replace("${","\\${")
     tp=target_pdb.read_text().replace("`","\\`").replace("${","\\${")
     html=f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<style>html,body,#v{{margin:0;width:100%;height:100%;background:#07111f}}.note{{position:absolute;z-index:2;left:12px;top:10px;background:#07111fdd;color:#dbeafe;padding:8px 10px;border-radius:6px;font:12px system-ui}}b{{color:#67e8f9}}i{{color:#f0abfc}}</style>
+<style>html,body,#v{{margin:0;width:100%;height:100%;background:#07111f}}.note{{position:absolute;z-index:2;left:12px;top:10px;background:#07111fdd;color:#dbeafe;padding:8px 10px;border-radius:6px;font:12px system-ui}}b{{color:#67e8f9}}i{{color:#f0abfc}}.absent{{position:absolute;z-index:1;inset:0;display:flex;align-items:center;justify-content:center;padding:24px}}.absent p{{max-width:44em;color:#94a3b8;font:13px/1.6 system-ui;text-align:left}}code{{color:#cbd5e1}}</style>
 </head><body><div class="note"><b>{query_id}</b> query · <i>{target_id}</i> aligned target · TM {tm_score} · RMSD {rmsd} Å<br>Foldseek rigid superposition; predicted monomers, not an active assembly.</div><div id="v"></div><script src="../../assets/vendor/3Dmol-min.js"></script><script>
-const v=$3Dmol.createViewer(document.getElementById("v"),{{backgroundColor:"#07111f"}});
-v.addModel(`{qp}`,"pdb");v.setStyle({{model:0}},{{cartoon:{{color:"#22d3ee",opacity:.78}}}});
-v.addModel(`{tp}`,"pdb");v.setStyle({{model:1}},{{cartoon:{{color:"#e879f9",opacity:.62}}}});
-v.zoomTo();v.render();</script></body></html>'''
+if (typeof $3Dmol === "undefined") {{
+  document.getElementById("v").innerHTML =
+    '<div class="absent"><p><b>No 3D view here.</b> This page expects 3Dmol.js at ' +
+    '<code>assets/vendor/3Dmol-min.js</code>, relative to the release, and this release ' +
+    'does not ship it. Nothing is wrong with the superposition: the TM-score and RMSD ' +
+    'above are the measured result, and both structures are embedded in this file as PDB ' +
+    'text, readable in any editor. To render it, put a copy of 3Dmol.js at that path and ' +
+    'reload.</p></div>';
+}} else {{
+  const v=$3Dmol.createViewer(document.getElementById("v"),{{backgroundColor:"#07111f"}});
+  v.addModel(`{qp}`,"pdb");v.setStyle({{model:0}},{{cartoon:{{color:"#22d3ee",opacity:.78}}}});
+  v.addModel(`{tp}`,"pdb");v.setStyle({{model:1}},{{cartoon:{{color:"#e879f9",opacity:.62}}}});
+  v.zoomTo();v.render();
+}}
+</script></body></html>'''
     path.write_text(html)
 
 
