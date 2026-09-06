@@ -22,6 +22,19 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         python: ["3.10", "3.11", "3.12"]
+        include:
+          # Linux on arm64. macos-latest has been arm64 since macos-14, so a
+          # fresh install has been proven on that architecture for as long as
+          # this matrix has existed -- but only on Darwin, where the wheels a
+          # reviewer resolves come from a different set than on Linux. This is
+          # the combination `linux_arm64_fresh_install_matrix_passed` in
+          # RELEASE_STATUS.json names, and until now nothing ran it.
+          #
+          # 3.12 only: actions/setup-python's linux-arm64 manifest does not
+          # carry every older version, and the question here is whether the
+          # distribution installs on the architecture, not on every interpreter.
+          - os: ubuntu-24.04-arm
+            python: "3.12"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -30,6 +43,11 @@ jobs:
           cache: pip
       - name: One-command reviewer installation
         run: python -m pip install ".[dev]"
+      # Names the architecture in the log of every job, so the install-matrix
+      # gates are read off recorded evidence instead of inferred from a runner
+      # label whose meaning changed once already when macos-latest moved to arm64.
+      - name: Record the environment this install was proven on
+        run: python -c "import platform,sys; print(f'{platform.system()}/{platform.machine()} py{platform.python_version()}')"
       - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null

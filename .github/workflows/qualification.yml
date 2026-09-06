@@ -36,6 +36,21 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         python: ["3.10", "3.11", "3.12"]
+        include:
+          # A third environment, and the second CPU architecture on Linux.
+          #
+          # Added as one include rather than a third row of the cross product.
+          # The reproduction gate counts *environments* -- platform and machine
+          # -- not interpreters, so a full arm64 Python sweep would add three
+          # jobs to answer a question one job answers. 3.12 because
+          # actions/setup-python's linux-arm64 manifest does not carry every
+          # older version.
+          #
+          # macos-latest has been arm64 since macos-14, so the matrix already
+          # spanned two architectures; this makes the Linux/arm64 combination
+          # explicit rather than leaving it inferred from a runner label.
+          - os: ubuntu-24.04-arm
+            python: "3.12"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -197,3 +212,63 @@ jobs:
           summary = json.loads(Path("results/EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
           assert summary["all_release_blocking_scopes_qualified"] is False
           PY
+
+  # Every runner above summarizes itself and hardcodes
+  # `second_machine_reproduction: not_recorded`, which from inside one runner is
+  # the only honest answer. The matrix then produced six such summaries, uploaded
+  # six archives, and nothing combined them -- so the evidence for cross-machine
+  # reproduction was generated weekly and read by nobody. That is the same
+  # failure summarize_execution.py was written to fix one level down.
+  cross-machine:
+    name: The matrix agreed with itself
+    needs: execute
+    # always() so a matrix job that failed still gets its evidence combined. A
+    # panel that passed on two environments and failed on a third is exactly the
+    # run worth a verdict, and skipping the combiner there would lose it.
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      # Runs on the standard library alone, so no install step and nothing that
+      # can drift between this job and the evidence it reads.
+      - name: Download every runner's evidence
+        uses: actions/download-artifact@v5
+        with:
+          pattern: execution-evidence-*
+          path: evidence
+
+      # Exit 1 -- a release-blocking panel disagreed between environments --
+      # fails this job, because that is a finding about the software. Exit 2 --
+      # too few environments reported -- does not. The uploads above are
+      # continue-on-error on purpose (run #46 lost one to a CreateArtifact
+      # timeout after every panel had passed), so a transfer GitHub could not
+      # complete must not come back as a failed reproduction. Same line
+      # source-lock-health.yml draws when a provider is unreachable.
+      - name: Combine the per-runner evidence into one verdict
+        run: |
+          set +e
+          python tools/verify_cross_machine_reproduction.py \
+            --evidence-dir evidence \
+            --json-out "${RUNNER_TEMP}/cross-machine-reproduction.json"
+          code=$?
+          set -e
+          if [ "$code" -eq 2 ]; then
+            echo "::warning::Too few runner summaries arrived to judge reproduction. \
+          Nothing disagreed; the evidence is incomplete."
+            exit 0
+          fi
+          exit "$code"
+
+      - name: Upload the cross-machine verdict
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v5
+        with:
+          name: cross-machine-reproduction
+          path: ${{ runner.temp }}/cross-machine-reproduction.json
+          retention-days: 180
