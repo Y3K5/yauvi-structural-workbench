@@ -258,3 +258,236 @@ def test_execution_summary_reports_which_failures_gate_the_release():
         requirement["count"] for panel in manifest["panels"] for requirement in panel["requirements"]
     )
     assert summary["cases_required"] == required
+
+
+def _cross_machine_module():
+    spec = importlib.util.spec_from_file_location(
+        "verify_cross_machine_reproduction",
+        ROOT / "tools" / "verify_cross_machine_reproduction.py",
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _runner_summary(platform_name, machine, python, panels):
+    """One runner's EXECUTION_SUMMARY.json, reduced to what the combiner reads."""
+    return {
+        "source": f"{platform_name}-{machine}-py{python}",
+        "summary": {
+            "recorded_on": [{"platform": platform_name, "machine": machine, "python": python}],
+            "panels": [
+                {
+                    "workflow": workflow,
+                    "release_blocking": blocking,
+                    "stratum_state": "passed" if failed == 0 else "failed",
+                    "cases": {"passed": passed, "failed": failed, "total": passed + failed},
+                    "controls": {"passed": 1, "total": 1},
+                }
+                for workflow, blocking, passed, failed in panels
+            ],
+        },
+    }
+
+
+# The panel shape the four adopted blocking panels share: everything passes.
+_CLEAN = [("structure_qc", True, 16, 0), ("conformational_state", True, 14, 0)]
+
+
+def test_cross_machine_reproduction_needs_two_architectures_not_two_pythons():
+    """Rule 2, on the gate that would otherwise close itself.
+
+    Six green runners are not six machines. The qualification matrix varies
+    Python three ways against two operating systems, and counting runners would
+    report six independent reproductions of what are really two environments.
+    A different interpreter on the same platform and architecture does not
+    exercise the libm, BLAS or floating-point-contraction differences this gate
+    exists to catch.
+    """
+    module = _cross_machine_module()
+
+    # Three Pythons, one OS, one architecture. Three runners, one environment.
+    one_environment = [
+        _runner_summary("Linux", "x86_64", version, _CLEAN) for version in ("3.10", "3.11", "3.12")
+    ]
+    thin = module.build_report(one_environment, min_environments=2)
+    assert thin["environment_count"] == 1, thin["environments_observed"]
+    assert thin["runners_usable"] == 3
+    assert thin["every_release_blocking_panel_reproduced"] is False
+    assert sorted(thin["release_blocking_panels_under_minimum"]) == [
+        "conformational_state", "structure_qc"
+    ]
+
+    # Add a second architecture and the same evidence now reproduces.
+    two_environments = one_environment + [
+        _runner_summary("Darwin", "arm64", version, _CLEAN) for version in ("3.10", "3.11", "3.12")
+    ]
+    wide = module.build_report(two_environments, min_environments=2)
+    assert wide["environment_count"] == 2
+    assert wide["environments_observed"] == ["Darwin/arm64", "Linux/x86_64"]
+    assert wide["every_release_blocking_panel_reproduced"] is True
+    assert wide["release_blocking_panels_under_minimum"] == []
+
+
+def test_cross_machine_reproduction_fails_when_environments_disagree():
+    """Both green is not the same as both agreeing.
+
+    A panel that passes 16/16 on Linux and 14/16 on macOS has not reproduced,
+    and the failure mode worth guarding against is a gate that reads only the
+    verdict and calls two different measurements a match.
+    """
+    module = _cross_machine_module()
+
+    disagreeing = [
+        _runner_summary("Linux", "x86_64", "3.12", [("structure_qc", True, 16, 0)]),
+        _runner_summary("Darwin", "arm64", "3.12", [("structure_qc", True, 14, 2)]),
+    ]
+    report = module.build_report(disagreeing, min_environments=2)
+    assert report["environment_count"] == 2, "two environments were present"
+    assert report["release_blocking_panels_disagreed"] == ["structure_qc"]
+    assert report["every_release_blocking_panel_reproduced"] is False
+    panel = report["panels"][0]
+    assert panel["agreed_across_environments"] is False
+    assert panel["reproduced"] is False
+
+    # The subtler case: both report "passed", but not the same passed. Counting
+    # verdicts would call this reproduced; comparing outcomes does not.
+    same_verdict_different_counts = [
+        _runner_summary("Linux", "x86_64", "3.12", [("structure_qc", True, 16, 0)]),
+        _runner_summary("Darwin", "arm64", "3.12", [("structure_qc", True, 15, 0)]),
+    ]
+    subtle = module.build_report(same_verdict_different_counts, min_environments=2)
+    assert subtle["panels"][0]["passed_on_every_environment"] is True
+    assert subtle["panels"][0]["reproduced"] is False
+    assert subtle["release_blocking_panels_disagreed"] == ["structure_qc"]
+
+
+def test_cross_machine_reproduction_does_not_gate_on_a_non_blocking_scope():
+    """Membrane orientation is expected to differ across machines.
+
+    Its drift deltas are the reason the matrix exists, and collection 2.4 made
+    the scope research-only. A cross-machine disagreement there is the finding,
+    not a broken release -- the same split summarize_execution.py enforces.
+    """
+    module = _cross_machine_module()
+
+    report = module.build_report(
+        [
+            _runner_summary("Linux", "x86_64", "3.12",
+                            _CLEAN + [("membrane_orientation", False, 5, 11)]),
+            _runner_summary("Darwin", "arm64", "3.12",
+                            _CLEAN + [("membrane_orientation", False, 4, 12)]),
+        ],
+        min_environments=2,
+    )
+    membrane = next(p for p in report["panels"] if p["workflow"] == "membrane_orientation")
+    assert membrane["agreed_across_environments"] is False, "the disagreement is still recorded"
+    assert membrane["release_blocking"] is False
+    assert report["release_blocking_panels_disagreed"] == []
+    assert report["every_release_blocking_panel_reproduced"] is True
+
+
+def test_cross_machine_reproduction_catches_one_environment_disagreeing_with_itself():
+    """Two Pythons on one machine reporting different counts is a finding.
+
+    Collapsing an environment to a single representative outcome would hide it,
+    so the disagreement is recorded before the per-environment reduction.
+    """
+    module = _cross_machine_module()
+
+    report = module.build_report(
+        [
+            _runner_summary("Linux", "x86_64", "3.10", [("structure_qc", True, 16, 0)]),
+            _runner_summary("Linux", "x86_64", "3.12", [("structure_qc", True, 15, 1)]),
+            _runner_summary("Darwin", "arm64", "3.12", [("structure_qc", True, 16, 0)]),
+        ],
+        min_environments=2,
+    )
+    panel = report["panels"][0]
+    assert panel["internally_inconsistent_environments"] == ["Linux/x86_64"]
+    assert panel["reproduced"] is False
+    assert report["release_blocking_panels_disagreed"] == ["structure_qc"]
+
+
+def test_cross_machine_reproduction_rejects_a_summary_spanning_two_runtimes():
+    """A summary carrying two runtimes was not produced by one run.
+
+    summarize_execution.py sets counts_are_single_machine false in exactly that
+    case. Such a document cannot speak for an environment, and silently letting
+    it count as one would manufacture a second machine out of a merged local
+    directory.
+    """
+    module = _cross_machine_module()
+
+    merged = {
+        "source": "merged",
+        "summary": {
+            "recorded_on": [
+                {"platform": "Linux", "machine": "x86_64", "python": "3.12"},
+                {"platform": "Darwin", "machine": "arm64", "python": "3.12"},
+            ],
+            "panels": [{"workflow": "structure_qc", "release_blocking": True,
+                        "stratum_state": "passed",
+                        "cases": {"passed": 16, "failed": 0, "total": 16},
+                        "controls": {"passed": 1, "total": 1}}],
+        },
+    }
+    report = module.build_report([merged], min_environments=2)
+    assert report["runners_usable"] == 0
+    assert report["unusable_runners"][0]["why"].startswith("summary spans 2 runtimes")
+    assert report["every_release_blocking_panel_reproduced"] is False
+
+
+def test_cross_machine_missing_evidence_is_not_a_failed_reproduction(tmp_path):
+    """Exit 2, not 1, when the evidence simply did not arrive.
+
+    Uploads in qualification.yml are continue-on-error because the artifact
+    service is not evidence about the software -- on run #46 a CreateArtifact
+    call timed out through all five retries on a runner whose panels had all
+    passed. If a dropped upload came back as a red reproduction gate, the
+    workflow would state something false about the science for an infrastructure
+    reason. verify_source_lock_health.py draws the same line, exiting 0 when a
+    provider is merely unreachable.
+    """
+    import io
+    import tarfile
+
+    module = _cross_machine_module()
+
+    def artifact(directory, platform_name, machine, python, cases_passed):
+        directory.mkdir(parents=True, exist_ok=True)
+        blob = json.dumps(_runner_summary(
+            platform_name, machine, python,
+            [("structure_qc", True, cases_passed, 16 - cases_passed)],
+        )["summary"]).encode("utf-8")
+        with tarfile.open(directory / "execution-evidence.tar.gz", "w:gz") as archive:
+            info = tarfile.TarInfo("results/EXECUTION_SUMMARY.json")
+            info.size = len(blob)
+            archive.addfile(info, io.BytesIO(blob))
+
+    # One environment's upload arrived. Nothing disagrees; there is just not
+    # enough to conclude with.
+    thin = tmp_path / "thin"
+    artifact(thin / "execution-evidence-py3.12-ubuntu-latest", "Linux", "x86_64", "3.12", 16)
+    assert module.main(["--evidence-dir", str(thin),
+                        "--json-out", str(thin / "report.json")]) == 2
+
+    # Both arrived and they disagree. That is a finding, and it is louder.
+    split = tmp_path / "split"
+    artifact(split / "execution-evidence-py3.12-ubuntu-latest", "Linux", "x86_64", "3.12", 16)
+    artifact(split / "execution-evidence-py3.12-macos-latest", "Darwin", "arm64", "3.12", 14)
+    assert module.main(["--evidence-dir", str(split),
+                        "--json-out", str(split / "report.json")]) == 1
+
+    # Both arrived and they agree.
+    whole = tmp_path / "whole"
+    artifact(whole / "execution-evidence-py3.12-ubuntu-latest", "Linux", "x86_64", "3.12", 16)
+    artifact(whole / "execution-evidence-py3.12-macos-latest", "Darwin", "arm64", "3.12", 16)
+    assert module.main(["--evidence-dir", str(whole),
+                        "--json-out", str(whole / "report.json")]) == 0
+
+    # The archives are what CI uploads, so the reader has to survive them.
+    report = json.loads((whole / "report.json").read_text(encoding="utf-8"))
+    assert report["environments_observed"] == ["Darwin/arm64", "Linux/x86_64"]
+    assert report["every_release_blocking_panel_reproduced"] is True
