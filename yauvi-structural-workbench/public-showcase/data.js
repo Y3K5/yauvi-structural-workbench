@@ -1,10 +1,10 @@
 window.YAUVI_PUBLIC_SHOWCASE = {
   "baseline": {
-    "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-02",
+    "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-07",
     "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks.",
     "selection": "not network and not adapter",
-    "total_deselected": 6,
-    "total_passed": 526
+    "total_deselected": 5,
+    "total_passed": 588
   },
   "cases": [
     {
@@ -14,12 +14,12 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "STRUCTURE_EVIDENCE.json",
           "path": "evidence/HUC-01/STRUCTURE_EVIDENCE.json",
-          "sha256": "dffaf668899d38d5d8fb5afb0e3a7c91b91c04fd7aed1386aa6518f72bdae254"
+          "sha256": "252b316dffed71d48b4efe6a71ea7f37139146dcc3852c0a57fd4e642b5d0360"
         },
         {
           "label": "RESIDUE_QUALITY.tsv",
           "path": "evidence/HUC-01/RESIDUE_QUALITY.tsv",
-          "sha256": "6cba8ab043109e9914b626ca64d77308c82494591533db3d4353cfca39ff142a"
+          "sha256": "943870295b249daad3762eecea979901c577d9fcaf9c7c0465142fa2cbaec355"
         }
       ],
       "human_benefits": [
@@ -69,7 +69,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "MEMBRANE_ORIENTATION.json",
           "path": "evidence/HUC-02/MEMBRANE_ORIENTATION.json",
-          "sha256": "9f7e22278fad595725fea60e7d1018c5128fafd793d7ed3fbce143d7a83bbb95"
+          "sha256": "61e90c3f567ba29125913b45747b780116c67e82add2117eb2922d449ca4b45a"
         },
         {
           "label": "RESIDUE_ORIENTATION.tsv",
@@ -122,7 +122,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "STATE_ENSEMBLE.json",
           "path": "evidence/HUC-03/STATE_ENSEMBLE.json",
-          "sha256": "aecbaa94b27aa5f121d77fcb509a267c7c78f935849a2a05e10f351144d561b5"
+          "sha256": "ac9baa6ab5e1628a90ee452e1bd211d5caad82aa2e8c98a25afc2b8a90d7dea3"
         },
         {
           "label": "FRAME_METRICS.tsv",
@@ -178,7 +178,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "SITE_CONTEXT.json",
           "path": "evidence/HUC-04/SITE_CONTEXT.json",
-          "sha256": "49650292449ea356a2ed22087cb44c7a096a77fa23c0125ef3dddbcc1b3f1464"
+          "sha256": "1567b1de43e154d67e1c5628430d6a7eedc7ba46ba5cd740b90594242acdbfd1"
         },
         {
           "label": "SITE_RESIDUES.tsv",
@@ -234,7 +234,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "ASSEMBLY_CONTEXT.json",
           "path": "evidence/HUC-05/ASSEMBLY_CONTEXT.json",
-          "sha256": "2139adacffaf600958061b95fd853f73ed7934dd9dfba28cef8458ed14419cf8"
+          "sha256": "5e54796a717d4ee49e6ca0f3d86d3c55df823b66085047ee9ac22e5068a4a2de"
         },
         {
           "label": "INTERFACES.tsv",
@@ -319,7 +319,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "CHECKSUMS.json",
           "path": "evidence/HUC-06/release/CHECKSUMS.json",
-          "sha256": "4a9f46c8c184b4843348af15ce004b1be3b15d76df60ddc0a1f1c0132514e822"
+          "sha256": "e764a2bb36ac9405b0783cba500e4b97e0802df1bac371e0d07c84e16a6760ec"
         }
       ],
       "human_benefits": [
@@ -727,7 +727,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "path": "qualification-v2/EXECUTION_SUMMARY.json"
       }
     ],
-    "missing_records": 46,
+    "missing_records": 32,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
@@ -738,10 +738,10 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "workflow": "membrane_orientation"
       },
       {
-        "execution_state": "not_executed",
-        "missing_count": 14,
-        "record_count": 0,
-        "state": "blocked_panel_incomplete",
+        "execution_state": "passed",
+        "missing_count": 0,
+        "record_count": 14,
+        "state": "ready_for_execution",
         "workflow": "conformational_state"
       },
       {
@@ -777,176 +777,75 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "all_release_blocking_scopes_qualified": false,
       "cases_passed": 67,
       "cases_required": 110,
-      "collection_note": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate.",
+      "collection_note": "Four panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6, adopted into PANEL_MANIFEST.json as collection 2.9 after Qualification v2 run #44 reproduced it on all six runners; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. sf_csa is the one workflow not executed: its ten reference-proteome sources are UniProt stream queries that no sha256 can lock, recorded as Finding 8 in SF_CSA_PREADOPTION_FINDINGS.md. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 67 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum and sf-csa remain unadopted, membrane executes from a draft rather than adopted records, and no scope has completed the independent second-machine gate.",
       "counts_are_single_machine": true,
       "every_executed_panel_passed": false,
       "panels": [
         {
-          "cases": {
-            "failed": 0,
-            "passed": 14,
-            "total": 14
-          },
           "cases_adopted": 14,
+          "cases_passed": 14,
           "cases_required": 14,
-          "controls": {
-            "passed": 1,
-            "total": 1
-          },
-          "coverage": {
-            "required": 6,
-            "unmet": [],
-            "unwitnessable": [],
-            "witnessed": 6
-          },
-          "drift": {},
-          "panel_id": "qualification-v2-abl-state-atlas",
-          "release_blocking": true,
-          "strata_executed": [
-            "active",
-            "inactive"
-          ],
+          "controls_passed": 1,
+          "controls_total": 1,
+          "coverage_required": 6,
+          "coverage_unwitnessable": [],
+          "coverage_witnessed": 6,
           "stratum_scope": "both_abl_state_strata",
           "stratum_state": "passed",
           "workflow": "conformational_state"
         },
         {
-          "cases": {
-            "failed": 0,
-            "passed": 16,
-            "total": 16
-          },
           "cases_adopted": 16,
+          "cases_passed": 16,
           "cases_required": 16,
-          "controls": {
-            "passed": 0,
-            "total": 0
-          },
-          "coverage": {
-            "required": 6,
-            "unmet": [],
-            "unwitnessable": [],
-            "witnessed": 6
-          },
-          "drift": {},
-          "panel_id": "qualification-v2-assembly-context",
-          "release_blocking": true,
-          "strata_executed": [
-            "heterooligomer",
-            "higher_order",
-            "homodimer",
-            "tetramer"
-          ],
+          "controls_passed": 0,
+          "controls_total": 0,
+          "coverage_required": 6,
+          "coverage_unwitnessable": [],
+          "coverage_witnessed": 6,
           "stratum_scope": "all_four_assembly_strata",
           "stratum_state": "passed",
           "workflow": "assembly_interface"
         },
         {
-          "cases": {
-            "failed": 11,
-            "passed": 5,
-            "total": 16
-          },
           "cases_adopted": 16,
+          "cases_passed": 5,
           "cases_required": 32,
-          "controls": {
-            "passed": 0,
-            "total": 0
-          },
-          "coverage": {
-            "required": 6,
-            "unmet": [],
-            "unwitnessable": [],
-            "witnessed": 6
-          },
-          "drift": {
-            "drift.fitted_half_thickness_A": {
-              "cases": 16,
-              "max": 0.0,
-              "median": 0.0
-            },
-            "drift.mean_jaccard": {
-              "cases": 16,
-              "max": 0.019000000000000017,
-              "median": 0.0
-            },
-            "drift.n_reference_extracellular": {
-              "cases": 16,
-              "max": 0.0,
-              "median": 0.0
-            }
-          },
-          "panel_id": "qualification-v2-membrane",
-          "release_blocking": false,
-          "strata_executed": [
-            "beta_barrel"
-          ],
+          "controls_passed": 0,
+          "controls_total": 0,
+          "coverage_required": 6,
+          "coverage_unwitnessable": [],
+          "coverage_witnessed": 6,
           "stratum_scope": "beta_barrel",
           "stratum_state": "failed",
           "workflow": "membrane_orientation"
         },
         {
-          "cases": {
-            "failed": 0,
-            "passed": 16,
-            "total": 16
-          },
           "cases_adopted": 16,
+          "cases_passed": 16,
           "cases_required": 16,
-          "controls": {
-            "passed": 1,
-            "total": 1
-          },
-          "coverage": {
-            "required": 8,
-            "unmet": [],
-            "unwitnessable": [
-              "curated_residue_missing_coordinates"
-            ],
-            "witnessed": 8
-          },
-          "drift": {},
-          "panel_id": "qualification-v2-site-context",
-          "release_blocking": true,
-          "strata_executed": [
-            "acid_base",
-            "apo_modified_or_incomplete",
-            "metal_or_cofactor",
-            "nucleophile_or_covalent"
+          "controls_passed": 1,
+          "controls_total": 1,
+          "coverage_required": 8,
+          "coverage_unwitnessable": [
+            "curated_residue_missing_coordinates"
           ],
+          "coverage_witnessed": 8,
           "stratum_scope": "all_four_site_context_strata",
           "stratum_state": "passed",
           "workflow": "functional_site_state"
         },
         {
-          "cases": {
-            "failed": 0,
-            "passed": 16,
-            "total": 16
-          },
           "cases_adopted": 16,
+          "cases_passed": 16,
           "cases_required": 16,
-          "controls": {
-            "passed": 2,
-            "total": 2
-          },
-          "coverage": {
-            "required": 7,
-            "unmet": [],
-            "unwitnessable": [
-              "modified_residues"
-            ],
-            "witnessed": 7
-          },
-          "drift": {},
-          "panel_id": "qualification-v2-structqc",
-          "release_blocking": true,
-          "strata_executed": [
-            "alphafold",
-            "cryo_em",
-            "nmr",
-            "x_ray"
+          "controls_passed": 2,
+          "controls_total": 2,
+          "coverage_required": 7,
+          "coverage_unwitnessable": [
+            "modified_residues"
           ],
+          "coverage_witnessed": 7,
           "stratum_scope": "all_four_structqc_strata",
           "stratum_state": "passed",
           "workflow": "structure_qc"
@@ -961,7 +860,6 @@ window.YAUVI_PUBLIC_SHOWCASE = {
           "python": "3.12.7"
         }
       ],
-      "scientific_execution_performed": true,
       "scope_qualification_note": "Executed panels passing is not scope qualification. A Mark 1 scope is qualified only when its panel composes in full, every case and control passes, and the result reproduces independently on a second machine. This summary reports execution only. 1 of 6 panels are unadopted and no second-machine reproduction is recorded, so no scope is qualified.",
       "second_machine_reproduction": "not_recorded",
       "workflows_executed": [
@@ -1188,14 +1086,14 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "benchmark_collection": "qualification-v2-membrane-beta-barrel",
           "known_limitations": [
-            "Independent second-machine reproduction remains required."
+            "Reference-orientation accuracy gate is not met; no qualified orientation claim."
           ],
-          "release_blocking": true,
+          "release_blocking": false,
           "required_evidence": [
             "exact coordinates",
             "declared membrane context"
           ],
-          "scientific_state": "conditionally_qualified",
+          "scientific_state": "experimental",
           "scope_id": "beta_barrel",
           "supported_subject_class": "transmembrane beta-barrel proteins"
         },
@@ -1217,13 +1115,13 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       ],
       "showcase_note": "Executed synthetic evidence is linked below.",
       "showcase_state": "passed_synthetic_case",
-      "software_state": "conditionally_qualified",
+      "software_state": "experimental",
       "title": "Membrane orientation"
     },
     {
       "analysis_type": "conformational_state",
       "external_benchmark": "partial_public_case",
-      "external_benchmark_detail": "abl_exact_mapping_v2_implemented_held_out_panel_unadopted",
+      "external_benchmark_detail": "v2_panel_ADOPTED_collection_2_9_all_14_records_and_1_control_in_PANEL_MANIFEST_executes_14_of_14_reproduced_on_six_runners_in_qualification_run_44_independent_second_machine_gate_outstanding",
       "inputs": [
         {
           "absence_effect": "blocked",
@@ -1336,7 +1234,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "measures": "Sequence-mapped alignment, RMSD, RMSF, frame-to-reference distance, deterministic clusters, and interpretable-frame populations.",
       "non_claim": "Active-like or inactive-like describes structural resemblance, not biochemical activation, inhibition, or efficacy.",
       "optional_runtimes": {
-        "mdanalysis": "available"
+        "mdanalysis": "missing"
       },
       "public_question": "Which conformation does it resemble?",
       "question": "Which experimentally bounded conformations does this structure or ensemble resemble?",

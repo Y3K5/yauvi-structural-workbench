@@ -39,7 +39,7 @@ hand-author JSON.
 ## Run the synthetic showcase
 
 ```bash
-python tools/build_five_use_case_showcase.py --replace
+python tools/build_five_use_case_showcase.py --out ./local-showcase-review
 python tools/verify_five_use_case_showcase.py
 python tools/verify_public_showcase.py
 ```
@@ -65,13 +65,14 @@ Audit the expanded Qualification v2 panel separately:
 python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
 ```
 
-The expected state is `blocked_panel_incomplete`. No v2 scientific execution
-has occurred and no missing case is counted as favorable evidence.
+The composition audit is currently `blocked_panel_incomplete`. It checks composition,
+not execution. Five panels have historical execution records; SF-CSA is unexecuted.
+Changed software must be qualified afresh, and missing cases never count as favorable evidence.
 
 ## Start the local interface
 
 ```bash
-structqc describe
+yauvi --workspace ./my-analysis workbench serve
 ```
 
 Open `/public-showcase/` for the narrative and `/#new` for the task-first

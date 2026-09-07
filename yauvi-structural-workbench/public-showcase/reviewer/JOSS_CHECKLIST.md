@@ -16,12 +16,12 @@ only after a public repository and independent research use exist.
   never adopts a file into an analysis automatically.
 - Content-addressed ingestion, checksum verification, preflight, registered
   command execution, deterministic report bundles, and print CSS.
-- Offline software baseline recorded in [BASELINE.json](../../BASELINE.json).
+- Offline software baseline recorded in [BASELINE.json](BASELINE.json).
 - Checksum-locked public qualification runner and evidence report in
-  [benchmarks/qualification-v1/](../../benchmarks/qualification-v1/README.md).
+  [benchmarks/qualification-v1/](benchmarks/qualification-v1/README.md).
 - Frozen Qualification v2 scope, stratum, split, evidence, and tolerance
   specification with a deterministic fail-closed panel audit in
-  [benchmarks/qualification-v2/](../../benchmarks/qualification-v2/README.md).
+  [benchmarks/qualification-v2/](benchmarks/qualification-v2/README.md).
 - Four Qualification v2 panels executed offline against checksum-verified
   artifacts on six OS/Python combinations in CI, with coverage verified from
   executed evidence rather than asserted. Three pass; the membrane stratum does
@@ -32,8 +32,8 @@ only after a public repository and independent research use exist.
   demonstrations, six separate public qualification narratives, biological
   context, raw evidence, reviewer quickstart, and a gated publication roadmap.
 - Public cases passed for StructQC, functional-site mapping, AssemblyContext,
-  and SF-CSA; the current Python 3.12.7 reviewer selection reports 526 passed
-  and 6 network/adapter tests deselected.
+  and SF-CSA; the current Python 3.12 reviewer selection reports 588 passed
+  and 5 network/adapter tests deselected.
 - FreeSASA (version not captured by the runner), Foldseek 10.941cd33, and
   DIAMOND 2.1.11 were invoked in the
   local public qualification run.

@@ -17,8 +17,8 @@ are outside this release.
 ## Fresh software evidence
 
 - Current macOS Python 3.12 workspace and offline dependency set exercised.
-- Current reviewer-scope offline result: **526 passed and 6 network/adapter
-  tests deselected** on Python 3.12.7.
+- Current reviewer-scope offline result: **588 passed and 5 network/adapter
+  tests deselected** (2 skipped) on Python 3.12, arm64.
 - Canonical module CLIs and SF-CSA deterministic fixture were included in the
   run; suites ran in separate processes to avoid legacy pytest basename
   collisions.

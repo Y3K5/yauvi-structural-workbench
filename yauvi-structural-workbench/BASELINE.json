@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
-  "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-02",
-  "python": "3.12.7",
+  "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-07",
+  "python": "3.12.0",
   "selection": "not network and not adapter",
-  "total_passed": 526,
-  "total_deselected": 6,
-  "total_skipped": 1,
+  "total_passed": 588,
+  "total_deselected": 5,
+  "total_skipped": 2,
   "aggregate_state": "passed",
   "suites": [
     {
       "path": "structqc/tests",
-      "passed": 7,
+      "passed": 8,
       "deselected": 0
     },
     {
@@ -22,8 +22,9 @@
     {
       "path": "state-atlas/tests",
       "passed": 10,
-      "deselected": 1,
-      "deselection_reason": "optional MDAnalysis adapter test is excluded from the offline reviewer selection"
+      "deselected": 0,
+      "skipped": 1,
+      "selection_note": "the optional MDAnalysis adapter test now reports as skipped rather than deselected"
     },
     {
       "path": "site-context/tests",
@@ -42,7 +43,7 @@
     },
     {
       "path": "sf-csa/tests",
-      "passed": 119,
+      "passed": 122,
       "deselected": 0
     },
     {
@@ -57,15 +58,27 @@
     },
     {
       "path": "platform/tests/test_qualification_v2.py",
-      "passed": 6,
+      "passed": 17,
+      "deselected": 0
+    },
+    {
+      "path": "platform/tests/test_product_hardening.py",
+      "passed": 19,
+      "deselected": 0
+    },
+    {
+      "path": "platform/tests/test_protein_import.py",
+      "passed": 23,
       "deselected": 0
     },
     {
       "path": "sources/tests",
-      "passed": 109,
+      "passed": 114,
       "deselected": 1
     }
   ],
   "execution_note": "Offline reviewer-scope run of this command-line distribution. Suites are invoked in separate pytest processes because legacy suites contain duplicate test module and conftest names; python tools/run_structural_workbench_tests.py is the authoritative runner and bare pytest does not work. The private control plane and the loopback browser controller are outside this distribution and contribute no tests to this baseline. Cross-platform clean-install evidence remains a separate recorded gate.",
+  "architecture_note": "Recorded on arm64 (Apple Silicon) with an arm64 interpreter. An interpreter whose architecture does not match the machine can install wheels whose compiled extensions fail to load; the runner's preflight checks declared versions, not architecture, so that failure arrives later as pytest collection errors. See Running the tests in README.md.",
+  "reference_platform_change": "The preceding baseline (2026-09-02, 526 passed) was recorded on Python 3.12.7 from an x86_64 conda under Rosetta. That interpreter no longer satisfies this project's declared floors -- it carries biopython 1.78 against a >=1.81 requirement -- so the runner's preflight refuses it and it cannot produce a valid baseline. A virtual environment derived from it installs arm64 wheels whose compiled extensions will not load on an x86_64 interpreter. The reference platform therefore moved to arm64 for a stated reason, not a preference: it is the only locally available interpreter that satisfies the declared dependency set, and it matches the arm64 macos-latest runner already used in CI. Comparisons against the 2026-09-02 baseline should account for the platform change as well as the added suites.",
   "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks."
 }
