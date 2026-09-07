@@ -13,6 +13,16 @@ yauvi-structural-workbench/benchmarks/*/build/
 # files and no entry names `work/` -- and they rebuild from the source lock.
 yauvi-structural-workbench/benchmarks/*/results/**/work/
 
+# --- Publish-sync accounting: local working state, not shipped evidence ---
+# Dated baselines are what the local sync tooling writes while reconciling this
+# checkout against the public remote. No tool, test or workflow in this
+# repository reads one. The committed, load-bearing snapshot is
+# yauvi-structural-workbench/BASELINE.json, which verify_public_showcase.py
+# checks the showcase against; these dated files are a different thing that
+# happens to share the word. BASE-01 in IMPLEMENTATION_BACKLOG.json records this
+# accounting as local_only for the same reason.
+yauvi-structural-workbench/IMPLEMENTATION_BASELINE_*.json
+
 # --- Build outputs -------------------------------------------------------
 build/
 dist/

@@ -32,7 +32,8 @@ showcases that a JOSS reviewer would receive.
 Every claim below was executed in this folder, offline:
 
 - `pip install -e ".[dev]"` succeeds; all nine console scripts land on `PATH`
-- **526 tests pass, 0 fail** (6 network/adapter deselected, 1 skipped)
+- **526 tests pass, 0 fail** (6 network/adapter deselected, 1 skipped), on an
+  **arm64** interpreter — see [Running the tests](#running-the-tests)
 - A real StructQC analysis runs to completion and is **byte-identical across two runs**
 - The fail-closed path exits `1` and names its missing evidence rather than scoring around it
 - The wheel builds offline and contains only canonical structural namespaces
@@ -44,6 +45,37 @@ Every claim below was executed in this folder, offline:
 Start with [`yauvi-structural-workbench/START_HERE.md`](yauvi-structural-workbench/START_HERE.md),
 then [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) and
 [`docs/cli-reference.md`](yauvi-structural-workbench/docs/cli-reference.md).
+
+## Running the tests
+
+```bash
+python -m pip install -e ".[dev]"
+python tools/run_structural_workbench_tests.py
+```
+
+**Use an interpreter whose architecture matches the machine.** On Apple Silicon
+that means an arm64 Python 3.10–3.12:
+
+```bash
+python -c "import platform; print(platform.machine())"   # expect arm64, not x86_64
+```
+
+A mismatched interpreter — most easily an x86_64 conda running under Rosetta —
+can acquire wheels whose compiled extensions will not load:
+
+```
+ImportError: dlopen(.../Bio/PDB/ccealign.cpython-312-darwin.so):
+  (mach-o file, but is an incompatible architecture (have 'arm64', need 'x86_64'))
+```
+
+The runner's preflight catches declared-version drift and refuses rather than
+reporting failures that describe the environment. An architecture mismatch is
+not a version mismatch, so it slips past that guard and lands later as roughly
+two dozen pytest collection errors that look like broken code and are not.
+
+`ModuleNotFoundError: No module named 'yauvi_platform'` (or `yauvi_sources`) has
+the same character: it means the editable install did not take, not that a module
+is missing. Both failure modes are environment reports, not test results.
 
 ## Boundary
 

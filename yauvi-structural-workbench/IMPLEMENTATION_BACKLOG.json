@@ -11,7 +11,8 @@
     {
       "acceptance": "Compare 1,441 baseline files against reviewed commit; retain changed-file inventory.",
       "category": "reproducibility",
-      "evidence": "IMPLEMENTATION_BASELINE_2026-09-06.json",
+      "evidence": "local_only",
+      "evidence_note": "The dated baseline this accounting produces is local sync state and is not published; see .gitignore. Not to be confused with BASELINE.json, which ships.",
       "id": "BASE-01",
       "independent_review": "not_recorded",
       "owner": "Software engineer",
