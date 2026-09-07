@@ -100,6 +100,7 @@ SOURCE_DESCRIPTORS: tuple[dict[str, Any], ...] = (
         "alphafold_db", "AlphaFold Protein Structure Database", "https://alphafold.ebi.ac.uk/",
         "https://alphafold.ebi.ac.uk/api-docs", "CC BY 4.0",
         [
+            _artifact("alphafold.metadata", "AlphaFold model metadata", "Provider record used to resolve and bind a public model import.", [".json"], "UniProt accession", "P69905", fetchable=False),
             _artifact("alphafold.model", "AlphaFold coordinate model", "Predicted single-chain coordinates resolved from the current AlphaFold API record.", [".pdb", ".cif", ".mmcif"], "UniProt accession", "P69905", fetchable=True),
             _artifact("alphafold.pae", "Predicted aligned error", "Pairwise confidence values for an AlphaFold prediction.", [".json"], "UniProt accession", "P69905", fetchable=True),
         ],
@@ -109,6 +110,7 @@ SOURCE_DESCRIPTORS: tuple[dict[str, Any], ...] = (
         "uniprot_proteomes", "UniProtKB", "https://www.uniprot.org/",
         "https://www.uniprot.org/help/api_queries", "CC BY 4.0",
         [
+            _artifact("uniprot.entry", "UniProt entry metadata", "Versioned provider response for a selected public protein.", [".json"], "UniProt accession", "P69905", fetchable=False),
             _artifact("uniprot.sequence", "Protein sequence FASTA", "The current UniProtKB sequence for one public accession.", [".fasta", ".fa", ".faa"], "UniProt accession", "P69905", fetchable=True),
             _artifact("uniprot.annotations", "UniProt feature table", "A TSV containing catalytic, binding, cofactor, function, and cross-reference fields.", [".tsv"], "UniProt accession", "P69905", fetchable=True),
             _artifact("uniprot.proteome", "Reference proteome FASTA", "A UniProt reference proteome used for a declared sequence-comparison universe.", [".fasta", ".fa", ".faa"], "Proteome ID", "UP000005640", fetchable=True),
@@ -308,15 +310,15 @@ class StructuralSourceStore:
                     return source, artifact
         raise StructuralSourceError(f"unknown structural artifact type: {artifact_type}")
 
-    def acquire(self, artifact_type: str, identifier: str) -> dict[str, Any]:
+    def acquire(self, artifact_type: str, identifier: str, *, prepared_outcome=None) -> dict[str, Any]:
         source, artifact = self._artifact_descriptor(artifact_type)
-        if not artifact["fetchable"]:
+        if not artifact["fetchable"] and not (prepared_outcome is not None and artifact_type in {"uniprot.entry", "alphafold.metadata"}):
             raise StructuralSourceError(f"{artifact_type} is link-only or locally generated and cannot be fetched by the workbench")
         identifier = identifier.strip()
         if not identifier or len(identifier) > 64 or not re.fullmatch(r"[A-Za-z0-9:_-]+", identifier):
             raise StructuralSourceError("public identifier contains unsupported characters")
         acquisition_id = "source_" + secrets.token_hex(12)
-        outcome = self.fetcher(artifact_type, identifier)
+        outcome = prepared_outcome if prepared_outcome is not None else self.fetcher(artifact_type, identifier)
         if not getattr(outcome, "ok", False):
             record = {
                 "schema_version": SCHEMA_VERSION, "contract_id": "source_acquisition_request",

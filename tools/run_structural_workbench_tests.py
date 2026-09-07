@@ -35,6 +35,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("structural workbench", ("platform/tests/test_structural_workbench.py",)),
     ("qualification v2", ("platform/tests/test_qualification_v2.py",)),
     ("product hardening", ("platform/tests/test_product_hardening.py",)),
+    ("protein import", ("platform/tests/test_protein_import.py",)),
     ("source registry", ("sources/tests",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")

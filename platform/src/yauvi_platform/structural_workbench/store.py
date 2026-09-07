@@ -1648,15 +1648,34 @@ class StructuralAnalysisStore:
             raise AnalysisError("run does not belong to this analysis")
         run_inputs = None
         artifacts = []
+        oriented_structure = None
+        membrane_layer = None
         if selected_run:
             run_dir = self._case_dir(analysis_id) / "runs" / selected_run
             if (run_dir / "INPUT_CASE.json").is_file():
                 run_inputs = json.loads((run_dir / "INPUT_CASE.json").read_text())
             artifacts = [name for name in ("REPORT.html", "REPORT_DATA.json", "RAW_EVIDENCE.zip", "CHECKSUMS.json", "RUN_MANIFEST.json") if (run_dir / name).is_file()]
+            oriented_path = run_dir / "outputs" / "memorient" / "ORIENTED_STRUCTURE.pdb"
+            if oriented_path.is_file():
+                oriented_structure = {
+                    "file_name": "ORIENTED_STRUCTURE.pdb",
+                    "bytes": oriented_path.stat().st_size,
+                    "sha256": _sha_file(oriented_path),
+                    "run_id": selected_run,
+                }
+            layer_path = run_dir / "outputs" / "memorient" / "MEMBRANE_LAYER.json"
+            if layer_path.is_file():
+                membrane_layer = {
+                    "file_name": "MEMBRANE_LAYER.json",
+                    "bytes": layer_path.stat().st_size,
+                    "sha256": _sha_file(layer_path),
+                    "run_id": selected_run,
+                }
             if (run_dir / "ANALYSIS_RUN.json").is_file(): run = json.loads((run_dir / "ANALYSIS_RUN.json").read_text(encoding="utf-8"))
             if (run_dir / "REPORT_DATA.json").is_file(): report = json.loads((run_dir / "REPORT_DATA.json").read_text(encoding="utf-8"))
         return {"analysis": manifest, "definition": self._definitions[manifest["analysis_type"]], "preflight": preflight, "run": run, "report": report,
-                "run_inputs": run_inputs, "available_artifacts": artifacts,
+                "run_inputs": run_inputs, "available_artifacts": artifacts, "oriented_structure": oriented_structure,
+                "membrane_layer": membrane_layer,
                 "report_matches_case": bool(run_inputs) and all(run_inputs.get(key) == manifest.get(key)
                     for key in ("inputs", "parameters", "question", "subject_id", "analysis_type"))}
 
