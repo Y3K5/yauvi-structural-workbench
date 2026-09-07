@@ -18,7 +18,7 @@ from pathlib import Path
 
 CLIS: list[tuple[str, str, list[str]]] = [
     ("yauvi", "Structural analysis case store: create, add inputs, validate, run, export.",
-     ["analysis create", "analysis add", "analysis validate", "analysis run", "analysis export"]),
+     ["workbench serve", "example", "analysis create", "analysis add", "analysis parameters", "analysis validate", "analysis run", "analysis export"]),
     ("structqc", "Coordinate trust: completeness, provenance class, imported validation.",
      ["describe", "validate", "fetch", "run"]),
     ("memorient", "Membrane orientation and sidedness labelling.",

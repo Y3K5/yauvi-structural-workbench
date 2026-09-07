@@ -27,15 +27,13 @@ def _workspace_root() -> Path | None:
 
 @pytest.fixture(scope="session")
 def workspace() -> Path:
-    root = _workspace_root()
-    if root is None:
-        pytest.skip("not running inside the workspace; real-registry tests need catalogs/")
-    return root
+    return Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture(scope="session")
-def real_registry(workspace: Path) -> SourceRegistry:
-    return SourceRegistry.load(workspace / "catalogs" / "sources.yaml")
+def real_registry() -> SourceRegistry:
+    from yauvi_sources.cli import find_registry
+    return SourceRegistry.load(find_registry())
 
 
 SYNTHETIC_REGISTRY = textwrap.dedent(

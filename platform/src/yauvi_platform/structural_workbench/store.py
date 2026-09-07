@@ -7,18 +7,26 @@ inventing a score or scientific conclusion.
 """
 from __future__ import annotations
 
+from contextlib import contextmanager
+from functools import wraps
+import fcntl
+import importlib.metadata
+import tempfile
 import csv
 import hashlib
 import html
 import importlib.util
 import json
+import math
 import os
 import platform
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import threading
+import time
 import zipfile
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -46,7 +54,10 @@ def _canonical(value: Any) -> bytes:
 
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(_canonical(value))
+    with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".write-", delete=False) as handle:
+        handle.write(_canonical(value))
+        temporary = Path(handle.name)
+    temporary.replace(path)
 
 
 def _sha_bytes(value: bytes) -> str:
@@ -137,7 +148,7 @@ def _base_analysis_definitions() -> list[dict[str, Any]]:
         {
             "analysis_type": "membrane_orientation", "title": "Membrane orientation",
             "question": "How does this protein sit in its declared membrane or surface context?",
-            "module_ids": ["structure_quality", "membrane_orientation"], "readiness": "conditionally_qualified",
+            "module_ids": ["structure_quality", "membrane_orientation"], "readiness": "experimental",
             "claim_ceiling": "Modeled orientation and accessibility; not native intact-cell exposure.",
             "inputs": [
                 {"role": "structure", "label": "PDB or mmCIF coordinates", "required": True, "multiple": False, "extensions": [".pdb", ".cif", ".mmcif"]},
@@ -391,12 +402,12 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
         "membrane_orientation": [
             {
                 "scope_id": "beta_barrel",
-                "scientific_state": "conditionally_qualified",
+                "scientific_state": "experimental",
                 "benchmark_collection": "qualification-v2-membrane-beta-barrel",
-                "release_blocking": True,
+                "release_blocking": False,
                 "supported_subject_class": "transmembrane beta-barrel proteins",
                 "required_evidence": ["exact coordinates", "declared membrane context"],
-                "known_limitations": ["Independent second-machine reproduction remains required."],
+                "known_limitations": ["Reference-orientation accuracy gate is not met; no qualified orientation claim."],
             },
             {
                 "scope_id": "alpha_helical",
@@ -482,6 +493,14 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _serialized(method):
+    @wraps(method)
+    def guarded(self, *args, **kwargs):
+        with self._transaction():
+            return method(self, *args, **kwargs)
+    return guarded
+
+
 class StructuralAnalysisStore:
     """Immutable analysis cases and deterministic output bundles."""
 
@@ -497,7 +516,26 @@ class StructuralAnalysisStore:
         for directory in (self.cases_root, self.objects_root, self.ingests_root):
             directory.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
+        self._transactions = threading.local()
         self._definitions = {d["analysis_type"]: d for d in analysis_definitions()}
+
+    @contextmanager
+    def _transaction(self):
+        with self._lock:
+            if getattr(self._transactions, "active", False):
+                yield
+                return
+            with (self.root / ".operation.lock").open("a") as lock:
+                try:
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError as exc:
+                    raise AnalysisError("another process is updating this workspace; retry when it finishes") from exc
+                self._transactions.active = True
+                try:
+                    yield
+                finally:
+                    self._transactions.active = False
+                    fcntl.flock(lock, fcntl.LOCK_UN)
 
     def _case_dir(self, analysis_id: str) -> Path:
         if not SAFE_ID.fullmatch(analysis_id):
@@ -524,6 +562,7 @@ class StructuralAnalysisStore:
             rows.append({key: value.get(key) for key in ("analysis_id", "analysis_type", "question", "subject_id", "revision", "state", "latest_run_id")})
         return rows
 
+    @_serialized
     def create(self, analysis_id: str, *, analysis_type: str, question: str, subject_id: str = "") -> dict[str, Any]:
         if analysis_type not in self._definitions:
             raise AnalysisError(f"unknown structural analysis type: {analysis_type}")
@@ -547,8 +586,20 @@ class StructuralAnalysisStore:
     def _commit(self, directory: Path, manifest: dict[str, Any]) -> None:
         material = {k: v for k, v in manifest.items() if k != "revision_sha256"}
         manifest["revision_sha256"] = _sha_bytes(_canonical(material))
-        _write_json(directory / "ANALYSIS_CASE.json", manifest)
+        revisions = directory / "revisions"
+        current = directory / "ANALYSIS_CASE.json"
+        if current.is_file():
+            previous = json.loads(current.read_text())
+            old_digest = previous.get("revision_sha256") or _sha_bytes(_canonical(previous))
+            archived = revisions / f"{old_digest}.json"
+            if not archived.exists():
+                _write_json(archived, previous)
+        archived = revisions / f"{manifest['revision_sha256']}.json"
+        if not archived.exists():
+            _write_json(archived, manifest)
+        _write_json(current, manifest)
 
+    @_serialized
     def update_parameters(self, analysis_id: str, parameters: Mapping[str, Any]) -> dict[str, Any]:
         manifest = self.load(analysis_id)
         allowed = {p["name"]: p for p in self._definitions[manifest["analysis_type"]].get("parameters", [])}
@@ -556,6 +607,16 @@ class StructuralAnalysisStore:
         for key, value in parameters.items():
             if key not in allowed:
                 raise AnalysisError(f"unknown parameter for {manifest['analysis_type']}: {key}")
+            rule = allowed[key]
+            kind = rule.get("type")
+            if kind == "integer" and (type(value) is not int or value < (1 if key == "stride" else 0)):
+                raise AnalysisError(f"{key} requires a non-negative integer (stride must be positive)")
+            if kind == "number" and (type(value) not in (int, float) or not math.isfinite(value) or value < 0):
+                raise AnalysisError(f"{key} requires a finite non-negative number")
+            if kind in {"text", "select"} and not isinstance(value, str):
+                raise AnalysisError(f"{key} requires text")
+            if kind == "select" and value not in rule.get("choices", []):
+                raise AnalysisError(f"{key} is not a supported choice")
             cleaned[key] = value
         manifest["parameters"] = cleaned
         manifest["revision"] = int(manifest["revision"]) + 1
@@ -563,6 +624,7 @@ class StructuralAnalysisStore:
         self._commit(self._case_dir(analysis_id), manifest)
         return manifest
 
+    @_serialized
     def begin_ingest(self, analysis_id: str, *, role: str, file_name: str, size: int, expected_sha256: str) -> dict[str, Any]:
         manifest = self.load(analysis_id)
         definition = self._definitions[manifest["analysis_type"]]
@@ -592,6 +654,7 @@ class StructuralAnalysisStore:
         _write_json(directory / "INGEST.json", record)
         return record
 
+    @_serialized
     def ingest_chunk(self, upload_id: str, index: int, content: bytes) -> dict[str, Any]:
         if not SAFE_UPLOAD_ID.fullmatch(upload_id):
             raise AnalysisError("invalid upload id")
@@ -612,6 +675,7 @@ class StructuralAnalysisStore:
         _write_json(directory / "INGEST.json", record)
         return record
 
+    @_serialized
     def finalize_ingest(self, upload_id: str) -> dict[str, Any]:
         if not SAFE_UPLOAD_ID.fullmatch(upload_id):
             raise AnalysisError("invalid upload id")
@@ -675,6 +739,7 @@ class StructuralAnalysisStore:
         if mismatch:
             raise AnalysisError(f"uploaded content does not match declared {suffix or 'file'} format")
 
+    @_serialized
     def add_file(self, analysis_id: str, *, role: str, path: str | Path) -> dict[str, Any]:
         """Ingest one local CLI-selected file through the same bounded contract as the UI."""
         source = Path(path).resolve()
@@ -693,6 +758,7 @@ class StructuralAnalysisStore:
                 index += 1
         return self.finalize_ingest(ingest["upload_id"])
 
+    @_serialized
     def adopt_source_artifact(
         self,
         analysis_id: str,
@@ -1075,8 +1141,10 @@ class StructuralAnalysisStore:
         return env
 
     def _execute(self, command: list[str], *, cwd: Path, log_path: Path,
-                 cancel_event: Any | None = None, on_process: Any | None = None) -> int:
-        process = subprocess.Popen(command, cwd=cwd, env=self._package_env(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                 cancel_event: Any | None = None, on_process: Any | None = None,
+                 timeout_seconds: float = 3600) -> int:
+        process = subprocess.Popen(command, cwd=cwd, env=self._package_env(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+        deadline = time.monotonic() + timeout_seconds
         if on_process is not None:
             on_process(process)
         while True:
@@ -1085,15 +1153,22 @@ class StructuralAnalysisStore:
                 break
             except subprocess.TimeoutExpired:
                 pass
-            if cancel_event is not None and cancel_event.is_set():
-                process.terminate()
-                try: process.wait(timeout=5)
-                except subprocess.TimeoutExpired: process.kill()
-                stdout, stderr = process.communicate()
+            cancelled = cancel_event is not None and cancel_event.is_set()
+            if cancelled or time.monotonic() >= deadline:
+                # The engine may spawn FreeSASA, Foldseek or DIAMOND. Terminate
+                # the owned process group so cancellation leaves no workers.
+                try: os.killpg(process.pid, signal.SIGTERM)
+                except ProcessLookupError: pass
+                try: stdout, stderr = process.communicate(timeout=5)
+                except subprocess.TimeoutExpired:
+                    try: os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError: pass
+                    stdout, stderr = process.communicate()
                 log_path.parent.mkdir(parents=True, exist_ok=True)
                 log_path.write_text((stdout + "\n" + stderr).replace(str(self.workspace), "<workspace>")
                                     .replace(str(self.source_root), "<source-tree>"), encoding="utf-8")
-                raise InterruptedError("analysis cancellation was requested")
+                if cancelled: raise InterruptedError("analysis cancellation was requested")
+                raise TimeoutError(f"analysis exceeded the {timeout_seconds:g}-second execution limit")
         scrubbed = (stdout + ("\n" if stdout and stderr else "") + stderr)
         scrubbed = scrubbed.replace(str(self.workspace), "<workspace>").replace(str(self.root), "<analysis-store>")
         scrubbed = scrubbed.replace(str(self.source_root), "<source-tree>")
@@ -1134,8 +1209,8 @@ class StructuralAnalysisStore:
             "parameters": {"context": parameters.get("context", "gram_negative_om"), "chain": parameters.get("chain", "")},
             "scientific_scope": {
                 "scope_id": "alpha_helical" if alpha_scope else "beta_barrel",
-                "scientific_state": "prototype" if alpha_scope else "conditionally_qualified",
-                "release_blocking": not alpha_scope,
+                "scientific_state": "experimental",
+                "release_blocking": False,
             },
             "runtime_versions": {"python": platform.python_version()},
             "outputs": sorted(p.name for p in output.iterdir() if p.is_file() and p.name != "RUN_MANIFEST.json"),
@@ -1370,12 +1445,23 @@ class StructuralAnalysisStore:
         digests["workbench_orchestrator"] = _tree_sha(Path(__file__).resolve().parent)
         return digests
 
-    def run(self, analysis_id: str, *, cancel_event: Any | None = None, on_process: Any | None = None) -> dict[str, Any]:
+    @_serialized
+    def run(self, analysis_id: str, *, cancel_event: Any | None = None, on_process: Any | None = None,
+            on_progress: Any | None = None) -> dict[str, Any]:
+        progress = on_progress or (lambda stage, message: None)
+        progress("checking", "Checking inputs and installed tools")
         preflight = self.preflight(analysis_id)
         if not preflight["valid"]:
             raise AnalysisError("analysis preflight is blocked")
         manifest = self.load(analysis_id)
         source_digests = self._source_digests(manifest["analysis_type"])
+        runtime_versions = {"python": platform.python_version(), "platform": platform.system(), "machine": platform.machine()}
+        for package in ("numpy", "scipy", "gemmi", "biopython"):
+            try:
+                runtime_versions[package] = importlib.metadata.version(package)
+            except importlib.metadata.PackageNotFoundError:
+                runtime_versions[package] = "unavailable"
+        runtime_versions.update({binary: _runtime_version(binary) for binary in ("freesasa", "foldseek", "diamond")})
         identity = _sha_bytes(_canonical({
             "analysis_type": manifest["analysis_type"],
             "question": manifest["question"],
@@ -1383,11 +1469,40 @@ class StructuralAnalysisStore:
             "inputs": manifest["inputs"],
             "parameters": manifest["parameters"],
             "scientific_source_sha256": source_digests,
+            "runtime_versions": runtime_versions,
+            "contract_version": "1.1",
         }))
-        run_id = f"run-{identity[:16]}"; run_dir = self._case_dir(analysis_id) / "runs" / run_id
-        if (run_dir / "ANALYSIS_RUN.json").is_file():
-            return json.loads((run_dir / "ANALYSIS_RUN.json").read_text(encoding="utf-8"))
-        run_dir.mkdir(parents=True, exist_ok=True)
+        progress("identity", "Checking input, method and software identities")
+        attempt = 0
+        while True:
+            attempt_identity = identity if attempt == 0 else _sha_bytes(_canonical({"identity": identity, "attempt": attempt}))
+            run_id = f"run-{attempt_identity[:16]}"
+            run_dir = self._case_dir(analysis_id) / "runs" / run_id
+            if not run_dir.exists():
+                break
+            record_path = run_dir / "ANALYSIS_RUN.json"
+            if record_path.is_file():
+                existing = json.loads(record_path.read_text())
+                if existing.get("status") == "completed":
+                    checks_path = run_dir / "CHECKSUMS.json"
+                    required = ("REPORT_DATA.json", "REPORT.html", "RAW_EVIDENCE.zip", "RUN_MANIFEST.json")
+                    if not checks_path.is_file() or not all((run_dir / name).is_file() for name in required):
+                        raise AnalysisError("completed run has missing artifacts; preserve it and investigate")
+                    checks = json.loads(checks_path.read_text())["files"]
+                    if not set(required).issubset(checks) or "ANALYSIS_RUN.json" not in checks:
+                        raise AnalysisError("completed run checksum coverage is incomplete; preserve it and investigate")
+                    for name, expected in checks.items():
+                        path = self.artifact_path(analysis_id, run_id, name)
+                        if _sha_file(path) != expected:
+                            raise AnalysisError("completed run checksum mismatch; preserve it and investigate")
+                    progress("reused", "Verified checksums; reusing an identical completed run")
+                    return existing
+            # Failed, cancelled and interrupted attempts stay immutable and are
+            # never returned as a successful cache hit.
+            attempt += 1
+        run_dir.mkdir(parents=True)
+        _write_json(run_dir / "INPUT_CASE.json", manifest)
+        progress("analysis", "Starting scientific analysis")
         try:
             steps, exit_code = self._run_registered(manifest, run_dir, cancel_event=cancel_event, on_process=on_process)
             status = "completed" if exit_code == 0 else "scientifically_incomplete" if exit_code == 1 else "failed"
@@ -1396,17 +1511,34 @@ class StructuralAnalysisStore:
             steps, exit_code, status, error = [], 130, "cancelled", str(exc)
         except AnalysisError as exc:
             steps, exit_code, status, error = [], 1, "blocked", str(exc)
+        except Exception as exc:
+            steps, exit_code, status, error = [], 2, "failed", f"{type(exc).__name__}: {exc}"
         record = {
             "schema_version": SCHEMA_VERSION, "contract_id": "analysis_run_record",
             "analysis_id": analysis_id, "run_id": run_id, "analysis_type": manifest["analysis_type"],
             "input_revision_sha256": manifest["revision_sha256"], "status": status,
             "scientific_source_sha256": source_digests,
+            "runtime_versions": runtime_versions,
+            "scientific_qualification": "experimental" if manifest["analysis_type"] == "membrane_orientation" else "not_independently_qualified",
+            "independent_reproduction": "not_recorded", "publication_authorized": False,
             "scientifically_incomplete": status in {"scientifically_incomplete", "blocked"},
             "exit_code": exit_code, "steps": steps, "error": error,
             "limitations": [self._definitions[manifest["analysis_type"]]["claim_ceiling"]],
         }
         _write_json(run_dir / "ANALYSIS_RUN.json", record)
-        self._render_report(manifest, record, run_dir)
+        try:
+            progress("report", "Assembling measurements, provenance and checksums")
+            self._render_report(manifest, record, run_dir)
+        except Exception as exc:
+            # Report assembly is part of execution. Preserve partial artifacts
+            # under explicit names, and never leave a completed terminal record.
+            for name in ("REPORT_DATA.json", "REPORT.html", "RAW_EVIDENCE.zip", "CHECKSUMS.json", "RUN_MANIFEST.json"):
+                partial = run_dir / name
+                if partial.exists(): partial.rename(run_dir / ("PARTIAL_" + name))
+            status = "failed"
+            record.update(status=status, exit_code=2, scientifically_incomplete=False,
+                          error=f"report assembly failed: {type(exc).__name__}: {exc}")
+            _write_json(run_dir / "ANALYSIS_RUN.json", record)
         manifest = self.load(analysis_id); manifest["runs"].append({"run_id": run_id, "path": f"runs/{run_id}/ANALYSIS_RUN.json", "status": status})
         manifest["latest_run_id"] = run_id; manifest["state"] = status; manifest["revision"] = int(manifest["revision"]) + 1
         self._commit(self._case_dir(analysis_id), manifest)
@@ -1475,6 +1607,10 @@ class StructuralAnalysisStore:
             checksums[path.relative_to(run_dir).as_posix()] = _sha_file(path)
         _write_json(run_dir / "CHECKSUMS.json", {"schema_version": SCHEMA_VERSION, "files": checksums})
         self._write_bundle(manifest, run_dir)
+        # The archive contains the inner file manifest; the outside manifest
+        # additionally binds the archive bytes without a circular self-hash.
+        checksums["RAW_EVIDENCE.zip"] = _sha_file(run_dir / "RAW_EVIDENCE.zip")
+        _write_json(run_dir / "CHECKSUMS.json", {"schema_version": SCHEMA_VERSION, "files": checksums})
 
     def _report_html(self, report: Mapping[str, Any]) -> str:
         esc = lambda value: html.escape(str(value))
@@ -1503,15 +1639,26 @@ class StructuralAnalysisStore:
                 info.external_attr = 0o100644 << 16
                 archive.writestr(info, content)
 
-    def snapshot(self, analysis_id: str) -> dict[str, Any]:
+    def snapshot(self, analysis_id: str, *, run_id: str | None = None) -> dict[str, Any]:
         manifest = self.load(analysis_id); preflight = None; run = None; report = None
         preflight_path = self._case_dir(analysis_id) / "PREFLIGHT.json"
         if preflight_path.is_file(): preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
-        if manifest.get("latest_run_id"):
-            run_dir = self._case_dir(analysis_id) / "runs" / manifest["latest_run_id"]
+        selected_run = run_id or manifest.get("latest_run_id")
+        if run_id and run_id not in {item["run_id"] for item in manifest.get("runs", [])}:
+            raise AnalysisError("run does not belong to this analysis")
+        run_inputs = None
+        artifacts = []
+        if selected_run:
+            run_dir = self._case_dir(analysis_id) / "runs" / selected_run
+            if (run_dir / "INPUT_CASE.json").is_file():
+                run_inputs = json.loads((run_dir / "INPUT_CASE.json").read_text())
+            artifacts = [name for name in ("REPORT.html", "REPORT_DATA.json", "RAW_EVIDENCE.zip", "CHECKSUMS.json", "RUN_MANIFEST.json") if (run_dir / name).is_file()]
             if (run_dir / "ANALYSIS_RUN.json").is_file(): run = json.loads((run_dir / "ANALYSIS_RUN.json").read_text(encoding="utf-8"))
             if (run_dir / "REPORT_DATA.json").is_file(): report = json.loads((run_dir / "REPORT_DATA.json").read_text(encoding="utf-8"))
-        return {"analysis": manifest, "definition": self._definitions[manifest["analysis_type"]], "preflight": preflight, "run": run, "report": report}
+        return {"analysis": manifest, "definition": self._definitions[manifest["analysis_type"]], "preflight": preflight, "run": run, "report": report,
+                "run_inputs": run_inputs, "available_artifacts": artifacts,
+                "report_matches_case": bool(run_inputs) and all(run_inputs.get(key) == manifest.get(key)
+                    for key in ("inputs", "parameters", "question", "subject_id", "analysis_type"))}
 
     def artifact_path(self, analysis_id: str, run_id: str, relative: str) -> Path:
         if not re.fullmatch(r"run-[0-9a-f]{16}", run_id): raise AnalysisError("invalid run id")
@@ -1529,6 +1676,7 @@ class StructuralAnalysisStore:
             raise AnalysisError("input checksum is not attached to this analysis")
         return self.object_path(digest)
 
+    @_serialized
     def export(self, analysis_id: str, out_dir: str | Path) -> dict[str, Any]:
         manifest = self.load(analysis_id); run_id = manifest.get("latest_run_id")
         if not run_id: raise AnalysisError("analysis has no completed or incomplete run to export")

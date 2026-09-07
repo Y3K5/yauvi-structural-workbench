@@ -118,15 +118,16 @@ def test_unknown_module_is_a_usage_error(cli, capsys):
 def test_missing_registry_is_a_usage_error(tmp_path, monkeypatch, capsys):
     monkeypatch.delenv("YAUVI_SOURCES_REGISTRY", raising=False)
     monkeypatch.chdir(tmp_path)
-    assert main(["sources"]) == EXIT_USAGE
-    assert "could not locate" in capsys.readouterr().err
+    assert main(["sources"]) == EXIT_OK
+    assert "13 source(s)" in capsys.readouterr().out
 
 
-def test_find_registry_walks_upward(tmp_path, monkeypatch):
+def test_default_registry_does_not_discover_private_parent_catalog(tmp_path, monkeypatch):
     (tmp_path / "catalogs").mkdir()
     registry = tmp_path / "catalogs" / "sources.yaml"
     registry.write_text("sources: []", encoding="utf-8")
     nested = tmp_path / "a" / "b"
     nested.mkdir(parents=True)
     monkeypatch.delenv("YAUVI_SOURCES_REGISTRY", raising=False)
-    assert find_registry(None, start=nested) == registry
+    assert find_registry(None, start=nested) != registry
+    assert find_registry(None, start=nested).name == "structural_sources.yaml"

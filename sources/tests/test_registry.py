@@ -114,8 +114,8 @@ def test_missing_file_is_an_error(tmp_path):
 
 def test_real_registry_loads(real_registry):
     """The whole point of this package: catalogs/sources.yaml must stay readable."""
-    assert len(real_registry) >= 30
-    assert real_registry.catalog_id == "yauvi-evidence-sources"
+    assert len(real_registry) == 13
+    assert real_registry.catalog_id == "yauvi-public-structural-sources"
 
 
 def test_real_registry_sources_all_carry_provenance(real_registry):
@@ -126,5 +126,5 @@ def test_real_registry_sources_all_carry_provenance(real_registry):
 
 
 def test_real_registry_key_sources_present(real_registry):
-    for source_id in ("uniprot_proteomes", "deg", "diamond", "iedb", "alphafold_db", "pdb"):
+    for source_id in ("uniprot_proteomes", "diamond", "mcsa", "alphafold_db", "pdb", "sifts"):
         assert source_id in real_registry, f"{source_id} disappeared from the registry"

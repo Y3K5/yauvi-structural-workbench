@@ -27,7 +27,7 @@ yauvi-fetch = "yauvi_sources.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-yauvi_sources = ["py.typed"]
+yauvi_sources = ["py.typed", "structural_sources.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

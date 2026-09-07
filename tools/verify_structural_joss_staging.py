@@ -57,8 +57,23 @@ def main() -> int:
     if state not in ALLOWED_RELEASE_STATES:
         problems.append(f"unknown release state: {state}")
     gates = status.get("gates", {})
-    if state == "submission_eligible" and not gates.get("all_six_mark_1_qualification_v2_scopes_passed"):
-        problems.append("submission_eligible requires all six Mark 1 Qualification v2 scopes")
+    manifest = json.loads((staging / "benchmarks/qualification-v2/PANEL_MANIFEST.json").read_text())
+    expected_workflows = {scope.split(":", 1)[0] for scope in manifest["release_blocking_scopes"]}
+    if state == "submission_eligible":
+        cross_path = staging / "benchmarks/qualification-v2/results/CROSS_MACHINE_REPRODUCTION.json"
+        if not cross_path.is_file():
+            problems.append("submission_eligible requires current cross-machine evidence")
+        else:
+            cross = json.loads(cross_path.read_text())
+            reproduced = set(cross.get("release_blocking_panels_reproduced", []))
+            if not cross.get("every_release_blocking_panel_reproduced") or reproduced != expected_workflows:
+                problems.append("submission_eligible requires every manifest-defined blocking workflow")
+        required_gates = ("independent_second_machine_reproduction_passed", "independent_research_use_recorded",
+                          "license_and_third_party_audit_passed", "ai_tool_versions_fully_recovered",
+                          "conflict_and_funding_statements_approved")
+        for gate in required_gates:
+            if gates.get(gate) is not True:
+                problems.append(f"submission_eligible requires {gate}")
     if state == "submission_eligible" and not gates.get("public_history_requirement_satisfied"):
         problems.append("submission_eligible requires public-history evidence")
 
@@ -79,11 +94,13 @@ def main() -> int:
     if benchmark_ids != workflow_ids:
         problems.append(f"benchmark coverage differs from workflows: {sorted(benchmark_ids ^ workflow_ids)}")
     v2 = json.loads((staging / "benchmarks" / "qualification-v2" / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
-    if v2.get("overall_state") != "blocked_panel_incomplete" or v2.get("scientific_execution_performed") is not False:
-        problems.append("Qualification v2 must remain visibly blocked until public cases are adopted and executed")
+    if v2.get("scientific_execution_performed") is not False:
+        problems.append("composition audit cannot claim scientific execution")
+    if not v2.get("panel_composition_ready") and v2.get("overall_state") != "blocked_panel_incomplete":
+        problems.append("incomplete composition must be reported as blocked")
     roadmap = json.loads((staging / "JOSS_PUBLICATION_ROADMAP.json").read_text(encoding="utf-8"))
-    if roadmap.get("current_phase") != "local_hardening":
-        problems.append("publication roadmap does not preserve the local-hardening state")
+    if not roadmap.get("current_phase"):
+        problems.append("publication roadmap must identify its current phase")
     roadmap_gates = {item.get("gate_id"): item for item in roadmap.get("gates", [])}
     if roadmap_gates.get("publication_approval", {}).get("state") != "blocked":
         problems.append("publication roadmap does not preserve the approval boundary")

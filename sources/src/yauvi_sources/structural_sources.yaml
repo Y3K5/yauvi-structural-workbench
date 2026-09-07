@@ -1,0 +1,253 @@
+schema_version: '1.0'
+catalog_id: yauvi-public-structural-sources
+sources:
+- source_id: alphafold_db
+  display_name: AlphaFold Protein Structure Database
+  kind: structure_db
+  channel: druggability
+  status: proposed
+  access: network_download
+  what_it_is: AlphaFold Protein Structure Database
+  what_we_check: Predicted single-chain coordinates resolved from the current AlphaFold
+    API record.; Pairwise confidence values for an AlphaFold prediction.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC BY 4.0.
+  limits:
+  - Predicted coordinates and confidence are not experimental structure or biochemical
+    evidence.
+  citations:
+  - pmid: '37933859'
+    ref: 'Varadi M, Bertoni D, Magana P, et al. AlphaFold Protein Structure Database
+      in 2024: providing structure coverage for over 214 million protein sequences.
+      Nucleic Acids Res. 2024;52(D1):D368-D375.'
+  homepage: https://alphafold.ebi.ac.uk/
+  documentation_url: https://alphafold.ebi.ac.uk/api-docs
+- source_id: chebi
+  display_name: ChEBI
+  kind: chemical_ontology
+  channel: infrastructure
+  status: table_only
+  access: network_download
+  what_it_is: ChEBI
+  what_we_check: Chemical identifiers and exact synonyms used to normalize declared
+    cofactors.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC BY 4.0.
+  limits: []
+  homepage: https://www.ebi.ac.uk/chebi/
+  documentation_url: https://www.ebi.ac.uk/chebi/downloads
+- source_id: diamond
+  display_name: DIAMOND
+  kind: aligner
+  channel: infrastructure
+  status: wired
+  access: local_binary
+  what_it_is: 'A double-indexed, spaced-seed protein aligner — a drop-in BLASTP replacement
+    roughly 100-20,000x faster at comparable sensitivity.
+
+    '
+  what_we_check: Used only when explicitly selected by the structural workflow.
+  hit_means: A method-specific result; no automatic functional transfer.
+  versioning: Record exact runtime or data release and input hashes.
+  license_note: GPL-3.0.
+  limits:
+  - '`-k 5` caps hits per query at five; for a large reference panel the best hit
+    is kept but the hit distribution is truncated.'
+  - Coverage is computed against query length only; a short domain-level hit inside
+    a long protein can clear a 50% identity bar at low coverage.
+  citations:
+  - pmid: '25402007'
+    ref: Buchfink B, Xie C, Huson DH. Fast and sensitive protein alignment using DIAMOND.
+      Nat Methods. 2015;12(1):59-60.
+- source_id: foldseek
+  display_name: Foldseek
+  kind: structure_aligner
+  channel: infrastructure
+  status: configured_optional
+  access: local_binary
+  what_it_is: Foldseek
+  what_we_check: A checksum-pinned database snapshot built outside the browser and
+    adopted as a registered pack.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: Foldseek software and database terms apply.
+  limits:
+  - Fold similarity is not exact protein identity or functional transfer.
+  homepage: https://github.com/steineggerlab/foldseek
+  documentation_url: https://github.com/steineggerlab/foldseek/wiki
+- source_id: freesasa
+  display_name: FreeSASA
+  kind: surface_area_runtime
+  channel: infrastructure
+  status: configured_optional
+  access: local_binary
+  what_it_is: FreeSASA
+  what_we_check: Local publication-grade SASA executable resolved through readiness
+    checks.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: MIT.
+  limits: []
+  homepage: https://freesasa.github.io/
+  documentation_url: https://freesasa.github.io/doxygen/CLI.html
+- source_id: interpro
+  display_name: InterPro / Pfam
+  kind: annotation_db
+  channel: infrastructure
+  status: proposed
+  access: local_binary_or_api
+  what_it_is: Integrated protein family, domain, and functional-site signatures from
+    13 member databases, with GO term mapping.
+  what_we_check: Used only when explicitly selected by the structural workflow.
+  hit_means: A method-specific result; no automatic functional transfer.
+  versioning: Record exact runtime or data release and input hashes.
+  license_note: Open (EMBL-EBI); Pfam is CC0.
+  limits:
+  - A domain hit is a family assignment, not a demonstrated function.
+  citations:
+  - pmid: '39565202'
+    ref: 'Blum M, Andreeva A, Florentino LC, et al. InterPro: the protein sequence
+      classification resource in 2025. Nucleic Acids Res. 2025;53(D1):D444-D456.'
+- source_id: mcsa
+  display_name: Mechanism and Catalytic Site Atlas
+  kind: catalytic_annotation
+  channel: infrastructure
+  status: table_only
+  access: network_download
+  what_it_is: Mechanism and Catalytic Site Atlas
+  what_we_check: Curated catalytic residues, roles, cofactors, and mechanism records.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC BY 4.0.
+  limits:
+  - A curated catalytic annotation does not prove activity in the submitted coordinate
+    state.
+  homepage: https://www.ebi.ac.uk/thornton-srv/m-csa/
+  documentation_url: https://www.ebi.ac.uk/thornton-srv/m-csa/download/
+- source_id: opm_ppm
+  display_name: OPM and PPM membrane-positioning reference
+  kind: membrane_reference
+  channel: infrastructure
+  status: configured_optional
+  access: manual_export
+  what_it_is: OPM / PPM
+  what_we_check: A curator-frozen comparison record for membrane placement benchmarks.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: Provider terms apply.
+  limits:
+  - OPM/PPM is an external comparison standard, not proof of native intact-cell exposure.
+  homepage: https://opm.phar.umich.edu/
+  documentation_url: https://opm.phar.umich.edu/ppm_server3
+- source_id: pdb
+  display_name: Protein Data Bank (wwPDB)
+  kind: structure_db
+  channel: druggability
+  status: proposed
+  access: network_api
+  what_it_is: RCSB Protein Data Bank
+  what_we_check: Deposited asymmetric-unit coordinates in PDBx/mmCIF.; A deposited
+    biological assembly selected by PDB ID and assembly number.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC0.
+  limits:
+  - A deposited assembly is an author/provider model and is not proof of the dominant
+    assembly in the tested biological context.
+  citations:
+  - pmid: '10592235'
+    ref: Berman HM, Westbrook J, Feng Z, et al. The Protein Data Bank. Nucleic Acids
+      Res. 2000;28(1):235-242.
+  homepage: https://www.rcsb.org/
+  documentation_url: https://www.rcsb.org/docs/programmatic-access/file-download-services
+- source_id: pdb_ccd
+  display_name: PDB Chemical Component Dictionary
+  kind: chemical_component_dictionary
+  channel: infrastructure
+  status: table_only
+  access: network_download
+  what_it_is: PDB Chemical Component Dictionary
+  what_we_check: Declared connectivity and identifiers for a PDB chemical component.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC0.
+  limits: []
+  homepage: https://www.wwpdb.org/data/ccd
+  documentation_url: https://www.wwpdb.org/data/ccd
+- source_id: sifts
+  display_name: SIFTS structure-to-sequence mappings
+  kind: annotation_db
+  channel: infrastructure
+  status: configured_optional
+  access: network_download
+  what_it_is: SIFTS
+  what_we_check: PDB-to-UniProt and related residue mappings, normalized before use.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: PDBe data terms apply.
+  limits:
+  - Ambiguous or incomplete mappings cannot drive residue-level conclusions.
+  homepage: https://www.ebi.ac.uk/pdbe/docs/sifts/
+  documentation_url: https://www.ebi.ac.uk/pdbe/docs/sifts/quick.html
+- source_id: uniprot_proteomes
+  display_name: UniProt / UniProtKB Reference Proteomes
+  kind: proteome_source
+  channel: infrastructure
+  status: wired
+  access: network_rest_api
+  what_it_is: UniProtKB
+  what_we_check: The current UniProtKB sequence for one public accession.; A TSV containing
+    catalytic, binding, cofactor, function, and cross-reference fields.; A UniProt
+    reference proteome used for a declared sequence-comparison universe.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC BY 4.0.
+  limits:
+  - Annotations have heterogeneous evidence levels; an annotation is not an observation
+    in the submitted structure.
+  citations:
+  - pmid: '39552041'
+    ref: 'The UniProt Consortium. UniProt: the Universal Protein Knowledgebase in
+      2025. Nucleic Acids Res. 2025;53(D1):D609-D617.'
+  homepage: https://www.uniprot.org/
+  documentation_url: https://www.uniprot.org/help/api_queries
+- source_id: wwpdb_validation
+  display_name: wwPDB validation reports
+  kind: structure_validation
+  channel: infrastructure
+  status: wired
+  access: network_download
+  what_it_is: wwPDB validation archive
+  what_we_check: Community validation metrics for an experimental PDB entry.
+  hit_means: Source evidence is available for a declared structural analysis; biological
+    interpretation remains bounded by the workflow.
+  versioning: Record provider release where available and SHA-256 of exact acquired
+    bytes. Live accessions are not immutable reference locks.
+  license_note: CC0.
+  limits:
+  - Validation metrics assess the deposited model and experiment; they do not establish
+    biological function.
+  homepage: https://www.wwpdb.org/validation/validation-reports
+  documentation_url: https://www.rcsb.org/docs/general-help/validation-reports

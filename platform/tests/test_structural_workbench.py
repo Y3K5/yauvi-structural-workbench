@@ -98,8 +98,8 @@ def test_source_tree_digest_excludes_local_build_artifacts(tmp_path):
 def test_scope_specific_readiness_does_not_promote_experimental_methods(tmp_path):
     rows = {row["analysis_type"]: row for row in tool_readiness(tmp_path)}
     membrane = {row["scope_id"]: row for row in rows["membrane_orientation"]["scientific_scopes"]}
-    assert membrane["beta_barrel"]["scientific_state"] == "conditionally_qualified"
-    assert membrane["beta_barrel"]["release_blocking"] is True
+    assert membrane["beta_barrel"]["scientific_state"] == "experimental"
+    assert membrane["beta_barrel"]["release_blocking"] is False
     assert membrane["alpha_helical"]["scientific_state"] == "prototype"
     assert membrane["alpha_helical"]["release_blocking"] is False
     abl = {row["scope_id"]: row for row in rows["conformational_state"]["scientific_scopes"]}

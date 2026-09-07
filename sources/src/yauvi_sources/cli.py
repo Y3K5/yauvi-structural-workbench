@@ -39,21 +39,15 @@ REGISTRY_RELATIVE = Path("catalogs") / "sources.yaml"
 
 
 def find_registry(explicit: str | None = None, start: Path | None = None) -> Path:
-    """Locate catalogs/sources.yaml: flag, then env, then upward from cwd."""
+    """Locate the registry: explicit flag, environment, then packaged public default."""
     if explicit:
         return Path(explicit).expanduser()
     from_env = os.environ.get(REGISTRY_ENV)
     if from_env:
         return Path(from_env).expanduser()
-    here = (start or Path.cwd()).resolve()
-    for directory in (here, *here.parents):
-        candidate = directory / REGISTRY_RELATIVE
-        if candidate.is_file():
-            return candidate
-    raise RegistryError(
-        f"could not locate {REGISTRY_RELATIVE}. Pass --registry, set {REGISTRY_ENV}, "
-        f"or run from inside the workspace."
-    )
+    # The standalone default is independent of cwd and private parent catalogs.
+    return Path(__file__).resolve().with_name("structural_sources.yaml")
+
 
 
 def workspace_of(registry_path: Path) -> Path:

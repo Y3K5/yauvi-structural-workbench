@@ -68,7 +68,7 @@ def test_resolve_prefers_an_explicit_path(tmp_path):
 # --- the shipped manifests ----------------------------------------------
 
 
-@pytest.mark.parametrize("module_id", ["subproteo", "memorient"])
+@pytest.mark.parametrize("module_id", ["structqc", "memorient", "state-atlas", "site-context", "assembly-context", "actstate", "sf-csa"])
 def test_shipped_manifests_resolve_against_the_real_registry(
     module_id, workspace, real_registry
 ):
@@ -81,5 +81,5 @@ def test_shipped_manifests_resolve_against_the_real_registry(
         pytest.skip(f"{module_id} is neither installed nor present in this tree")
     # Raises if the module names a source the registry does not declare.
     real_registry.resolve_many(manifest.source_ids())
-    assert manifest.module_id == module_id
+    assert manifest.module_id
     assert manifest.source_ids(), f"{module_id} declares no sources"

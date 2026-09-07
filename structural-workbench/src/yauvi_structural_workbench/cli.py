@@ -14,11 +14,7 @@ from yauvi_platform.structural_workbench import AnalysisError, StructuralAnalysi
 def _workspace(value: str | None) -> Path:
     if value:
         return Path(value).resolve()
-    current = Path.cwd().resolve()
-    for candidate in (current, *current.parents):
-        if (candidate / "apps" / "yauvi").is_dir() and (candidate / "catalogs").is_dir():
-            return candidate
-    return current
+    return Path.cwd().resolve()
 
 
 def _print(value: Any) -> None:
@@ -30,7 +26,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="yauvi",
         description="Local, evidence-bounded structural protein analysis.",
     )
-    parser.add_argument("--workspace", help="Structural Workbench repository root.")
+    parser.add_argument("--workspace", help="Local analysis workspace (default: current directory).")
     groups = parser.add_subparsers(dest="group", required=True)
 
     analysis = groups.add_parser("analysis", help="Create, validate, run, and export structural analyses.")
@@ -51,6 +47,13 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--analysis", required=True)
     export.add_argument("--out", required=True)
 
+    params = actions.add_parser("parameters", help="Create a revision from a JSON parameter file.")
+    params.add_argument("--analysis", required=True)
+    params.add_argument("--file", required=True)
+    example = groups.add_parser("example", help="Create a bundled synthetic StructQC analysis offline.")
+    example.add_argument("--analysis", default="qc-example")
+    example.add_argument("--without-validation", action="store_true")
+
     workbench = groups.add_parser("workbench", help="Serve the loopback-only browser workbench.")
     serve = workbench.add_subparsers(dest="action", required=True).add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
@@ -63,6 +66,10 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     workspace = _workspace(args.workspace)
     try:
+        if args.group == "example":
+            from .example import create_example
+            _print(create_example(workspace, args.analysis, without_validation=args.without_validation))
+            return 0
         if args.group == "analysis":
             store = StructuralAnalysisStore(workspace)
             if args.action == "create":
@@ -73,6 +80,9 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
             if args.action == "add":
                 _print(store.add_file(args.analysis, role=args.role, path=args.file))
+                return 0
+            if args.action == "parameters":
+                _print(store.update_parameters(args.analysis, json.loads(Path(args.file).read_text())))
                 return 0
             if args.action == "validate":
                 result = store.preflight(args.analysis)
@@ -89,15 +99,9 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.host not in {"127.0.0.1", "localhost", "::1"}:
             raise AnalysisError("YAUVI is local-only; --host must be a loopback address")
-        server = workspace / "apps" / "yauvi" / "controller" / "server.py"
-        if not server.is_file():
-            raise AnalysisError(
-                "the browser controller is not present; install from the reviewer repository checkout"
-            )
-        command = [sys.executable, str(server), "--host", args.host, "--port", str(args.port)]
-        if args.allow_reference_fetch:
-            command.append("--allow-reference-fetch")
-        return subprocess.run(command, cwd=server.parent, check=False).returncode
+        from .server import serve
+        return serve(workspace, args.host, args.port, args.allow_reference_fetch)
+
     except (AnalysisError, OSError, ValueError) as exc:
         print(f"YAUVI blocked: {exc}", file=sys.stderr)
         return 2

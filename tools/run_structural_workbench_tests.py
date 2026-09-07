@@ -15,7 +15,10 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import tomli as tomllib
 from typing import Any
 
 
@@ -31,6 +34,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("sf-csa fixture", ("tools/fixtures/sfcsa",)),
     ("structural workbench", ("platform/tests/test_structural_workbench.py",)),
     ("qualification v2", ("platform/tests/test_qualification_v2.py",)),
+    ("product hardening", ("platform/tests/test_product_hardening.py",)),
     ("source registry", ("sources/tests",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")
@@ -64,6 +68,11 @@ def declared_floors() -> dict[str, tuple[str, str]]:
             continue
         data = tomllib.loads(path.read_text(encoding="utf-8"))
         for spec in data.get("project", {}).get("dependencies", []):
+            if ";" in spec:
+                from packaging.requirements import Requirement
+                requirement = Requirement(spec)
+                if requirement.marker and not requirement.marker.evaluate():
+                    continue
             match = REQUIREMENT.match(spec)
             if match is None:
                 continue

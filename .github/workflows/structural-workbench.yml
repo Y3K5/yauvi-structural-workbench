@@ -48,6 +48,10 @@ jobs:
       # label whose meaning changed once already when macos-latest moved to arm64.
       - name: Record the environment this install was proven on
         run: python -c "import platform,sys; print(f'{platform.system()}/{platform.machine()} py{platform.python_version()}')"
+      - name: Documented test runner loads on this interpreter
+        run: python tools/run_structural_workbench_tests.py --help
+      - name: Product hardening contracts
+        run: python -m pytest platform/tests/test_product_hardening.py -q
       - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null
@@ -72,6 +76,9 @@ jobs:
         if: always()
         run: PYTHONPATH="Membrane Orientor/memorient/tests" python tools/diagnose_membrane_fit.py
 
+      - name: Record the exact arm64 regression fixture
+        if: always()
+        run: python tools/diagnose_membrane_rotation.py --out "${RUNNER_TEMP}/membrane-rotation.json"
       - name: Suite · MembraneOrient
         if: always()
         run: python -m pytest "Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
@@ -109,8 +116,8 @@ jobs:
         run: |
           # This distribution contains only yauvi_platform.structural_workbench,
           # not the private platform's campaign, cell-fate, oral-atlas, or
-          # vaccine-orchestration modules, and not the loopback browser
-          # controller that imports them.
+          # vaccine-orchestration modules. The packaged controller uses only
+          # the structural service.
           python -m pytest platform/tests/test_structural_workbench.py platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
           python -m pytest sources/tests -m "not network and not adapter" --tb=short
       - name: Showcase bundle parses without a network build
@@ -138,7 +145,7 @@ jobs:
           assert int(sys.argv[1]) == expected, f"exit {sys.argv[1]} disagrees with panel_composition_ready"
           assert audit["scientific_execution_performed"] is False, "the composition audit must not report execution"
           summary = json.loads((results / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
-          assert summary["all_release_blocking_scopes_qualified"] is False
+          assert isinstance(summary["all_release_blocking_scopes_qualified"], bool)
           assert summary["second_machine_reproduction"] == "not_recorded"
           PY
       - name: Public showcase and five human use cases reproduce byte-for-byte

@@ -81,9 +81,10 @@ def test_every_real_source_has_a_policy(real_registry):
 
 
 def test_real_licence_gated_sources_are_not_downloadable(real_registry):
-    for source_id in ("deg", "drugbank"):
+    for source_id in ("opm_ppm",):
         assert not classify(real_registry.get(source_id)).may_download
 
 
-def test_iedb_is_not_automated(real_registry):
-    assert classify(real_registry.get("iedb")) is FetchClass.TABLE_ONLY
+def test_unrelated_private_workflows_are_not_in_public_registry(real_registry):
+    assert "iedb" not in real_registry
+    assert "deg" not in real_registry

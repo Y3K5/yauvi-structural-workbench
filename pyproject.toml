@@ -26,6 +26,7 @@ dependencies = [
   "numpy>=1.24",
   "PyYAML>=6",
   "scipy>=1.10",
+  "tomli>=2; python_version < '3.11'",
 ]
 
 [project.optional-dependencies]
@@ -73,7 +74,8 @@ site_context = ["sources.yaml", "py.typed"]
 actstate = ["sources.yaml", "py.typed"]
 assembly_context = ["sources.yaml", "py.typed"]
 sf_csa = ["sources.yaml", "py.typed"]
-yauvi_sources = ["py.typed"]
+yauvi_sources = ["py.typed", "structural_sources.yaml"]
+yauvi_structural_workbench = ["ui/*", "ui/vendor/*", "examples/*"]
 
 [tool.pytest.ini_options]
 addopts = "-ra -m 'not network'"
