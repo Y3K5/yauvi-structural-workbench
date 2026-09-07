@@ -184,9 +184,22 @@ mechanism.
 
 OpenAI Codex assisted with implementation, tests, interface text, documentation,
 and manuscript drafting. Anthropic Claude assisted during earlier development.
-Exact model/version reconciliation remains incomplete and must be resolved
-before submission. Earlier drafts record human review; review of the current
-changes remains pending. Automated tests do not substitute for that review.
+
+Models were recovered from local session records rather than reconstructed from
+memory. OpenAI: `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`, `gpt-5.6-luna` and
+`gpt-5.4-mini`, across nineteen sessions that touched this repository between
+25 August and 7 September 2026. Anthropic: `claude-opus-5`, `claude-sonnet-5`
+and `claude-opus-4-8`, between 25 July and 7 September 2026.
+
+Two limits on that record are stated rather than smoothed over. The Anthropic
+figures are scoped to the workspace containing this repository, not to the
+repository alone, so they include sessions on unrelated projects and overstate
+what touched this work; the OpenAI figures are scoped to sessions that reference
+this repository. Neither set is a measure of contribution, only of which models
+were invoked. No version has been inferred where a record was absent.
+
+Earlier drafts record human review; review of the current changes remains
+pending. Automated tests do not substitute for that review.
 The human author remains responsible for originality, accuracy, licensing,
 ethical and legal compliance, and all claims. AI output is not scientific evidence.
 The author will handle editor/reviewer conversations without AI assistance,
@@ -194,9 +207,9 @@ except translation where journal policy permits it.
 
 # Conflicts of interest and funding
 
-Conflict-of-interest and funding statements have not yet been finalized for
-submission. They must be supplied and approved by every listed author before the
-paper can be submitted.
+The author declares no competing interests. This work received no funding: no
+grant, institutional, or commercial support was provided at any stage, and the
+author conducted it as an independent researcher.
 
 # Acknowledgements
 

@@ -15,9 +15,56 @@ Review the exact projection, its omissions and its destination before publishing
 Existing public history is not rewritten by this work.
 
 Human decisions still required: exact outgoing artifacts and destination;
-authorship/contributions; funding and conflict-of-interest statements; recovery
-of actual AI model/version records and review of assisted output. Record tools,
+authorship/contributions; review of assisted output. Record tools,
 versions, dates, assistance and human review without inferring missing versions.
+
+## PUB-04 decision record — 7 September 2026
+
+**Funding and conflicts — decided.** Yuvraj Patel declares no competing interests
+and no funding of any kind. Written into `paper/paper.md`. This was the whole of
+the outstanding decision; the gate is closed.
+
+**Authorship — deliberately deferred, not unresolved.** The author list stays as
+`CITATION.cff` and `paper/paper.md` record it (Yuvraj Patel, ORCID
+0009-0002-2276-7336) until the USE-03 pilot participants and REP-03 independent
+reproductions exist, at which point credit is revisited. JOSS expects authorship
+to track substantial contribution, so testers are expected to land in
+Acknowledgements rather than the author list unless their involvement goes
+further. Recorded here so a reviewer sees a decision with a trigger, not a gap.
+
+**AI model/version records — recovered from records.** Recovered by reading local
+session logs, not reconstructed from memory, and no version was inferred where a
+record was absent. OpenAI `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`,
+`gpt-5.6-luna`, `gpt-5.4-mini` across nineteen sessions referencing this
+repository, 25 August to 7 September 2026. Anthropic `claude-opus-5`,
+`claude-sonnet-5`, `claude-opus-4-8`, 25 July to 7 September 2026. The Anthropic
+range is scoped to the containing workspace rather than this repository alone and
+therefore overstates what touched this work; that limit is stated in the paper
+rather than smoothed over. Counts are invocation volume, not contribution.
+
+**Licensing and third-party audit — evidenced against built artifacts.** Audited
+the wheel and sdist actually produced, not the edited source, per the requirement
+above. `tools/verify_structural_workbench_wheel.py` passes: 87 files, canonical
+structural namespaces only, no archived or out-of-scope code. Ten canonical
+top-level namespaces and none of the forbidden private ones. Three license or
+notice files in each artifact. Neither artifact contains a home-directory path.
+
+    wheel  de0331953694664f9a201da64e6a5a66a5eeedd0eefe4c38af06264531307a21
+    sdist  181abe25762a244489ae5883a837cc091688978e71c41d6bbc3b185021a34590
+
+Runtime dependency licenses, read from installed distribution metadata: gemmi
+MPL-2.0; numpy and scipy BSD; PyYAML MIT; requests Apache-2.0; biopython under
+the Biopython License Agreement. All permissive and compatible with distributing
+this work under Apache-2.0. FreeSASA, Foldseek, DIAMOND and MDAnalysis are
+invoked, never redistributed; the only `foldseek` and `diamond` files in the
+repository are this project's own Python stubs under `tools/fixtures/sfcsa/`,
+which are test doubles and not the tools. Third-party reference data stays out
+of the repository by `.gitignore`, with `SOURCE_LOCK.json` shipping in its place.
+
+Not covered by this audit: the individual terms of the public reference-data
+providers named in `NOTICE.md`. The redistribution boundary is correct — none of
+that data ships — but no one has reviewed each provider's citation and reuse
+terms. That review remains open.
 
 The draft paper describes the local changed build, which must be independently
 installed/tested before that browser claim appears in a released manuscript.
