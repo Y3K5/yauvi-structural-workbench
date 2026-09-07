@@ -435,19 +435,16 @@ def occupancy_signal(record: ProteinRecord, structure: Structure | None) -> Sign
         )
     if present and not declared:
         return Signal(
-            "occupancy",
-            "supported",
-            (
-                f"coordinates contain heteroatom group(s) {names} that are neither solvent nor a "
-                f"recognised buffer or cryoprotectant, though the entry declares no cofactor"
-            ),
-            {"declared_cofactors": [], "present": names},
+            "occupancy", "unevaluated",
+            f"non-solvent groups {names} are observed, but no required cofactor identity is declared",
+            {"declared_cofactors": [], "present": names, "identity_verified": False, "proximity_verified": False},
         )
     return Signal(
-        "occupancy",
-        "supported",
-        f"declared cofactor(s) {list(declared)} and heteroatom group(s) {names} are both present",
-        {"declared_cofactors": list(declared), "present": names},
+        "occupancy", "unavailable",
+        f"declared cofactors {list(declared)} and observed groups {names} require exact component mapping and site proximity; presence alone is insufficient",
+        {"declared_cofactors": list(declared), "present": names,
+         "identity_verified": False, "proximity_verified": False,
+         "missing_evidence": ["declared_component_identity", "declared_site_proximity"]},
     )
 
 

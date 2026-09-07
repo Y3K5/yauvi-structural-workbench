@@ -95,15 +95,15 @@ def describe() -> dict[str, Any]:
             "antibody accessibility on an intact cell.",
             "The thickness prior is per-context and is a prior, not a measurement; two "
             "runs under different contexts are not comparable on absolute z-coordinates.",
-            "Mark 1 qualification is limited to beta-barrel membrane proteins. "
-            "Alpha-helical orientation remains experimental.",
+            "Both beta-barrel and alpha-helical orientation remain experimental; "
+            "neither scope currently satisfies its external-reference qualification gates.",
         ],
         "scientific_scopes": [
             {
                 "scope_id": "beta_barrel",
-                "scientific_state": "conditionally_qualified",
+                "scientific_state": "experimental",
                 "benchmark_collection": "yauvi-structural-public-qualification-v2",
-                "release_blocking": True,
+                "release_blocking": False,
                 "supported_subject_class": "beta-barrel membrane proteins",
             },
             {

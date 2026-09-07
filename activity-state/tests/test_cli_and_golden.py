@@ -128,16 +128,17 @@ def run_examples(examples, tmp_path):
     return run
 
 
-def test_the_fixtures_exercise_every_label(run_examples):
+def test_unverified_occupancy_cannot_reach_full_support(run_examples):
     document = json.loads((run_examples() / RESULT_NAME).read_text(encoding="utf-8"))
     produced = set(document["summary"]["labels"])
-    assert produced == set(LABELS), f"fixtures do not cover: {set(LABELS) - produced}"
+    assert produced == set(LABELS) - {"active_state_supported"}
+    # The historical P_ACTIVE fixture supplies presence, not exact identity/proximity.
 
 
 @pytest.mark.parametrize(
     ("accession", "expected"),
     [
-        ("P_ACTIVE", "active_state_supported"),
+        ("P_ACTIVE", "probable_active"),
         ("P_PREDICTED", "probable_active"),
         ("P_APO", "apo_but_competent"),
         ("P_DISPERSED", "inactive_conformation"),

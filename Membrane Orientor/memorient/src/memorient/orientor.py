@@ -475,7 +475,7 @@ def orient_structure(
             label = classification.label
             side = call_extracellular_side(canon, fit, context)
             scope_id = "beta_barrel"
-            scientific_readiness = "conditionally_qualified"
+            scientific_readiness = "experimental"
         else:  # TM_HELIX_BELT
             scope_id = "alpha_helical"
             scientific_readiness = "prototype"

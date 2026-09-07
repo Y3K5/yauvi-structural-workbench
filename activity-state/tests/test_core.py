@@ -120,7 +120,7 @@ def test_buffer_only_structure_is_still_apo(write_pdb, clustered_triad):
     assert assess(record, structure=structure).signal("occupancy").state == "contradicted"
 
 
-def test_declared_and_present_cofactor_supports_occupancy(write_pdb, clustered_triad):
+def test_declared_and_present_cofactor_requires_identity_and_proximity(write_pdb, clustered_triad):
     record = ProteinRecord(
         accession="P",
         sequence=sequence_with(),
@@ -130,7 +130,7 @@ def test_declared_and_present_cofactor_supports_occupancy(write_pdb, clustered_t
     structure = read_structure(
         write_pdb("x.pdb", clustered_triad, heteroatoms=[("ZN", (2.0, 1.5, 1.0), "ZN")])
     )
-    assert assess(record, structure=structure).signal("occupancy").state == "supported"
+    assert assess(record, structure=structure).signal("occupancy").state == "unavailable"
 
 
 def test_no_cofactor_declared_or_present_is_not_a_question(
@@ -237,7 +237,7 @@ def test_a_predicted_model_can_never_be_active_state_supported(
     assert "predicted model" in result.rationale
 
 
-def test_full_evidence_on_experimental_coordinates_is_supported(write_pdb, clustered_triad):
+def test_unverified_cofactor_prevents_full_support_on_experimental_coordinates(write_pdb, clustered_triad):
     record = ProteinRecord(
         accession="P",
         sequence=sequence_with(),
@@ -258,7 +258,7 @@ def test_full_evidence_on_experimental_coordinates_is_supported(write_pdb, clust
         reference_comparison={"reference": "1ABC", "state": "active"},
         fold_state={"state": "active_assembly"},
     )
-    assert result.label == "active_state_supported"
+    assert result.label == "probable_active"
 
 
 def test_an_unavailable_signal_caps_the_label_at_probable(

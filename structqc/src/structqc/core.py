@@ -17,7 +17,7 @@ from Bio import Align
 from Bio.PDB import MMCIFParser, PDBParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 PROVENANCE = {"experimental", "predicted", "unknown"}
 AA3 = {
     "ALA": "A", "ARG": "R", "ASN": "N", "ASP": "D", "CYS": "C",
@@ -26,7 +26,31 @@ AA3 = {
     "SER": "S", "THR": "T", "TRP": "W", "TYR": "Y", "VAL": "V",
     "SEC": "U", "PYL": "O",
 }
+# Explicit sequence normalization only: raw chemical identity remains in every row.
+MODIFIED_PARENTS = {"MSE": "MET", "SEP": "SER", "TPO": "THR", "PTR": "TYR", "HYP": "PRO"}
 BACKBONE = {"N", "CA", "C", "O"}
+
+def _sequence_letter(residue):
+    name = residue.resname.upper()
+    return AA3.get(MODIFIED_PARENTS.get(name, name), "X")
+
+def _coordinate_residues(chain):
+    rows = list(chain)
+    selected = []
+    for residue in rows:
+        if residue.id[0] == " ":
+            selected.append(residue)
+            continue
+        if residue.resname.upper() not in MODIFIED_PARENTS or not {"N", "CA", "C"}.issubset(residue.child_dict):
+            continue
+        # A free amino-acid ligand must not be silently added to the polymer.
+        connected = any(other.id[0] == " " and (
+            ("C" in other and np.linalg.norm(other["C"].coord-residue["N"].coord) <= 2.0)
+            or ("N" in other and np.linalg.norm(residue["C"].coord-other["N"].coord) <= 2.0))
+            for other in rows if other is not residue)
+        if connected:
+            selected.append(residue)
+    return selected
 
 
 class InputError(RuntimeError):
@@ -337,8 +361,8 @@ def analyze(
     for ch in sorted(model, key=lambda item: str(item.id)):
         if chain and str(ch.id) != chain:
             continue
-        amino = [r for r in ch if r.id[0] == " "]
-        observed = "".join(AA3.get(r.resname.upper(), "X") for r in amino)
+        amino = _coordinate_residues(ch)
+        observed = "".join(_sequence_letter(r) for r in amino)
         observed_all += observed
         chain_entries.append((str(ch.id), amino, observed))
 
@@ -353,8 +377,8 @@ def analyze(
             names = {a.name for a in atoms}
             missing = sorted(BACKBONE - names)
             missing_backbone += bool(missing)
-            aa = AA3.get(residue.resname.upper(), "X")
-            nonstandard += aa == "X"
+            aa = _sequence_letter(residue)
+            nonstandard += residue.resname.upper() not in AA3
             ca = residue["CA"] if "CA" in residue else None
             if previous_c is not None and "N" in residue:
                 distance = float(np.linalg.norm(previous_c.coord - residue["N"].coord))
@@ -371,6 +395,10 @@ def analyze(
                 "insertion_code": str(key[2]).strip(),
                 "resname": residue.resname,
                 "one_letter": aa,
+                "chemical_component_id": residue.resname.upper(),
+                "normalized_parent_component_id": MODIFIED_PARENTS.get(residue.resname.upper(), residue.resname.upper()),
+                "sequence_normalization": "explicit_modified_parent_v1" if residue.resname.upper() in MODIFIED_PARENTS else "unchanged",
+                "model_index": model_index,
                 "sequence_index": mapping.get(global_index),
                 "missing_backbone_atoms": missing,
                 "altlocs": altlocs,
@@ -463,7 +491,7 @@ def write_outputs(out_dir: str | Path, document: Mapping[str, Any]) -> list[Path
     run = out / "RUN_MANIFEST.json"
     _write_json(evidence, document)
     fields = ["chain_id", "auth_seq_id", "insertion_code", "label_asym_id", "label_seq_id", "entity_id",
-              "resname", "one_letter", "sequence_index",
+              "resname", "one_letter", "chemical_component_id", "normalized_parent_component_id", "sequence_normalization", "model_index", "sequence_index",
               "missing_backbone_atoms", "altlocs", "mean_b_factor", "plddt", "ca_xyz"]
     with table.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields, delimiter="\t", extrasaction="ignore", lineterminator="\n")
