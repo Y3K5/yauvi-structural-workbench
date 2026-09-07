@@ -1,0 +1,237 @@
+{
+  "baseline_commit": "fce5676c91b1749494fcc9c9558308d2388944b9",
+  "categories": [
+    "scientific validity",
+    "correctness",
+    "usability",
+    "reproducibility",
+    "publication"
+  ],
+  "items": [
+    {
+      "acceptance": "Compare 1,441 baseline files against reviewed commit; retain changed-file inventory.",
+      "category": "reproducibility",
+      "evidence": "IMPLEMENTATION_BASELINE_2026-09-06.json",
+      "id": "BASE-01",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_local",
+      "title": "Baseline and concurrent checkout accounting"
+    },
+    {
+      "acceptance": "Run qualification tests: matching failures, omitted panels, duplicate IDs, counts, code/source/protocol mismatch, malformed archives and insufficient environments.",
+      "category": "correctness",
+      "evidence": "../platform/tests/test_qualification_v2.py",
+      "id": "COR-01",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_tested",
+      "title": "Matching failures cannot yield reproduction success"
+    },
+    {
+      "acceptance": "Inspect selected projected files and replacement ledger; original 51 disclosed paths remain preserved locally and in existing public history. No publication permitted by this item.",
+      "category": "publication",
+      "evidence": "implementation-evidence/2026-09-06/publication-projection-review.json",
+      "id": "PUB-01",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj / Software engineer",
+      "state": "prepared_for_review",
+      "title": "Portable projection of disclosed execution paths"
+    },
+    {
+      "acceptance": "Original CI mean .888 fails .90; current offline Linux mean .979 passes. Reproduce original dependency/BLAS/CPU combination before claiming resolved.",
+      "category": "correctness",
+      "evidence": "implementation-evidence/2026-09-06/linux-arm64-diagnostic.json",
+      "id": "COR-02",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer / Scientific lead",
+      "state": "open_not_reproduced",
+      "title": "Linux arm64 membrane regression"
+    },
+    {
+      "acceptance": "Fresh install and run the documented runner under supported Python versions.",
+      "category": "correctness",
+      "evidence": "../tools/run_structural_workbench_tests.py",
+      "id": "COR-03",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_tested",
+      "title": "Python 3.10 runner and conditional TOML dependency"
+    },
+    {
+      "acceptance": "Installed yauvi-fetch sources outside repository lists 13 structural resources; overrides work; parent private catalog ignored.",
+      "category": "reproducibility",
+      "evidence": "../sources/tests",
+      "id": "REP-01",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_tested",
+      "title": "Packaged reviewed structural registry"
+    },
+    {
+      "acceptance": "Check staging, generated command reference, links, manuscript citations and current/historical distinctions.",
+      "category": "publication",
+      "evidence": "../tools/verify_structural_joss_staging.py",
+      "id": "PUB-02",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_tested",
+      "title": "Manifest-derived status checks and current documentation"
+    },
+    {
+      "acceptance": "Install package outside repository, load offline example, run through browser and CLI, compare measurements, inspect reports.",
+      "category": "usability",
+      "evidence": "docs/install.md",
+      "id": "USE-01",
+      "independent_review": "not_recorded",
+      "owner": "Product developer",
+      "remaining_acceptance": "Browser/CLI equivalence across all six workflows and independent usability pilots remain open.",
+      "state": "implemented_preview",
+      "title": "Standalone browser and shared case service",
+      "ux_evidence": "docs/UX_PREVIEW.md",
+      "ux_status": "implemented_and_locally_exercised"
+    },
+    {
+      "acceptance": "Cancellation, restart, revision changes, corrupted cached artifacts, unexpected engine failure, one-controller lease. Report-generation failures also produce failed runs and preserve partial artifacts.",
+      "category": "correctness",
+      "evidence": "../platform/tests/test_product_hardening.py",
+      "id": "COR-04",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer",
+      "state": "implemented_tested",
+      "title": "Durable bounded jobs and immutable attempts"
+    },
+    {
+      "acceptance": "Linked modified polymer retains component ID and parent sequence; isolated amino-acid ligand excluded. Extend mapping/model/alternate-location controls and requalify.",
+      "category": "scientific validity",
+      "evidence": "protocols/structure_qc.json",
+      "id": "SCI-01",
+      "independent_review": "not_recorded",
+      "owner": "Scientific lead",
+      "state": "implemented_unqualified",
+      "title": "Modified-residue accounting"
+    },
+    {
+      "acceptance": "Non-solvent presence cannot support occupancy. Implement exact identity/proximity mapping against reviewed controls before upgrading unavailable evidence.",
+      "category": "scientific validity",
+      "evidence": "protocols/functional_site_state.json",
+      "id": "SCI-02",
+      "independent_review": "not_recorded",
+      "owner": "Scientific lead",
+      "state": "partial_conservative_fix",
+      "title": "Cofactor identity and site proximity"
+    },
+    {
+      "acceptance": "Verify operator and chain-copy identity, contacts and ASA against independent calculations.",
+      "category": "scientific validity",
+      "evidence": "protocols/assembly_interface.json",
+      "id": "SCI-03",
+      "independent_review": "not_recorded",
+      "owner": "Scientific lead / External reviewer",
+      "state": "pending_external_review",
+      "title": "Independent assembly calculations"
+    },
+    {
+      "acceptance": "Retain four references / ten held-out cases; frozen domain mapping; .25 A margin and 2.5 A reference RMSD ceiling; independently review labels.",
+      "category": "scientific validity",
+      "evidence": "protocols/conformational_state.json",
+      "id": "SCI-04",
+      "independent_review": "not_recorded",
+      "owner": "Scientific lead / External reviewer",
+      "state": "pending_fresh_qualification",
+      "title": "ABL reference and held-out qualification"
+    },
+    {
+      "acceptance": "Recover and hash one complete archived release before any adoption or remeasurement; never shrink the panel.",
+      "category": "scientific validity",
+      "evidence": "protocols/SFCSA_UNIVERSE_RECOVERY.json",
+      "id": "SCI-05",
+      "independent_review": "not_recorded",
+      "owner": "Scientific lead",
+      "state": "candidate_archive_found_universe_unrecovered",
+      "title": "Recover SF-CSA ten-proteome universe"
+    },
+    {
+      "acceptance": "All five manifest scopes pass per-case under exact code/source/protocol identities; membrane separately experimental.",
+      "category": "reproducibility",
+      "evidence": "protocols/README.md",
+      "id": "REP-02",
+      "independent_review": "not_recorded",
+      "owner": "Software engineer / Scientific lead",
+      "state": "pending",
+      "title": "Requalify changed code on supported environments"
+    },
+    {
+      "acceptance": "Execute the fresh six-case showcase. Add research data tutorials after provenance/licensing review; synthetic cases are not research-use evidence.",
+      "category": "usability",
+      "evidence": "docs/tutorials.md",
+      "id": "USE-02",
+      "independent_review": "not_recorded",
+      "owner": "Product developer",
+      "state": "implemented_synthetic_examples",
+      "title": "Six worked examples and limits"
+    },
+    {
+      "acceptance": "Target three computational and three experimental users; at least five complete independently; all identify principal interpretation limit.",
+      "category": "usability",
+      "evidence": "docs/PILOT_PROTOCOL.md",
+      "id": "USE-03",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj / External participants",
+      "state": "pending_external_participants",
+      "title": "Six external pilot participants"
+    },
+    {
+      "acceptance": "Two external participants provide version-bound input/output hashes, commands, environment and discrepancies.",
+      "category": "reproducibility",
+      "evidence": "docs/PILOT_PROTOCOL.md",
+      "id": "REP-03",
+      "independent_review": "not_recorded",
+      "owner": "External participants",
+      "state": "pending_external_participants",
+      "title": "Two independent installations and reproductions"
+    },
+    {
+      "acceptance": "Draft matches actual local version and bounded evidence, 1300\u20131600 words target; visual review all pages; no invented research impact.",
+      "category": "publication",
+      "evidence": "implementation-evidence/2026-09-06/PAPER_BUILD_REVIEW.json",
+      "id": "PUB-03",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj / Product developer",
+      "state": "prepared_local_draft",
+      "title": "Paper, figures, bibliography, visually checked PDF"
+    },
+    {
+      "acceptance": "Review exact shipped licenses, recover AI versions, approve contributor credit, funding and conflicts.",
+      "category": "publication",
+      "evidence": "docs/RELEASE_REVIEW.md",
+      "id": "PUB-04",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj",
+      "state": "pending_human_review",
+      "title": "Licensing, authorship, funding and AI records"
+    },
+    {
+      "acceptance": "Verify >6 months active public development and documented research use; earliest calendar checkpoint after 2027-02-27 if history supports it.",
+      "category": "publication",
+      "evidence": "docs/RELEASE_REVIEW.md",
+      "id": "PUB-05",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj",
+      "state": "pending_time_and_real_use",
+      "title": "Public development and actual research use"
+    },
+    {
+      "acceptance": "Review artifact contents, hashes, projection changes and exact destination. Yuvraj performs every push.",
+      "category": "publication",
+      "evidence": "docs/RELEASE_REVIEW.md",
+      "id": "PUB-06",
+      "independent_review": "not_recorded",
+      "owner": "Yuvraj",
+      "state": "not_authorized",
+      "title": "Exact release artifacts and push"
+    }
+  ],
+  "schema_version": "1.0",
+  "updated": "2026-09-06"
+}

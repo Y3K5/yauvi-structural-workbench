@@ -9,7 +9,7 @@ establish native conformation or function.
 ## Membrane orientation
 
 For beta barrels, places a coordinate model using the `barrel_normal` path and
-labels residue positions. This is the Mark 1 membrane scope. The separate
+labels residue positions. This path remains experimental under the current qualification manifest. The separate
 alpha-helical `tm_helix_axis_v2` path requires checksum-bound transmembrane
 spans and remains experimental; unsupported sidedness is unresolved. Neither
 path proves intact-cell exposure. OPM/PPM remains an external qualification

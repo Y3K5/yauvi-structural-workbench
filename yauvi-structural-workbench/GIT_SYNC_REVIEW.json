@@ -1,0 +1,578 @@
+{
+  "baseline_commit": "fce5676c91b1749494fcc9c9558308d2388944b9",
+  "classified_matches": [
+    {
+      "classification": "Synthetic privacy test fixtures",
+      "findings": [
+        {
+          "occurrences": 2,
+          "pattern": "home_path"
+        }
+      ],
+      "path": "platform/tests/test_product_hardening.py"
+    },
+    {
+      "classification": "Generic path-detection regular expressions",
+      "findings": [
+        {
+          "occurrences": 2,
+          "pattern": "home_path"
+        }
+      ],
+      "path": "tools/export_execution_evidence.py"
+    }
+  ],
+  "historical_path_disclosures": "Previously disclosed paths in historical tracked execution records have not been rewritten; their proposed projection remains withheld for separate review.",
+  "preservation": "Original machine-path diagnostics, source downloads, and historical execution evidence are unchanged. The existing untracked baseline record remains untracked.",
+  "purpose": "Prepared local development-preview commits; no push performed or authorized by this record.",
+  "schema_version": "1.0",
+  "screen_patterns": [
+    "home-directory and temporary machine paths",
+    "local account name",
+    "private project identifiers",
+    "private-key and token-shaped strings"
+  ],
+  "screen_scope": "Exact synchronized files and then staged Git object bytes; PDF text extracted separately. Historical unchanged repository files are outside the changed-file screen.",
+  "synchronized_files": [
+    {
+      "path": ".github/workflows/qualification.yml",
+      "sha256": "643e2de6a6a300a8fd338a09db6ebb0b2f538c440c83bb8648e46fd60709bb51"
+    },
+    {
+      "path": ".github/workflows/structural-workbench.yml",
+      "sha256": "e35289eddee99cc7e5d36851712e444188afd58974167ebcf8c7de7b576b6afd"
+    },
+    {
+      "path": "Membrane Orientor/memorient/src/memorient/module_contract.py",
+      "sha256": "5daeb05407aa4c70a551af812c716fdee32b13a58c14bac9d22ef7f01f8f6f32"
+    },
+    {
+      "path": "Membrane Orientor/memorient/src/memorient/orientor.py",
+      "sha256": "6425e7ed2035577b99caad97ca2473dbc234d8f8e54875b77cfce76e9c2e9c48"
+    },
+    {
+      "path": "README.md",
+      "sha256": "5293bab3c353911e43b65de4e10857cad37f9ea1b8f0d5cb3adb22464d0c72a7"
+    },
+    {
+      "path": "activity-state/src/actstate/core.py",
+      "sha256": "1f5f7f1ed4351143a85bc5cf9797e6904ad14a603534c0691d1dc3c832f0423e"
+    },
+    {
+      "path": "activity-state/tests/test_cli_and_golden.py",
+      "sha256": "78176ec5b69884927aa244c28a0458901badcd95bb3ca9545cccb70f1464b6fa"
+    },
+    {
+      "path": "activity-state/tests/test_core.py",
+      "sha256": "b28e4223796fce888b69817b426b542f43957a4779cbc9b9b772a48ddb018e84"
+    },
+    {
+      "path": "platform/src/yauvi_platform/structural_workbench/store.py",
+      "sha256": "3d8f01f9fd69ac564d9e8fd8463d66382ec2bc47ea9ec954b5d4195defb135c9"
+    },
+    {
+      "path": "platform/tests/test_product_hardening.py",
+      "sha256": "e7c34a0fc7f0186013d922cb3e557b92628a887fcdd1bda556c2a0d6a5f2dbeb"
+    },
+    {
+      "path": "platform/tests/test_qualification_v2.py",
+      "sha256": "11c5b4d19ea743ecfd0b93127454780982f2ba089d165c6c860dde1d20383143"
+    },
+    {
+      "path": "platform/tests/test_structural_workbench.py",
+      "sha256": "6a0b88a68bca399aea61548f671383759468c1f2a5a957602552f910fec854f1"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "79f135e7742d100ccfcc8b4ec28e87b5e0cc539b9ba48b1c4553604e8e923679"
+    },
+    {
+      "path": "sources/pyproject.toml",
+      "sha256": "0ee3d24fd1f00e941e36027f6e360cf4fa70b0f263ce2e121c91ea127bcfdbc0"
+    },
+    {
+      "path": "sources/src/yauvi_sources/cli.py",
+      "sha256": "b161cb21257a033191a6a618d1bfbd4d33ad219a21f32cf04a4544ef61f855e3"
+    },
+    {
+      "path": "sources/src/yauvi_sources/structural_sources.yaml",
+      "sha256": "6eb43aea0784eeeb16f34faa92371b781296949d90043ef4f0822751761197c1"
+    },
+    {
+      "path": "sources/tests/conftest.py",
+      "sha256": "7395489600f0021a8b481b66e620356e8242d0703a05c2cf778d28bebe24f1b3"
+    },
+    {
+      "path": "sources/tests/test_cli.py",
+      "sha256": "0705777424137644311c206113dcb847d90ff9d5f808439e66e9e898fa948feb"
+    },
+    {
+      "path": "sources/tests/test_manifest.py",
+      "sha256": "be4803e3ce1d965b93a185557212ed8294808cc901e784378de8f3edba212ed0"
+    },
+    {
+      "path": "sources/tests/test_policy.py",
+      "sha256": "18db6ef077cf03dd28e75ff532e12fa2e0bb164226c6803d93cef1992bc78c48"
+    },
+    {
+      "path": "sources/tests/test_registry.py",
+      "sha256": "db943efe7ba178f28265be53128230687674217a1a868c348d50aa031a2de7e0"
+    },
+    {
+      "path": "structqc/src/structqc/core.py",
+      "sha256": "10071eb93f9ddd5cdfca8fcaf5c7624f4cdc53eb0273453d0f10732977137333"
+    },
+    {
+      "path": "structqc/tests/test_modified_chemistry.py",
+      "sha256": "5ae0d4cc9cda77fa6719aaf305d2af140fd65ab3630290e1e15768313c15a3e2"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/cli.py",
+      "sha256": "bf75e796c3bd18b33bdd40990373d6d5a0517bdeb9c0de5b6a57f121812cf1a2"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/example.py",
+      "sha256": "cf0c32b4161c7bf32511d47fe24d6d137dea9ccd5355b92476a328f1d757cf30"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/examples/model.pdb",
+      "sha256": "a598a5203e772bb96e4d2005f1f5cd5cb6d4d753511fce064025a258f34ac4b0"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/examples/provenance.json",
+      "sha256": "f549541b8ef835652b46e8b803d5815344ea006e77dd8c371c1fca076531b9b7"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/examples/reference.fasta",
+      "sha256": "daf3cb9543fe62dfb2104efcf1ea54cd710eedfdbf1b5c3b1001bc6afd06cc26"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/examples/validation.json",
+      "sha256": "32ecc8b222d8815d2e46d6c10b55361ef1684f7804f6412071ebcd3904bff205"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/jobs.py",
+      "sha256": "cc4aa8c90869e725e71343b334cf5e70ed2eee2e834ed9d53aac60c8697c81ac"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/server.py",
+      "sha256": "9ee60087e27cd51f47f4bfdc97bdab05d1f0ce2fa41c9d050379808059adbfc8"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/app.js",
+      "sha256": "57cc1032656eeb859186e594d8e2e2585bb5f0a408ac522d868cbae879097f0c"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/index.html",
+      "sha256": "172f7053eba5fabc016971f98c7f32eabfef4a4be8ad6fa47815763a09a98dce"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/style.css",
+      "sha256": "639301e5a6981140cba8842aa10c02a9e953fafc4646a48f2f4907aa0f32454e"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/vendor/3DMOL-LICENSE.txt",
+      "sha256": "eddf1236388102a0f2dce85f56c89f7acd9a3982cd359c401a713778cdc69673"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/vendor/3DMOL-NOTICE.md",
+      "sha256": "7374cfa82d1e998d528312166a3d05edc1888984fb1cf7680b912807968daed7"
+    },
+    {
+      "path": "structural-workbench/src/yauvi_structural_workbench/ui/vendor/3Dmol-min.js",
+      "sha256": "c24a17b28f38a6fbde99cea746e2d7414da2c60efce65fa75d5293bed204e510"
+    },
+    {
+      "path": "tools/build_cli_reference.py",
+      "sha256": "abcc814b3749a0496c4f9b6a67afd0ba7777c509714472a82168a44f3ee74b8e"
+    },
+    {
+      "path": "tools/build_scientific_figures.py",
+      "sha256": "3c0550b6b506c33496a1c3316be95955fae60637284c8da044425ca2ba7375aa"
+    },
+    {
+      "path": "tools/diagnose_membrane_rotation.py",
+      "sha256": "b57324f63497cf4b6a9eb5949324afd8a18d3d590cd6dc1bfc5cdf4de7161aa2"
+    },
+    {
+      "path": "tools/export_execution_evidence.py",
+      "sha256": "00e9e4ab9bd8f67731c6998031a620bea3e0604fc799505497712b5cc1f38b25"
+    },
+    {
+      "path": "tools/run_structural_workbench_tests.py",
+      "sha256": "20e37959b039a6c1bc913e4778cdfe6f91b56caa026e2d242a6ad07d79e0f53d"
+    },
+    {
+      "path": "tools/verify_cross_machine_reproduction.py",
+      "sha256": "7053395b4a848b1a21094f78a0608cd8760d0b75efc32b738e3a9a9b26ddc666"
+    },
+    {
+      "path": "tools/verify_structural_joss_staging.py",
+      "sha256": "e42908aceda8469eebe0f3ce16f9c6ab1ece86348a868bf2f0d8403944b00ef5"
+    },
+    {
+      "path": "yauvi-structural-workbench/CLAIM_LEDGER.json",
+      "sha256": "ea75357bde8e8aaf1513eeaa57888c139eb818db5f2cac984ea92084eb5c1125"
+    },
+    {
+      "path": "yauvi-structural-workbench/IMPLEMENTATION.md",
+      "sha256": "26d147f693065faedb609c56d8fd8a9c7e66b80b7d3420acce9a9ce60055efe9"
+    },
+    {
+      "path": "yauvi-structural-workbench/IMPLEMENTATION_BACKLOG.json",
+      "sha256": "0581ddb8f22d4dad4109ed5c5f7fa104ac3db11c7ebd31c83e69fc9515cbb8f2"
+    },
+    {
+      "path": "yauvi-structural-workbench/JOSS_CHECKLIST.md",
+      "sha256": "3f36553bacc47510ec37e29c28f831cbc5c34e597409a6c71c6a685be476d977"
+    },
+    {
+      "path": "yauvi-structural-workbench/README.md",
+      "sha256": "521800e08af5e0dc56f345bd2a931050e1803de39e1315a68d21b4bf2be49709"
+    },
+    {
+      "path": "yauvi-structural-workbench/START_HERE.md",
+      "sha256": "6a9314e5bbabbd02f37791e858a57801a5609be698428ab2eff546344dc907b8"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906-r3/ARTIFACT_SCREEN.json",
+      "sha256": "1671444061826234a1723d4725cf8fd225c2ef0aeec8754a9c2f1fe777d1e187"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906-r3/DEPENDENCY_INVENTORY.json",
+      "sha256": "c8badd9900b71a85c22b6609475570d6d012615d240b2e4f42f73e705a000465"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906-r4/ARTIFACT_SCREEN.json",
+      "sha256": "c4641ecace367a924e710023df38c82eec24016855b7796dd5ad72defc79489f"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906-r4/DEPENDENCY_INVENTORY.json",
+      "sha256": "c8badd9900b71a85c22b6609475570d6d012615d240b2e4f42f73e705a000465"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906-ux/ARTIFACT_SCREEN.json",
+      "sha256": "0a36f9c05a4b0b390435878a294d84f2231e4f29530396883a1c229c03d7b28e"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906/ARTIFACT_SCREEN.json",
+      "sha256": "c0bb3d4a0821677cc492549ce28d3bfb74cc00ef4b26276b065625a13878d6c5"
+    },
+    {
+      "path": "yauvi-structural-workbench/artifacts/local-preview-20260906/DEPENDENCY_INVENTORY.json",
+      "sha256": "c8badd9900b71a85c22b6609475570d6d012615d240b2e4f42f73e705a000465"
+    },
+    {
+      "path": "yauvi-structural-workbench/benchmarks/qualification-v2/evidence_contract.py",
+      "sha256": "d6da974573f066d953bd009ae30cd6abcd0c5d617f26e0926f4b725045c2604b"
+    },
+    {
+      "path": "yauvi-structural-workbench/benchmarks/qualification-v2/run_execution.py",
+      "sha256": "e9b8990aa86883eaa46d8d8d833350ea9853a2dd1698d0e5d9785e75c9c5165b"
+    },
+    {
+      "path": "yauvi-structural-workbench/benchmarks/qualification-v2/summarize_execution.py",
+      "sha256": "3a1b3e42942f0eace564bcb900ea75024361f694aee85adeb4d8d04aa1faff9c"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/PILOT_PROTOCOL.md",
+      "sha256": "7dac83500dc3c7d6df1415460df03ad076e86f21a4241ed550ea79d6fa7b4519"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/RELEASE_REVIEW.md",
+      "sha256": "216caf440313ecdbceccad5f40faeccbe7d2b836c81956aa7a0bd536a42737d7"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/UX_PREVIEW.md",
+      "sha256": "8d74a186f666ab560186ca8f1604d4796d7233d389e8b5d03edf89f1bb3223d3"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/cli-reference.md",
+      "sha256": "af9fd840c6343864ab0e98dfdb0887606a4fe5a04c9b734f5f6fb7738f73565a"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/install.md",
+      "sha256": "577a18b62618e76226f65cefc1b3e3c30b64e606cd3973b984a770669b18d36b"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/reviewer-quickstart.md",
+      "sha256": "b266f26086bfec7cd8308560a4340c5b8f111ec2fd037539cbb509c0acc9caa9"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/tutorials.md",
+      "sha256": "644497bb094b7c9e805152ba03e4510116da51d022879a481195ce27c8782334"
+    },
+    {
+      "path": "yauvi-structural-workbench/docs/workflows.md",
+      "sha256": "6bf8cbd8a23dc18c30f76ba0541d850abbc0041f1992b347820519a3868d8237"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/DOCUMENT_LINK_CHECK.json",
+      "sha256": "2e3009292d78b0a5de25c5fcb10f6050d4f8e501d17ad3ef363723f7d989df2c"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/MEMBRANE_RESULT_UX_CHECK.json",
+      "sha256": "172237f9c8a42fa44d311b1398bce2391f424a97678c0d963ac2ca3afc91e096"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/PAPER_BUILD_REVIEW.json",
+      "sha256": "17117476a892c306a64390819be6a8d0cf542b33cf55ebc6543ac861a1966c52"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/UX_VERIFICATION.json",
+      "sha256": "68f5e0381c6558e71c89af5f64e95f77643263728045546ea9cbe118c57be85c"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/VERIFICATION_SUMMARY.json",
+      "sha256": "3ec4dc7e6cdeb747d48c4edec5039f415535ac8194815b221cd40db7d8bff2ac"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/WORKING_CHANGES.json",
+      "sha256": "82c84fe7373fb5fbd826df0ba87b129149d95c2836cc97496ea13c08b32b9228"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/browser-cli-equivalence-final.json",
+      "sha256": "a5449d084e088c5c4f33249d5684bf084c1557fa9e44ea2a49822a1da379ccf9"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/browser-cli-equivalence.json",
+      "sha256": "3bf0d17bf7b413e008a2b3e74ed8d121f6c771c8a6b16265558b73cfed78f6ed"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/installed-example-RESIDUE_QUALITY.tsv",
+      "sha256": "943870295b249daad3762eecea979901c577d9fcaf9c7c0465142fa2cbaec355"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/installed-example-STRUCTURE_EVIDENCE.json",
+      "sha256": "81af34b6d25d2c11235190daa9bd4f7dfd251d5f510b6bcc52dc4ed879a3e94f"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/linux-arm64-diagnostic.json",
+      "sha256": "aa001802f7046685d4a73e13ccf009470b34ec77157bee68f310c0158cccfc61"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/linux-arm64-rotation.xml",
+      "sha256": "03419080384328eddf85d311cf8386350e4a7c548514ed81d52d66e5605c89a6"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/membrane-contract-final.json",
+      "sha256": "22e937cc0d692ef42eed2c155379dff21b52ff91981ee766f9e3ec0bc2fc707e"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/publication-projection-review.json",
+      "sha256": "635e5ad7599dac4324262df83c87121f6d6ce64528dea9f9e925cdfea3c55321"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python310-final-hardening.xml",
+      "sha256": "285fc9355f9ed261db0ec1bb8b74736108deb36bcdd00578a3a1831d35aca346"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python310-tests-final.json",
+      "sha256": "40b1cb4ab28fcd457d4db760789342843e0cc590f1013304168a4ac950401307"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python310-tests-initial.json",
+      "sha256": "f72820aad83e766e5eea5d8af7ea744f34db5769474ff4d55ff5bef99858cd00"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python312-environment.json",
+      "sha256": "e300c9bf28f56b5d38a0c3a9d30e85af0b8e11c3e475cba29b21ae748ff0ce8d"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python312-tests-final.json",
+      "sha256": "8dbdeeb4ba3ab85f04625f9150546db0295bbbb7a9c51560b8eb1d2a27bde88e"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python312-tests-initial.json",
+      "sha256": "ec3a34b148ea810c11438dba6495ea382ec3e4d9027dcce90f7e60f3dfced42f"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/six-synthetic-examples.json",
+      "sha256": "e939a8e87af2e5a27360787434e3886859d658a2f42b57f2737d698268796290"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/ux-http-verification.json",
+      "sha256": "e6a7c5af17571044750d409e7666740ff91dfa0ff542730ebf75065d4aa6ca51"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/ux-python310-tests.json",
+      "sha256": "daa0fbdda36f3a17bec4f149245a674a4adde9dab512feb36db9b91b95790a2f"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/ux-python312-tests-final.json",
+      "sha256": "925eb31a614d664c2f492ace370cc4d5753ec24e5c7a3ac4d994bea410372057"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/ux-python312-tests.json",
+      "sha256": "14ecc2ad2c2b6a4fa955a631218512ea9bbab2391c11737e4a96715fe45864ca"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/FIGURE_PROVENANCE.json",
+      "sha256": "ea9f212de1aaeb9a6c38dce33e641b250b06b82dcbf1d504678f5bc6cd878566"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/architecture.png",
+      "sha256": "7969b75c30cd143633770bc3f123d0cc717259438a8f295d360a2cc3f1a1f143"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/architecture.svg",
+      "sha256": "1cb07f856891f45741cb2c70fa4d0beee1354193857721cec9922771861ed211"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/qualification-history.png",
+      "sha256": "aa531dbbb63fd3f9b2e1eeb1072f4100d95d3f1bb9c08776f78ca16f42d89f08"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/qualification-history.svg",
+      "sha256": "95a4c763391acad45d609b0d66cb1543628cf9fe0f5384faf2a9f4a4269cc892"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/worked-example.png",
+      "sha256": "5ad98f27fe87069a28a73a0f8b4f2ff583591e64c88b4ec38c1a4966148eb537"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/figures/worked-example.svg",
+      "sha256": "09bb9aea2f2cceb98d62d623daccc9d289f7bec63ced6334cc07f5090d8d19dd"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/paper-working-draft.pdf",
+      "sha256": "5a12f0c9dbf1f43e3e766f6e1b4340874b717c87c312f31fe8b86a6599cacd6a"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/paper.bib",
+      "sha256": "b45bec5f732f9e48a470987afca433def957b1e809704bbd7195de3b024ae1c5"
+    },
+    {
+      "path": "yauvi-structural-workbench/paper/paper.md",
+      "sha256": "f3cfca5915fe8600b512d87c037e8970af1977b37bc06b46f8fa96c68044e305"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/README.md",
+      "sha256": "392b87cb56fbf0de6904b0efe97df2963cc50a6c05a2b9fde4f55d84ea932d17"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/SFCSA_UNIVERSE_RECOVERY.json",
+      "sha256": "e79ceaf030c1977f4d327acd338d6f69c3e9a3983d309c2cceae1ec569f47890"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/assembly_interface.json",
+      "sha256": "6ba4273c03266dbf684f8930a641bd1272ab5fc85db0657ae37759f6ffb83dc0"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/conformational_state.json",
+      "sha256": "065a7f03cbef435e81c000d59f4cc352ad24994bddac69d411587e940ed6003c"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/functional_site_state.json",
+      "sha256": "f5049109bcd6009ff1b4541836bf93f0d80dd93749217d1b37b77a4ecd3e81cb"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/membrane_orientation.json",
+      "sha256": "c1b2ca8cc6e410e876decd60642497b4e93cd10b9bb9cc9d6a617d7fc0705ab0"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/sf_csa.json",
+      "sha256": "4de16dd41cb55d1c0431b18bf5d93cdb1e005325412adf49cce945943f735b95"
+    },
+    {
+      "path": "yauvi-structural-workbench/protocols/structure_qc.json",
+      "sha256": "7a44e2039b95c0e82f257e54077bfeb034f24958c249715d1f450044d1e99b35"
+    },
+    {
+      "path": "yauvi-structural-workbench/public-showcase/reviewer/JOSS_CHECKLIST.md",
+      "sha256": "6b9dcb467ee84e08f1f13bc274768113b4261a8621d5b92edca25a1b08b0c13c"
+    },
+    {
+      "path": "yauvi-structural-workbench/public-showcase/share/START_HERE.md",
+      "sha256": "51515bee68e39d08279b0878096b7cb00d7bd1c454ac36d23b01af1492823158"
+    }
+  ],
+  "unresolved_new_file_findings": [],
+  "verification": {
+    "changed_markdown_links": "all local targets exist",
+    "figure_formatting": "Removed generated SVG trailing whitespace; XML drawing content is semantically identical. Generator and figure checksums updated.",
+    "git_diff_check": "passed",
+    "independent_reproduction": "not established",
+    "initial_validation_copy_issue": "An initial temporary copy dropped executable fixture-tool permissions. The full suite was rerun after preserving modes. The publication checkout retained the original executable modes.",
+    "installed_from_synchronized_tree": true,
+    "scientific_qualification": "incomplete",
+    "software_suite_passed": true,
+    "software_totals": {
+      "deselected": 5,
+      "errors": 0,
+      "failed": 0,
+      "passed": 565,
+      "skipped": 2
+    }
+  },
+  "withheld": [
+    {
+      "path": "yauvi-structural-workbench/IMPLEMENTATION_BASELINE_2026-09-06.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/benchmarks/qualification-v2/results/sf_csa/release-1/proteome_denominator.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/EXECUTION_SUMMARY.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/PUBLICATION_PROJECTION.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/REVIEW.md",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/execution-abl/EXECUTION_STATUS.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/execution-assembly/EXECUTION_STATUS.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/execution-membrane/EXECUTION_STATUS.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/execution-sitecontext/EXECUTION_STATUS.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/proposed-execution-projection/execution-structqc/EXECUTION_STATUS.json",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/uniprot-archive-metadata/archive-index.html",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/uniprot-archive-metadata/knowledgebase-index.html",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/uniprot-archive-metadata/release-index.html",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/uniprot-archive-metadata/release-notes.txt",
+      "reason": "Local reference bytes, original provenance or unapproved replacement projection"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/mac-arm64-diagnostic.json",
+      "reason": "Original diagnostic contains a local machine path; retained unchanged"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python310-membrane-final.xml",
+      "reason": "Original diagnostic contains a local machine path; retained unchanged"
+    },
+    {
+      "path": "yauvi-structural-workbench/implementation-evidence/2026-09-06/python312-membrane-final.xml",
+      "reason": "Original diagnostic contains a local machine path; retained unchanged"
+    }
+  ]
+}

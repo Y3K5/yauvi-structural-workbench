@@ -1,0 +1,167 @@
+{
+  "fixture": {
+    "ec_loop_len": 10,
+    "n_strands": 12,
+    "peri_loop_len": 2,
+    "seed": 0,
+    "strand_len": 10
+  },
+  "frame": {
+    "degenerate": true,
+    "eigenvalues": [
+      201.05821443904395,
+      95.9836227553712,
+      95.98362275537117
+    ],
+    "gap01": 0.5226078028039429,
+    "gap12": 1.4136059802232449e-16
+  },
+  "interpretation": "Rotation self-consistency only. Passing this fixture does not resolve the historical CI failure or establish agreement with OPM.",
+  "rotation": {
+    "embedded_jaccards": [
+      1.0,
+      0.867,
+      0.99,
+      1.0,
+      1.0,
+      0.98,
+      1.0,
+      0.99
+    ],
+    "extracellular_comparison_state": "evaluated",
+    "jaccards": [
+      0.978,
+      0.9,
+      1.0,
+      0.978,
+      0.978,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mean_jaccard": 0.979,
+    "n_reference_embedded": 96,
+    "n_reference_extracellular": 45,
+    "normal_angle_errors_deg": [
+      1.797624,
+      9.563646,
+      5.623971,
+      4.233242,
+      2.401157,
+      2.250461,
+      2.477619,
+      10.000304
+    ],
+    "normal_threshold_deg": 1.0,
+    "passed": false,
+    "placement_passed": false,
+    "sidedness_passed": false,
+    "threshold": 0.95
+  },
+  "runtime": {
+    "machine": "aarch64",
+    "numerical_build": {
+      "Build Dependencies": {
+        "blas": {
+          "detection method": "pkgconfig",
+          "found": true,
+          "include directory": "/opt/_internal/cpython-3.12.13/lib/python3.12/site-packages/scipy_openblas64/include",
+          "lib directory": "/opt/_internal/cpython-3.12.13/lib/python3.12/site-packages/scipy_openblas64/lib",
+          "name": "scipy-openblas",
+          "openblas configuration": "OpenBLAS 0.3.34.0.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY neoversev2 MAX_THREADS=64",
+          "pc file directory": "/project/.openblas",
+          "version": "0.3.34.0.0"
+        },
+        "lapack": {
+          "detection method": "pkgconfig",
+          "found": true,
+          "include directory": "/opt/_internal/cpython-3.12.13/lib/python3.12/site-packages/scipy_openblas64/include",
+          "lib directory": "/opt/_internal/cpython-3.12.13/lib/python3.12/site-packages/scipy_openblas64/lib",
+          "name": "scipy-openblas",
+          "openblas configuration": "OpenBLAS 0.3.34.0.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY neoversev2 MAX_THREADS=64",
+          "pc file directory": "/project/.openblas",
+          "version": "0.3.34.0.0"
+        }
+      },
+      "Compilers": {
+        "c": {
+          "commands": "cc",
+          "linker": "ld.bfd",
+          "name": "gcc",
+          "version": "14.2.1"
+        },
+        "c++": {
+          "commands": "c++",
+          "linker": "ld.bfd",
+          "name": "gcc",
+          "version": "14.2.1"
+        },
+        "cython": {
+          "commands": "cython",
+          "linker": "cython",
+          "name": "cython",
+          "version": "3.2.9"
+        }
+      },
+      "Machine Information": {
+        "build": {
+          "cpu": "aarch64",
+          "endian": "little",
+          "family": "aarch64",
+          "system": "linux"
+        },
+        "host": {
+          "cpu": "aarch64",
+          "endian": "little",
+          "family": "aarch64",
+          "system": "linux"
+        }
+      },
+      "Python Information": {
+        "path": "/tmp/build-env-ffzxrmlz/bin/python",
+        "version": "3.12"
+      },
+      "SIMD Extensions": {
+        "baseline": [
+          "NEON",
+          "NEON_FP16",
+          "NEON_VFPV4",
+          "ASIMD"
+        ],
+        "found": [
+          "ASIMDHP",
+          "ASIMDDP",
+          "ASIMDFHM"
+        ],
+        "not found": [
+          "SVE"
+        ]
+      }
+    },
+    "numpy": "2.5.2",
+    "openblas_threads": "unset",
+    "python": "3.12.14",
+    "scipy": "1.18.1",
+    "system": "Linux"
+  },
+  "sasa_points": 160,
+  "schema_version": "1.0",
+  "source_sha256": {
+    "Membrane Orientor/memorient/src/memorient/__init__.py": "c560c2501ebed72994742bcccfb1ca004f0865845e4b4a2ccd5410a6db228db2",
+    "Membrane Orientor/memorient/src/memorient/barrel.py": "5b218354f9add1c44e0ea8ae608f37a2bfe41328085d3f2fc8d46ba512341919",
+    "Membrane Orientor/memorient/src/memorient/cli.py": "b9a3b12a54d6e9bfa10d03a423df7df4accda11ffd1738487875a1b3653f8313",
+    "Membrane Orientor/memorient/src/memorient/contexts.py": "064f62753cb836e578dda05271e571c69b83bd6c279289ea9eea68299e62f69f",
+    "Membrane Orientor/memorient/src/memorient/geometry.py": "3526afc716f9953b5f32ce73fb01eae9025623e8a4e615ef012139c7451794df",
+    "Membrane Orientor/memorient/src/memorient/labeler.py": "9bc0bfa2bc73dd4f682cbf0448bd128488bb63e24af22cceae11be0eb4180ecd",
+    "Membrane Orientor/memorient/src/memorient/membrane.py": "c4a891c9874fd23600bd009eda74c4f81dc00c5306d2f5961d3f7a34b39529e5",
+    "Membrane Orientor/memorient/src/memorient/module_contract.py": "2c55ade8cba972a48e006327d39b42c0db6793217da47ef6fdd4e5f604059349",
+    "Membrane Orientor/memorient/src/memorient/orientor.py": "de3660eaf0b01010ae5682c0554f6c366f9e50c2e889aba3b0f44e1beeb540f9",
+    "Membrane Orientor/memorient/src/memorient/sasa.py": "6ce09f24880df79d93162c4013c32a4a9ff168b6e515dd16581b6fd1da6598e5",
+    "Membrane Orientor/memorient/src/memorient/viz.py": "5bee002ce9a08401e05394fae7d38ee41335fe081063bbcb20d241efa7ef66c8"
+  },
+  "test_passed": true,
+  "thresholds": {
+    "individual_jaccard_min": 0.8,
+    "mean_jaccard_min": 0.9
+  }
+}

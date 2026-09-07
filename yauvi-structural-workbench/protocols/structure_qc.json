@@ -1,0 +1,2403 @@
+{
+  "exclusions": "Preserve all exclusions and failures in the source panel. Missing evidence is not a negative measurement.",
+  "expected_controls": [
+    {
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "citation": {
+        "doi": "10.1016/S0022-2836(02)01474-2",
+        "journal": "J.Mol.Biol.",
+        "year": "2003"
+      },
+      "control_purpose": "fail_closed",
+      "exclusion_rationale": "Undeclared-provenance control required by the panel's coverage rules. Identical to the 1OAI case with the provenance record withheld, so the fail-closed gate is exercised against a deliberately incomplete run rather than against a uniformly complete one.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 59
+        },
+        "cli_exit_code": 1,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "scientifically incomplete, missing: provenance",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+          "structure": "sources/wwpdb/1OAI.cif",
+          "validation_report": "sources/wwpdb/1oai_validation.xml"
+        },
+        "missing_evidence": [
+          "provenance"
+        ],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.35,
+            "r_free": 0.1762,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.0,
+            "rotamer_outliers_percent": 1.69,
+            "rsrz_outliers_percent": 4.41
+          }
+        },
+        "provenance_class": "unknown",
+        "residue_identity": {
+          "coordinate_residues": 68,
+          "coverage_fraction": 0.095315,
+          "identity_fraction": 1.0,
+          "mapped_residues": 59,
+          "reference_length": 619,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "tap_uba",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "1OAI",
+      "record_id": "v2-structqc-control-undeclared-provenance-1OAI",
+      "record_kind": "control_case",
+      "source_release": {
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+        "wwpdb_latest_revision": "2024-05-08"
+      },
+      "split": "control",
+      "stratum": "x_ray"
+    },
+    {
+      "artifact": "sources/wwpdb/1IGT.cif",
+      "checksum": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+      "citation": {
+        "description": "Intact IgG2a monoclonal antibody",
+        "entry": "PDB:1IGT"
+      },
+      "control_purpose": "coverage",
+      "exclusion_rationale": "Insertion-code coverage control. No entry among the sixteen benchmark cases carries an author insertion code, so the panel's insertion-code coverage rule had no witness. Chain B is Kabat-numbered and carries eight (52A, 82A-C, 100H-I among them). Recorded as a control so it satisfies coverage without disturbing the required two-per-stratum-per-split counts.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 444
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "B",
+          "provenance": "provenance/1IGT.provenance.json",
+          "reference_fasta": "sources/uniprot/P01863.fasta",
+          "structure": "sources/wwpdb/1IGT.cif",
+          "validation_report": "sources/wwpdb/1igt_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 22.44,
+            "r_free": 0.297,
+            "ramachandran_outliers_percent": 3.67,
+            "resolution_angstrom": 2.8,
+            "rotamer_outliers_percent": 9.76
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 444,
+          "coverage_fraction": 0.987879,
+          "identity_fraction": 1.0,
+          "mapped_residues": 326,
+          "reference_length": 330,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "igg2a_heavy_chain",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "1IGT",
+      "record_id": "v2-structqc-coverage-insertion-codes-1IGT",
+      "record_kind": "control_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P01863"
+      },
+      "split": "control",
+      "stratum": "x_ray"
+    }
+  ],
+  "expected_records": [
+    {
+      "artifact": "sources/wwpdb/4EA9.cif",
+      "checksum": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88",
+      "citation": {
+        "doi": "10.1021/bi300197h",
+        "journal": "Biochemistry",
+        "year": "2012"
+      },
+      "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 1,
+          "missing_backbone_residues": 0,
+          "residues": 207
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "provenance": "provenance/4EA9.provenance.json",
+          "reference_fasta": "sources/uniprot/O85353.fasta",
+          "structure": "sources/wwpdb/4EA9.cif",
+          "validation_report": "sources/wwpdb/4ea9_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 4.01,
+            "r_free": 0.1487,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 0.9,
+            "rotamer_outliers_percent": 2.76,
+            "rsrz_outliers_percent": 5.31
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 207,
+          "coverage_fraction": 0.962791,
+          "identity_fraction": 1.0,
+          "mapped_residues": 207,
+          "reference_length": 215,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "gdp_perosamine_nat",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "4EA9",
+      "record_id": "v2-structqc-xray-dev-4EA9",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+        "wwpdb_latest_revision": "2023-09-13"
+      },
+      "split": "development",
+      "stratum": "x_ray"
+    },
+    {
+      "artifact": "sources/wwpdb/1OAI.cif",
+      "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+      "citation": {
+        "doi": "10.1016/S0022-2836(02)01474-2",
+        "journal": "J.Mol.Biol.",
+        "year": "2003"
+      },
+      "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 59
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "provenance": "provenance/1OAI.provenance.json",
+          "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+          "structure": "sources/wwpdb/1OAI.cif",
+          "validation_report": "sources/wwpdb/1oai_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.35,
+            "r_free": 0.1762,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.0,
+            "rotamer_outliers_percent": 1.69,
+            "rsrz_outliers_percent": 4.41
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 68,
+          "coverage_fraction": 0.095315,
+          "identity_fraction": 1.0,
+          "mapped_residues": 59,
+          "reference_length": 619,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "tap_uba",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "1OAI",
+      "record_id": "v2-structqc-xray-dev-1OAI",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+        "wwpdb_latest_revision": "2024-05-08"
+      },
+      "split": "development",
+      "stratum": "x_ray"
+    },
+    {
+      "artifact": "sources/wwpdb/2V7A.cif",
+      "checksum": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3",
+      "citation": {
+        "doi": "10.1158/0008-5472.CAN-07-1825",
+        "journal": "Cancer Res.",
+        "year": "2007"
+      },
+      "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 1,
+          "missing_backbone_residues": 1,
+          "residues": 270
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/2V7A.provenance.json",
+          "reference_fasta": "sources/uniprot/P00519.fasta",
+          "structure": "sources/wwpdb/2V7A.cif",
+          "validation_report": "sources/wwpdb/2v7a_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 5.54,
+            "r_free": 0.2338,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 2.5,
+            "rotamer_outliers_percent": 5.12,
+            "rsrz_outliers_percent": 3.34
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 270,
+          "coverage_fraction": 0.238938,
+          "identity_fraction": 0.996296,
+          "mapped_residues": 270,
+          "reference_length": 1130,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "abl1_kinase",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "2V7A",
+      "record_id": "v2-structqc-xray-held-2V7A",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+        "wwpdb_latest_revision": "2024-11-06"
+      },
+      "split": "held_out",
+      "stratum": "x_ray"
+    },
+    {
+      "artifact": "sources/wwpdb/8SSN.cif",
+      "checksum": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537",
+      "citation": {
+        "doi": "10.1073/pnas.2304611120",
+        "journal": "Proc.Natl.Acad.Sci.USA",
+        "year": "2023"
+      },
+      "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 5,
+          "missing_backbone_residues": 0,
+          "residues": 420
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/8SSN.provenance.json",
+          "reference_fasta": "sources/uniprot/P00519.fasta",
+          "structure": "sources/wwpdb/8SSN.cif",
+          "validation_report": "sources/wwpdb/8ssn_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.76,
+            "r_free": 0.3507,
+            "ramachandran_outliers_percent": 0.13,
+            "resolution_angstrom": 2.86,
+            "rotamer_outliers_percent": 2.41,
+            "rsrz_outliers_percent": 23.7
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 420,
+          "coverage_fraction": 0.371681,
+          "identity_fraction": 0.997619,
+          "mapped_residues": 420,
+          "reference_length": 1130,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "abl1_kinase",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "8SSN",
+      "record_id": "v2-structqc-xray-held-8SSN",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+        "wwpdb_latest_revision": "2023-09-06"
+      },
+      "split": "held_out",
+      "stratum": "x_ray"
+    },
+    {
+      "artifact": "sources/alphafold/AF-P00698-F1-model_v6.cif",
+      "checksum": "09a298fac7b7ef96e9c1ea5690811e713021c2e3a89e239ae7218e4cc658a82c",
+      "citation": {
+        "database": "AlphaFold Protein Structure Database",
+        "description": "Lysozyme C (Gallus gallus)",
+        "entry": "AF-P00698-F1",
+        "version": "v6"
+      },
+      "exclusion_rationale": "Small, fully-resolved single domain: the clean predicted-model control, exact reference mapping.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 147
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "max_angstrom": 31.0,
+          "mean_angstrom": 5.8036,
+          "size": 147,
+          "state": "evaluated"
+        },
+        "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "pae": "sources/alphafold/AF-P00698-F1-predicted_aligned_error_v6.json",
+          "provenance": "provenance/P00698.provenance.json",
+          "reference_fasta": "sources/uniprot/P00698.fasta",
+          "structure": "sources/alphafold/AF-P00698-F1-model_v6.cif"
+        },
+        "missing_evidence": [
+          "community_geometry_validation"
+        ],
+        "official_metric_import": {
+          "state": "missing",
+          "values": {}
+        },
+        "provenance_class": "predicted",
+        "residue_identity": {
+          "coordinate_residues": 147,
+          "coverage_fraction": 1.0,
+          "identity_fraction": 1.0,
+          "mapped_residues": 147,
+          "reference_length": 147,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "lysozyme_c",
+      "license": "CC-BY-4.0 (AlphaFold DB)",
+      "pdb_entry_id": "AF-P00698-F1",
+      "record_id": "v2-structqc-alphafold-dev-P00698",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "alphafold_db_version": "v6",
+        "uniprot_accession": "P00698"
+      },
+      "split": "development",
+      "stratum": "alphafold"
+    },
+    {
+      "artifact": "sources/alphafold/AF-P01308-F1-model_v6.cif",
+      "checksum": "0d71181346ce6d218d681417e849d3cc6f7b04dfd11fa85702b2984da2b81b14",
+      "citation": {
+        "database": "AlphaFold Protein Structure Database",
+        "description": "Insulin (Homo sapiens)",
+        "entry": "AF-P01308-F1",
+        "version": "v6"
+      },
+      "exclusion_rationale": "Precursor modelled as one chain while the mature hormone is processed into two, so coverage and confidence differ across the sequence.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 110
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "max_angstrom": 31.0,
+          "mean_angstrom": 22.010744,
+          "size": 110,
+          "state": "evaluated"
+        },
+        "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "pae": "sources/alphafold/AF-P01308-F1-predicted_aligned_error_v6.json",
+          "provenance": "provenance/P01308.provenance.json",
+          "reference_fasta": "sources/uniprot/P01308.fasta",
+          "structure": "sources/alphafold/AF-P01308-F1-model_v6.cif"
+        },
+        "missing_evidence": [
+          "community_geometry_validation"
+        ],
+        "official_metric_import": {
+          "state": "missing",
+          "values": {}
+        },
+        "provenance_class": "predicted",
+        "residue_identity": {
+          "coordinate_residues": 110,
+          "coverage_fraction": 1.0,
+          "identity_fraction": 1.0,
+          "mapped_residues": 110,
+          "reference_length": 110,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "insulin",
+      "license": "CC-BY-4.0 (AlphaFold DB)",
+      "pdb_entry_id": "AF-P01308-F1",
+      "record_id": "v2-structqc-alphafold-dev-P01308",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "alphafold_db_version": "v6",
+        "uniprot_accession": "P01308"
+      },
+      "split": "development",
+      "stratum": "alphafold"
+    },
+    {
+      "artifact": "sources/alphafold/AF-P69905-F1-model_v6.cif",
+      "checksum": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230",
+      "citation": {
+        "database": "AlphaFold Protein Structure Database",
+        "description": "Hemoglobin subunit alpha (Homo sapiens)",
+        "entry": "AF-P69905-F1",
+        "version": "v6"
+      },
+      "exclusion_rationale": "Carried over from the qualification v1 collection, the only predicted model already curated.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 142
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "max_angstrom": 28.0,
+          "mean_angstrom": 2.061545,
+          "size": 142,
+          "state": "evaluated"
+        },
+        "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "pae": "sources/alphafold/AF-P69905-F1-predicted_aligned_error_v6.json",
+          "provenance": "provenance/P69905.provenance.json",
+          "reference_fasta": "sources/uniprot/P69905.fasta",
+          "structure": "sources/alphafold/AF-P69905-F1-model_v6.cif"
+        },
+        "missing_evidence": [
+          "community_geometry_validation"
+        ],
+        "official_metric_import": {
+          "state": "missing",
+          "values": {}
+        },
+        "provenance_class": "predicted",
+        "residue_identity": {
+          "coordinate_residues": 142,
+          "coverage_fraction": 1.0,
+          "identity_fraction": 1.0,
+          "mapped_residues": 142,
+          "reference_length": 142,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "globin",
+      "license": "CC-BY-4.0 (AlphaFold DB)",
+      "pdb_entry_id": "AF-P69905-F1",
+      "record_id": "v2-structqc-alphafold-held-P69905",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "alphafold_db_version": "v6",
+        "uniprot_accession": "P69905"
+      },
+      "split": "held_out",
+      "stratum": "alphafold"
+    },
+    {
+      "artifact": "sources/alphafold/AF-P61769-F1-model_v6.cif",
+      "checksum": "e9cc02e9271d5c12504fc679af0faeab6c4bccd0e291694748c255f30a1e2b30",
+      "citation": {
+        "database": "AlphaFold Protein Structure Database",
+        "description": "Beta-2-microglobulin (Homo sapiens)",
+        "entry": "AF-P61769-F1",
+        "version": "v6"
+      },
+      "exclusion_rationale": "Immunoglobulin fold with a flexible terminus, so per-residue confidence is not uniform.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 119
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "max_angstrom": 31.0,
+          "mean_angstrom": 6.795,
+          "size": 119,
+          "state": "evaluated"
+        },
+        "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": null,
+          "pae": "sources/alphafold/AF-P61769-F1-predicted_aligned_error_v6.json",
+          "provenance": "provenance/P61769.provenance.json",
+          "reference_fasta": "sources/uniprot/P61769.fasta",
+          "structure": "sources/alphafold/AF-P61769-F1-model_v6.cif"
+        },
+        "missing_evidence": [
+          "community_geometry_validation"
+        ],
+        "official_metric_import": {
+          "state": "missing",
+          "values": {}
+        },
+        "provenance_class": "predicted",
+        "residue_identity": {
+          "coordinate_residues": 119,
+          "coverage_fraction": 1.0,
+          "identity_fraction": 1.0,
+          "mapped_residues": 119,
+          "reference_length": 119,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "beta2_microglobulin",
+      "license": "CC-BY-4.0 (AlphaFold DB)",
+      "pdb_entry_id": "AF-P61769-F1",
+      "record_id": "v2-structqc-alphafold-held-P61769",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "alphafold_db_version": "v6",
+        "uniprot_accession": "P61769"
+      },
+      "split": "held_out",
+      "stratum": "alphafold"
+    },
+    {
+      "artifact": "sources/wwpdb/7A4M.cif",
+      "checksum": "1355a912de4492e8c0b06861b6ad3ec9b8190ab098723b5f56b779371705f2a8",
+      "citation": {
+        "description": "Ferritin heavy chain (mouse)",
+        "entry": "PDB:7A4M"
+      },
+      "exclusion_rationale": "1.22 A cryo-EM: the highest-resolution case in the panel, and the stratum's clean control.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 172
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/7A4M.provenance.json",
+          "reference_fasta": "sources/uniprot/P09528.fasta",
+          "structure": "sources/wwpdb/7A4M.cif",
+          "validation_report": "sources/wwpdb/7a4m_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 2.61,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.22,
+            "rotamer_outliers_percent": 1.32
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 172,
+          "coverage_fraction": 0.945055,
+          "identity_fraction": 1.0,
+          "mapped_residues": 172,
+          "reference_length": 182,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "ferritin_heavy_chain",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "7A4M",
+      "record_id": "v2-structqc-cryo_em-dev-7A4M",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P09528"
+      },
+      "split": "development",
+      "stratum": "cryo_em"
+    },
+    {
+      "artifact": "sources/wwpdb/6CVM.cif",
+      "checksum": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d",
+      "citation": {
+        "description": "Beta-galactosidase (E. coli)",
+        "entry": "PDB:6CVM"
+      },
+      "exclusion_rationale": "1021-residue single chain at 1.9 A: the longest polymer in the panel, so reference mapping is exercised at a scale the small cases do not reach.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 1021
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/6CVM.provenance.json",
+          "reference_fasta": "sources/uniprot/P00722.fasta",
+          "structure": "sources/wwpdb/6CVM.cif",
+          "validation_report": "sources/wwpdb/6cvm_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 3.73,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 1.9,
+            "rotamer_outliers_percent": 0.0
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 1021,
+          "coverage_fraction": 0.99707,
+          "identity_fraction": 0.998041,
+          "mapped_residues": 1021,
+          "reference_length": 1024,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "beta_galactosidase",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "6CVM",
+      "record_id": "v2-structqc-cryo_em-dev-6CVM",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P00722"
+      },
+      "split": "development",
+      "stratum": "cryo_em"
+    },
+    {
+      "artifact": "sources/wwpdb/6VXX.cif",
+      "checksum": "74ceac62dc45e34818f7c6f32fc12690f250ad803b999c1d7399a362ecd86984",
+      "citation": {
+        "description": "SARS-CoV-2 spike glycoprotein",
+        "entry": "PDB:6VXX"
+      },
+      "exclusion_rationale": "2.8 A trimeric glycoprotein with extensive disorder, so coverage is well below 1.0 while identity over the mapped region stays exact.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 11,
+          "missing_backbone_residues": 0,
+          "residues": 972
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/6VXX.provenance.json",
+          "reference_fasta": "sources/uniprot/P0DTC2.fasta",
+          "structure": "sources/wwpdb/6VXX.cif",
+          "validation_report": "sources/wwpdb/6vxx_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 0.81,
+            "ramachandran_outliers_percent": 0.0,
+            "resolution_angstrom": 2.8,
+            "rotamer_outliers_percent": 0.23
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 972,
+          "coverage_fraction": 0.763551,
+          "identity_fraction": 0.997942,
+          "mapped_residues": 972,
+          "reference_length": 1273,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "cov2_spike",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "6VXX",
+      "record_id": "v2-structqc-cryo_em-held-6VXX",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0DTC2"
+      },
+      "split": "held_out",
+      "stratum": "cryo_em"
+    },
+    {
+      "artifact": "sources/wwpdb/5W3L.cif",
+      "checksum": "6c21936d8e8f6151bd5290530acff4b0566379cdb78ede9edca762f5dfd6ef41",
+      "citation": {
+        "description": "Rhinovirus B14 viral protein 1",
+        "entry": "PDB:5W3L"
+      },
+      "exclusion_rationale": "Six-entity viral capsid, so a chain must be selected explicitly for the reference to mean anything.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 274
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "provenance": "provenance/5W3L.provenance.json",
+          "reference_fasta": "sources/uniprot/P03303.fasta",
+          "structure": "sources/wwpdb/5W3L.cif",
+          "validation_report": "sources/wwpdb/5w3l_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 5.57,
+            "ramachandran_outliers_percent": 0.1,
+            "resolution_angstrom": 2.71,
+            "rotamer_outliers_percent": 0.23
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 274,
+          "coverage_fraction": 0.125746,
+          "identity_fraction": 1.0,
+          "mapped_residues": 274,
+          "reference_length": 2179,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "rhinovirus_vp1",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "5W3L",
+      "record_id": "v2-structqc-cryo_em-held-5W3L",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P03303"
+      },
+      "split": "held_out",
+      "stratum": "cryo_em"
+    },
+    {
+      "artifact": "sources/wwpdb/1D3Z.cif",
+      "checksum": "7242859f3508ff1711e5b38a78b14c960f137c096f36302406223c93b909c407",
+      "citation": {
+        "description": "Ubiquitin",
+        "entry": "PDB:1D3Z"
+      },
+      "exclusion_rationale": "10-model ensemble mapped against the polyubiquitin-C precursor, so coverage is legitimately ~0.11 while identity is exact: a low-coverage case that is correct rather than defective.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 76
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "model": 0,
+          "provenance": "provenance/1D3Z.provenance.json",
+          "reference_fasta": "sources/uniprot/P0CG48.fasta",
+          "structure": "sources/wwpdb/1D3Z.cif",
+          "validation_report": "sources/wwpdb/1d3z_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 3.07,
+            "ramachandran_outliers_percent": 0.0,
+            "rotamer_outliers_percent": 1.67
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 76,
+          "coverage_fraction": 0.110949,
+          "identity_fraction": 1.0,
+          "mapped_residues": 76,
+          "reference_length": 685,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "ubiquitin",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "1D3Z",
+      "record_id": "v2-structqc-nmr-dev-1D3Z",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P0CG48"
+      },
+      "split": "development",
+      "stratum": "nmr"
+    },
+    {
+      "artifact": "sources/wwpdb/2K0Q.cif",
+      "checksum": "b198ca486b46805e1605dd5af5c7dc3c41ec2ab83482354c57209564eed0b3c7",
+      "citation": {
+        "description": "CopK periplasmic copper-binding protein",
+        "entry": "PDB:2K0Q"
+      },
+      "exclusion_rationale": "20-model ensemble of a small periplasmic protein: the stratum's compact control.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 74
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "model": 0,
+          "provenance": "provenance/2K0Q.provenance.json",
+          "reference_fasta": "sources/uniprot/Q58AD3.fasta",
+          "structure": "sources/wwpdb/2K0Q.cif",
+          "validation_report": "sources/wwpdb/2k0q_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 13.79,
+            "ramachandran_outliers_percent": 2.58,
+            "rotamer_outliers_percent": 12.08
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 74,
+          "coverage_fraction": 0.787234,
+          "identity_fraction": 1.0,
+          "mapped_residues": 74,
+          "reference_length": 94,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "copk",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "2K0Q",
+      "record_id": "v2-structqc-nmr-dev-2K0Q",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "Q58AD3"
+      },
+      "split": "development",
+      "stratum": "nmr"
+    },
+    {
+      "artifact": "sources/wwpdb/1G03.cif",
+      "checksum": "56340eeaa8121ee6f31e9594086593d5addf3f3777a0445fe3486ff4f469a6d0",
+      "citation": {
+        "description": "HTLV-I capsid protein N-terminal domain",
+        "entry": "PDB:1G03"
+      },
+      "exclusion_rationale": "20-model ensemble of a viral capsid domain, mapped against the full Gag polyprotein.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 134
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "model": 0,
+          "provenance": "provenance/1G03.provenance.json",
+          "reference_fasta": "sources/uniprot/P14077.fasta",
+          "structure": "sources/wwpdb/1G03.cif",
+          "validation_report": "sources/wwpdb/1g03_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 54.13,
+            "ramachandran_outliers_percent": 14.74,
+            "rotamer_outliers_percent": 12.63
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 134,
+          "coverage_fraction": 0.312354,
+          "identity_fraction": 1.0,
+          "mapped_residues": 134,
+          "reference_length": 429,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "htlv1_capsid",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "1G03",
+      "record_id": "v2-structqc-nmr-held-1G03",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P14077"
+      },
+      "split": "held_out",
+      "stratum": "nmr"
+    },
+    {
+      "artifact": "sources/wwpdb/2MZQ.cif",
+      "checksum": "3922bcd5f17a78082c533588159f77afcfea0b376c0e1bc3b2823f3128e7fd98",
+      "citation": {
+        "description": "Single-strand telomeric DNA-binding protein",
+        "entry": "PDB:2MZQ"
+      },
+      "exclusion_rationale": "20-model ensemble of a nucleic-acid-binding protein, so the coordinate file carries entities the reference sequence does not describe.",
+      "expected_result": {
+        "chain_summary": {
+          "chain_breaks": 0,
+          "missing_backbone_residues": 0,
+          "residues": 101
+        },
+        "cli_exit_code": 0,
+        "confidence": {
+          "detail": "no PAE supplied",
+          "state": "unevaluated"
+        },
+        "exit_code_reason": "complete: every declared evidence leg was supplied",
+        "gemmi_coordinate_validation": "validated",
+        "invocation": {
+          "chain": "A",
+          "model": 0,
+          "provenance": "provenance/2MZQ.provenance.json",
+          "reference_fasta": "sources/uniprot/P25555.fasta",
+          "structure": "sources/wwpdb/2MZQ.cif",
+          "validation_report": "sources/wwpdb/2mzq_validation.xml"
+        },
+        "missing_evidence": [],
+        "official_metric_import": {
+          "state": "imported",
+          "values": {
+            "clashscore": 0.97,
+            "ramachandran_outliers_percent": 1.42,
+            "rotamer_outliers_percent": 11.88
+          }
+        },
+        "provenance_class": "experimental",
+        "residue_identity": {
+          "coordinate_residues": 101,
+          "coverage_fraction": 0.236534,
+          "identity_fraction": 1.0,
+          "mapped_residues": 101,
+          "reference_length": 427,
+          "state": "evaluated"
+        }
+      },
+      "homolog_group": "telomere_ssdbp",
+      "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+      "pdb_entry_id": "2MZQ",
+      "record_id": "v2-structqc-nmr-held-2MZQ",
+      "record_kind": "benchmark_case",
+      "source_release": {
+        "provider": "wwPDB/RCSB PDB",
+        "uniprot_accession": "P25555"
+      },
+      "split": "held_out",
+      "stratum": "nmr"
+    }
+  ],
+  "frozen_panel": {
+    "controls": [
+      {
+        "artifact": "sources/wwpdb/1OAI.cif",
+        "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+        "citation": {
+          "doi": "10.1016/S0022-2836(02)01474-2",
+          "journal": "J.Mol.Biol.",
+          "year": "2003"
+        },
+        "control_purpose": "fail_closed",
+        "exclusion_rationale": "Undeclared-provenance control required by the panel's coverage rules. Identical to the 1OAI case with the provenance record withheld, so the fail-closed gate is exercised against a deliberately incomplete run rather than against a uniformly complete one.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 59
+          },
+          "cli_exit_code": 1,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "scientifically incomplete, missing: provenance",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+            "structure": "sources/wwpdb/1OAI.cif",
+            "validation_report": "sources/wwpdb/1oai_validation.xml"
+          },
+          "missing_evidence": [
+            "provenance"
+          ],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 13.35,
+              "r_free": 0.1762,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 1.0,
+              "rotamer_outliers_percent": 1.69,
+              "rsrz_outliers_percent": 4.41
+            }
+          },
+          "provenance_class": "unknown",
+          "residue_identity": {
+            "coordinate_residues": 68,
+            "coverage_fraction": 0.095315,
+            "identity_fraction": 1.0,
+            "mapped_residues": 59,
+            "reference_length": 619,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "tap_uba",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "1OAI",
+        "record_id": "v2-structqc-control-undeclared-provenance-1OAI",
+        "record_kind": "control_case",
+        "source_release": {
+          "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+          "wwpdb_latest_revision": "2024-05-08"
+        },
+        "split": "control",
+        "stratum": "x_ray"
+      },
+      {
+        "artifact": "sources/wwpdb/1IGT.cif",
+        "checksum": "d7b1a560ed993c7be669a15530b64f37e2af8e978c321a5779d20ab75746b63f",
+        "citation": {
+          "description": "Intact IgG2a monoclonal antibody",
+          "entry": "PDB:1IGT"
+        },
+        "control_purpose": "coverage",
+        "exclusion_rationale": "Insertion-code coverage control. No entry among the sixteen benchmark cases carries an author insertion code, so the panel's insertion-code coverage rule had no witness. Chain B is Kabat-numbered and carries eight (52A, 82A-C, 100H-I among them). Recorded as a control so it satisfies coverage without disturbing the required two-per-stratum-per-split counts.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 444
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "B",
+            "provenance": "provenance/1IGT.provenance.json",
+            "reference_fasta": "sources/uniprot/P01863.fasta",
+            "structure": "sources/wwpdb/1IGT.cif",
+            "validation_report": "sources/wwpdb/1igt_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 22.44,
+              "r_free": 0.297,
+              "ramachandran_outliers_percent": 3.67,
+              "resolution_angstrom": 2.8,
+              "rotamer_outliers_percent": 9.76
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 444,
+            "coverage_fraction": 0.987879,
+            "identity_fraction": 1.0,
+            "mapped_residues": 326,
+            "reference_length": 330,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "igg2a_heavy_chain",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "1IGT",
+        "record_id": "v2-structqc-coverage-insertion-codes-1IGT",
+        "record_kind": "control_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P01863"
+        },
+        "split": "control",
+        "stratum": "x_ray"
+      }
+    ],
+    "coverage_rules": [
+      "The panel covers insertion codes, alternate locations, missing residues, nonstandard residues, multichain coordinates, pLDDT, PAE, and experiment-specific wwPDB validation.",
+      "Synthetic sequence-mismatch and undeclared-provenance controls are recorded separately from the 16 public cases."
+    ],
+    "gate_semantics": {
+      "coverage_requirements": {
+        "mode": "witnessed_by_at_least_one_executed_case",
+        "rationale": "The panel's coverage_rules were prose only. Composition counts records per stratum and split, so a coverage rule could go unmet while the panel reported itself complete -- and insertion codes did exactly that until 1IGT was curated. Each feature is now witnessed from the evidence an executed case produced, and execution fails if any required feature has no witness.",
+        "required_features": [
+          "insertion_codes",
+          "alternate_locations",
+          "missing_residues",
+          "multichain_coordinates",
+          "multi_model_ensemble",
+          "predicted_confidence",
+          "official_validation_import"
+        ],
+        "unwitnessable_features": {
+          "modified_residues": {
+            "declared_by": "the panel's coverage_rules, as 'nonstandard residues'",
+            "resolution": "Either StructQC reports modified residues explicitly, or the panel's coverage_rules drop the claim. For a coordinate-trust tool, a post-translational modification is exactly what a user needs surfaced before mapping a functional residue, so reporting it is the better fix.",
+            "status": "NOT SATISFIED - recorded as an open defect, not as met coverage",
+            "why_not_witnessed": "StructQC counts a residue as nonstandard only when its one-letter code is X. A chemically modified residue that maps to its unmodified parent is normalised and never reported. 2V7A chain A contains PTR393 (phosphotyrosine); gemmi sees 271 polymer residues, StructQC reports 270 with nonstandard_residues: 0, and the string PTR appears nowhere in the evidence record, the residue table, or the run manifest.",
+            "why_not_worked_around": "A detector could read the coordinate file directly, but then the panel would claim coverage of a feature the tool under test does not report. Coverage must be witnessed from the evidence the tool produces, or it is not coverage."
+          }
+        }
+      },
+      "missing_evidence_behavior": {
+        "detail": "Exit 1 is a scientifically-incomplete result carrying its reason, not a failure.",
+        "expected_missing_by_stratum": {
+          "alphafold": [
+            "community_geometry_validation"
+          ],
+          "cryo_em": [],
+          "nmr": [],
+          "x_ray": []
+        },
+        "mode": "fail_closed",
+        "rule": "The run's missing-evidence list must equal the stratum's declared expectation. Evidence that cannot exist for a stratum is declared, not silently tolerated; anything else appearing there is a change that must be noticed."
+      },
+      "model_selection": {
+        "mode": "declared_per_case",
+        "nmr": {
+          "model_index": 0,
+          "rationale": "An NMR entry deposits an ensemble; these range from 10 to 20 models. StructQC evaluates one model, so which one is a scientific choice and is declared per case rather than inherited from a CLI default. Model index 0 (the first deposited model) is used uniformly. Ensemble-wide agreement is a separate question this stratum does not test."
+        }
+      },
+      "official_metric_import": {
+        "by_stratum": {
+          "alphafold": {
+            "evidence_source": "alphafold_db_confidence",
+            "note": "No wwPDB validation report exists for a predicted model. The official confidence evidence is pLDDT in the B-factor column plus the PAE matrix, so the gate checks those instead of geometry-validation metrics.",
+            "required_confidence": [
+              "state",
+              "mean_angstrom",
+              "max_angstrom",
+              "size"
+            ],
+            "required_metrics": []
+          },
+          "cryo_em": {
+            "evidence_source": "wwpdb_validation_report",
+            "note": "A cryo-EM validation report carries the same geometry metrics as an x-ray one plus a reported resolution, but no crystallographic R-factors. Resolution is required here because the report supplies it; requiring r_free would fail every case in the stratum.",
+            "required_metrics": [
+              "clashscore",
+              "ramachandran_outliers_percent",
+              "rotamer_outliers_percent",
+              "resolution_angstrom"
+            ]
+          },
+          "nmr": {
+            "evidence_source": "wwpdb_validation_report",
+            "note": "A solution-NMR validation report carries geometry metrics but neither resolution nor R-factors, because neither exists for the method. The metric set is the geometry core alone.",
+            "required_metrics": [
+              "clashscore",
+              "ramachandran_outliers_percent",
+              "rotamer_outliers_percent"
+            ]
+          },
+          "x_ray": {
+            "evidence_source": "wwpdb_validation_report",
+            "required_metrics": [
+              "clashscore",
+              "ramachandran_outliers_percent",
+              "rotamer_outliers_percent"
+            ]
+          }
+        },
+        "mode": "exact"
+      },
+      "residue_identity": {
+        "alternatives": {
+          "equals_one": "Identity must be 1.0 for every case. Disqualifies every structure carrying an engineered mutation, including 2V7A, and with it the panel's only nonstandard-residue coverage.",
+          "matches_declared_expectation": "The computed identity must equal the value declared for the case. A declared engineered mutation is expected to lower identity, and failing to lower it is the defect."
+        },
+        "chosen_because": "2V7A measures 0.996296, which is exactly 1 - 1/270: the single declared T315I difference and nothing else. Detecting a declared mutation is the behaviour under test, so the gate asserts the measurement matches what the case declares.",
+        "mode": "matches_declared_expectation",
+        "tolerance": 1e-06
+      }
+    },
+    "gates": {
+      "missing_evidence_behavior": "fail_closed",
+      "official_metric_import": "exact",
+      "residue_identity": "exact"
+    },
+    "panel_id": "qualification-v2-structqc",
+    "records": [
+      {
+        "artifact": "sources/wwpdb/4EA9.cif",
+        "checksum": "aafa4b0c0bb4e629666ae10f56c5ee47797ab523218b705cee8df81977946c88",
+        "citation": {
+          "doi": "10.1021/bi300197h",
+          "journal": "Biochemistry",
+          "year": "2012"
+        },
+        "exclusion_rationale": "Carries the panel's alternate-location coverage (108 altloc atoms) at 0.90 A, plus one numbering gap and a six-residue expression tag.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 1,
+            "missing_backbone_residues": 0,
+            "residues": 207
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "provenance": "provenance/4EA9.provenance.json",
+            "reference_fasta": "sources/uniprot/O85353.fasta",
+            "structure": "sources/wwpdb/4EA9.cif",
+            "validation_report": "sources/wwpdb/4ea9_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 4.01,
+              "r_free": 0.1487,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 0.9,
+              "rotamer_outliers_percent": 2.76,
+              "rsrz_outliers_percent": 5.31
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 207,
+            "coverage_fraction": 0.962791,
+            "identity_fraction": 1.0,
+            "mapped_residues": 207,
+            "reference_length": 215,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "gdp_perosamine_nat",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "4EA9",
+        "record_id": "v2-structqc-xray-dev-4EA9",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+          "wwpdb_latest_revision": "2023-09-13"
+        },
+        "split": "development",
+        "stratum": "x_ray"
+      },
+      {
+        "artifact": "sources/wwpdb/1OAI.cif",
+        "checksum": "b1c1c98277af289311cf829164974c509c56dfadff871a30a1ff756fbef7f19c",
+        "citation": {
+          "doi": "10.1016/S0022-2836(02)01474-2",
+          "journal": "J.Mol.Biol.",
+          "year": "2003"
+        },
+        "exclusion_rationale": "Clean multichain control: two polymer chains, zero declared sequence differences, so an exact reference mapping is achievable without tag or mutation reconciliation.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 59
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "provenance": "provenance/1OAI.provenance.json",
+            "reference_fasta": "sources/uniprot/Q9UBU9.fasta",
+            "structure": "sources/wwpdb/1OAI.cif",
+            "validation_report": "sources/wwpdb/1oai_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 13.35,
+              "r_free": 0.1762,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 1.0,
+              "rotamer_outliers_percent": 1.69,
+              "rsrz_outliers_percent": 4.41
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 68,
+            "coverage_fraction": 0.095315,
+            "identity_fraction": 1.0,
+            "mapped_residues": 59,
+            "reference_length": 619,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "tap_uba",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "1OAI",
+        "record_id": "v2-structqc-xray-dev-1OAI",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+          "wwpdb_latest_revision": "2024-05-08"
+        },
+        "split": "development",
+        "stratum": "x_ray"
+      },
+      {
+        "artifact": "sources/wwpdb/2V7A.cif",
+        "checksum": "8770bcfb4b19bca18052697781a1bfd48a66f42f862a60836fe0534a070bd6e3",
+        "citation": {
+          "doi": "10.1158/0008-5472.CAN-07-1825",
+          "journal": "Cancer Res.",
+          "year": "2007"
+        },
+        "exclusion_rationale": "Carries nonstandard-residue coverage (PTR, phosphotyrosine) and is the panel's declared-engineered-mutation case: identity against canonical P00519 must not be 1.0, and the T315I difference must surface rather than pass silently.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 1,
+            "missing_backbone_residues": 1,
+            "residues": 270
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/2V7A.provenance.json",
+            "reference_fasta": "sources/uniprot/P00519.fasta",
+            "structure": "sources/wwpdb/2V7A.cif",
+            "validation_report": "sources/wwpdb/2v7a_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 5.54,
+              "r_free": 0.2338,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 2.5,
+              "rotamer_outliers_percent": 5.12,
+              "rsrz_outliers_percent": 3.34
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 270,
+            "coverage_fraction": 0.238938,
+            "identity_fraction": 0.996296,
+            "mapped_residues": 270,
+            "reference_length": 1130,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "abl1_kinase",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "2V7A",
+        "record_id": "v2-structqc-xray-held-2V7A",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+          "wwpdb_latest_revision": "2024-11-06"
+        },
+        "split": "held_out",
+        "stratum": "x_ray"
+      },
+      {
+        "artifact": "sources/wwpdb/8SSN.cif",
+        "checksum": "f783514f914ef61144f075b8d5fd2b9b127b0464c5d3f5e68643fa3e26a89537",
+        "citation": {
+          "doi": "10.1073/pnas.2304611120",
+          "journal": "Proc.Natl.Acad.Sci.USA",
+          "year": "2023"
+        },
+        "exclusion_rationale": "Carries missing-residue coverage: 14 numbering gaps across two chains, the largest discontinuity count among the available x-ray candidates.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 5,
+            "missing_backbone_residues": 0,
+            "residues": 420
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/8SSN.provenance.json",
+            "reference_fasta": "sources/uniprot/P00519.fasta",
+            "structure": "sources/wwpdb/8SSN.cif",
+            "validation_report": "sources/wwpdb/8ssn_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 13.76,
+              "r_free": 0.3507,
+              "ramachandran_outliers_percent": 0.13,
+              "resolution_angstrom": 2.86,
+              "rotamer_outliers_percent": 2.41,
+              "rsrz_outliers_percent": 23.7
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 420,
+            "coverage_fraction": 0.371681,
+            "identity_fraction": 0.997619,
+            "mapped_residues": 420,
+            "reference_length": 1130,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "abl1_kinase",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "8SSN",
+        "record_id": "v2-structqc-xray-held-8SSN",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "acquired_release": "2026-08-26 download; byte-identical to the qualification-v1 lock",
+          "wwpdb_latest_revision": "2023-09-06"
+        },
+        "split": "held_out",
+        "stratum": "x_ray"
+      },
+      {
+        "artifact": "sources/alphafold/AF-P00698-F1-model_v6.cif",
+        "checksum": "09a298fac7b7ef96e9c1ea5690811e713021c2e3a89e239ae7218e4cc658a82c",
+        "citation": {
+          "database": "AlphaFold Protein Structure Database",
+          "description": "Lysozyme C (Gallus gallus)",
+          "entry": "AF-P00698-F1",
+          "version": "v6"
+        },
+        "exclusion_rationale": "Small, fully-resolved single domain: the clean predicted-model control, exact reference mapping.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 147
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "max_angstrom": 31.0,
+            "mean_angstrom": 5.8036,
+            "size": 147,
+            "state": "evaluated"
+          },
+          "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "pae": "sources/alphafold/AF-P00698-F1-predicted_aligned_error_v6.json",
+            "provenance": "provenance/P00698.provenance.json",
+            "reference_fasta": "sources/uniprot/P00698.fasta",
+            "structure": "sources/alphafold/AF-P00698-F1-model_v6.cif"
+          },
+          "missing_evidence": [
+            "community_geometry_validation"
+          ],
+          "official_metric_import": {
+            "state": "missing",
+            "values": {}
+          },
+          "provenance_class": "predicted",
+          "residue_identity": {
+            "coordinate_residues": 147,
+            "coverage_fraction": 1.0,
+            "identity_fraction": 1.0,
+            "mapped_residues": 147,
+            "reference_length": 147,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "lysozyme_c",
+        "license": "CC-BY-4.0 (AlphaFold DB)",
+        "pdb_entry_id": "AF-P00698-F1",
+        "record_id": "v2-structqc-alphafold-dev-P00698",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "alphafold_db_version": "v6",
+          "uniprot_accession": "P00698"
+        },
+        "split": "development",
+        "stratum": "alphafold"
+      },
+      {
+        "artifact": "sources/alphafold/AF-P01308-F1-model_v6.cif",
+        "checksum": "0d71181346ce6d218d681417e849d3cc6f7b04dfd11fa85702b2984da2b81b14",
+        "citation": {
+          "database": "AlphaFold Protein Structure Database",
+          "description": "Insulin (Homo sapiens)",
+          "entry": "AF-P01308-F1",
+          "version": "v6"
+        },
+        "exclusion_rationale": "Precursor modelled as one chain while the mature hormone is processed into two, so coverage and confidence differ across the sequence.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 110
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "max_angstrom": 31.0,
+            "mean_angstrom": 22.010744,
+            "size": 110,
+            "state": "evaluated"
+          },
+          "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "pae": "sources/alphafold/AF-P01308-F1-predicted_aligned_error_v6.json",
+            "provenance": "provenance/P01308.provenance.json",
+            "reference_fasta": "sources/uniprot/P01308.fasta",
+            "structure": "sources/alphafold/AF-P01308-F1-model_v6.cif"
+          },
+          "missing_evidence": [
+            "community_geometry_validation"
+          ],
+          "official_metric_import": {
+            "state": "missing",
+            "values": {}
+          },
+          "provenance_class": "predicted",
+          "residue_identity": {
+            "coordinate_residues": 110,
+            "coverage_fraction": 1.0,
+            "identity_fraction": 1.0,
+            "mapped_residues": 110,
+            "reference_length": 110,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "insulin",
+        "license": "CC-BY-4.0 (AlphaFold DB)",
+        "pdb_entry_id": "AF-P01308-F1",
+        "record_id": "v2-structqc-alphafold-dev-P01308",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "alphafold_db_version": "v6",
+          "uniprot_accession": "P01308"
+        },
+        "split": "development",
+        "stratum": "alphafold"
+      },
+      {
+        "artifact": "sources/alphafold/AF-P69905-F1-model_v6.cif",
+        "checksum": "eb7adbdd79775b0d694bacfa4b29872e05f4e56af26af880960d755c3036e230",
+        "citation": {
+          "database": "AlphaFold Protein Structure Database",
+          "description": "Hemoglobin subunit alpha (Homo sapiens)",
+          "entry": "AF-P69905-F1",
+          "version": "v6"
+        },
+        "exclusion_rationale": "Carried over from the qualification v1 collection, the only predicted model already curated.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 142
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "max_angstrom": 28.0,
+            "mean_angstrom": 2.061545,
+            "size": 142,
+            "state": "evaluated"
+          },
+          "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "pae": "sources/alphafold/AF-P69905-F1-predicted_aligned_error_v6.json",
+            "provenance": "provenance/P69905.provenance.json",
+            "reference_fasta": "sources/uniprot/P69905.fasta",
+            "structure": "sources/alphafold/AF-P69905-F1-model_v6.cif"
+          },
+          "missing_evidence": [
+            "community_geometry_validation"
+          ],
+          "official_metric_import": {
+            "state": "missing",
+            "values": {}
+          },
+          "provenance_class": "predicted",
+          "residue_identity": {
+            "coordinate_residues": 142,
+            "coverage_fraction": 1.0,
+            "identity_fraction": 1.0,
+            "mapped_residues": 142,
+            "reference_length": 142,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "globin",
+        "license": "CC-BY-4.0 (AlphaFold DB)",
+        "pdb_entry_id": "AF-P69905-F1",
+        "record_id": "v2-structqc-alphafold-held-P69905",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "alphafold_db_version": "v6",
+          "uniprot_accession": "P69905"
+        },
+        "split": "held_out",
+        "stratum": "alphafold"
+      },
+      {
+        "artifact": "sources/alphafold/AF-P61769-F1-model_v6.cif",
+        "checksum": "e9cc02e9271d5c12504fc679af0faeab6c4bccd0e291694748c255f30a1e2b30",
+        "citation": {
+          "database": "AlphaFold Protein Structure Database",
+          "description": "Beta-2-microglobulin (Homo sapiens)",
+          "entry": "AF-P61769-F1",
+          "version": "v6"
+        },
+        "exclusion_rationale": "Immunoglobulin fold with a flexible terminus, so per-residue confidence is not uniform.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 119
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "max_angstrom": 31.0,
+            "mean_angstrom": 6.795,
+            "size": 119,
+            "state": "evaluated"
+          },
+          "exit_code_reason": "scientifically incomplete, missing: community_geometry_validation",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": null,
+            "pae": "sources/alphafold/AF-P61769-F1-predicted_aligned_error_v6.json",
+            "provenance": "provenance/P61769.provenance.json",
+            "reference_fasta": "sources/uniprot/P61769.fasta",
+            "structure": "sources/alphafold/AF-P61769-F1-model_v6.cif"
+          },
+          "missing_evidence": [
+            "community_geometry_validation"
+          ],
+          "official_metric_import": {
+            "state": "missing",
+            "values": {}
+          },
+          "provenance_class": "predicted",
+          "residue_identity": {
+            "coordinate_residues": 119,
+            "coverage_fraction": 1.0,
+            "identity_fraction": 1.0,
+            "mapped_residues": 119,
+            "reference_length": 119,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "beta2_microglobulin",
+        "license": "CC-BY-4.0 (AlphaFold DB)",
+        "pdb_entry_id": "AF-P61769-F1",
+        "record_id": "v2-structqc-alphafold-held-P61769",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "alphafold_db_version": "v6",
+          "uniprot_accession": "P61769"
+        },
+        "split": "held_out",
+        "stratum": "alphafold"
+      },
+      {
+        "artifact": "sources/wwpdb/7A4M.cif",
+        "checksum": "1355a912de4492e8c0b06861b6ad3ec9b8190ab098723b5f56b779371705f2a8",
+        "citation": {
+          "description": "Ferritin heavy chain (mouse)",
+          "entry": "PDB:7A4M"
+        },
+        "exclusion_rationale": "1.22 A cryo-EM: the highest-resolution case in the panel, and the stratum's clean control.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 172
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/7A4M.provenance.json",
+            "reference_fasta": "sources/uniprot/P09528.fasta",
+            "structure": "sources/wwpdb/7A4M.cif",
+            "validation_report": "sources/wwpdb/7a4m_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 2.61,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 1.22,
+              "rotamer_outliers_percent": 1.32
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 172,
+            "coverage_fraction": 0.945055,
+            "identity_fraction": 1.0,
+            "mapped_residues": 172,
+            "reference_length": 182,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "ferritin_heavy_chain",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "7A4M",
+        "record_id": "v2-structqc-cryo_em-dev-7A4M",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P09528"
+        },
+        "split": "development",
+        "stratum": "cryo_em"
+      },
+      {
+        "artifact": "sources/wwpdb/6CVM.cif",
+        "checksum": "8483d9096eadd9fb6538ff88b78daf010957f9718779ee613c97764a985d7a1d",
+        "citation": {
+          "description": "Beta-galactosidase (E. coli)",
+          "entry": "PDB:6CVM"
+        },
+        "exclusion_rationale": "1021-residue single chain at 1.9 A: the longest polymer in the panel, so reference mapping is exercised at a scale the small cases do not reach.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 1021
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/6CVM.provenance.json",
+            "reference_fasta": "sources/uniprot/P00722.fasta",
+            "structure": "sources/wwpdb/6CVM.cif",
+            "validation_report": "sources/wwpdb/6cvm_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 3.73,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 1.9,
+              "rotamer_outliers_percent": 0.0
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 1021,
+            "coverage_fraction": 0.99707,
+            "identity_fraction": 0.998041,
+            "mapped_residues": 1021,
+            "reference_length": 1024,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "beta_galactosidase",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "6CVM",
+        "record_id": "v2-structqc-cryo_em-dev-6CVM",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P00722"
+        },
+        "split": "development",
+        "stratum": "cryo_em"
+      },
+      {
+        "artifact": "sources/wwpdb/6VXX.cif",
+        "checksum": "74ceac62dc45e34818f7c6f32fc12690f250ad803b999c1d7399a362ecd86984",
+        "citation": {
+          "description": "SARS-CoV-2 spike glycoprotein",
+          "entry": "PDB:6VXX"
+        },
+        "exclusion_rationale": "2.8 A trimeric glycoprotein with extensive disorder, so coverage is well below 1.0 while identity over the mapped region stays exact.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 11,
+            "missing_backbone_residues": 0,
+            "residues": 972
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/6VXX.provenance.json",
+            "reference_fasta": "sources/uniprot/P0DTC2.fasta",
+            "structure": "sources/wwpdb/6VXX.cif",
+            "validation_report": "sources/wwpdb/6vxx_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 0.81,
+              "ramachandran_outliers_percent": 0.0,
+              "resolution_angstrom": 2.8,
+              "rotamer_outliers_percent": 0.23
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 972,
+            "coverage_fraction": 0.763551,
+            "identity_fraction": 0.997942,
+            "mapped_residues": 972,
+            "reference_length": 1273,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "cov2_spike",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "6VXX",
+        "record_id": "v2-structqc-cryo_em-held-6VXX",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P0DTC2"
+        },
+        "split": "held_out",
+        "stratum": "cryo_em"
+      },
+      {
+        "artifact": "sources/wwpdb/5W3L.cif",
+        "checksum": "6c21936d8e8f6151bd5290530acff4b0566379cdb78ede9edca762f5dfd6ef41",
+        "citation": {
+          "description": "Rhinovirus B14 viral protein 1",
+          "entry": "PDB:5W3L"
+        },
+        "exclusion_rationale": "Six-entity viral capsid, so a chain must be selected explicitly for the reference to mean anything.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 274
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "provenance": "provenance/5W3L.provenance.json",
+            "reference_fasta": "sources/uniprot/P03303.fasta",
+            "structure": "sources/wwpdb/5W3L.cif",
+            "validation_report": "sources/wwpdb/5w3l_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 5.57,
+              "ramachandran_outliers_percent": 0.1,
+              "resolution_angstrom": 2.71,
+              "rotamer_outliers_percent": 0.23
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 274,
+            "coverage_fraction": 0.125746,
+            "identity_fraction": 1.0,
+            "mapped_residues": 274,
+            "reference_length": 2179,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "rhinovirus_vp1",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "5W3L",
+        "record_id": "v2-structqc-cryo_em-held-5W3L",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P03303"
+        },
+        "split": "held_out",
+        "stratum": "cryo_em"
+      },
+      {
+        "artifact": "sources/wwpdb/1D3Z.cif",
+        "checksum": "7242859f3508ff1711e5b38a78b14c960f137c096f36302406223c93b909c407",
+        "citation": {
+          "description": "Ubiquitin",
+          "entry": "PDB:1D3Z"
+        },
+        "exclusion_rationale": "10-model ensemble mapped against the polyubiquitin-C precursor, so coverage is legitimately ~0.11 while identity is exact: a low-coverage case that is correct rather than defective.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 76
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "model": 0,
+            "provenance": "provenance/1D3Z.provenance.json",
+            "reference_fasta": "sources/uniprot/P0CG48.fasta",
+            "structure": "sources/wwpdb/1D3Z.cif",
+            "validation_report": "sources/wwpdb/1d3z_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 3.07,
+              "ramachandran_outliers_percent": 0.0,
+              "rotamer_outliers_percent": 1.67
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 76,
+            "coverage_fraction": 0.110949,
+            "identity_fraction": 1.0,
+            "mapped_residues": 76,
+            "reference_length": 685,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "ubiquitin",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "1D3Z",
+        "record_id": "v2-structqc-nmr-dev-1D3Z",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P0CG48"
+        },
+        "split": "development",
+        "stratum": "nmr"
+      },
+      {
+        "artifact": "sources/wwpdb/2K0Q.cif",
+        "checksum": "b198ca486b46805e1605dd5af5c7dc3c41ec2ab83482354c57209564eed0b3c7",
+        "citation": {
+          "description": "CopK periplasmic copper-binding protein",
+          "entry": "PDB:2K0Q"
+        },
+        "exclusion_rationale": "20-model ensemble of a small periplasmic protein: the stratum's compact control.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 74
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "model": 0,
+            "provenance": "provenance/2K0Q.provenance.json",
+            "reference_fasta": "sources/uniprot/Q58AD3.fasta",
+            "structure": "sources/wwpdb/2K0Q.cif",
+            "validation_report": "sources/wwpdb/2k0q_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 13.79,
+              "ramachandran_outliers_percent": 2.58,
+              "rotamer_outliers_percent": 12.08
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 74,
+            "coverage_fraction": 0.787234,
+            "identity_fraction": 1.0,
+            "mapped_residues": 74,
+            "reference_length": 94,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "copk",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "2K0Q",
+        "record_id": "v2-structqc-nmr-dev-2K0Q",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "Q58AD3"
+        },
+        "split": "development",
+        "stratum": "nmr"
+      },
+      {
+        "artifact": "sources/wwpdb/1G03.cif",
+        "checksum": "56340eeaa8121ee6f31e9594086593d5addf3f3777a0445fe3486ff4f469a6d0",
+        "citation": {
+          "description": "HTLV-I capsid protein N-terminal domain",
+          "entry": "PDB:1G03"
+        },
+        "exclusion_rationale": "20-model ensemble of a viral capsid domain, mapped against the full Gag polyprotein.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 134
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "model": 0,
+            "provenance": "provenance/1G03.provenance.json",
+            "reference_fasta": "sources/uniprot/P14077.fasta",
+            "structure": "sources/wwpdb/1G03.cif",
+            "validation_report": "sources/wwpdb/1g03_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 54.13,
+              "ramachandran_outliers_percent": 14.74,
+              "rotamer_outliers_percent": 12.63
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 134,
+            "coverage_fraction": 0.312354,
+            "identity_fraction": 1.0,
+            "mapped_residues": 134,
+            "reference_length": 429,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "htlv1_capsid",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "1G03",
+        "record_id": "v2-structqc-nmr-held-1G03",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P14077"
+        },
+        "split": "held_out",
+        "stratum": "nmr"
+      },
+      {
+        "artifact": "sources/wwpdb/2MZQ.cif",
+        "checksum": "3922bcd5f17a78082c533588159f77afcfea0b376c0e1bc3b2823f3128e7fd98",
+        "citation": {
+          "description": "Single-strand telomeric DNA-binding protein",
+          "entry": "PDB:2MZQ"
+        },
+        "exclusion_rationale": "20-model ensemble of a nucleic-acid-binding protein, so the coordinate file carries entities the reference sequence does not describe.",
+        "expected_result": {
+          "chain_summary": {
+            "chain_breaks": 0,
+            "missing_backbone_residues": 0,
+            "residues": 101
+          },
+          "cli_exit_code": 0,
+          "confidence": {
+            "detail": "no PAE supplied",
+            "state": "unevaluated"
+          },
+          "exit_code_reason": "complete: every declared evidence leg was supplied",
+          "gemmi_coordinate_validation": "validated",
+          "invocation": {
+            "chain": "A",
+            "model": 0,
+            "provenance": "provenance/2MZQ.provenance.json",
+            "reference_fasta": "sources/uniprot/P25555.fasta",
+            "structure": "sources/wwpdb/2MZQ.cif",
+            "validation_report": "sources/wwpdb/2mzq_validation.xml"
+          },
+          "missing_evidence": [],
+          "official_metric_import": {
+            "state": "imported",
+            "values": {
+              "clashscore": 0.97,
+              "ramachandran_outliers_percent": 1.42,
+              "rotamer_outliers_percent": 11.88
+            }
+          },
+          "provenance_class": "experimental",
+          "residue_identity": {
+            "coordinate_residues": 101,
+            "coverage_fraction": 0.236534,
+            "identity_fraction": 1.0,
+            "mapped_residues": 101,
+            "reference_length": 427,
+            "state": "evaluated"
+          }
+        },
+        "homolog_group": "telomere_ssdbp",
+        "license": "CC0 1.0 Universal (wwPDB / RCSB PDB primary data)",
+        "pdb_entry_id": "2MZQ",
+        "record_id": "v2-structqc-nmr-held-2MZQ",
+        "record_kind": "benchmark_case",
+        "source_release": {
+          "provider": "wwPDB/RCSB PDB",
+          "uniprot_accession": "P25555"
+        },
+        "split": "held_out",
+        "stratum": "nmr"
+      }
+    ],
+    "requirements": [
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "development",
+        "stratum": "x_ray"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "held_out",
+        "stratum": "x_ray"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "development",
+        "stratum": "cryo_em"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "held_out",
+        "stratum": "cryo_em"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "development",
+        "stratum": "nmr"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "held_out",
+        "stratum": "nmr"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "development",
+        "stratum": "alphafold"
+      },
+      {
+        "count": 2,
+        "record_kind": "benchmark_case",
+        "split": "held_out",
+        "stratum": "alphafold"
+      }
+    ],
+    "workflow": "structure_qc"
+  },
+  "inclusion": "Only exact records and source identities in the frozen panel; proposed additions require review before measurement.",
+  "intended_users": [
+    "bioinformatics researchers",
+    "experimental biologists"
+  ],
+  "interpretation_ceiling": "Structural quality does not establish biological function.",
+  "measurement_authorized": false,
+  "metrics_and_thresholds": {
+    "missing_evidence_behavior": "fail_closed",
+    "official_metric_import": "exact",
+    "residue_identity": "exact"
+  },
+  "missing_evidence_controls": "Exercise modified polymer residues, isolated amino-acid ligands, insertion codes, alternate locations, missing residues and model-specific validation.",
+  "protocol_version": "workbench-hardening-1",
+  "question": "Which residues and quality evidence are represented?",
+  "reference_standard": {},
+  "review_state": "awaiting human and independent scientific review",
+  "source_lock_sha256": "edab2d78577ab693967b5b5ce71c7715dd70e5c1c20619f76634604c7afef96d",
+  "source_manifest_sha256": "68bbfa1ffcfe6e06e021c31d968dc9787311d0f7a89660cc1ca43531661876bf",
+  "stopping_conditions": [
+    "Missing or changed source bytes",
+    "Ambiguous required mapping",
+    "Incomplete reference universe",
+    "Unapproved threshold or reference-label change"
+  ],
+  "threshold_policy": "Existing gates copied unchanged. Any threshold change requires a new justified protocol and fresh evaluation.",
+  "workflow": "structure_qc"
+}

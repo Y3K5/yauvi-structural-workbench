@@ -21,9 +21,9 @@ scripts on `PATH`. Confirm the install:
 structqc describe
 ```
 
-Then follow [`docs/quickstart.md`](docs/quickstart.md) for a complete offline
+Then follow [`docs/quickstart.md`](../../docs/quickstart.md) for a complete offline
 StructQC analysis you can run and inspect, and
-[`docs/cli-reference.md`](docs/cli-reference.md) for every command.
+[`docs/cli-reference.md`](../../docs/cli-reference.md) for every command.
 
 Reference acquisition is disabled unless a command is given
 `--allow-reference-fetch`. That flag enables only registered public-accession

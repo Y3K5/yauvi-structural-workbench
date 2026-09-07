@@ -1,0 +1,290 @@
+{
+  "exclusions": "Preserve all exclusions and failures in the source panel. Missing evidence is not a negative measurement.",
+  "expected_controls": [],
+  "expected_records": [],
+  "frozen_panel": {
+    "coverage_rules": [
+      "Exactly four unrelated protein families are represented, with one independently curated judgment in each relationship stratum per family.",
+      "Foldseek and DIAMOND execute as separate checksum-bound evidence legs."
+    ],
+    "gate_semantics": {
+      "coverage_requirements": {
+        "mode": "witnessed_by_at_least_one_executed_case",
+        "rationale": "analogy_withheld_from_function is the discriminating witness: a structural match above threshold that was still refused a functional claim. A release that never produces it has not exercised the behaviour the panel exists to test.",
+        "required_features": [
+          "cross_query_matrix_written",
+          "structural_leg_written",
+          "sequence_leg_written",
+          "whole_architecture_match_observed",
+          "below_threshold_observed",
+          "exact_identity_recovered",
+          "mechanism_class_recovered",
+          "analogy_withheld_from_function"
+        ]
+      },
+      "missing_evidence_behavior": {
+        "derivation_note": "sf-csa writes no RUN_MANIFEST.json and has no missing-evidence concept of its own. The runner derives one from the release rather than assuming nothing is missing, which would make this gate unfalsifiable. A leg counts as missing only when the release carries no row for the judged pair.",
+        "expected_missing_by_stratum": {
+          "exact": [],
+          "fold_analogy": [
+            "sequence_comparison"
+          ],
+          "homologous_superfamily": [],
+          "unrelated": [
+            "sequence_comparison"
+          ]
+        },
+        "legs": [
+          "structural_comparison",
+          "sequence_comparison",
+          "reciprocal_best_hit"
+        ],
+        "mode": "fail_closed",
+        "rule": "Declared per stratum so a legitimately absent leg is stated, not tolerated. The unrelated stratum is expected to produce both legs: a pair below the structural threshold still yields a row saying so, and an absent row means the release did not compare the pair at all, which is a different fact.",
+        "sequence_leg_semantics": {
+          "exact": "Never absent. A protein compared with itself is a self-match at 100 percent identity, and its absence means the query is not in its own proteome -- which is exactly the data-integrity failure of Finding 5 and must fail the panel.",
+          "fold_analogy_and_unrelated": "Absent by expectation. These strata are defined by the absence of homology; a sequence row for them would be the finding, not its lack.",
+          "homologous_superfamily": "Absent only when the pair falls below the declared minima of 20 percent identity and 40 percent query coverage. A record whose sequence leg is absent must carry the measured identity and coverage, so a reader sees why rather than inferring a fault.",
+          "rule": "DIAMOND executes for every query. Whether it returns a row for a given pair is a result, not a measure of whether the comparison happened, and the two must not be conflated.",
+          "why_this_differs_from_the_structural_leg": "Finding 4 fixed the same conflation on the structural side by making the Foldseek search exhaustive, so every declared pair yields a row stating where it fell. There is no equivalent for a sequence aligner: DIAMOND does not emit non-hits, and forcing it to would produce rows that mean nothing. The distinction therefore lives here, in what the panel expects, rather than in the search."
+        }
+      },
+      "sf_csa": {
+        "absolute_bound": {
+          "gate": "analogy_or_unrelated_promoted_to_function_max",
+          "reachability": "Unreachable on the campaign axis, recorded 2026-09-03. Every judged pair is between two campaign queries whose mechanism group is curator-supplied, and the fold_analogy and unrelated strata are defined as different group, so qgroup != tgroup holds by construction and no structural score can promote them. The rule above is retained unchanged because it still constrains any selection in which a target group is inferred rather than curated; what changed is the claim about what a pass demonstrates. The gate stays required at a bound of 0.",
+          "rule": "A single promotion of a fold analogy or an unrelated pair to a functional claim fails the panel. This is a bound, not a tolerance, and it is not relaxed for any family.",
+          "value": 0
+        },
+        "comparison_axis": {
+          "axis": "campaign_models",
+          "basis": "target_meta contains campaign query accessions only, so for an experimental-PDB hit the target's mechanism group is not the curated one but whatever the mechanism-family regex reads out of the PDB title. On the campaign axis the group is curator-supplied on both sides and the classifier separates the strata; off it, the panel would be gating a regex over free-text headers.",
+          "measured": "A true homolog and an unrelated pair both classify structural_analogy_only off this axis when the tables do not cover the biology.",
+          "rule": "Every judged pair is between two campaign queries. Query-to-experimental-PDB hits are produced by the release but are not gated."
+        },
+        "controls": {
+          "rbh_asserted_rejected": {
+            "previous_expectation": "the module emits probable_same_function while orthology_status is not reciprocal_best_hit, and the panel records that as a promotion without computed support.",
+            "why_retired": "No longer curatable at all: reject_reserved_fields refuses the rbh key at manifest read time, so the control's input never reaches classification. The guard now lives where it is enforced, in sf-csa/tests/test_rbh_provenance.py."
+          },
+          "rbh_computed_path": {
+            "previous_expectation": "orthology_status == reciprocal_best_hit and the label is not probable_same_function.",
+            "why_retired": "Its own note said it would fail the day the module is fixed. The module was fixed. The expectation was inverted in run_execution.py to assert the computed path reaches the label -- and then found to be uncuratable in this campaign, for the reason below."
+          },
+          "status": "both original controls retired 2026-09-01; see labels_not_exercised"
+        },
+        "database_manifest_note": "Frozen 2026-09-01 from config/sf_csa/database_manifest.json, built by `sf-csa build-manifests` from sf_csa_campaign.json. The manifest carries eight SCOP-superfamily mechanism groups and none of the periodontal defaults, verified by value rather than by trusting the override; pinning this checksum pins that biology. The gate fails closed while this is null, deliberately. Re-pinned 2026-09-01 for collection 2.6 after the structure-search settings changed; the mechanism groups, same_fold_tm and whole_architecture_coverage are unchanged.",
+        "database_manifest_sha256": "50891ecd94e3815f5c28e4f8f1a69447a7f09d79a19d14ee471ea98e8cbe6753",
+        "database_manifest_supersedes": [
+          {
+            "date": "2026-09-01",
+            "reason": "Frozen once before the manifest had been shown to run. `run_pipeline` aborts without `required_foldseek_version`, so the first manifest could never have executed and the checksum pinned a manifest that does not work. Corrected the same day, before any record was curated and before any expectation was recorded against it. The lesson is in the ordering: freeze a checksum after the artifact is proven to execute, not when it is first written.",
+            "superseded_sha256": "11511836a4d3e569e295bbff6d60808053764ca5fa634a37690f00b21dfbf7e3"
+          },
+          {
+            "reason": "Structure-search settings changed in collection 2.6: exhaustive_structure_search added and structure_evalue raised from 0.01 to 10000. Eight of the sixteen declared judgments produced no Foldseek row at all under the previous settings, so the panel could not distinguish a pair rejected below threshold from a pair never compared. No scientific threshold moved.",
+            "superseded_on": "2026-09-01",
+            "superseded_sha256": "c53c2adc2e58c2b4eb32261890864fdd5b6d87c7087547e563190afde5c691fa"
+          },
+          {
+            "reason": "Collection 2.7 reselection: twelve queries replaced, mechanism families, structure database and proteome set rebuilt.",
+            "superseded_on": "2026-09-02",
+            "superseded_sha256": "4f145ce381f4afcd0ed2af8af8162de6b1b19e7896461acb408ccde92f8306b5"
+          }
+        ],
+        "decision_basis": "SF_CSA_PANEL_SCOPE.draft.md as corrected by SF_CSA_PREADOPTION_FINDINGS.md. Frozen before any record was curated.",
+        "decision_date": "2026-08-31",
+        "function_claim_labels": [
+          "exact_function_supported",
+          "probable_same_function"
+        ],
+        "function_claim_note": "same_mechanism_class is deliberately excluded. The module's contract says substrate, activity, virulence and vaccine suitability are not transferred by it, so it is a bounded mechanism inference rather than a functional claim.",
+        "gate_kinds": {
+          "analogy_or_unrelated_promoted_to_function_max": "definitional",
+          "exact_controls_recovered": "scientific",
+          "note": "Two of these four gates are scientific results. structural_and_sequence_outputs asserts that the module kept its two evidence legs apart, which is a property of the output shape and not a result about proteins. analogy_or_unrelated_promoted_to_function_max is definitional on the campaign axis: fold_analogy and unrelated are defined as different curated mechanism group, classify_hit promotes only when the groups match, so the bound is satisfied by the definition of the strata rather than by anything the module computed. A green panel therefore reads as two scientific results, one definitional check and one contract check, and not as four scientific results. See threshold_revisions collection 2.8 and SF_CSA_PREADOPTION_FINDINGS.md Finding 7.",
+          "structural_and_sequence_outputs": "contract",
+          "structural_homolog_controls_recovered": "scientific"
+        },
+        "known_defect": {
+          "evidence": "sf-csa/tests/test_rbh_provenance.py, eight tests written red before the fix and failing for the three predicted reasons. sf-csa/CHANGES.md carries the full record.",
+          "fix": [
+            "classify_hit takes rbh as an explicit keyword-only argument and no longer reads it from target_meta",
+            "the sequence leg runs before structural classification and RBH is carried as rbh_targets[query] -> {targets}, pairwise by construction",
+            "reject_reserved_fields refuses rbh and every other pipeline-computed field in a curator record, in run_pipeline and read_campaign_spec"
+          ],
+          "id": "probable_same_function_unsupported_promotion",
+          "state": "closed 2026-09-01 by module repair, not routed around",
+          "summary_when_open": "probable_same_function is unreachable through the computed reciprocal-best-hit path and reachable through the queries manifest. classify_hit reads target_meta['rbh'] (core.py:348); the RBH computation runs after classification and writes to h['orthology_status'] on sequence rows (core.py:591-598); validated query rows are built as {**q, ...} (core.py:517) and become target_meta (core.py:533); manifest validation checks only for missing required fields (manifests.py:89) and never rejects unknown keys.",
+          "superseded_decision": "Option C is void. It divided a question that no longer exists: the label is now reachable by measurement and unreachable by assertion."
+        },
+        "labels_not_exercised": {
+          "candidate_functional_divergence": {
+            "consequence": "Four of the six vocabulary labels are exercised by this panel: exact_function_supported, same_mechanism_class, structural_analogy_only and unresolved_or_conflicted.",
+            "measured": "divergence_sets is empty in the database manifest, so the branch is never entered.",
+            "reachable_in_this_campaign": false
+          },
+          "probable_same_function": {
+            "consequence": "The repaired computed path is not exercised by this panel, so the panel cannot detect a regression in it. That coverage lives in sf-csa/tests/test_rbh_provenance.py and, since 2026-09-01, in the offline fixture at tools/fixtures/sfcsa, whose main and trap scenarios both reach the label by a computed reciprocal best hit.",
+            "measured": "Across all twelve queries, every target carrying orthology_status == reciprocal_best_hit is the query itself. classify_hit settles a self-match by accession identity before the RBH branch runs, so the label cannot be emitted here. Zero RBH targets are non-self structural targets.",
+            "not_a_defect": "This is a property of the campaign's data, not of the module. The reciprocal best hits found are between a query and proteins in its own reference proteome, and those proteins have no structures in the twelve-entry structure database, so no structural row exists to carry the label.",
+            "reachable_in_the_module": true,
+            "reachable_in_this_campaign": false,
+            "to_exercise_it": "A campaign entry would have to be added whose reciprocal best hit is another entry with a structure. That is a curation change, and it belongs to a future collection rather than to this one."
+          }
+        },
+        "mechanism_tables": {
+          "checkable": "build-manifests writes the tables into the database manifest with setdefault, so the manifest states which biology was used whether or not the spec overrode it. Pinning the manifest checksum therefore pins the tables. Verified by reading manifests.build_database_manifest.",
+          "families": [
+            {
+              "default_tables_cover_it": false,
+              "family": "serine_protease_chymotrypsin"
+            },
+            {
+              "default_tables_cover_it": false,
+              "family": "tim_barrel"
+            },
+            {
+              "default_tables_cover_it": false,
+              "family": "immunoglobulin_like"
+            },
+            {
+              "default_tables_cover_it": true,
+              "family": "omp85_bama",
+              "role": "table control: the one family the periodontal defaults already handle. It must classify identically with the defaults and with the override, which is the evidence that the override changed the biology it was meant to change and nothing else."
+            }
+          ],
+          "frozen_groups": [
+            "scop_d58_1_ferredoxin_4fe4s",
+            "scop_d58_14_ribosomal_s6",
+            "scop_b40_4_nucleic_acid_binding",
+            "scop_b40_5_inorganic_pyrophosphatase",
+            "scop_b82_1_rmlc_cupins",
+            "scop_b82_2_clavaminate_synthase_like",
+            "scop_a24_3_cytochromes",
+            "scop_a24_10_hpt_domain"
+          ],
+          "granularity": "SCOP superfamily, not fold. classify_hit promotes only when query and target share a mechanism group, so grouping at fold granularity would make every fold analogy share a group with its reference and be reported same_mechanism_class -- the panel would then agree with itself by construction. At superfamily granularity homologs share a group and analogues do not, which is the distinction under test.",
+          "requirement": "The database manifest must carry mechanism_families, contested_groups and divergence_sets explicitly, built by `sf-csa build-manifests` from the campaign spec.",
+          "why": "core.DEFAULT_MECHANISM_FAMILIES is periodontal and Bacteroidetes outer-membrane biology. With it left in place for non-periodontal families, classify_title returns 'unknown', the qgroup == tgroup branch is never entered, structural_homolog_controls_recovered fails on every case, and analogy_or_unrelated_promoted_to_function_max passes without anything being able to violate it. Overriding the tables is a precondition for the panel measuring anything, not a tidiness precaution."
+        },
+        "sequence_leg_measurements": {
+          "basis": "Measured 2026-09-02 by local pairwise alignment (BLOSUM62) between the two UniProt sequences, independent of the DIAMOND search whose behaviour it explains.",
+          "consequence": "No homologous_superfamily record in this selection carries a sequence row. The stratum is recovered on structural evidence alone, and the panel says so rather than implying two legs where there is one.",
+          "homologous_superfamily": [
+            {
+              "above_thresholds": true,
+              "diamond_row": false,
+              "identity_percent": 50.9,
+              "note": "Above both thresholds and still not returned, at any e-value: rerun at --evalue 10 against the same database DIAMOND returns two hits and neither is P00208. Its seed filter does not reach this pair. The local-alignment score is the misleading number here, not the tool, and the panel records the tool's behaviour because the tool is what the declared leg is.",
+              "pair": "1FDN->1BLU",
+              "query": "P00198",
+              "query_coverage_percent": 98.2,
+              "target": "P00208"
+            },
+            {
+              "above_thresholds": false,
+              "diamond_row": false,
+              "identity_percent": 24.5,
+              "note": "Below the coverage minimum. Correctly absent.",
+              "pair": "1DZR->1J1L",
+              "query": "P26394",
+              "query_coverage_percent": 29.0,
+              "target": "O00625"
+            },
+            {
+              "above_thresholds": false,
+              "diamond_row": false,
+              "identity_percent": 34.8,
+              "note": "Below the coverage minimum. Correctly absent.",
+              "pair": "1C02->2OOC",
+              "query": "Q07688",
+              "query_coverage_percent": 13.8,
+              "target": "Q9A980"
+            }
+          ],
+          "thresholds": {
+            "minimum_identity_percent": 20,
+            "minimum_query_coverage_percent": 40
+          }
+        },
+        "stratum_definition": {
+          "exact": "The same protein: an identical sequence, reached either as a self-match or under a second accession. Distinguished by accession identity before any structural reasoning.",
+          "fold_analogy": "Two proteins whose folds match above threshold but which are not homologous and carry different curated mechanism groups. Convergence, not descent.",
+          "homologous_superfamily": "Two proteins of one curated mechanism group with accepted common ancestry, matching across the whole architecture.",
+          "note": "Homology is a curatorial judgment taken from the literature, recorded per record with its citation. It is never inferred from the TM-score the panel is testing, which would make the gate circular.",
+          "unrelated": "Neither homologous nor structurally similar above the release's threshold."
+        },
+        "stratum_expected_label": {
+          "exact": "exact_function_supported",
+          "fold_analogy": "any label outside function_claim_labels",
+          "homologous_superfamily": "same_mechanism_class",
+          "unrelated": "any label outside function_claim_labels"
+        }
+      }
+    },
+    "gates": {
+      "analogy_or_unrelated_promoted_to_function_max": 0,
+      "exact_controls_recovered": "all",
+      "structural_and_sequence_outputs": "separate",
+      "structural_homolog_controls_recovered": "all"
+    },
+    "panel_id": "qualification-v2-sf-csa",
+    "records": [],
+    "requirements": [
+      {
+        "count": 4,
+        "record_kind": "relationship_judgment",
+        "split": "curator_frozen",
+        "stratum": "exact"
+      },
+      {
+        "count": 4,
+        "record_kind": "relationship_judgment",
+        "split": "curator_frozen",
+        "stratum": "homologous_superfamily"
+      },
+      {
+        "count": 4,
+        "record_kind": "relationship_judgment",
+        "split": "curator_frozen",
+        "stratum": "fold_analogy"
+      },
+      {
+        "count": 4,
+        "record_kind": "relationship_judgment",
+        "split": "curator_frozen",
+        "stratum": "unrelated"
+      }
+    ],
+    "workflow": "sf_csa"
+  },
+  "inclusion": "Only exact records and source identities in the frozen panel; proposed additions require review before measurement.",
+  "intended_users": [
+    "bioinformatics researchers",
+    "experimental biologists"
+  ],
+  "interpretation_ceiling": "Campaign-label consistency is definitional and does not prove biological specificity.",
+  "measurement_authorized": false,
+  "metrics_and_thresholds": {
+    "analogy_or_unrelated_promoted_to_function_max": 0,
+    "exact_controls_recovered": "all",
+    "structural_and_sequence_outputs": "separate",
+    "structural_homolog_controls_recovered": "all"
+  },
+  "missing_evidence_controls": "Recover all ten archived proteomes before adoption or remeasurement. Audit mechanism labels independently. Stop if complete archived membership cannot be established.",
+  "protocol_version": "workbench-hardening-1",
+  "question": "What relationships occur in this frozen search universe?",
+  "reference_standard": {},
+  "review_state": "awaiting human and independent scientific review",
+  "source_lock_sha256": "edab2d78577ab693967b5b5ce71c7715dd70e5c1c20619f76634604c7afef96d",
+  "source_manifest_sha256": "68bbfa1ffcfe6e06e021c31d968dc9787311d0f7a89660cc1ca43531661876bf",
+  "stopping_conditions": [
+    "Missing or changed source bytes",
+    "Ambiguous required mapping",
+    "Incomplete reference universe",
+    "Unapproved threshold or reference-label change"
+  ],
+  "threshold_policy": "Existing gates copied unchanged. Any threshold change requires a new justified protocol and fresh evaluation.",
+  "workflow": "sf_csa"
+}

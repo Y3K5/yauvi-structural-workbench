@@ -35,19 +35,44 @@ Common conventions across the scientific modules:
 Structural analysis case store: create, add inputs, validate, run, export.
 
 ```
-usage: yauvi [-h] [--workspace WORKSPACE] {analysis,workbench} ...
+usage: yauvi [-h] [--workspace WORKSPACE] {analysis,example,workbench} ...
 
 Local, evidence-bounded structural protein analysis.
 
 positional arguments:
-  {analysis,workbench}
+  {analysis,example,workbench}
     analysis            Create, validate, run, and export structural analyses.
+    example             Create a bundled synthetic StructQC analysis offline.
     workbench           Serve the loopback-only browser workbench.
 
 options:
   -h, --help            show this help message and exit
   --workspace WORKSPACE
-                        Structural Workbench repository root.
+                        Local analysis workspace (default: current directory).
+```
+
+### `yauvi workbench serve`
+
+```
+usage: yauvi workbench serve [-h] [--host HOST] [--port PORT]
+                             [--allow-reference-fetch]
+
+options:
+  -h, --help            show this help message and exit
+  --host HOST
+  --port PORT
+  --allow-reference-fetch
+```
+
+### `yauvi example`
+
+```
+usage: yauvi example [-h] [--analysis ANALYSIS] [--without-validation]
+
+options:
+  -h, --help            show this help message and exit
+  --analysis ANALYSIS
+  --without-validation
 ```
 
 ### `yauvi analysis create`
@@ -73,6 +98,17 @@ options:
   -h, --help           show this help message and exit
   --analysis ANALYSIS
   --role ROLE
+  --file FILE
+```
+
+### `yauvi analysis parameters`
+
+```
+usage: yauvi analysis parameters [-h] --analysis ANALYSIS --file FILE
+
+options:
+  -h, --help           show this help message and exit
+  --analysis ANALYSIS
   --file FILE
 ```
 

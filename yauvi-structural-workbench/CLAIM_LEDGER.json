@@ -1,0 +1,68 @@
+{
+  "claims": [
+    {
+      "claim": "Browser and CLI share the case service",
+      "evidence": "../structural-workbench/src/yauvi_structural_workbench/server.py",
+      "id": "C01",
+      "limit": "Only the tested local build; not a statement about GitHub release availability.",
+      "state": "implemented, verification in progress"
+    },
+    {
+      "claim": "Run reuse checks content identity and output integrity",
+      "evidence": "../platform/tests/test_product_hardening.py",
+      "id": "C02",
+      "limit": "Not independent scientific reproduction.",
+      "state": "tested software contract"
+    },
+    {
+      "claim": "Modified polymer identities remain visible",
+      "evidence": "../structqc/tests",
+      "id": "C03",
+      "limit": "Known parent map and peptide connectivity; broader modified-residue and model coverage require qualification.",
+      "state": "tested targeted example"
+    },
+    {
+      "claim": "Non-solvent groups alone do not support cofactor occupancy",
+      "evidence": "../activity-state/tests",
+      "id": "C04",
+      "limit": "Current ActState reader cannot establish identity/proximity; reports unavailable.",
+      "state": "tested conservative correction"
+    },
+    {
+      "claim": "Four historical required panels passed their curated cases",
+      "evidence": "benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
+      "id": "C05",
+      "limit": "62 research/reference cases plus four controls, not whole-product accuracy or fresh qualification.",
+      "state": "historical collection 2.9"
+    },
+    {
+      "claim": "Membrane orientation is experimental",
+      "evidence": "protocols/membrane_orientation.json",
+      "id": "C06",
+      "limit": "Rotation self-consistency and orientation correctness are separate.",
+      "state": "unresolved external-reference failures"
+    },
+    {
+      "claim": "SF-CSA qualification is incomplete",
+      "evidence": "protocols/SFCSA_UNIVERSE_RECOVERY.json",
+      "id": "C07",
+      "limit": "No current search-universe biological-specificity claim.",
+      "state": "blocked source recovery"
+    },
+    {
+      "claim": "Product is useful in independent research",
+      "evidence": "docs/PILOT_PROTOCOL.md",
+      "id": "C08",
+      "limit": "Synthetic examples are not real research adoption.",
+      "state": "not established"
+    },
+    {
+      "claim": "Ready for JOSS submission",
+      "evidence": "docs/RELEASE_REVIEW.md",
+      "id": "C09",
+      "limit": "Scientific, independent, privacy, licensing, authorship and public-history gates remain open.",
+      "state": "not established"
+    }
+  ],
+  "schema_version": "1.0"
+}

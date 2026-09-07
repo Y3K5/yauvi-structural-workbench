@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-09-06",
+  "scope": "Local UX implementation and software checks; no new biological qualification",
+  "publication_authorized": false,
+  "source_sha256": {
+    "structural-workbench/src/yauvi_structural_workbench/ui/index.html": "172f7053eba5fabc016971f98c7f32eabfef4a4be8ad6fa47815763a09a98dce",
+    "structural-workbench/src/yauvi_structural_workbench/ui/style.css": "639301e5a6981140cba8842aa10c02a9e953fafc4646a48f2f4907aa0f32454e",
+    "structural-workbench/src/yauvi_structural_workbench/ui/app.js": "6f0d13d642fc20d378b7336f07ac025bbd2875c129b6509691cf68c7f124abe0",
+    "structural-workbench/src/yauvi_structural_workbench/jobs.py": "cc4aa8c90869e725e71343b334cf5e70ed2eee2e834ed9d53aac60c8697c81ac",
+    "structural-workbench/src/yauvi_structural_workbench/server.py": "9ee60087e27cd51f47f4bfdc97bdab05d1f0ce2fa41c9d050379808059adbfc8",
+    "platform/src/yauvi_platform/structural_workbench/store.py": "3d8f01f9fd69ac564d9e8fd8463d66382ec2bc47ea9ec954b5d4195defb135c9",
+    "platform/tests/test_product_hardening.py": "b62443f9b10fc6592f99d610be99ec0bed6639251a08ce0d2ad7a2ea2654c333"
+  },
+  "test_runs": [
+    "ux-python312-tests-final.json",
+    "ux-python310-tests.json"
+  ],
+  "http_checks": "ux-http-verification.json",
+  "browser": {
+    "six_workflow_forms": "checked",
+    "offline_example_completed": "example-975217c24178",
+    "manual_upload": "checked",
+    "cancel_and_retry": "cancelled then scientifically_incomplete",
+    "run_history": "two completed parameter revisions selectable without replacing the editable case",
+    "unsaved_parameters": "case navigation rejected with visible explanation; changes preserved",
+    "viewer": [
+      "load",
+      "chain",
+      "residue",
+      "sticks",
+      "hide non-polymer atoms",
+      "reset"
+    ],
+    "downloads": "browser evidence and template activation; all bytes/templates checked through HTTP",
+    "live_tracking": "actual input checks, engine start, report assembly, cancellation and terminal events observed",
+    "search": "checked",
+    "compact_viewport": {
+      "width": 694,
+      "height": 784,
+      "document_width": 679
+    },
+    "console_errors_at_review": []
+  },
+  "limitations": [
+    "Browser scientific execution exercised StructQC only; six-workflow equivalence remains open.",
+    "Public source retrieval stayed disabled; live retrieval/adoption was not exercised.",
+    "Independent usability pilots and scientific reproduction are not recorded.",
+    "All mobile/browser combinations have not been tested."
+  ],
+  "artifact_screen": "../../artifacts/local-preview-20260906-ux/ARTIFACT_SCREEN.json"
+}

@@ -31,11 +31,11 @@ providers; it does not authorize arbitrary URLs, uploads, or publication.
 
 ## Scope of this distribution
 
-This is the command-line distribution. The loopback browser workbench is **not**
-included: its controller imports private control-plane modules that are outside
-the published boundary. Every scientific capability is reachable from the CLIs,
-which is where the calculations live in any case — the browser layer only ever
-orchestrated and reported.
+The current local development build packages both the command-line tools and a
+standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench serve`.
+Both interfaces use the same structural analysis store and scientific engines.
+The published commit recorded in the implementation baseline predates this extraction;
+publication of these changes remains pending review.
 
 ## What to share
 
@@ -45,13 +45,13 @@ orchestrated and reported.
 that turns protein coordinate files into inspectable, checksum-bound evidence
 across six analysis workflows.
 
-**Status statement:** Mark 1 is a pre-public scientific build. In the historical
-v1 public qualification collection, four cases passed and two remain partial.
-The current release gate is Qualification v2, whose audit state is
-`blocked_panel_incomplete`: **four of six panels are adopted and executed, two
-are not, and no scope has reproduced on an independent second machine.** 53 of
-110 required cases have been executed and passed. No scope is qualified for
-release.
+**Status statement:** This is a public-development project with local, unpublished
+hardening changes. The historical collection 2.9 execution includes five executed
+panels: four required panels passed 62 cases and four controls across six runners.
+Membrane orientation passed 5/16 in five runners and 4/16 in one. SF-CSA was not
+executed. These are baseline measurements, not qualification of the changed code.
+See [implementation progress](IMPLEMENTATION.md) and the retained release evidence.
+No independent scientific approval or submission eligibility is claimed.
 
 **Non-claim:** It is not a clinical tool, a biochemical activity assay, or a
 universal protein-scoring system. Passing local tests is not JOSS acceptance and

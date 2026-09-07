@@ -105,7 +105,7 @@ must never be presented as JOSS acceptance or external scientific validation.
 ## External readiness review
 
 An independent readiness audit against the JOSS review checklist is recorded in
-[`docs/JOSS_READINESS_REVIEW_2026-08-26.md`](../docs/JOSS_READINESS_REVIEW_2026-08-26.md).
+`docs/JOSS_READINESS_REVIEW_2026-08-26.md` (historical private review; not included in this distribution).
 It confirms this file's blocking items and adds packaging, documentation, and
 claim-sourcing findings not tracked here. Its verdict matches `PREPUBLIC_AUDIT.md`:
 not submission-eligible.

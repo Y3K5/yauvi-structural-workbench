@@ -47,11 +47,11 @@ then [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) and
 
 ## Boundary
 
-This is the **command-line** distribution. The loopback browser workbench is
-deliberately excluded: its controller imports private control-plane modules
-(`yauvi_platform.oral_atlas`, `yauvi_platform.protein_case`) that sit outside the
-published boundary. Only `yauvi_platform.structural_workbench` ships, and it has
-no sibling imports.
+The current local development build packages both the command-line tools and a
+standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench serve`.
+Both interfaces use the same structural analysis store and scientific engines.
+The published commit recorded in the implementation baseline predates this extraction;
+publication of these changes remains pending review.
 
 Also excluded: private projects and campaign data, the 12 MB of downloaded
 third-party benchmark coordinates (the source lock ships, the files do not), and

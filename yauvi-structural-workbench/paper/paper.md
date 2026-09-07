@@ -1,5 +1,5 @@
 ---
-title: "YAUVI Structural Biology Platform — Mark 1: evidence-bounded, reproducible structural protein analysis"
+title: "YAUVI Structural Workbench: evidence-bounded, reproducible structural protein analysis"
 tags:
   - Python
   - structural bioinformatics
@@ -13,14 +13,15 @@ authors:
 affiliations:
   - name: Independent Researcher, Ohio, United States
     index: 1
-date: 25 August 2026
+date: 6 September 2026
 bibliography: paper.bib
 ---
 
 # Summary
 
-YAUVI Structural Biology Platform — Mark 1 is a local Python software suite and browser
-interface for six common structural-protein questions: coordinate identity and
+Researchers often need to assess several kinds of evidence before interpreting a
+protein structure. YAUVI Structural Workbench brings those records into a local
+Python suite and browser interface for six structural-protein questions: coordinate identity and
 quality, membrane orientation, conformational resemblance, functional-site
 context, biological assembly interfaces, and comparative structural/sequence
 relationships. Each analysis remains an independently installable command-line
@@ -66,18 +67,35 @@ and sequence searches [@foldseek; @diamond]. YAUVI therefore invokes or imports
 these methods through named adapters and preserves their scores, parameters,
 units, versions, and limitations rather than reimplementing them.
 
-The distinct contribution is the evidence boundary joining these methods: exact
+Broader libraries already integrate important parts of this workflow. Biotite
+combines sequence and structure representations, database access, and interfaces
+to external applications [@biotite]. ProDy provides established tools for protein
+structural dynamics and ensemble analysis [@prody]. These are relevant foundations
+and alternatives for users building their own analyses. YAUVI's present comparison
+is architectural; no benchmark establishing superior speed or accuracy over these
+packages has been performed.
+
+The contribution proposed here is an explicit case and reporting contract: exact
 input identity, residue mapping, explicit provenance, fail-closed preflight,
 separation of scientific dimensions, deterministic reports, and claim ceilings
-shared across six independently runnable workflows. Extending a single existing
-specialist package would not provide this cross-method case and reporting
-contract, while replacing the specialist algorithms would reduce scientific
-quality and maintenance sustainability.
+shared across six independently runnable workflows. A separate workbench is intended to make these contracts usable across several
+engines and accessible to researchers who do not write Python. This choice adds
+packaging and adapter maintenance; reusable numerical or parsing improvements
+should still be contributed upstream where appropriate.
 
 # Software design
 
+![Shared execution and provenance architecture. Four status dimensions remain separate.](figures/architecture.png){#fig:architecture width=100%}
+
+
 The workbench stores input bytes content-addressably and creates immutable run
-records. Task definitions declare the scientific question, accepted artifact
+records. Browser actions and command-line commands call the same case service,
+which keeps the interface from becoming a second scientific implementation.
+Parameter edits preserve earlier case revisions. A bounded local worker records
+queued and running jobs; server restarts expose interrupted work for deliberate
+resubmission. Failed attempts remain inspectable and cannot satisfy a completed-run
+cache lookup. Reuse requires matching input, source-code, parameter, and runtime
+identities, together with intact output checksums. Task definitions declare the scientific question, accepted artifact
 types, format validator, source assistance, missing-evidence consequence,
 outputs, and claim ceiling. A source finder links input roles to official RCSB
 PDB, wwPDB validation, AlphaFold DB, UniProt, SIFTS, M-CSA, PDB CCD, ChEBI, and
@@ -86,14 +104,21 @@ enabled, only registered artifact types and public identifiers can be acquired;
 cache acquisition and adoption into an analysis are separate operations.
 
 StructQC establishes coordinate provenance and residue identity before composed
-workflows. MembraneOrient separates a beta-barrel path from an experimental
-alpha-helical helix-axis path, with OPM/PPM retained as an external comparison
+workflows. Modified chemical components are preserved separately from explicit
+parent-residue sequence normalization; normalization does not imply identical
+chemistry. SIFTS provides a reference resource for sequence-to-structure mapping
+[@sifts]. MembraneOrient separates experimental beta-barrel and
+alpha-helical helix-axis paths, with OPM/PPM retained as an external comparison
 standard [@opm]. StateAtlas uses exact declared residue equivalences for the
 candidate ABL-family Mark 1 scope, Kabsch alignment, RMSD/RMSF, deterministic
 clustering, and two-sided experimental references. SiteContext and ActState keep annotation,
-observed chemistry, and geometric competence separate. AssemblyContext reports
+observed chemistry, and geometric competence separate. Declared cofactors and
+observed non-solvent groups cannot establish occupancy without exact component
+identity and site proximity; that evidence remains unavailable where the current
+ActState reader cannot establish it. M-CSA annotations support curated site
+interpretation and retain their evidence boundaries [@mcsa]. AssemblyContext reports
 heavy-atom contacts, stoichiometry evidence, and method-specific solvent
-accessible surface area. SF-CSA executes Foldseek [@foldseek] and DIAMOND
+accessible surface area, including named FreeSASA calculations [@freesasa]. SF-CSA executes Foldseek [@foldseek] and DIAMOND
 [@diamond] as separate structural and sequence legs against checksum-pinned
 reference universes.
 
@@ -113,20 +138,30 @@ case, a deposited assembly evaluated with FreeSASA, and a CATH-labeled SF-CSA
 mini-database searched by Foldseek and DIAMOND. Four public cases pass their
 predeclared gates and two remain partial. Qualification v2 separately freezes
 scope-specific strata, development and held-out splits, evidence requirements,
-and unchanged gates. Four of its six panels are adopted and executed
-offline against checksum-verified artifacts on six operating-system and Python
-combinations; 53 of 110 required cases pass. Coordinate quality, functional-site
-context and assembly interfaces pass 16 of 16 each; two release-blocking panels
-are unadopted; and membrane orientation passes 5 of 16 against the accuracy gate
-added in collection 2.3, and is therefore recorded as non-blocking and
-research-only, with no Mark 1 accuracy claim. Executed panels passing is not
-scope qualification. No release qualification is claimed until all five Mark 1
-release-blocking scopes pass v2 and reproduce on an independent second machine,
-which none has done.
+and unchanged gates. The reviewed collection 2.9 baseline contains five executed panels. Coordinate
+quality, functional-site context, and assembly interfaces each passed 16 cases;
+ABL state comparison passed four reference cases and ten held-out cases, with
+reference classifications informed by KinCore [@kincore]. These four blocking
+panels produced identical case verdicts across six recorded operating-system and
+Python combinations, including four additional control outcomes per runner.
+Membrane orientation passed 5/16 cases in five runners and 4/16 in one; it remains
+experimental. SF-CSA's sixteen required cases were unexecuted following withdrawal
+of changing live-query proteome inputs. These are historical measurements, not an
+accuracy estimate for the toolkit or qualification of subsequent code changes.
+
+Recent hardening exposed a reproduction-checker defect: matching failing panels
+could produce aggregate success. The replacement checks required workflow coverage,
+input and protocol identities, exact case IDs, controls, and per-case verdicts.
+A missing panel, incompatible record, or insufficient environment count prevents
+release qualification. The distinction between software tests, cross-environment
+execution, independent scientific review, and human release authorization remains
+explicit. No scope is claimed independently qualified for the changed build.
+
+![Historical qualification evidence. Counts describe curated panels and retain reference, experimental and unexecuted distinctions; they are not toolkit accuracy.](figures/qualification-history.png){#fig:qualification width=100%}
 
 # Research impact statement
 
-At this pre-public stage, the project has not recorded independent adoption,
+During public development, the project has not recorded independent adoption,
 published research use, or five completed external benchmark gates. The software
 is therefore not presented as JOSS submission-eligible. Current reproducible
 benchmark records expose both successful cases and scientific limitations; they
@@ -147,24 +182,21 @@ mechanism.
 
 # AI usage disclosure
 
-OpenAI Codex using GPT-5-family coding models assisted with code generation,
-refactoring, interface copy, documentation, test scaffolding, and manuscript
-drafting during private development. Anthropic Claude also assisted during
-earlier private development, but its exact model/version record has not yet been
-recovered; this is a release blocker that must be resolved before submission.
-The human author reviewed and edited the assisted outputs, ran the recorded
-software checks, selected the scientific boundaries and sources, and made the
-core design decisions. The human author remains responsible for originality,
-accuracy, licensing, ethical and legal compliance, and every manuscript claim.
-AI-generated suggestions are never treated as scientific evidence or benchmark
-results. AI tools will not be used for author-editor or author-reviewer
-conversations except where a journal policy explicitly permits translation.
+OpenAI Codex assisted with implementation, tests, interface text, documentation,
+and manuscript drafting. Anthropic Claude assisted during earlier development.
+Exact model/version reconciliation remains incomplete and must be resolved
+before submission. Earlier drafts record human review; review of the current
+changes remains pending. Automated tests do not substitute for that review.
+The human author remains responsible for originality, accuracy, licensing,
+ethical and legal compliance, and all claims. AI output is not scientific evidence.
+The author will handle editor/reviewer conversations without AI assistance,
+except translation where journal policy permits it.
 
 # Conflicts of interest and funding
 
 Conflict-of-interest and funding statements have not yet been finalized for
 submission. They must be supplied and approved by every listed author before the
-paper can leave pre-public preparation.
+paper can be submitted.
 
 # Acknowledgements
 

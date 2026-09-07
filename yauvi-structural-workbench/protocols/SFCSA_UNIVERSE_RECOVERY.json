@@ -1,0 +1,42 @@
+{
+  "adoption_allowed": false,
+  "archive_guidance": "https://www.uniprot.org/help/downloads",
+  "release": null,
+  "required_per_proteome": [
+    "archive release identity",
+    "retrieval URL and date",
+    "original file sha256",
+    "exact sequence accession membership",
+    "per-sequence sha256",
+    "normalization rules and normalized file sha256"
+  ],
+  "required_proteomes": [
+    "UP000000579",
+    "UP000000625",
+    "UP000001014",
+    "UP000001441",
+    "UP000001570",
+    "UP000001816",
+    "UP000002281",
+    "UP000002311",
+    "UP000005640",
+    "UP000006094"
+  ],
+  "schema_version": "1.0",
+  "state": "candidate_archive_identified_membership_and_bytes_unrecovered",
+  "stopping_rule": "Do not substitute live queries, omit proteomes, or remeasure until the entire versioned universe is recovered and reviewed.",
+  "candidate_release": "2026_02",
+  "candidate_release_date": "2026-06-10",
+  "candidate_url": "https://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2026_02/",
+  "candidate_knowledgebase_archive": "knowledgebase2026_02.tar.gz",
+  "listed_compressed_size": "111G",
+  "candidate_selection": "Candidate only, not adopted. Complete required proteome membership and per-sequence bytes remain unverified.",
+  "recovery_limit": "Archive directory exposes a combined knowledgebase archive; the inspected directory does not expose ten individual archived proteome FASTAs. Full download/extraction and membership audit not performed.",
+  "metadata_evidence": {
+    "archive-index.html": "ab6fab6f9927794de40eaf702fe3ea704569577b563828682f6a59ed103ef571",
+    "release-index.html": "b4d95a3cddfecb39a27a6fabfffc5e5413fe0a98f5bf81db12a7997cff88d3fb",
+    "knowledgebase-index.html": "81a98935d7bde2e243c4833e775f739c7f67a8091fc6dc88787e218a6e48d115",
+    "release-notes.txt": "ae71660a09dc2100a1e0d8f1ca61fdf73805a3d23a1fb295490deef51d8909bb"
+  },
+  "measurement_performed": false
+}

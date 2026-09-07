@@ -16,12 +16,12 @@ only after a public repository and independent research use exist.
   never adopts a file into an analysis automatically.
 - Content-addressed ingestion, checksum verification, preflight, registered
   command execution, deterministic report bundles, and print CSS.
-- Offline software baseline recorded in [BASELINE.json](BASELINE.json).
+- Offline software baseline recorded in [BASELINE.json](../../BASELINE.json).
 - Checksum-locked public qualification runner and evidence report in
-  [benchmarks/qualification-v1/](benchmarks/qualification-v1/README.md).
+  [benchmarks/qualification-v1/](../../benchmarks/qualification-v1/README.md).
 - Frozen Qualification v2 scope, stratum, split, evidence, and tolerance
   specification with a deterministic fail-closed panel audit in
-  [benchmarks/qualification-v2/](benchmarks/qualification-v2/README.md).
+  [benchmarks/qualification-v2/](../../benchmarks/qualification-v2/README.md).
 - Four Qualification v2 panels executed offline against checksum-verified
   artifacts on six OS/Python combinations in CI, with coverage verified from
   executed evidence rather than asserted. Three pass; the membrane stratum does
@@ -105,7 +105,7 @@ must never be presented as JOSS acceptance or external scientific validation.
 ## External readiness review
 
 An independent readiness audit against the JOSS review checklist is recorded in
-[`docs/JOSS_READINESS_REVIEW_2026-08-26.md`](../docs/JOSS_READINESS_REVIEW_2026-08-26.md).
+`docs/JOSS_READINESS_REVIEW_2026-08-26.md` (historical private review; not included in this distribution).
 It confirms this file's blocking items and adds packaging, documentation, and
 claim-sourcing findings not tracked here. Its verdict matches `PREPUBLIC_AUDIT.md`:
 not submission-eligible.

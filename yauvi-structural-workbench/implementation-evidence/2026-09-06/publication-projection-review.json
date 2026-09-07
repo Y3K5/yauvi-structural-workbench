@@ -1,0 +1,459 @@
+{
+  "files": [
+    {
+      "file": "EXECUTION_SUMMARY.json",
+      "original_sha256": "9f954e9a53cec1787d6af66f8b917c308b12064dc74943068f26a45483146a5b",
+      "projected_sha256": "f47cee335d1296a82324badaee0ae7a3b80ec0d744811805f372df1e6ee4c53e",
+      "replacements": []
+    },
+    {
+      "file": "execution-abl/EXECUTION_STATUS.json",
+      "original_sha256": "45927d473d870f6ee68a4de87b34f11e33e17541898199fb655d4ef894834078",
+      "projected_sha256": "1f7b86fefbccf052f769a0652a93c6d734ee0f31df6f18c020ba88cc54186121",
+      "replacements": [
+        {
+          "original_value_sha256": "a77dec1d0ec6fe34c95ef60c81a2547896df2d76ae782e40fd014cfca8504026",
+          "pointer": "/cases/0/output_dir",
+          "replacement": "v2-stateatlas-active-reference-4XEY"
+        },
+        {
+          "original_value_sha256": "d065132b98cb13df92fcf926bd9257eb3d89238096e0f3da9c31e52fdfe7c448",
+          "pointer": "/cases/1/output_dir",
+          "replacement": "v2-stateatlas-active-reference-7W7X"
+        },
+        {
+          "original_value_sha256": "2556917f0a0b64b8f643b11c186089d8e8bc1742255146203b073b7d4016c3ea",
+          "pointer": "/cases/2/output_dir",
+          "replacement": "v2-stateatlas-active-held_out-2GQG"
+        },
+        {
+          "original_value_sha256": "84dd598fb14fcc39cb47629d12bd446c13e8db34a23685546358a91341679895",
+          "pointer": "/cases/3/output_dir",
+          "replacement": "v2-stateatlas-active-held_out-7N9G"
+        },
+        {
+          "original_value_sha256": "cbcf0fd27190b12e6864f3034cef3236ebd5b53dba456ca9cc7a9a4383ec0de5",
+          "pointer": "/cases/4/output_dir",
+          "replacement": "v2-stateatlas-active-held_out-6BL8"
+        },
+        {
+          "original_value_sha256": "61e689b9efea622bfd2533591a0e1a8428a3fab3c852e095e012ce5bfb87a49f",
+          "pointer": "/cases/5/output_dir",
+          "replacement": "v2-stateatlas-active-held_out-4TWP"
+        },
+        {
+          "original_value_sha256": "06d9246e9ca2e7fbe8cc17e18568b299d4c49f341911e1418fddc3061a69987a",
+          "pointer": "/cases/6/output_dir",
+          "replacement": "v2-stateatlas-active-held_out-2G2I"
+        },
+        {
+          "original_value_sha256": "750b74b91b718cb0fa4292d0affc4fd8885c46b7ae911a0181ed8da4277203a3",
+          "pointer": "/cases/7/output_dir",
+          "replacement": "v2-stateatlas-inactive-reference-2E2B"
+        },
+        {
+          "original_value_sha256": "c7206c0447b1731971dc251d533e1e87d14384f4c561a3e4a82ce01d84d34fab",
+          "pointer": "/cases/8/output_dir",
+          "replacement": "v2-stateatlas-inactive-reference-3QRK"
+        },
+        {
+          "original_value_sha256": "b264d3aaf751d998eb4a55b2584d617ad49ee8fb38d954084dfea3fab180edca",
+          "pointer": "/cases/9/output_dir",
+          "replacement": "v2-stateatlas-inactive-held_out-6NPE"
+        },
+        {
+          "original_value_sha256": "224c905f7337544e7cc814ee741f945a6bae9f2af60d6397df4f3de75bc98b4d",
+          "pointer": "/cases/10/output_dir",
+          "replacement": "v2-stateatlas-inactive-held_out-3QRJ"
+        },
+        {
+          "original_value_sha256": "b375cb2f03d49b767059b442fe30e5e271bd10d2ce130686813a440e5cd1b4a6",
+          "pointer": "/cases/11/output_dir",
+          "replacement": "v2-stateatlas-inactive-held_out-3QRI"
+        },
+        {
+          "original_value_sha256": "06f982e842880ed210891ff5850e2a15d2587f71860e9f25600d6d0ac71d38ee",
+          "pointer": "/cases/12/output_dir",
+          "replacement": "v2-stateatlas-inactive-held_out-2HYY"
+        },
+        {
+          "original_value_sha256": "4e58a39d09b38e889377c8be1371c884681ffd9dcb0dd3e365612653b36191f8",
+          "pointer": "/cases/13/output_dir",
+          "replacement": "v2-stateatlas-inactive-held_out-3CS9"
+        },
+        {
+          "original_value_sha256": "04140d3766b6838cd547621102088d2f356d85c8652f30916d8c9657a4cd353a",
+          "pointer": "/controls/0/output_dir",
+          "replacement": "v2-stateatlas-control-uninterpretable-5HU9"
+        }
+      ]
+    },
+    {
+      "file": "execution-assembly/EXECUTION_STATUS.json",
+      "original_sha256": "7e0e577285e6822db205c4fde1b11f8b1361c0c8f4e120fee0cf68ffc96919bb",
+      "projected_sha256": "2f60a6cb03d97a730af3df0b603eb28c428bab9fe0a27618ea65196024b62e4c",
+      "replacements": [
+        {
+          "original_value_sha256": "e12d4ff362c394e80037b4572e102cd1bdac7f41505de0e88557b026794966fa",
+          "pointer": "/cases/0/output_dir",
+          "replacement": "v2-assembly-homodimer-dev-1MKB"
+        },
+        {
+          "original_value_sha256": "b4a5e060115dd142739aa6c14358f04061a88515324f7b4469e415219b5ba807",
+          "pointer": "/cases/1/output_dir",
+          "replacement": "v2-assembly-homodimer-dev-1QPR"
+        },
+        {
+          "original_value_sha256": "b893898362f37f43229069edd9a9d7f11c961707ff15492792f34dbaaec0ad06",
+          "pointer": "/cases/2/output_dir",
+          "replacement": "v2-assembly-homodimer-held-2GH5"
+        },
+        {
+          "original_value_sha256": "e439ca921672cee82e07ed8b22d25257ad86938cda5a3e11d72433c9bf0f0d6d",
+          "pointer": "/cases/3/output_dir",
+          "replacement": "v2-assembly-homodimer-held-1D4A"
+        },
+        {
+          "original_value_sha256": "3f2a5279c7038df6e1275870f92e216e7d31417b18855bd66756102d7d8d5f8b",
+          "pointer": "/cases/4/output_dir",
+          "replacement": "v2-assembly-heterooligomer-dev-1OAI"
+        },
+        {
+          "original_value_sha256": "a65e05381146ee35224ade60deecb969bbc1fc4dc4067519b90a5dc7958bba05",
+          "pointer": "/cases/5/output_dir",
+          "replacement": "v2-assembly-heterooligomer-dev-6M0J"
+        },
+        {
+          "original_value_sha256": "77dfea3a1ce51846e4efe552e88a81dce86206744233e5d9549cc706ac2e79de",
+          "pointer": "/cases/6/output_dir",
+          "replacement": "v2-assembly-heterooligomer-held-1YCR"
+        },
+        {
+          "original_value_sha256": "682d383cecad8c684b9b77c41734d051274e9caff1229b327ed6b11c95878c43",
+          "pointer": "/cases/7/output_dir",
+          "replacement": "v2-assembly-heterooligomer-held-1A22"
+        },
+        {
+          "original_value_sha256": "f9d01f61113c12bd0747c27bbdc26c1f30afc0ae321d5ec929164d9b898d1666",
+          "pointer": "/cases/8/output_dir",
+          "replacement": "v2-assembly-tetramer-dev-4HHB"
+        },
+        {
+          "original_value_sha256": "0b4c578780ce620ae98331c2dd762cbe8f0ab7613ad4874abc69625b4cf2dd7d",
+          "pointer": "/cases/9/output_dir",
+          "replacement": "v2-assembly-tetramer-dev-6CVM"
+        },
+        {
+          "original_value_sha256": "803cb630e877bbfd569a0fbe36640011f3b4022044a60503732f5e193f9331b8",
+          "pointer": "/cases/10/output_dir",
+          "replacement": "v2-assembly-tetramer-held-1DO8"
+        },
+        {
+          "original_value_sha256": "7da365b425863e52dc30ea3b4a83cdba4225ae1a504385db962536ab938523fc",
+          "pointer": "/cases/11/output_dir",
+          "replacement": "v2-assembly-tetramer-held-1IGT"
+        },
+        {
+          "original_value_sha256": "a39d31bebbdcdde20f9282b0f902135ccbc1d7704bbbfea8752f0c5b347f752f",
+          "pointer": "/cases/12/output_dir",
+          "replacement": "v2-assembly-higher_order-dev-1HTO"
+        },
+        {
+          "original_value_sha256": "b0354845b6f5b18d076c7dd830e81a4d26e36ef5106add93fba50d894a8eb397",
+          "pointer": "/cases/13/output_dir",
+          "replacement": "v2-assembly-higher_order-dev-2BL2"
+        },
+        {
+          "original_value_sha256": "84e8bcb77325288460c98dc1762eb8d041523d0e8a413acba0453add260b3f8a",
+          "pointer": "/cases/14/output_dir",
+          "replacement": "v2-assembly-higher_order-held-1AON"
+        },
+        {
+          "original_value_sha256": "b348c56aff49e4b89750fc5a474f5c26b1e4384f95ae28f442d648b723bf332a",
+          "pointer": "/cases/15/output_dir",
+          "replacement": "v2-assembly-higher_order-held-2GLS"
+        }
+      ]
+    },
+    {
+      "file": "execution-membrane/EXECUTION_STATUS.json",
+      "original_sha256": "aad9a3d71c8af79af2c1576af5cce2f5b1bb52a1134a7e5545fb120e7ae4493a",
+      "projected_sha256": "9581087f01e1989c04dc6db9452646671ed7114fadc9bc0edf2601f027c72276",
+      "replacements": [
+        {
+          "original_value_sha256": "54bf4dd2ab8737f1cfcb6e7dc4b135e1f423a8da15474964e01cb5066edd9c0f",
+          "pointer": "/cases/0/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1BXW"
+        },
+        {
+          "original_value_sha256": "a2d80461840cd1a985230a5fdbdc2a5c0138d91e834ee9c77a819dc585b64022",
+          "pointer": "/cases/1/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1QD6"
+        },
+        {
+          "original_value_sha256": "d220b79a2ff42f57daec1a9b99cbfd9a68650ad0a106fd0b0f00a80a0c0ec45f",
+          "pointer": "/cases/2/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-2F1T"
+        },
+        {
+          "original_value_sha256": "738769fd164b5dae4bb20973f9ca93ce750a76f4d007ad78585452f514b2dc80",
+          "pointer": "/cases/3/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1P4T"
+        },
+        {
+          "original_value_sha256": "9b4951e45f870a3e3e377d2c5909595dbf13a3aed81194f5c97cbe040c2bfd51",
+          "pointer": "/cases/4/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1E54"
+        },
+        {
+          "original_value_sha256": "80f537ea5545e3cb13c969c73a6fda17e016f0ef8efde90f459d99f8482faf21",
+          "pointer": "/cases/5/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1K24"
+        },
+        {
+          "original_value_sha256": "42cb341ed47916c2dd1e0131767cf8cf666c9fdc9c3d9317e1663b9bd4b3b8cc",
+          "pointer": "/cases/6/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1T16"
+        },
+        {
+          "original_value_sha256": "2f76c975cea52cfaca3ebb4691be9f161e48d0814f4f33bc7eec6f74b33e6410",
+          "pointer": "/cases/7/output_dir",
+          "replacement": "v2-membrane-beta_barrel-dev-1FEP"
+        },
+        {
+          "original_value_sha256": "c38806e3ccbe37079ce19d9963fa12727a45b51429be687d3d92e4e2fca89644",
+          "pointer": "/cases/8/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-2POR"
+        },
+        {
+          "original_value_sha256": "dd35a64dfec3076206a2781335faafecfb04c876942fd35c46c43e94aa47aa8e",
+          "pointer": "/cases/9/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-1PRN"
+        },
+        {
+          "original_value_sha256": "cae35c3c8fe6ccf13d93e46216d5616fa0dcc287af02f289e51bde2b059e36cf",
+          "pointer": "/cases/10/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-2OMF"
+        },
+        {
+          "original_value_sha256": "d8ad81874519ffe2b0fb9921b8b220d79e275f1a60aa35e34f079eaad8909709",
+          "pointer": "/cases/11/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-1UYN"
+        },
+        {
+          "original_value_sha256": "293d0d6f891573137847724eaa97cc6c5802bc5cb55c24038d224038dbd03423",
+          "pointer": "/cases/12/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-2F1C"
+        },
+        {
+          "original_value_sha256": "78b083ff273f1110e8944df3b83547326affa4514cd1c1396f9fe5f5396f6752",
+          "pointer": "/cases/13/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-2ERV"
+        },
+        {
+          "original_value_sha256": "ffaed8be9ecc808c1de7ee618fbc2a0aa5e83e9aeab011eaf619574be2fb18de",
+          "pointer": "/cases/14/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-2MPR"
+        },
+        {
+          "original_value_sha256": "567ecc7a20c82797df3c54ed4e0aaf7d61ac02fa76e8233e7ef7a17b30eba3ee",
+          "pointer": "/cases/15/output_dir",
+          "replacement": "v2-membrane-beta_barrel-held-1TLY"
+        }
+      ]
+    },
+    {
+      "file": "execution-sitecontext/EXECUTION_STATUS.json",
+      "original_sha256": "c6279c94bf2ca0002d578924ec42721b3dfebb135146acb6e85c5d3fe74b357e",
+      "projected_sha256": "a2bd82871224dda63b3a324f74bf5a5bbb72fbaf9f42d7f56859b703d2445d7a",
+      "replacements": [
+        {
+          "original_value_sha256": "4ea84f4880468d41282da0fd4634be322996c6a6cafb319c89ebf395ed76840a",
+          "pointer": "/cases/0/output_dir",
+          "replacement": "v2-sitecontext-acid_base-dev-1B73"
+        },
+        {
+          "original_value_sha256": "6ca0b487fb0d46cf6db79f8a4515c49f4c8b123b9729a2d96e9c3a690675d1d6",
+          "pointer": "/cases/1/output_dir",
+          "replacement": "v2-sitecontext-acid_base-dev-1OTH"
+        },
+        {
+          "original_value_sha256": "8ea7d9572aaa8da275a4df05ca0c5a47c184437c0601cd2b91c8c80e5080003b",
+          "pointer": "/cases/2/output_dir",
+          "replacement": "v2-sitecontext-apo_modified_or_incomplete-dev-1ALG"
+        },
+        {
+          "original_value_sha256": "e9f7bf5836186d2d8d6ad832dd9b589f1db90cbd8bcf3bae4c2c042443dc804a",
+          "pointer": "/cases/3/output_dir",
+          "replacement": "v2-sitecontext-apo_modified_or_incomplete-held-2JDW"
+        },
+        {
+          "original_value_sha256": "ffbbf66c0044b3a24be993c0a7963898fdf61ce61aa80ac71b907dfdcb1874b4",
+          "pointer": "/cases/4/output_dir",
+          "replacement": "v2-sitecontext-metal_or_cofactor-dev-1NIA"
+        },
+        {
+          "original_value_sha256": "fc66bbe1d2ab21378beb56e032fc092d92586697199860dca7dca5a19d621918",
+          "pointer": "/cases/5/output_dir",
+          "replacement": "v2-sitecontext-metal_or_cofactor-dev-5ICD"
+        },
+        {
+          "original_value_sha256": "c34676fd4d968d028cd94f5f6ce398ab4649d3cee12e818622ae12e77df47ed4",
+          "pointer": "/cases/6/output_dir",
+          "replacement": "v2-sitecontext-metal_or_cofactor-held-1QUM"
+        },
+        {
+          "original_value_sha256": "0484ac7a21afd58bd3adfbe5f5a76f3accde714ddd144d0ff8d5c0805b88d22e",
+          "pointer": "/cases/7/output_dir",
+          "replacement": "v2-sitecontext-metal_or_cofactor-held-1DO8"
+        },
+        {
+          "original_value_sha256": "2b7fa991936c3c5358ca911f791dcecffc4204266effd496b4d790020c4b4d2d",
+          "pointer": "/cases/8/output_dir",
+          "replacement": "v2-sitecontext-nucleophile_or_covalent-dev-1BTL"
+        },
+        {
+          "original_value_sha256": "45fafa550d7ad178588f6f0f0be132b702b209a87b6c34b8b41423d37f433624",
+          "pointer": "/cases/9/output_dir",
+          "replacement": "v2-sitecontext-nucleophile_or_covalent-dev-1WHS"
+        },
+        {
+          "original_value_sha256": "83556ec9114fb418e0fb860ce40b209aa45f80b4b574ad47be31a221f1224d9d",
+          "pointer": "/cases/10/output_dir",
+          "replacement": "v2-sitecontext-nucleophile_or_covalent-held-1NZY"
+        },
+        {
+          "original_value_sha256": "0bf7644d7e3399db375cf0044f9074f21a9e535f1103bf490b3f05de26f1a8df",
+          "pointer": "/cases/11/output_dir",
+          "replacement": "v2-sitecontext-nucleophile_or_covalent-held-1NBA"
+        },
+        {
+          "original_value_sha256": "042d62801804095bfa6ea5751afacaa91c69a93a5035e2e9f167b9af2f5fc64d",
+          "pointer": "/cases/12/output_dir",
+          "replacement": "v2-sitecontext-acid_base-held-1QPR"
+        },
+        {
+          "original_value_sha256": "ddf338646d8cf2f52d716a78b7ac0b53408afba9b7e67a40f3a31c24030efefd",
+          "pointer": "/cases/13/output_dir",
+          "replacement": "v2-sitecontext-acid_base-held-1RR6"
+        },
+        {
+          "original_value_sha256": "726f72079d73fef2cedee795d948adc9b49a126f10d48d7225bd60337829239a",
+          "pointer": "/cases/14/output_dir",
+          "replacement": "v2-sitecontext-apo_modified_or_incomplete-dev-1DNC"
+        },
+        {
+          "original_value_sha256": "f14f28b806ca931fcfa3af5d1170d46c1c31a35b5b1478fda9dad3fe931017da",
+          "pointer": "/cases/15/output_dir",
+          "replacement": "v2-sitecontext-apo_modified_or_incomplete-held-4JDW"
+        },
+        {
+          "original_value_sha256": "4d0ee3cbe521a9b4d922b1bc7d37fa34aeeba8065c1c00f29932babc687a2622",
+          "pointer": "/controls/0/output_dir",
+          "replacement": "v2-sitecontext-control-unmapped-cofactor-1NIA"
+        }
+      ]
+    },
+    {
+      "file": "execution-structqc/EXECUTION_STATUS.json",
+      "original_sha256": "40d8a4a16ff2ef0ad91051033dd687f9d93635becb932bba2d73aafce1fe2213",
+      "projected_sha256": "1c517a27f924280c74d29ff81c0c01479c7d4829ec1d4a73fd6eafa2b255ac4c",
+      "replacements": [
+        {
+          "original_value_sha256": "5c9dc064cbc52d4cd634ed2207936cda2b68d71057f57e699028d7b032e7b427",
+          "pointer": "/cases/0/output_dir",
+          "replacement": "v2-structqc-xray-dev-4EA9"
+        },
+        {
+          "original_value_sha256": "609b0c68df2362a3e7a82d4163ee5e0059d202d172a737b61cb33e082b1f9f52",
+          "pointer": "/cases/1/output_dir",
+          "replacement": "v2-structqc-xray-dev-1OAI"
+        },
+        {
+          "original_value_sha256": "627f9631e9cc0d2f38b664d2e8520ac06196c42d1ac717908aad389da9f4643f",
+          "pointer": "/cases/2/output_dir",
+          "replacement": "v2-structqc-xray-held-2V7A"
+        },
+        {
+          "original_value_sha256": "5d04ca00c3e0fcfcf73a9302a3535c6d856541dfbcf9cb65b6cd3fd41f6d2002",
+          "pointer": "/cases/3/output_dir",
+          "replacement": "v2-structqc-xray-held-8SSN"
+        },
+        {
+          "original_value_sha256": "e4512d26bfc0124738aadb4fbf45e318208814389a679f5867fa0db88e1d3068",
+          "pointer": "/cases/4/output_dir",
+          "replacement": "v2-structqc-alphafold-dev-P00698"
+        },
+        {
+          "original_value_sha256": "4f537278271fbd45f65b2769db6e6b2273d771225e06d4e21b50b2e4ca321e3d",
+          "pointer": "/cases/5/output_dir",
+          "replacement": "v2-structqc-alphafold-dev-P01308"
+        },
+        {
+          "original_value_sha256": "cf279612a14841417ded0bc1c5eabee31eafc69a7ddaef6281bcd7ba98656e28",
+          "pointer": "/cases/6/output_dir",
+          "replacement": "v2-structqc-alphafold-held-P69905"
+        },
+        {
+          "original_value_sha256": "d8873cdae1164198e3476444f6f4e6ec0d27d934e8c5dc213beda4286cb25806",
+          "pointer": "/cases/7/output_dir",
+          "replacement": "v2-structqc-alphafold-held-P61769"
+        },
+        {
+          "original_value_sha256": "faae1968328ff763c354f2b6801364e36e5f65c5b998020d9305b985edc363e3",
+          "pointer": "/cases/8/output_dir",
+          "replacement": "v2-structqc-cryo_em-dev-7A4M"
+        },
+        {
+          "original_value_sha256": "c82e55e6a04eab3577f55910f839d6a07f4f17b89a2c67659b76ac28a8977f2b",
+          "pointer": "/cases/9/output_dir",
+          "replacement": "v2-structqc-cryo_em-dev-6CVM"
+        },
+        {
+          "original_value_sha256": "be55dc4f45c32112bbcfbd026e2ab980d82463e7c6ab1f7749a92e162672391f",
+          "pointer": "/cases/10/output_dir",
+          "replacement": "v2-structqc-cryo_em-held-6VXX"
+        },
+        {
+          "original_value_sha256": "3e4941fd0379e975459e6ded09709f411cdcd5bd0ab4534d4530d238d3ac353c",
+          "pointer": "/cases/11/output_dir",
+          "replacement": "v2-structqc-cryo_em-held-5W3L"
+        },
+        {
+          "original_value_sha256": "8a341d11f97593978d5b9a4e82aaf959c316432b8977daf28bd03cd330783101",
+          "pointer": "/cases/12/output_dir",
+          "replacement": "v2-structqc-nmr-dev-1D3Z"
+        },
+        {
+          "original_value_sha256": "34f67d677c4db543098efb5dd478cd45df3e33da4360625e120a6a91b897516b",
+          "pointer": "/cases/13/output_dir",
+          "replacement": "v2-structqc-nmr-dev-2K0Q"
+        },
+        {
+          "original_value_sha256": "76c0b5a1fad46320c6815413ccb5f0dcf78ff0f565654d247816e3d2a442db70",
+          "pointer": "/cases/14/output_dir",
+          "replacement": "v2-structqc-nmr-held-1G03"
+        },
+        {
+          "original_value_sha256": "95bdb6b8cfa7908afec3d8b6c82a50ea52da73b661875586279b13452dd3f60f",
+          "pointer": "/cases/15/output_dir",
+          "replacement": "v2-structqc-nmr-held-2MZQ"
+        },
+        {
+          "original_value_sha256": "680e708dff50d49871b0ead26f97ce381b0fd7e1f4a40cc6800cab7d36c68f72",
+          "pointer": "/controls/0/output_dir",
+          "replacement": "v2-structqc-control-undeclared-provenance-1OAI"
+        },
+        {
+          "original_value_sha256": "66e35d4f7d800088e12dbf88f12e65b65a4089cebbfd6a942422df748cf95a5b",
+          "pointer": "/controls/1/output_dir",
+          "replacement": "v2-structqc-coverage-insertion-codes-1IGT"
+        }
+      ]
+    }
+  ],
+  "publication_authorized": false,
+  "schema_version": "1.0",
+  "selection": "EXECUTION_SUMMARY.json and EXECUTION_STATUS.json only; logs, raw files and scratch excluded",
+  "unresolved_findings": []
+}

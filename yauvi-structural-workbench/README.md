@@ -59,10 +59,11 @@ analysis revision.
 
 ### Scope of this distribution
 
-This is the command-line distribution. The loopback browser workbench is not
-included: its controller imports private control-plane modules that sit outside
-the published boundary. The browser layer only ever orchestrated and reported —
-the calculations live in the CLIs.
+The current local development build packages both the command-line tools and a
+standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench serve`.
+Both interfaces use the same structural analysis store and scientific engines.
+The published commit recorded in the implementation baseline predates this extraction;
+publication of these changes remains pending review.
 
 ## Five-minute offline example
 
@@ -120,14 +121,14 @@ python tools/verify_public_showcase.py
 
 ## Current release status
 
-This workspace is in **pre-public preparation**. It is not a JOSS release
-candidate and not submission-eligible: version-control history, independent
-installation evidence, public research use, and the expanded Qualification v2
-panels remain incomplete. Historical v1 evidence contains four passed named
-public cases and two partial cases. The current v2 audit is
-`blocked_panel_incomplete`; it has not executed the scientific panels and is not
-a claim of workflow-general accuracy. Publication, repository creation, and
-JOSS submission require separate approval.
+The repository is public and remains in development. Local implementation work is
+tracked in [IMPLEMENTATION.md](IMPLEMENTATION.md). Historical evidence files retain
+their original dates and release-stage vocabulary; they do not certify the changed code.
+Collection 2.9 includes five executed panels, with SF-CSA still unexecuted. Four required
+panels passed 62 cases and four controls in the reviewed six-runner evidence. Membrane
+orientation is experimental and did not meet its reference-orientation accuracy gate.
+New scientific changes require fresh qualification. Independent research use, external
+review, and the public-development interval remain outstanding.
 
 The pre-public audit recorded two code-interpretation decisions that had to be
 resolved or explicitly narrowed before submission. Both are now narrowed:
@@ -136,12 +137,13 @@ ActState's generic catalytic-residue screen can no longer reach
 (2026-09-02), and SF-CSA computes reciprocal-best-hit evidence before structural
 classification so it reaches the `probable_same_function` gate by measurement
 rather than by a manifest field (2026-09-01). The audit's remaining open items
-stand, including ActState's occupancy caveat: a non-solvent heteroatom is
-detected, but its identity is not proven against the declared cofactor.
+stand. The local hardening now marks declared cofactor occupancy unavailable when
+exact identity and site proximity are missing; it does not treat heteroatom presence
+as a supported occupancy signal.
 
 ## License and citation
 
 Original YAUVI code is staged under Apache-2.0; public release remains blocked
 until the third-party-asset audit passes. See [CITATION.cff](CITATION.cff) and
-[NOTICE.md](NOTICE.md). Public source data and optional runtimes retain their own
+[NOTICE.md](../NOTICE.md). Public source data and optional runtimes retain their own
 licenses and are never silently redistributed.

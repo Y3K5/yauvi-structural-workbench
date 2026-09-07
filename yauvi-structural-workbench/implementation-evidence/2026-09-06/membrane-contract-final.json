@@ -1,0 +1,117 @@
+{
+  "commands": [
+    "run",
+    "orient",
+    "contexts",
+    "describe",
+    "validate",
+    "fetch"
+  ],
+  "contexts": [
+    "gram_negative_om",
+    "eukaryotic_pm",
+    "tm_receptor",
+    "gram_positive_surface",
+    "soluble_secreted"
+  ],
+  "display_name": "Membrane Orientation and Accessibility",
+  "extras": {
+    "compute": "numpy, scipy, biopython \u2014 required by `orient`",
+    "examples": "adds matplotlib for the benchmark scripts"
+  },
+  "inputs": [
+    {
+      "format": "PDB or mmCIF",
+      "name": "structure",
+      "note": "one structure per invocation; chain selectable with --chain",
+      "required": true
+    },
+    {
+      "format": "JSON",
+      "name": "topology_evidence",
+      "note": "coordinate-checksum-bound transmembrane spans; required for the experimental tm_helix_axis_v2 method",
+      "required": false
+    }
+  ],
+  "limitations": [
+    "Orientation is geometric. It fits a bilayer to coordinates; it does not predict topology from sequence, and it cannot correct a structure that is wrong.",
+    "A predicted monomer is oriented as supplied. Whether that monomer is the form the protein takes in the membrane is a separate question, answered by fold_state, not here.",
+    "Solvent accessibility is computed on the coordinates given. It is not antibody accessibility on an intact cell.",
+    "The thickness prior is per-context and is a prior, not a measurement; two runs under different contexts are not comparable on absolute z-coordinates.",
+    "Both beta-barrel and alpha-helical orientation remain experimental; neither scope currently satisfies its external-reference qualification gates."
+  ],
+  "module_id": "membrane_orientation",
+  "one_line": "How does this structure sit in its membrane, and which residues face out?",
+  "optional_runtimes": [],
+  "outputs": [
+    {
+      "format": "json",
+      "name": "MEMBRANE_ORIENTATION.json",
+      "note": "full orientation result from `run`"
+    },
+    {
+      "format": "tsv",
+      "name": "RESIDUE_ORIENTATION.tsv",
+      "note": "per-residue labels from `run`"
+    },
+    {
+      "format": "json",
+      "name": "RUN_MANIFEST.json",
+      "note": "runtime, inputs, limitations, and output inventory"
+    },
+    {
+      "format": "json",
+      "name": "--out-json",
+      "note": "full orientation result for one structure"
+    },
+    {
+      "format": "pdb",
+      "name": "--out-pdb",
+      "note": "the structure, oriented in the bilayer frame"
+    },
+    {
+      "format": "json",
+      "name": "--out-viz",
+      "note": "3Dmol display payload"
+    },
+    {
+      "format": "text",
+      "name": "--out-pymol",
+      "note": "PyMOL script"
+    },
+    {
+      "format": "text",
+      "name": "--out-html",
+      "note": "self-contained viewer"
+    }
+  ],
+  "package": "memorient",
+  "platform_contracts": {
+    "note": "produced by the pipeline stage over a candidate set, not by this CLI",
+    "outputs": [
+      "oriented_antigens",
+      "orientation_manifest"
+    ]
+  },
+  "reproducible": true,
+  "runtimes": [
+    "yauvi-python"
+  ],
+  "scientific_scopes": [
+    {
+      "benchmark_collection": "yauvi-structural-public-qualification-v2",
+      "release_blocking": false,
+      "scientific_state": "experimental",
+      "scope_id": "beta_barrel",
+      "supported_subject_class": "beta-barrel membrane proteins"
+    },
+    {
+      "benchmark_collection": "yauvi-structural-public-qualification-v2",
+      "release_blocking": false,
+      "scientific_state": "prototype",
+      "scope_id": "alpha_helical",
+      "supported_subject_class": "alpha-helical membrane proteins"
+    }
+  ],
+  "version": "0.3.0"
+}
