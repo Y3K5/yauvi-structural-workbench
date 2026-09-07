@@ -61,10 +61,35 @@ repository are this project's own Python stubs under `tools/fixtures/sfcsa/`,
 which are test doubles and not the tools. Third-party reference data stays out
 of the repository by `.gitignore`, with `SOURCE_LOCK.json` shipping in its place.
 
-Not covered by this audit: the individual terms of the public reference-data
-providers named in `NOTICE.md`. The redistribution boundary is correct — none of
-that data ships — but no one has reviewed each provider's citation and reuse
-terms. That review remains open.
+**Reference-data provider terms — reviewed 7 September 2026.** The provider list
+was taken from the `SOURCE_LOCK.json` files, which record what is actually
+acquired, rather than from the prose in `NOTICE.md`. Six providers appear there:
+wwPDB/RCSB PDB (133 artifacts), UniProt (50), OPM (24), AlphaFold DB (23),
+M-CSA (16) and CATH (2). SIFTS, ChEBI and the PDB CCD do not appear in a source
+lock but are referenced in code, so they were reviewed too. Each was checked
+against its own published terms; the results are tabulated in `NOTICE.md`.
+
+Every one is public-domain or attribution-only: CC0 1.0 for the wwPDB archive
+and the CCD, CC BY 4.0 for UniProt, AlphaFold DB, M-CSA, CATH, SIFTS and ChEBI.
+None restricts redistribution and none is copyleft, so none conflicts with
+distributing this work under Apache-2.0. The point is largely moot for the
+repository itself, which redistributes none of it.
+
+Two findings came out of the review rather than confirming the existing record:
+
+1. **CATH was being used and was not declared.** Two CATH artifacts sit in the
+   qualification source lock while `NOTICE.md` did not name CATH at all. Added.
+   CATH's CC BY 4.0 requires named attribution to its authors, which is now
+   recorded.
+2. **OPM does not state a licence on its own site.** Secondary sources report
+   CC BY 3.0. Recorded as unconfirmed rather than asserted: the attribution
+   obligation is treated as binding, the version as unverified. Confirming it
+   with the University of Michigan maintainers is the one open item, and it
+   affects wording, not permission — CC BY 3.0 and 4.0 both permit this use.
+
+The CC BY licences oblige *this project* to attribute, not only its users. Where
+benchmark collections and showcases present derived data, the provider is named
+in the presenting record.
 
 The draft paper describes the local changed build, which must be independently
 installed/tested before that browser claim appears in a released manuscript.
