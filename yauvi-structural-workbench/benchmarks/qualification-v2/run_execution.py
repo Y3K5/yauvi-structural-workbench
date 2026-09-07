@@ -1481,6 +1481,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="Re-measure every case and write the expectations back into the panel.")
     args = ap.parse_args(argv)
 
+    from evidence_contract import execution_identity, file_digest
+    identity = execution_identity()
+    panel_digest = file_digest(args.panel)
     panel = json.loads(args.panel.read_text(encoding="utf-8"))
     cli = ENGINES.get(panel.get("workflow", "structure_qc"), {}).get("cli", "structqc")
     exe = shutil.which(cli)
@@ -1558,7 +1561,9 @@ def main(argv: list[str] | None = None) -> int:
     unmet = sorted(f for f, by in witnessed.items() if not by)
     coverage_ok = not unmet
     result = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
+        "evidence_identity": identity,
+        "execution_panel_sha256": panel_digest,
         "collection_id": panel.get("panel_id"),
         "stratum": panel.get("stratum"),
         "gate_semantics": semantics,

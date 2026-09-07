@@ -46,6 +46,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from run_execution import drift_deltas
+from evidence_contract import record_verdicts
 
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "results"
@@ -92,6 +93,9 @@ def panel_summary(
         for name, deltas in drift_deltas(cases + controls).items()
     }
     return {
+        "evidence_identity": status.get("evidence_identity"),
+        "execution_panel_sha256": status.get("execution_panel_sha256"),
+        "record_verdicts": record_verdicts(status),
         "panel_id": status.get("collection_id"),
         "workflow": workflow,
         "stratum_scope": status.get("stratum"),

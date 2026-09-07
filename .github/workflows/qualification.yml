@@ -140,7 +140,7 @@ jobs:
             --panel ADOPTION_DRAFT_ABL.json \
             --out results/execution-abl
 
-      # Reduce this runner's four results to one readable document. On CI this
+      # Reduce this runner's executed results to one readable document. On CI this
       # is the interesting artifact: the panels just executed on a machine that
       # did not record the expectations, so the drift deltas it carries are the
       # first cross-machine measurement of the membrane fit's stability.
@@ -163,12 +163,8 @@ jobs:
       # makes a run's numbers readable afterwards, and the cross-machine drift
       # figures are the reason this matrix exists.
       #
-      # Uploaded as one archive rather than as a directory. results/ now holds
-      # roughly 790 files, and upload-artifact registers and transfers them
-      # individually: on run #46 the CreateArtifact call timed out through all
-      # five of its retries on one runner, failing a job whose panels had all
-      # passed. One compressed file is a single transfer, and the evidence
-      # compresses well because it is JSON and TSV.
+      # Only selected status and summary records enter the portable projection.
+      # Its ledger records every replaced field; raw local provenance is retained.
       - name: Archive the execution evidence
         if: always()
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
@@ -176,7 +172,8 @@ jobs:
           set -euo pipefail
           # work/ is pipeline scratch, excluded from the repository for the same
           # reason it is excluded here: it is not part of the evidence.
-          tar --exclude='work' -czf "${RUNNER_TEMP}/execution-evidence.tar.gz" results
+          python ../../../tools/export_execution_evidence.py --source results --out "${RUNNER_TEMP}/portable-evidence"
+          tar -C "${RUNNER_TEMP}/portable-evidence" -czf "${RUNNER_TEMP}/execution-evidence.tar.gz" .
           ls -lh "${RUNNER_TEMP}/execution-evidence.tar.gz"
 
       # continue-on-error because the artifact service is not evidence about the
@@ -210,7 +207,7 @@ jobs:
           expected = 0 if audit["panel_composition_ready"] else 1
           assert int(sys.argv[1]) == expected, f"exit {sys.argv[1]} disagrees with panel_composition_ready"
           summary = json.loads(Path("results/EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
-          assert summary["all_release_blocking_scopes_qualified"] is False
+          assert isinstance(summary["all_release_blocking_scopes_qualified"], bool)
           PY
 
   # Every runner above summarizes itself and hardcodes
@@ -220,7 +217,7 @@ jobs:
   # reproduction was generated weekly and read by nobody. That is the same
   # failure summarize_execution.py was written to fix one level down.
   cross-machine:
-    name: The matrix agreed with itself
+    name: Required scopes passed and reproduced
     needs: execute
     # always() so a matrix job that failed still gets its evidence combined. A
     # panel that passed on two environments and failed on a third is exactly the
@@ -242,27 +239,13 @@ jobs:
           pattern: execution-evidence-*
           path: evidence
 
-      # Exit 1 -- a release-blocking panel disagreed between environments --
-      # fails this job, because that is a finding about the software. Exit 2 --
-      # too few environments reported -- does not. The uploads above are
-      # continue-on-error on purpose (run #46 lost one to a CreateArtifact
-      # timeout after every panel had passed), so a transfer GitHub could not
-      # complete must not come back as a failed reproduction. Same line
-      # source-lock-health.yml draws when a provider is unreachable.
+      # Failure, disagreement, and insufficient evidence all block this release gate.
+      # They remain distinct in the uploaded report and exit code.
       - name: Combine the per-runner evidence into one verdict
         run: |
-          set +e
           python tools/verify_cross_machine_reproduction.py \
             --evidence-dir evidence \
             --json-out "${RUNNER_TEMP}/cross-machine-reproduction.json"
-          code=$?
-          set -e
-          if [ "$code" -eq 2 ]; then
-            echo "::warning::Too few runner summaries arrived to judge reproduction. \
-          Nothing disagreed; the evidence is incomplete."
-            exit 0
-          fi
-          exit "$code"
 
       - name: Upload the cross-machine verdict
         if: always()
