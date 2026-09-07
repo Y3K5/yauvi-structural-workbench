@@ -4,6 +4,7 @@ import json
 import mimetypes
 import secrets
 import socket
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from urllib.parse import urlsplit, unquote
@@ -23,6 +24,7 @@ class WorkbenchServer(ThreadingHTTPServer):
         self.store=StructuralAnalysisStore(workspace)
         self.jobs=JobManager(self.store)
         self.allow_reference_fetch=allow_reference_fetch
+        self.protein_import_lock=threading.Lock()
         self.token=secrets.token_urlsafe(32)
         try:super().__init__(address,Handler)
         except Exception:self.jobs.close();raise
@@ -92,8 +94,14 @@ class Handler(BaseHTTPRequestHandler):
         if len(p)==6 and p[:2]==['api','analyses'] and p[3]=='artifacts':
             if p[5] not in {'REPORT_DATA.json','REPORT.html','RAW_EVIDENCE.zip','CHECKSUMS.json','RUN_MANIFEST.json'}:raise ValueError('unknown report artifact')
             path=store.artifact_path(p[2],p[4],p[5]);return self._send(200,path.read_bytes(),'application/octet-stream',attachment=p[5])
+        if len(p)==5 and p[:2]==['api','analyses'] and p[3]=='oriented-structure':
+            path=store.artifact_path(p[2],p[4],'outputs/memorient/ORIENTED_STRUCTURE.pdb')
+            return self._send(200,path.read_bytes(),'chemical/x-pdb',attachment='ORIENTED_STRUCTURE.pdb')
+        if len(p)==5 and p[:2]==['api','analyses'] and p[3]=='membrane-layer':
+            path=store.artifact_path(p[2],p[4],'outputs/memorient/MEMBRANE_LAYER.json')
+            return self._send(200,path.read_bytes(),'application/json',attachment='MEMBRANE_LAYER.json')
         name='/'.join(p) if p else 'index.html'
-        if name not in {'index.html','app.js','style.css','vendor/3Dmol-min.js','vendor/3DMOL-LICENSE.txt'}:return self._send(404,{'error':'not found'})
+        if name not in {'index.html','app.js','style.css','vendor/3Dmol-min.js','vendor/membrane-bilayer.js','vendor/3DMOL-LICENSE.txt'}:return self._send(404,{'error':'not found'})
         resource=files('yauvi_structural_workbench').joinpath('ui',*name.split('/'))
         return self._send(200,resource.read_bytes(),mimetypes.guess_type(name)[0] or 'application/octet-stream')
     def _mutate(self,p):
@@ -101,6 +109,23 @@ class Handler(BaseHTTPRequestHandler):
         if len(p)==4 and p[:2]==['api','ingests'] and self.command=='PUT':
             return self._send(200,store.ingest_chunk(p[2],int(p[3]),self._body(raw=True)))
         data=self._body()
+        if p==['api','proteins'] or (len(p)==4 and p[:2]==['api','proteins']):
+            from yauvi_platform.structural_workbench.protein_import import ProteinImportStore
+            if p==['api','proteins'] or p[3]=='prepare':
+                if data.get('allow_public_fetch') is not True:
+                    raise PermissionError('Choose Retrieve protein files to allow this public-accession download.')
+            if not self.server.protein_import_lock.acquire(blocking=False):
+                raise AnalysisError('A protein import is already in progress. Please wait for it to finish.')
+            try:
+                importer=ProteinImportStore(store)
+                if p==['api','proteins']:return self._send(201,importer.lookup(data['link']))
+                if p[3]=='prepare':return self._send(200,importer.prepare(p[2]))
+                if p[3]=='adopt':
+                    if any(j['analysis_id']==data['analysis_id'] and j['state'] in {'queued','running'} for j in self.server.jobs.list()):
+                        raise AnalysisError('Wait for this analysis to finish before changing its inputs.')
+                    return self._send(200,importer.adopt(p[2],data['analysis_id'],data['revision_sha256']))
+                raise ValueError('Unknown protein import action.')
+            finally:self.server.protein_import_lock.release()
         if p==['api','examples','structure-qc']:
             from .example import create_example
             return self._send(201,create_example(store.workspace,'example-'+secrets.token_hex(6),without_validation=data.get('without_validation') is True))

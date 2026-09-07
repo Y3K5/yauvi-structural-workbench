@@ -5,7 +5,7 @@ const names={structure_qc:'Structure quality',membrane_orientation:'Membrane ori
 const states={draft:'Not run',completed:'Execution complete',scientifically_incomplete:'Finished · evidence incomplete',failed:'Execution failed',blocked:'Needs attention',queued:'Waiting',running:'Running',cancelled:'Cancelled',interrupted:'Interrupted'};
 const friendly=v=>String(v??'').replaceAll('_',' ');
 let token='',definitions=[],sourceRows=[],caseRows=[],jobs=[],selected='structure_qc',current=null,snapshot=null,canFetch=false;
-let viewer=null,model=null,loadedCoordinate='',panel='setup',selectionVersion=0,historyVersion=0,dirty=false,busy=false,polling=false;
+let viewer=null,model=null,membraneLayer=null,loadedCoordinate='',panel='setup',selectionVersion=0,historyVersion=0,dirty=false,busy=false,polling=false;
 const seenJobs=new Map(), pendingResults=new Set();
 function notice(message,error=false){$('notice').textContent=message;$('notice').className=error?'error':'';const dialog=document.querySelector('dialog[open]');if(dialog&&error){let n=dialog.querySelector('.dialog-notice');if(!n){n=el('p',undefined,'dialog-notice boundary');n.setAttribute('role','alert');dialog.append(n);}n.textContent=message;}}
 async function api(path,data,method='POST'){
@@ -30,11 +30,11 @@ function renderCases(){
 }
 $('search').oninput=renderCases;
 async function refreshCases(){caseRows=await api('/api/analyses');renderCases();}
-function resetViewer(){if(viewer)viewer.clear();viewer=null;model=null;loadedCoordinate='';$('viewer').replaceChildren(el('p','Load an attached structure to explore it here.','viewer-placeholder'));$('chain').replaceChildren(new Option('All chains','*'));$('residue').replaceChildren(new Option('Select a residue',''));for(const id of ['chain','residue','representation','ligands','reset-view'])$(id).disabled=true;$('viewer-context').textContent='Coordinates alone do not validate identity, function or activity.';}
+function resetViewer(){if(viewer)viewer.clear();viewer=null;model=null;membraneLayer=null;loadedCoordinate='';$('viewer').replaceChildren(el('p','Load an attached structure to explore it here.','viewer-placeholder'));$('chain').replaceChildren(new Option('All chains','*'));$('residue').replaceChildren(new Option('Select a residue',''));for(const id of ['chain','residue','representation','ligands','reset-view','membrane-overlay','accessibility-colors'])$(id).disabled=true;$('membrane-overlay').checked=false;$('accessibility-colors').checked=false;$('membrane-overlay-wrap').hidden=true;$('accessibility-colors-wrap').hidden=true;$('membrane-legend').hidden=true;$('membrane-legend').replaceChildren();$('viewer-context').textContent='Coordinates alone do not validate identity, function or activity.';}
 async function openCase(id,{internal=false}={}){
  if(!internal&&(busy||dirty))throw Error(dirty?'Save your parameter changes before opening another analysis.':'Please let the current update finish first.');
  const version=++selectionVersion;const value=await api('/api/analyses/'+encodeURIComponent(id));if(version!==selectionVersion)return;
- if(current!==id){resetViewer();$('experimental').checked=false;setPanel('setup');}
+ if(current!==id){$('protein-preview').replaceChildren();$('protein-progress').textContent='';$('protein-link').value='';resetViewer();$('experimental').checked=false;setPanel('setup');}
  current=id;snapshot=value;pendingResults.delete(id);dirty=false;historyVersion++;render();renderCases();renderJobs();
 }
 function renderPreflight(value){
@@ -64,16 +64,23 @@ function render(){
  const form=$('parameters');form.replaceChildren();$('parameter-details').hidden=!(d.parameters||[]).length;
  for(const p of d.parameters||[]){const label=el('label',friendly(p.name)),input=el(p.type==='select'?'select':'input');if(p.type==='select')for(const choice of p.choices)input.append(new Option(friendly(choice),choice));else if(['integer','number'].includes(p.type)){input.type='number';input.min=p.name==='stride'?'1':'0';input.step=p.type==='integer'?'1':'any';}input.name=p.name;input.value=a.parameters[p.name]??p.default??'';input.dataset.kind=p.type||'';input.oninput=()=>{dirty=true;updateActions();};label.append(input);if(p.description)label.append(el('span',p.description,'parameter-hint'));form.append(label);}
  if(d.parameters?.length)form.append(el('button','Save parameters'));
- renderPreflight(snapshot.preflight);renderSources();renderResults();renderTrace();updateActions();
- const coords=a.inputs.filter(i=>/\.(pdb|cif|mmcif)$/i.test(i.file_name)),previous=$('coordinate').value;
- $('coordinate').replaceChildren(...coords.map(i=>new Option(friendly(i.role)+' · '+i.file_name,i.sha256)));if(coords.some(i=>i.sha256===previous))$('coordinate').value=previous;
- if(!coords.length)$('coordinate').append(new Option('No coordinates attached',''));$('view').disabled=!coords.length;$('coordinate').disabled=!coords.length;
+ renderPreflight(snapshot.preflight);renderSources();renderProteinRecord();renderResults();renderTrace();updateActions();
+ populateCoordinates();
+}
+function populateCoordinates(){
+ if(!snapshot)return;
+ const coords=snapshot.analysis.inputs.filter(i=>/\.(pdb|cif|mmcif)$/i.test(i.file_name)),previous=$('coordinate').value;
+ const options=coords.map(i=>new Option(friendly(i.role)+' · '+i.file_name,i.sha256));
+ if(snapshot.oriented_structure)options.push(new Option('oriented membrane model · ORIENTED_STRUCTURE.pdb','oriented:'+snapshot.oriented_structure.run_id));
+ $('coordinate').replaceChildren(...options);if(options.some(option=>option.value===previous))$('coordinate').value=previous;
+ if(!options.length)$('coordinate').append(new Option('No coordinates attached',''));$('view').disabled=!options.length;$('coordinate').disabled=!options.length;
 }
 function updateActions(){
  if(!snapshot)return;const active=jobs.some(j=>j.analysis_id===current&&['queued','running'].includes(j.state));const valid=snapshot.preflight?.valid&&snapshot.preflight.revision_sha256===snapshot.analysis.revision_sha256;const experimental=snapshot.analysis.analysis_type==='membrane_orientation';
  $('run').disabled=busy||dirty||active||!valid||(experimental&&!$('experimental').checked);$('validate').disabled=busy||dirty||active;$('run').textContent=active?'In progress':'Run analysis';$('parameter-note').textContent=dirty?'Unsaved changes':'';
  $('next-action').textContent=active?'An analysis is in progress':dirty?'Save your parameters':valid?'Ready for the next step':'Check your inputs';
  $('next-description').textContent=active?'Open Process to follow or cancel the run.':dirty?'Save this revision before checking or running it.':valid?(experimental&&!$('experimental').checked?'Acknowledge the experimental limits below to continue.':'Ready to execute. Interpretation still depends on the evidence.'):'Readiness checks include required files and installed tools.';
+ $('protein-retrieve').disabled=busy||dirty||active;$('protein-link').disabled=busy||active;for(const b of $('protein-preview').querySelectorAll('button'))b.disabled=busy||dirty||active;
  $('running-dot').hidden=!active;const activeJob=jobs.find(j=>j.analysis_id===current&&['queued','running'].includes(j.state));$('status').textContent=activeJob?(states[activeJob.state]||friendly(activeJob.state)):(states[snapshot.analysis.state]||friendly(snapshot.analysis.state));
  for(const input of $('panel-setup').querySelectorAll('input[type=file],#parameters input,#parameters select,#parameters button'))input.disabled=busy||active;
 }
@@ -106,13 +113,19 @@ async function refreshJobs(){
  try{const rows=await api('/api/jobs');let changed=false;for(const row of rows){const signature=JSON.stringify(row);if((seenJobs.has(row.job_id)?signature!==seenJobs.get(row.job_id):!!row.run_id)&&!['queued','running'].includes(row.state)){pendingResults.add(row.analysis_id);changed=true;}seenJobs.set(row.job_id,signature);}const rerender=JSON.stringify(rows)!==JSON.stringify(jobs);jobs=rows;$('connection').textContent='Live · connected';if(rerender)renderJobs();if(changed)await refreshCases();if(current&&pendingResults.has(current)&&!dirty&&!busy){pendingResults.delete(current);await openCase(current,{internal:true});notice('Run finished. Open Findings to inspect its outcome and limits.');}}
  catch(error){$('connection').textContent='Connection lost · retrying';throw error;}finally{polling=false;}
 }
-async function selectRun(runId){const id=current,version=++historyVersion,value=await api(`/api/analyses/${id}/runs/${runId}`);if(current!==id||version!==historyVersion)return;for(const key of ['run','report','run_inputs','available_artifacts','report_matches_case'])snapshot[key]=value[key];renderResults();renderTrace();}
+async function selectRun(runId){const id=current,version=++historyVersion,value=await api(`/api/analyses/${id}/runs/${runId}`);if(current!==id||version!==historyVersion)return;for(const key of ['run','report','run_inputs','available_artifacts','oriented_structure','membrane_layer','report_matches_case'])snapshot[key]=value[key];renderResults();renderTrace();populateCoordinates();}
 $('history').onchange=guard(()=>selectRun($('history').value));$('trace-result').onclick=()=>setPanel('trace');
 function renderResults(){
  const r=snapshot.report,box=$('findings');box.replaceChildren();$('result-context').textContent=snapshot.run?`${states[snapshot.run.status]||friendly(snapshot.run.status)} · ${snapshot.run.run_id}`:'No recorded run yet. Check readiness in Inputs to begin.';
  $('result-stale').hidden=!r||snapshot.report_matches_case;$('result-stale').textContent='This result uses an earlier input or parameter revision. Its evidence is preserved below. Check and run the current case to measure your changes.';
  if(!r){box.append(el('p',snapshot.run?.error||'No measurements yet. You can still explore attached coordinates below.','empty-state'));return;}
- if(r.status==='scientifically_incomplete')box.append(el('p','The calculations finished, but supporting evidence is incomplete. Review the gaps below before interpreting the measurements.','boundary'));
+ if(r.status==='scientifically_incomplete'){
+  const orientationStep=(r.steps||[]).find(step=>step.module_id==='membrane_orientation');
+  const message=orientationStep?.exit_code===0
+   ? 'Membrane orientation completed. The overall case remains evidence-incomplete because supporting structural validation or independent reproduction is still missing.'
+   : 'The calculations finished, but supporting evidence is incomplete. Review the gaps below before interpreting the measurements.';
+  box.append(el('p',message,'boundary'));
+ }
  const stepList=el('ul',undefined,'check-list');for(const step of r.steps||[]){const li=el('li');li.append(el('strong',friendly(step.module_id)+' — '+(step.exit_code===0?'finished':step.exit_code===1?'finished with incomplete scientific evidence':'execution failed')));stepList.append(li);}box.append(stepList);
  box.append(el('p',r.claim_ceiling,'boundary'));const metrics=el('div',undefined,'result-grid');
  // Project explicit engine fields; never infer a biological score.
@@ -125,7 +138,15 @@ function renderResults(){
    const button=el('button','View source measurement ↗');button.onclick=()=>{const detail=$('document-'+index);detail.open=true;detail.scrollIntoView({block:'center'});};card.append(button);metrics.append(card);
   }
  }
- if(metrics.children.length)box.append(metrics);const gaps=r.missing_evidence||[];
+ if(metrics.children.length)box.append(metrics);
+ if(snapshot.oriented_structure){
+  const output=el('article',undefined,'metric');
+  output.append(el('span','Oriented coordinate model'),el('strong','Ready'));
+  const button=el('button','Load oriented structure');
+  button.onclick=guard(()=>{const value='oriented:'+snapshot.oriented_structure.run_id;$('coordinate').value=value;resetViewer();return loadCoordinateModel(value);});
+  output.append(button);box.append(output);
+ }
+ const gaps=r.missing_evidence||[];
  if(gaps.length){box.append(el('h3','Evidence gaps and warnings'));const ul=el('ul');gaps.forEach(g=>{
   const explanations={provenance:'Model provenance is undeclared. Attach a provenance record; a filename or AlphaFold header alone is only a hint.',reference_sequence:'No reference FASTA was supplied, so sequence identity and completeness have not been checked.',community_geometry_validation:'No geometry validation report was supplied. Coordinate quality remains unvalidated.',independent_second_machine_reproduction:'This result has not been independently reproduced on another machine.'};
   ul.append(el('li',explanations[g]||g));
@@ -147,10 +168,31 @@ function renderTrace(){
  const labels={'REPORT.html':['Readable report','Measurements and interpretation'],'REPORT_DATA.json':['Report data','Machine-readable measurements'],'RAW_EVIDENCE.zip':['Full evidence bundle','Original method outputs and provenance'],'CHECKSUMS.json':['File checksums','Verify the exact exported bytes'],'RUN_MANIFEST.json':['Reproduction manifest','Inputs, parameters and software identities']};$('downloads').replaceChildren();
  for(const name of snapshot.available_artifacts||[]){const link=el('a',labels[name][0]);link.href=`/api/analyses/${current}/artifacts/${run.run_id}/${name}`;link.download=name;link.append(el('span',labels[name][1]));$('downloads').append(link);}if(!$('downloads').children.length)$('downloads').append(el('p','Downloads appear when report files are available.','muted'));
 }
-function styleViewer(){if(!viewer||!model)return;const rep=$('representation').value;viewer.setStyle({},rep==='cartoon'?{cartoon:{color:'spectrum'}}:rep==='stick'?{stick:{colorscheme:'Jmol'}}:{sphere:{colorscheme:'Jmol',scale:.5}});viewer.setStyle({hetflag:true},$('ligands').checked?{stick:{colorscheme:'Jmol'}}:{});const chain=$('chain').value,residue=$('residue').value;if(chain!=='*'&&rep==='cartoon')viewer.setStyle({chain},{cartoon:{color:'#2670b5'}});if(residue){const selection={serial:JSON.parse(residue)};viewer.addStyle(selection,{stick:{color:'#d79635'},sphere:{scale:.3}});viewer.zoomTo(selection);}viewer.render();}
+function styleViewer(){if(!viewer||!model)return;const rep=$('representation').value;viewer.setStyle({},rep==='cartoon'?{cartoon:{color:'spectrum'}}:rep==='stick'?{stick:{colorscheme:'Jmol'}}:{sphere:{colorscheme:'Jmol',scale:.5}});viewer.setStyle({hetflag:true},$('ligands').checked?{stick:{colorscheme:'Jmol'}}:{});if($('accessibility-colors').checked&&membraneLayer?.residue_colors){const groups=new Map();for(const item of membraneLayer.residue_colors){const key=item.chain+'|'+item.color;const group=groups.get(key)||{chain:item.chain,color:item.color,resi:[],extracellular:[]};group.resi.push(item.resid);if(item.extracellular)group.extracellular.push(item.resid);groups.set(key,group);}for(const group of groups.values()){viewer.setStyle({chain:group.chain,resi:group.resi},rep==='cartoon'?{cartoon:{color:group.color}}:rep==='stick'?{stick:{color:group.color}}:{sphere:{color:group.color,scale:.5}});if(group.extracellular.length)viewer.addStyle({chain:group.chain,resi:group.extracellular},{stick:{color:group.color,radius:.2}});}}const chain=$('chain').value,residue=$('residue').value;if(chain!=='*'&&rep==='cartoon')viewer.setStyle({chain},{cartoon:{color:'#2670b5'}});if(residue){const selection={serial:JSON.parse(residue)};viewer.addStyle(selection,{stick:{color:'#d79635'},sphere:{scale:.3}});viewer.zoomTo(selection);}drawMembraneOverlay();viewer.render();}
+function drawMembraneOverlay(){if(!viewer||!model)return;viewer.removeAllShapes();viewer.removeAllLabels();if(!membraneLayer||!$('membrane-overlay').checked||typeof MembraneBilayer==='undefined')return;const slab=membraneLayer.membrane_slab||{},half=Number(slab.half_thickness);if(!Number.isFinite(half))return;MembraneBilayer.draw(viewer,{axis:'z',core:[Number(slab.core_lower_z??-half),Number(slab.core_upper_z??half)],leaflets:[{at:Number(slab.core_upper_z??half),color:'#6d5bd0'},{at:Number(slab.core_lower_z??-half),color:'#6d5bd0'},Number(slab.lps_upper_z)?{at:Number(slab.lps_upper_z),color:'#c8791f'}:null].filter(Boolean)});}
+function renderMembraneLegend(){const box=$('membrane-legend');if(!membraneLayer){box.hidden=true;box.replaceChildren();return;}const legend=membraneLayer.color_legend||{};box.hidden=false;box.replaceChildren(el('strong','Modeled membrane context'),el('span','Experimental placement from this run; it is not an experimental membrane or a cell-exposure measurement.','muted'));const row=el('div',undefined,'legend-items');for(const [key,color] of Object.entries(legend)){const item=el('span',undefined,'legend-item'),dot=el('i');dot.style.backgroundColor=color;item.append(dot,friendly(key).replaceAll('lps','LPS'));row.append(item);}box.append(row,el('span','Extracellular side ↑ · modeled +Z axis','muted'));}
+function configureMembraneControls(oriented){const available=oriented&&!!membraneLayer;$('membrane-overlay-wrap').hidden=!available;$('accessibility-colors-wrap').hidden=!available;for(const id of ['membrane-overlay','accessibility-colors'])$(id).disabled=!available;if(available){$('membrane-overlay').checked=true;$('accessibility-colors').checked=true;renderMembraneLegend();}else{$('membrane-overlay').checked=false;$('accessibility-colors').checked=false;renderMembraneLegend();}}
 function updateResidues(){if(!model)return;const chain=$('chain').value,seen=new Map();for(const atom of model.selectedAtoms(chain==='*'?{}:{chain})){const key=JSON.stringify([atom.chain||'',atom.resi,atom.icode||'',atom.resn]);if(!seen.has(key))seen.set(key,{label:`${atom.chain||'(blank)'} · ${atom.resn} ${atom.resi}${atom.icode||''}`,serials:[]});seen.get(key).serials.push(atom.serial);}$('residue').replaceChildren(new Option('Select a residue',''),...Array.from(seen.values(),r=>new Option(r.label,JSON.stringify(r.serials))));}
-$('view').onclick=guard(async()=>{const id=current,digest=$('coordinate').value,input=snapshot.analysis.inputs.find(i=>i.sha256===digest);if(!input)throw Error('Attach a coordinate file first.');$('view').disabled=true;try{const response=await fetch(`/api/analyses/${id}/inputs/${digest}`);if(!response.ok)throw Error('The coordinate file is unavailable.');const text=await response.text();if(current!==id||$('coordinate').value!==digest)return;if(viewer)viewer.clear();$('viewer').replaceChildren();viewer=$3Dmol.createViewer($('viewer'),{backgroundColor:'#fafbfd'});model=viewer.addModel(text,/\.pdb$/i.test(input.file_name)?'pdb':'cif');const atoms=model.selectedAtoms({});if(!atoms.length){resetViewer();throw Error('No displayable atoms were found. Check the coordinate format.');}loadedCoordinate=digest;if(atoms.length<50)$('representation').value='stick';const chains=[...new Set(atoms.map(a=>a.chain||''))].sort();$('chain').replaceChildren(new Option('All chains','*'),...chains.map(c=>new Option(c||'(blank)',c)));for(const name of ['chain','residue','representation','ligands','reset-view'])$(name).disabled=false;updateResidues();styleViewer();viewer.zoomTo();viewer.render();$('viewer-context').textContent=`${input.file_name} · ${atoms.length.toLocaleString()} displayed atoms · current case coordinates. Exact file identity is in Inputs.`;}finally{$('view').disabled=!$('coordinate').value;}});
+$('view').onclick=guard(()=>loadCoordinateModel($('coordinate').value));
+async function loadCoordinateModel(selection){
+ const id=current;if(!selection)throw Error('Attach a coordinate file first.');
+ const oriented=selection.startsWith('oriented:');const digest=oriented?'':selection;const input=oriented?null:snapshot.analysis.inputs.find(i=>i.sha256===digest);
+ if(!oriented&&!input)throw Error('Attach a coordinate file first.');
+ $('view').disabled=true;
+ try{
+  const url=oriented?`/api/analyses/${id}/oriented-structure/${selection.slice(9)}`:`/api/analyses/${id}/inputs/${digest}`;
+  const layerUrl=oriented?`/api/analyses/${id}/membrane-layer/${selection.slice(9)}`:'';
+  const [response,layerResponse]=await Promise.all([fetch(url),oriented?fetch(layerUrl):Promise.resolve(null)]);if(!response.ok)throw Error(oriented?'The oriented coordinate model is unavailable.':'The coordinate file is unavailable.');
+  const text=await response.text();if(current!==id||$('coordinate').value!==selection)return;
+  membraneLayer=oriented&&layerResponse?.ok?await layerResponse.json():null;
+  if(viewer)viewer.clear();$('viewer').replaceChildren();viewer=$3Dmol.createViewer($('viewer'),{backgroundColor:'#fafbfd'});model=viewer.addModel(text,'pdb');
+  const atoms=model.selectedAtoms({});if(!atoms.length){resetViewer();throw Error('No displayable atoms were found. Check the coordinate format.');}
+  loadedCoordinate=selection;if(atoms.length<50)$('representation').value='stick';const chains=[...new Set(atoms.map(a=>a.chain||''))].sort();$('chain').replaceChildren(new Option('All chains','*'),...chains.map(c=>new Option(c||'(blank)',c)));for(const name of ['chain','residue','representation','ligands','reset-view'])$(name).disabled=false;configureMembraneControls(oriented);updateResidues();styleViewer();viewer.zoomTo();if(oriented&&membraneLayer)viewer.rotate(-90,'x');viewer.render();
+  $('viewer-context').textContent=oriented?`ORIENTED_STRUCTURE.pdb · ${atoms.length.toLocaleString()} displayed atoms · generated by membrane orientation for this recorded run. Modeled membrane context is shown below.`:`${input.file_name} · ${atoms.length.toLocaleString()} displayed atoms · current case coordinates. Exact file identity is in Inputs.`;
+ }finally{$('view').disabled=!$('coordinate').value;}
+}
 $('coordinate').onchange=()=>{if($('coordinate').value!==loadedCoordinate)resetViewer();};$('reset-view').onclick=()=>{if(!viewer)return;$('chain').value='*';updateResidues();styleViewer();viewer.zoomTo();viewer.render();};$('chain').onchange=()=>{updateResidues();styleViewer();};$('residue').onchange=styleViewer;$('representation').onchange=styleViewer;$('ligands').onchange=styleViewer;
+$('membrane-overlay').onchange=()=>{drawMembraneOverlay();if(viewer)viewer.render();};$('accessibility-colors').onchange=styleViewer;
 $('structure-details').ontoggle=()=>{if(viewer&&$('structure-details').open){viewer.resize();viewer.render();}};window.addEventListener('resize',()=>{if(viewer&&panel==='results'){viewer.resize();viewer.render();}});
 function renderSources(){
  $('source-mode').textContent=canFetch?'Public retrieval is enabled. Only a selected reference is fetched when you press Retrieve.':'Public retrieval is off. Attach local files, or opt in later by starting the server with --allow-reference-fetch. No source is contacted automatically.';
@@ -160,3 +202,42 @@ function renderSources(){
  $('sources').replaceChildren(...boxes);if(!boxes.length)$('sources').append(el('p','This workflow uses attached local evidence.','muted'));
 }
 (async()=>{try{const session=await api('/api/session');token=session.token;canFetch=session.reference_fetch_enabled;definitions=await api('/api/definitions');sourceRows=await api('/api/sources');$('workflows').replaceChildren(...definitions.map(d=>{const b=el('button',undefined,'workflow');b.dataset.type=d.analysis_type;b.append(el('strong',names[d.analysis_type]||d.title),el('span',d.analysis_type==='membrane_orientation'?'Experimental':d.analysis_type==='sf_csa'?'Qualification references unresolved':'Qualification incomplete'));b.onclick=()=>choose(d.analysis_type);return b;}));choose(selected);await refreshCases();await refreshJobs();setInterval(()=>refreshJobs().catch(e=>notice(e.message,true)),2000);setInterval(updateClocks,1000);}catch(e){notice('Could not connect to the local workbench: '+e.message,true);}})();
+
+function renderProteinRecord(){
+ const imported=snapshot.analysis.protein_import;if(!imported)return;
+ if($('protein-preview').querySelector('button'))return;
+ const box=$('protein-preview');box.replaceChildren(el('strong',imported.name+' · '+imported.accession),el('p',imported.organism,'muted'));
+ box.append(el('p','Imported files are attached below. Their sources are recorded in Evidence.'));
+ for(const warning of imported.warnings||[])box.append(el('p',warning,'boundary'));
+}
+$('protein-lookup').onsubmit=guard(event=>{event.preventDefault();return exclusive(async()=>{
+ if(dirty)throw Error('Save your parameters before retrieving a protein.');
+ const analysisId=current,revision=snapshot.analysis.revision_sha256,type=snapshot.analysis.analysis_type;
+ const progress=$('protein-progress'),preview=$('protein-preview');preview.replaceChildren();progress.textContent='1 of 2 · Looking up the UniProt entry…';
+ try{
+  const identified=await api('/api/proteins',{link:$('protein-link').value.trim(),allow_public_fetch:true});
+  progress.textContent='2 of 2 · '+identified.name+' found. Retrieving and verifying the available AlphaFold files…';
+  const protein=await api(`/api/proteins/${identified.import_id}/prepare`,{allow_public_fetch:true});
+  progress.textContent='Retrieval finished. Review the available files below.';
+  preview.append(el('h3',protein.name),el('p',`${protein.accession} · ${protein.organism} · ${protein.length} amino acids`,'muted'));
+  const list=el('ul');for(const f of protein.files){const label={structure:'Predicted structure',reference_fasta:'Reference sequence',pae:'Predicted aligned error'}[f.role]||friendly(f.role);list.append(el('li',label+' · '+f.acquisition.artifact.file_name));}if(protein.provenance)list.append(el('li','Provenance declaration · bound to these exact coordinates'));preview.append(list);
+  if(protein.chain)preview.append(el('p','Verified coordinate chain: '+protein.chain+'. Existing parameter choices are preserved.'));
+  const available=new Set(protein.files.map(f=>type==='sf_csa'?({structure:'query_structure',reference_fasta:'query_fasta'}[f.role]||f.role):f.role));if(protein.provenance)available.add('provenance');
+  const missing=snapshot.definition.inputs.filter(r=>!available.has(r.role));
+  if(missing.length)preview.append(el('p','Still supplied separately: '+missing.map(r=>r.label||friendly(r.role)).join('; ')+'.','boundary'));
+  for(const warning of protein.warnings)preview.append(el('p',warning,'boundary'));
+  preview.append(el('p',protein.limitations[0],'muted'));
+  if(protein.pdb_ids.length){const d=el('details');d.append(el('summary',protein.pdb_ids.length+' experimental PDB cross-references'));d.append(el('p','These entries may cover different fragments, ligands or assemblies. Choose the appropriate experimental structure separately.','muted'));for(const id of protein.pdb_ids){const a=el('a',id+' ');a.href='https://www.rcsb.org/structure/'+id;a.target='_blank';a.rel='noreferrer';d.append(a);}preview.append(d);}
+  const actions=el('div',undefined,'actions'),apply=el('button','Fill this analysis'),create=el('button','Create a new analysis with these files','secondary');
+  async function adopt(newCase){
+   if(current!==analysisId||dirty)throw Error('Return to the original analysis and save your parameters before using this import.');
+   let id=analysisId,rev=revision;
+   if(newCase){id='case-'+Date.now().toString(36)+'-'+crypto.randomUUID().slice(0,6);const d=definitions.find(r=>r.analysis_type===type);const created=await api('/api/analyses',{analysis_id:id,analysis_type:type,question:d.question,subject_id:protein.name+' · '+protein.accession});rev=created.revision_sha256;}
+   const result=await api(`/api/proteins/${protein.import_id}/adopt`,{analysis_id:id,revision_sha256:rev});
+   preview.replaceChildren();await refreshCases();await openCase(id,{internal:true});$('optional-inputs').open=true;$('parameter-details').open=true;
+   const readiness=await api(`/api/analyses/${id}/validate`,{});snapshot.preflight=readiness;renderPreflight(readiness);
+   $('protein-progress').textContent='Inputs filled and readiness checked. '+(result.missing.length?'Some evidence still needs your attention.':'Review your parameters before running.');notice('Protein files are ready in the input boxes. '+(readiness.valid?'The software can run; scientific limits still apply.':'See the remaining readiness checks.'));updateActions();
+  }
+  apply.onclick=guard(()=>exclusive(()=>adopt(false)));create.onclick=guard(()=>exclusive(()=>adopt(true)));actions.append(apply,create);preview.append(actions,el('p','Different existing files are protected. Create a new analysis to use a different protein or model.','muted'));
+ }catch(error){progress.textContent='Retrieval could not finish. Your existing inputs have not changed.';throw error;}
+});});
