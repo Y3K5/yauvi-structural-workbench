@@ -93,13 +93,20 @@ jobs:
       - name: Install the sf-csa runtimes, pinned
         run: |
           set -euo pipefail
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            platform=linux-64
-          elif [ "$(uname -m)" = "arm64" ]; then
-            platform=osx-arm64
-          else
-            platform=osx-64
-          fi
+          # Branch on architecture as well as OS. These steps were written when
+          # the matrix was x86_64 Linux plus macOS, removed by c52625a, and
+          # ubuntu-24.04-arm was added afterwards by fce5676 -- so restoring them
+          # unchanged mapped every Linux runner to linux-64 and handed an aarch64
+          # machine an x86_64 micromamba, which exits 126. bioconda carries both
+          # pinned versions for linux-aarch64, so the platform name is the whole
+          # fix; nothing about the pins changes.
+          case "$RUNNER_OS/$(uname -m)" in
+            Linux/aarch64|Linux/arm64) platform=linux-aarch64 ;;
+            Linux/*)                   platform=linux-64 ;;
+            macOS/arm64|Darwin/arm64)  platform=osx-arm64 ;;
+            *)                         platform=osx-64 ;;
+          esac
+          echo "runner $RUNNER_OS $(uname -m) -> micromamba ${platform}"
           curl -fsSL "https://micro.mamba.pm/api/micromamba/${platform}/latest" | tar -xj bin/micromamba
           ./bin/micromamba create -y -q -p "$HOME/sfcsa-runtimes" \
             -c conda-forge -c bioconda \
