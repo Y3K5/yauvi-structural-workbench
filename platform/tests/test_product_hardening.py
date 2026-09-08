@@ -72,6 +72,31 @@ def test_projection_blocks_unhandled_paths_without_partial_output(tmp_path):
     with pytest.raises(ValueError,match='unresolved'):exporter.export(source,tmp_path/'portable')
     assert not (tmp_path/'portable').exists()
 
+def test_shared_ci_account_name_is_matched_as_a_path_not_as_a_word():
+    """A hosted runner's account name is not private data, and its prose says 'runner'.
+
+    Every EXECUTION_STATUS.json carries 'This runner reports execution only; it never
+    sets a qualification flag.' Matching the account name as a bare substring refused
+    that record on every GitHub runner while passing on a laptop, so the archive step
+    failed in CI and nowhere else. On a shared CI home the check narrows to path-shaped
+    matches; a personal account stays strict, which the test below pins.
+    """
+    exporter=module('export_execution_evidence')
+    ci='/home/runner'
+    for leak in ('/home/runner/work/case-a','/Users/runner/work','~runner/evidence','C:\\runner\\work'):
+        assert exporter.username_leak(json.dumps({'p':leak}),home=ci), leak
+    prose=json.dumps({'note':'This runner reports execution only; it never sets a qualification flag.'})
+    assert not exporter.username_leak(prose,home=ci)
+    assert not exporter.username_leak(json.dumps({'p':'/home/runner/work'}),username='',home=ci)
+
+def test_personal_account_name_is_still_caught_anywhere_including_bare():
+    """The narrowing above must not weaken the guard on a real user's machine."""
+    exporter=module('export_execution_evidence')
+    personal='/home/example-account'
+    assert exporter.username_leak(json.dumps({'unexpected_account':'example-account'}),home=personal)
+    assert exporter.username_leak(json.dumps({'p':'/home/example-account/x'}),home=personal)
+    assert not exporter.username_leak(json.dumps({'n':'nothing to see'}),home=personal)
+
 def test_guard_rejects_foreign_host_origin_and_missing_session():
     from types import SimpleNamespace
     handler=object.__new__(Handler);handler.server=SimpleNamespace(server_port=8947,token='test-token')

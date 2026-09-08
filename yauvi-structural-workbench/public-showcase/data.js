@@ -1,10 +1,10 @@
 window.YAUVI_PUBLIC_SHOWCASE = {
   "baseline": {
-    "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-07",
+    "baseline_id": "structural-workbench-offline-qualification-v2-2026-09-07b",
     "scientific_boundary": "Passing software tests are not passing external scientific qualification benchmarks.",
     "selection": "not network and not adapter",
     "total_deselected": 5,
-    "total_passed": 588
+    "total_passed": 590
   },
   "cases": [
     {

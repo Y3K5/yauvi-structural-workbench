@@ -40,10 +40,39 @@ def project(document):
             for i, item in enumerate(value): visit(item, pointer + '/' + str(i))
     visit(result)
     encoded = json.dumps(result, sort_keys=True)
-    local_username = Path.home().name
-    if LOCAL.search(encoded) or SECRET.search(encoded) or (local_username and local_username.casefold() in encoded.casefold()):
+    if LOCAL.search(encoded) or SECRET.search(encoded) or username_leak(encoded):
         raise ValueError('unresolved local-path or secret-shaped content; review original locally')
     return result, changes
+
+#: Home directories of shared hosted-CI accounts. The account name there names a
+#: disposable virtual machine rather than a person, so it is not the private data
+#: this guard exists to protect. Kept as exact home paths, not bare names, so a
+#: real account that happens to be called 'runner' is still checked in full.
+SHARED_CI_HOMES = frozenset({'/home/runner', '/Users/runner', '/home/runneradmin', '/Users/runneradmin'})
+
+def username_leak(encoded, username=None, home=None):
+    """True when the local account name reaches a record that is about to be published.
+
+    On a personal machine the account name is checked anywhere it appears, not only
+    inside a path, because a bare name in a hostname or a user field discloses just
+    as much as a home directory does. That strictness is deliberate and is kept.
+
+    A shared CI account is the one case where it misfires. On a GitHub runner
+    Path.home().name is 'runner', and every EXECUTION_STATUS.json carries the
+    sentence 'This runner reports execution only; it never sets a qualification
+    flag.' The bare-substring test refused that record on every hosted runner while
+    passing on a laptop, so the archive step failed in CI and nowhere else. The
+    prose is accurate, and 'runner' on a hosted runner identifies nobody, so the
+    guard narrows to path-shaped matches there and stays strict everywhere else.
+    LOCAL still catches /home/runner and /Users/runner independently.
+    """
+    home = Path.home() if home is None else Path(home)
+    username = home.name if username is None else username
+    if not username:
+        return False
+    if home.as_posix() in SHARED_CI_HOMES:
+        return re.search(r'[/\\~]' + re.escape(username) + r'(?![A-Za-z0-9_.-])', encoded, re.I) is not None
+    return username.casefold() in encoded.casefold()
 
 def export(source, target):
     source, target = Path(source).resolve(), Path(target).resolve()
