@@ -1,7 +1,7 @@
 {
  "schema_version": "2.0",
  "collection_id": "yauvi-structural-public-qualification-v2",
- "collection_version": "2.9",
+ "collection_version": "2.10",
  "manifest_state": "source_adoption_required",
  "immutability_policy": "Thresholds, expected labels, splits, and adopted source checksums are never edited in place. A scientific change requires a new collection version.",
  "threshold_revisions": [
@@ -238,6 +238,25 @@
    "one_source_re_locked": "2HYY.cif was re-locked the same day after a wwPDB re-release. The coordinate block is byte-identical across both files -- 8,702 ATOM/HETATM records, same sha256 over the block -- and the panel was re-executed rather than assumed equivalent. See ABL_RECORD_SELECTION.draft.md.",
    "required_fields_note": "REQUIRED_RECORD_FIELDS is one global set applied to every panel, so adoption needed two fields the ABL draft did not carry. Neither was invented. homolog_group is 'abl1_kinase' on all fourteen, which is the literal truth -- every record is the human ABL1 kinase domain, UniProt P00519 -- and is the slug structure_qc already uses for its two ABL entries. exclusion_rationale is derived per record from the state_evidence.basis already recorded beside it, stating the record's role in the two-sided set and the evidence its state was assigned from. Worth a curator's eye: in the other four panels this field also carries selection provenance -- why this entry rather than another -- and the derived sentences here carry only role and basis.",
    "a_check_that_cannot_fire": "homolog_group feeds the audit's split-leakage check, which compares the development and held_out splits for a shared group. This panel has no development split and every record is one group, so the check is vacuous here. Recorded rather than left implicit: the field is still worth carrying because it states plainly that the ABL scope has no protein diversity, which is a real limit on what a green panel demonstrates."
+  },
+  {
+   "collection_version": "2.10",
+   "date": "2026-09-07",
+   "scope": "structure_qc x_ray only, and within it one held_out record: v2-structqc-xray-held-2V7A. No threshold, gate, coverage rule, split or source checksum changes. One record's expected residue_identity values are restated against corrected engine behaviour. No other record, panel or stratum is touched.",
+   "change": [
+    "v2-structqc-xray-held-2V7A expected_result.residue_identity.mapped_residues: 270 -> 271",
+    "v2-structqc-xray-held-2V7A expected_result.residue_identity.coordinate_residues: 270 -> 271",
+    "v2-structqc-xray-held-2V7A expected_result.residue_identity.coverage_fraction: 0.238938 -> 0.239823",
+    "v2-structqc-xray-held-2V7A expected_result.residue_identity.identity_fraction: 0.996296 -> 0.99631",
+    "reference_length is unchanged at 1130"
+   ],
+   "evidence": "2V7A carries PTR (O-phosphotyrosine) at auth residue 393, declared in the entry's own _pdbx_struct_mod_residue loop with parent_comp_id TYR. The expectations recorded on 2026-08-29 were measured while that residue was being dropped: PTR appears nowhere in that run's STRUCTURE_EVIDENCE.json or RESIDUE_QUALITY.tsv. Commit baa20fd, 'Preserve chemical identity and bound structural interpretation', added explicit_modified_parent_v1, which maps a linked modified polymer residue through its declared parent. The residue is now mapped as one-letter Y at label_seq_id 167 with mapping method explicit_modified_parent_v1. The arithmetic is closed: 270/271 = 0.99631 and 271/1130 = 0.239823, so the mapped count rose by exactly one and the newly mapped residue matched. The mismatch count is unchanged at one.",
+   "rationale": "The engine became more correct and a frozen expectation did not move with it. This record was selected for exactly this chemistry -- its exclusion_rationale states it 'carries nonstandard-residue coverage (PTR, phosphotyrosine)' and is the panel's declared engineered-mutation case -- so an expectation measured while PTR was discarded did not describe what the record was chosen to witness. Restating it is not a relaxation: identity rose rather than fell, the bar is unchanged, and the single mismatch that carries the record's purpose still surfaces. Lowering nothing was available as an alternative, because the disagreement is with a stale value rather than with a threshold.",
+   "why_now": "SCI-01 in IMPLEMENTATION_BACKLOG.json states the requirement as 'Linked modified polymer retains component ID and parent sequence; isolated amino-acid ligand excluded. Extend mapping/model/alternate-location controls and requalify', and carries state implemented_unqualified. The code shipped in baa20fd; the requalification is this revision. The failure surfaced because Qualification v2 executes the frozen expectations on every push.",
+   "reproduction": "Reproduced on macOS arm64, Python 3.12.0, from the repository's own sources, giving the three gated deltas above. The same three deltas were observed in Qualification v2 CI on the ubuntu-24.04-arm runner; all seven matrix jobs failed with the same annotation count. Fifteen of the sixteen structure_qc cases pass unchanged, so the correction is confined to the one record that carries a modified residue.",
+   "records_unaffected": false,
+   "what_this_does_not_assert": "This does not qualify structure_qc. The panel's coverage feature modified_residues remains a recorded defect, and SCI-01 remains unqualified until its mapping, model and alternate-location controls are extended as its acceptance requires. Restating one record's expectation demonstrates that the engine's modified-residue accounting changed and that the change is arithmetically consistent; it does not demonstrate that the accounting is correct across chemistries this panel does not contain. No second-machine gate is satisfied by this entry.",
+   "residual_risk": "One record is a thin basis for accepting a chemistry change. PTR is the only modified residue exercised by this stratum, and a correction validated on a single phosphotyrosine cannot speak for selenomethionine, phosphoserine, or a modified residue whose parent is ambiguous. The honest reading is that this revision keeps the panel executable and records why a value moved, and that SCI-01's requested control extension is still the work that would establish the behaviour."
   }
  ],
  "execution_policy": {
