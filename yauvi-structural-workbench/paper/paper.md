@@ -186,17 +186,20 @@ OpenAI Codex assisted with implementation, tests, interface text, documentation,
 and manuscript drafting. Anthropic Claude assisted during earlier development.
 
 Models were recovered from local session records rather than reconstructed from
-memory. OpenAI: `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`, `gpt-5.6-luna` and
-`gpt-5.4-mini`, across nineteen sessions that touched this repository between
-25 August and 7 September 2026. Anthropic: `claude-opus-5`, `claude-sonnet-5`
-and `claude-opus-4-8`, between 25 July and 7 September 2026.
+memory, and every session below is one whose transcript references this
+repository. OpenAI: `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`, `gpt-5.6-luna`
+and `gpt-5.4-mini`, across nineteen sessions between 25 August and 7 September
+2026. Anthropic: `claude-opus-5`, across twenty-one sessions between 29 August
+and 7 September 2026.
 
-Two limits on that record are stated rather than smoothed over. The Anthropic
-figures are scoped to the workspace containing this repository, not to the
-repository alone, so they include sessions on unrelated projects and overstate
-what touched this work; the OpenAI figures are scoped to sessions that reference
-this repository. Neither set is a measure of contribution, only of which models
-were invoked. No version has been inferred where a record was absent.
+Two limits are stated rather than smoothed over. First, this repository's public
+history began on 27 August 2026 and development preceded it, so assistance
+before that date is not captured by a repository-scoped search; records from the
+surrounding workspace over the same period additionally show `claude-sonnet-5`
+and `claude-opus-4-8` from 25 July 2026, which cannot be attributed to this work
+specifically and are therefore not claimed as such. Second, session counts
+measure which models were invoked, not how much any of them contributed. No
+version has been inferred where a record was absent.
 
 Earlier drafts record human review; review of the current changes remains
 pending. Automated tests do not substitute for that review.

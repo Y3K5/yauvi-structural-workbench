@@ -34,13 +34,21 @@ further. Recorded here so a reviewer sees a decision with a trigger, not a gap.
 
 **AI model/version records — recovered from records.** Recovered by reading local
 session logs, not reconstructed from memory, and no version was inferred where a
-record was absent. OpenAI `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`,
-`gpt-5.6-luna`, `gpt-5.4-mini` across nineteen sessions referencing this
-repository, 25 August to 7 September 2026. Anthropic `claude-opus-5`,
-`claude-sonnet-5`, `claude-opus-4-8`, 25 July to 7 September 2026. The Anthropic
-range is scoped to the containing workspace rather than this repository alone and
-therefore overstates what touched this work; that limit is stated in the paper
-rather than smoothed over. Counts are invocation volume, not contribution.
+record was absent. Both vendors are scoped identically: sessions whose transcript
+references this repository. OpenAI `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`,
+`gpt-5.6-luna`, `gpt-5.4-mini` across nineteen sessions, 25 August to 7 September
+2026. Anthropic `claude-opus-5` across twenty-one sessions, 29 August to
+7 September 2026.
+
+An earlier draft of this record listed `claude-sonnet-5` and `claude-opus-4-8`
+alongside them. Scoping the search to this repository showed those belonged to
+other projects in the same workspace, so claiming them here would have overstated
+the record. They are noted in the paper only as workspace activity that cannot be
+attributed to this work, because public history began on 27 August 2026 and
+development preceded it — a repository-scoped search cannot see that earlier
+period, and no attribution is invented to cover it.
+
+Counts are invocation volume, not contribution.
 
 **Licensing and third-party audit — evidenced against built artifacts.** Audited
 the wheel and sdist actually produced, not the edited source, per the requirement
