@@ -1,0 +1,65 @@
+{
+ "record_for": "COR-02",
+ "date": "2026-09-07",
+ "what_this_is": "A seed sweep of the same synthetic-barrel fixture the 2026-09-06 Linux aarch64 diagnostic used, run on macOS arm64 against Apple Accelerate instead of scipy-openblas. It is not a reproduction of the original CI combination and does not satisfy COR-02's acceptance.",
+ "fixture": {
+  "n_strands": 12,
+  "strand_len": 10,
+  "ec_loop_len": 10,
+  "peri_loop_len": 2,
+  "seeds": "0-11",
+  "n_points": 160
+ },
+ "seeds": [
+  {"seed": 0, "mean_jaccard": 0.94, "min_jaccard": 0.863, "max_jaccard": 1.0, "passed_090": true},
+  {"seed": 1, "mean_jaccard": 0.867, "min_jaccard": 0.833, "max_jaccard": 0.979, "passed_090": false},
+  {"seed": 2, "mean_jaccard": 0.936, "min_jaccard": 0.88, "max_jaccard": 0.98, "passed_090": true},
+  {"seed": 3, "mean_jaccard": 0.952, "min_jaccard": 0.936, "max_jaccard": 0.957, "passed_090": true},
+  {"seed": 4, "mean_jaccard": 0.863, "min_jaccard": 0.774, "max_jaccard": 0.93, "passed_090": false},
+  {"seed": 5, "mean_jaccard": 0.983, "min_jaccard": 0.933, "max_jaccard": 1.0, "passed_090": true},
+  {"seed": 6, "mean_jaccard": 0.892, "min_jaccard": 0.863, "max_jaccard": 0.942, "passed_090": false},
+  {"seed": 7, "mean_jaccard": 0.875, "min_jaccard": 0.796, "max_jaccard": 0.96, "passed_090": false},
+  {"seed": 8, "mean_jaccard": 0.959, "min_jaccard": 0.897, "max_jaccard": 1.0, "passed_090": true},
+  {"seed": 9, "mean_jaccard": 0.873, "min_jaccard": 0.759, "max_jaccard": 0.945, "passed_090": false},
+  {"seed": 10, "mean_jaccard": 0.789, "min_jaccard": 0.741, "max_jaccard": 0.897, "passed_090": false},
+  {"seed": 11, "mean_jaccard": 0.914, "min_jaccard": 0.839, "max_jaccard": 0.962, "passed_090": true}
+ ],
+ "distribution": {
+  "n": 12,
+  "min": 0.789,
+  "median": 0.914,
+  "max": 0.983,
+  "below_0_90": 6,
+  "below_0_85": 1
+ },
+ "three_values_for_one_fixture": {
+  "note": "Seed 0 is the seed test_synthetic_barrel_is_broadly_rotation_invariant asserts on. The same fixture and seed give a different mean on each numerical stack measured so far.",
+  "original_ci": 0.888,
+  "linux_aarch64_scipy_openblas_0_3_34_neoversev2": 0.979,
+  "macos_arm64_apple_accelerate": 0.94,
+  "bound": 0.9
+ },
+ "mechanism": {
+  "degenerate_in_plane_axes": true,
+  "eigenvalues_seed_0": [201.058, 95.984, 95.984],
+  "gap12": 0.0,
+  "explanation": "The second and third inertia eigenvalues of a near-cylindrical barrel are equal, so the two in-plane axes are not uniquely determined. Any rotation within that plane is an equally valid eigenbasis, and each LAPACK build may return a different one. The membrane normal is well determined; its in-plane frame is not, and boundary residues change side as it moves."
+ },
+ "what_this_changes_about_COR_02": "The title 'Linux arm64 membrane regression' implies a platform-specific defect. This sweep is evidence against that reading. On macOS arm64, which passes CI, the metric ranges 0.789 to 0.983 across twelve seeds with six of twelve below the 0.90 bound. The spread across seeds on one platform is as wide as the spread across platforms at one seed. The suite passes because seed 0 happens to draw 0.940, not because rotation invariance has been demonstrated.",
+ "what_this_does_not_establish": "COR-02's acceptance requires reproducing the original dependency, BLAS and CPU combination before the item can be called resolved. This run does not do that: it is a different operating system and a different BLAS (Apple Accelerate, not scipy-openblas 0.3.34 neoversev2), and it does not recover the 0.888 value. COR-02 stays open. Nothing here shows the orientor is correct or incorrect against OPM; the fixture measures self-consistency under rotation only.",
+ "consequence_for_the_bound": "No threshold was changed and none should be on this evidence. Collection 2.1 could justify moving a bound because the achieved accuracy was bimodal with an empty band four orders of magnitude wide. This distribution is continuous from 0.789 to 0.983 with no empty band, so any bound placed in it sits inside the population rather than separating two. Lowering 0.90 to 0.85 would take eleven of twelve seeds green while changing nothing about the underlying instability.",
+ "suggested_directions": [
+  "Break the degeneracy deterministically: when gap12 is at or near zero, choose the in-plane axis from a reproducible property of the structure rather than accepting the arbitrary basis LAPACK returns. This would make the result platform-independent by construction instead of by luck.",
+  "Have the test assert on the distribution across seeds rather than on a single draw, so what it claims matches what it measures.",
+  "Either way, the claim 'broadly rotation invariant' should be restated or withdrawn against a measured distribution, in the manner the panel manifest already applies to six withdrawn membrane mechanisms."
+ ],
+ "runtime": {
+  "machine": "arm64",
+  "platform": "Darwin",
+  "python": "3.12.0",
+  "numpy": "2.5.3",
+  "blas": "accelerate",
+  "blas_version": "unknown",
+  "contrast_with": "implementation-evidence/2026-09-06/linux-arm64-diagnostic.json, which records scipy-openblas 0.3.34.0.0 USE64BITINT DYNAMIC_ARCH NO_AFFINITY neoversev2 on Linux aarch64"
+ }
+}

@@ -43,10 +43,12 @@
       "acceptance": "Original CI mean .888 fails .90; current offline Linux mean .979 passes. Reproduce original dependency/BLAS/CPU combination before claiming resolved.",
       "category": "correctness",
       "evidence": "implementation-evidence/2026-09-06/linux-arm64-diagnostic.json",
+      "evidence_additional": "implementation-evidence/2026-09-07/macos-arm64-seed-sweep.json",
       "id": "COR-02",
       "independent_review": "not_recorded",
       "owner": "Software engineer / Scientific lead",
       "state": "open_not_reproduced",
+      "state_note": "Still open: the original dependency/BLAS/CPU combination has not been reproduced and the 0.888 value has not been recovered, so the acceptance is unmet. What is now characterised is the mechanism and the metric's spread. The barrel's second and third inertia eigenvalues are equal (gap12 = 0.0), so the in-plane axes are not uniquely determined and each LAPACK build may return a different valid basis. A twelve-seed sweep on macOS arm64 with Apple Accelerate gives 0.789 to 0.983, six of twelve below the 0.90 bound; seed 0, the seed the suite asserts on, gives 0.940 there, 0.979 on Linux aarch64 with scipy-openblas, and 0.888 in the original CI. The spread across seeds on one platform is as wide as the spread across platforms at one seed, which is evidence against the title's implication that this is platform-specific. No threshold was changed: the distribution is continuous, so unlike collection 2.1's bimodal case there is no empty band for a bound to sit in.",
       "title": "Linux arm64 membrane regression"
     },
     {
