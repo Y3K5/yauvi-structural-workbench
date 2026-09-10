@@ -7,9 +7,20 @@ import sys
 import zipfile
 
 
+# Hand-maintained on purpose. Deriving this from pyproject would make the check
+# agree with whatever the packaging happens to say, which is the one thing it
+# exists not to do -- it is a second opinion about what the distribution contains,
+# not a restatement of the first.
+#
+# The cost of that choice is exactly this: adding a package means updating both,
+# and `structprep` was added to `packages.find` and `include` without it, which
+# turned the reviewer gate red. It belongs in the wheel -- pyproject declares the
+# console entry point `structprep = "structprep.cli:main"`, so a wheel without it
+# ships a command that cannot run. Required, therefore, rather than merely
+# tolerated.
 REQUIRED_ROOTS = {
     "actstate", "assembly_context", "memorient", "sf_csa", "site_context",
-    "state_atlas", "structqc", "yauvi_platform", "yauvi_sources",
+    "state_atlas", "structprep", "structqc", "yauvi_platform", "yauvi_sources",
     "yauvi_structural_workbench",
 }
 FORBIDDEN_PARTS = {
