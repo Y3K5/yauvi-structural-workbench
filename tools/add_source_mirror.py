@@ -3,9 +3,10 @@
 
 A mirror is only worth having if it serves the exact bytes the lock already
 records, so this refuses to write one it has not proven. For each matching
-entry it downloads the candidate mirror, applies the same decompression rule the
-acquirer applies, digests the result, and requires it to equal the recorded
-sha256. One mismatch and nothing is written at all -- a lock half-pointed at a
+entry it downloads the candidate mirror *through the acquirer's own `fetch`* --
+same retries, same decompression rule -- digests the result, and requires it to
+equal the recorded sha256. Sharing that download is the point: a verifier with a
+weaker fetch than the acquirer refuses mirrors that would have worked. One mismatch and nothing is written at all -- a lock half-pointed at a
 mirror that disagrees is worse than a lock with no mirror.
 
 `url` is left untouched. It stays the archive of record: the citable location,
@@ -37,17 +38,17 @@ Exit: 0 written (or nothing to do), 1 a candidate failed verification, 2 bad usa
 from __future__ import annotations
 
 import argparse
-import gzip
 import hashlib
+import importlib.util
 import json
 import sys
-import urllib.error
-import urllib.request
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCK = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "SOURCE_LOCK.json"
-USER_AGENT = "yauvi-qualification/2.0"
+COLLECTION = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+LOCK = COLLECTION / "SOURCE_LOCK.json"
+ACQUIRER = COLLECTION / "acquire_sources.py"
 
 
 def expand(template: str, entry: dict) -> str:
@@ -58,34 +59,61 @@ def expand(template: str, entry: dict) -> str:
     return template.format(artifact=artifact, basename=basename, filename=basename + suffix)
 
 
-def digest_as_acquirer_would(data: bytes, url: str, artifact: str) -> str:
-    """Hash what the acquirer would store, not what the wire carried.
+_acquire_sources = None
 
-    `acquire_sources.py` decompresses a `.gz` URL whose artifact path is not
-    `.gz` before hashing. gzip embeds an mtime, so a mirror re-compressed at a
-    different moment carries different bytes while holding identical content --
-    comparing the archives would reject a perfectly good mirror.
+
+def acquirer():
+    """The acquirer's own downloader, loaded from the collection it belongs to.
+
+    A mirror is worth recording only if acquisition can actually use it, so it
+    is proven by downloading it exactly the way acquisition will: the same retry
+    policy, the same decompression rule, the same treatment of a definitive
+    refusal.
+
+    Reimplementing that here is how the two came to disagree. This verifier used
+    to read the whole body in a single call with no retry, while
+    `acquire_sources.fetch` streams, checks the declared length, and retries --
+    because a provider under load truncates large responses. Verifying the ten
+    proteome mirrors, three passes over the identical commit failed six, then
+    one, then two of them, a different subset each time and every one an
+    `IncompleteRead` a few kilobytes from the end. Not one was a digest
+    mismatch. The mirror was good; the verifier was less robust than the thing
+    it was verifying for, and so refused mirrors acquisition would have used.
     """
-    if url.endswith(".gz") and not artifact.endswith(".gz"):
-        data = gzip.decompress(data)
-    return hashlib.sha256(data).hexdigest()
+    global _acquire_sources
+    if _acquire_sources is None:
+        spec = importlib.util.spec_from_file_location("acquire_sources", ACQUIRER)
+        if spec is None or spec.loader is None:  # pragma: no cover - packaging error
+            raise RuntimeError(f"cannot load the acquirer from {ACQUIRER}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _acquire_sources = module
+    return _acquire_sources
 
 
 def verify(url: str, entry: dict) -> str | None:
-    """Return None if the mirror serves the locked bytes, else why it does not."""
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urllib.request.urlopen(request, timeout=300) as response:
-            data = response.read()
-    except urllib.error.HTTPError as exc:
-        return f"HTTP {exc.code} {exc.reason}"
-    except Exception as exc:  # transport, DNS, TLS
-        return f"{type(exc).__name__}: {exc}"
+    """Return None if the mirror serves the locked bytes, else why it does not.
 
-    try:
-        observed = digest_as_acquirer_would(data, url, entry["artifact"])
-    except (OSError, EOFError) as exc:
-        return f"not the archive it claims to be ({len(data)} bytes): {exc}"
+    The digest is compared here rather than passed to `fetch` as its `expected`
+    argument, deliberately. `fetch` treats a mismatch as retryable, which is
+    right for acquisition -- a short read can produce one -- but wrong here: a
+    mirror pointed at the wrong file would spend the whole retry budget on every
+    artifact before saying so, and this tool exists to say so immediately. The
+    retries stay where they belong, on the transport.
+    """
+    acquire = acquirer()
+    with tempfile.TemporaryDirectory() as tmp:
+        # The name decides decompression: `fetch` gunzips a `.gz` URL whose
+        # destination is not `.gz`, which is what makes the digest comparable to
+        # a lock that records decompressed content.
+        dest = Path(tmp) / Path(entry["artifact"]).name
+        try:
+            acquire.fetch(url, dest)
+        except acquire.Unacquirable as exc:
+            return str(exc)  # a definitive answer: retrying cannot change it
+        except Exception as exc:  # transport, truncation, TLS, DNS
+            return f"{type(exc).__name__}: {exc}"
+        observed = hashlib.sha256(dest.read_bytes()).hexdigest()
 
     expected = entry.get("sha256", "")
     if observed != expected:
