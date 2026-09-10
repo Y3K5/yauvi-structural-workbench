@@ -798,3 +798,25 @@ def test_a_non_blocking_panel_is_not_held_to_release_coverage():
     assert entry == [] or entry[0]['release_blocking'] is False
     assert report['every_release_blocking_panel_reproduced'] is True, \
         "an unmet requirement on a non-blocking panel must not gate the release"
+
+
+def test_the_sf_csa_gates_are_falsifiable():
+    """Protocol rule 2, run rather than filed.
+
+    `sf_csa_gate_falsification.py` is the evidence that sf-csa's gates can fail,
+    and nothing invoked it — no CI step, no test. It described the panel as it
+    stood on 2026-08-31 and went stale the next day, when the RBH defect was
+    repaired and `rbh_asserted_rejected` was retired. Ten days later it reported
+    four failures against a panel that had simply moved on, and that only came to
+    light because adoption was being considered.
+
+    A rule-2 harness nobody runs is a claim, not a check. This runs it.
+    """
+    module = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "sf_csa_gate_falsification.py"
+    assert module.is_file(), module
+    result = subprocess.run([sys.executable, str(module)], capture_output=True, text=True,
+                            cwd=module.parent)
+    assert result.returncode == 0, (
+        "sf-csa has an unfalsifiable or misbehaving gate:\n"
+        + result.stderr.strip() + "\n" + result.stdout.strip()[-1500:])
+    assert "behaved as declared" in result.stdout

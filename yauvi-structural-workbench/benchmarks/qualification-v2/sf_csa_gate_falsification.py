@@ -184,36 +184,73 @@ def main() -> int:
                str(manifest["missing_evidence"]))
 
         # --- controls -------------------------------------------------------
-        # The computed-path control passes only while the defect is present.
-        shutil.rmtree(root / "release")
-        out = write_release(root, label="same_mechanism_class", orthology="reciprocal_best_hit")
-        ok, failed = judge(out, stratum="homologous_superfamily", label="same_mechanism_class",
-                           kind="control_case", purpose="rbh_computed_path")
-        record("rbh_computed_path control passes while defect exists", ok, str(failed))
+        # Rewritten 2026-09-10. These probes described the panel as it stood on
+        # 2026-08-31 and were never updated for two changes made the next day:
+        # the RBH defect was repaired, inverting `rbh_computed_path`, and
+        # `rbh_asserted_rejected` was retired because the asserted-evidence path
+        # it probed is now refused by the module's manifest reader, so no such
+        # record can exist. Four probes failed against a panel that had moved,
+        # which is not evidence about the gates -- it is evidence about the
+        # probes. Each purpose is now exercised in both directions, because a
+        # control that only ever passes proves nothing.
 
-        # ...and fails the day the module is fixed.
+        # rbh_computed_path: the computed path reaches the label.
         shutil.rmtree(root / "release")
         out = write_release(root, label="probable_same_function", orthology="reciprocal_best_hit")
         ok, failed = judge(out, stratum="homologous_superfamily", label="probable_same_function",
                            kind="control_case", purpose="rbh_computed_path")
-        record("rbh_computed_path control fails once the label is reachable",
-               (not ok) and "computed_rbh_does_not_reach_function_label" in failed, str(failed))
+        record("rbh_computed_path passes when the computed path reaches the label", ok, str(failed))
 
-        # The asserted-rbh control fires only on promotion without computed support.
+        # ...and fails when the label is not reached, which is what it watches for.
+        shutil.rmtree(root / "release")
+        out = write_release(root, label="same_mechanism_class", orthology="reciprocal_best_hit")
+        ok, failed = judge(out, stratum="homologous_superfamily", label="same_mechanism_class",
+                           kind="control_case", purpose="rbh_computed_path")
+        record("rbh_computed_path fails when the label is not reached",
+               (not ok) and "computed_rbh_reaches_function_label" in failed, str(failed))
+
+        # ...and fails when the hit is not reciprocal, so the label cannot be earned
+        # by the computed path even though it is present.
+        shutil.rmtree(root / "release")
+        out = write_release(root, label="probable_same_function",
+                            orthology="best_hit_nonreciprocal")
+        ok, failed = judge(out, stratum="homologous_superfamily", label="probable_same_function",
+                           kind="control_case", purpose="rbh_computed_path")
+        record("rbh_computed_path fails when the hit is not reciprocal",
+               (not ok) and "computed_rbh_reaches_function_label" in failed, str(failed))
+
+        # rbh_without_whole_architecture: sequence evidence alone must not promote.
+        # A genuine reciprocal best hit on a pair that is not a whole-architecture
+        # match stays below the function label. This is the panel's own
+        # false-positive bound, and unlike the definitional one it can fail.
+        shutil.rmtree(root / "release")
+        out = write_release(root, category="domain_level_match", label="same_mechanism_class",
+                            orthology="reciprocal_best_hit")
+        ok, failed = judge(out, stratum="homologous_superfamily", label="same_mechanism_class",
+                           category="domain_level_match", kind="control_case",
+                           purpose="rbh_without_whole_architecture")
+        record("rbh_without_whole_architecture passes when sequence alone does not promote",
+               ok, str(failed))
+
+        # ...and fails on exactly the promotion it forbids.
+        shutil.rmtree(root / "release")
+        out = write_release(root, category="domain_level_match", label="probable_same_function",
+                            orthology="reciprocal_best_hit")
+        ok, failed = judge(out, stratum="homologous_superfamily", label="probable_same_function",
+                           category="domain_level_match", kind="control_case",
+                           purpose="rbh_without_whole_architecture")
+        record("rbh_without_whole_architecture fails when sequence alone promotes",
+               (not ok) and "computed_rbh_alone_does_not_promote" in failed, str(failed))
+
+        # The retired purpose is refused, not quietly tolerated. Retirement that is
+        # only written down is not enforced; this is where it is observed.
         shutil.rmtree(root / "release")
         out = write_release(root, label="probable_same_function",
                             orthology="best_hit_nonreciprocal")
         ok, failed = judge(out, stratum="homologous_superfamily", label="probable_same_function",
                            kind="control_case", purpose="rbh_asserted_rejected")
-        record("rbh_asserted_rejected control detects unsupported promotion", ok, str(failed))
-
-        shutil.rmtree(root / "release")
-        out = write_release(root, label="same_mechanism_class",
-                            orthology="best_hit_nonreciprocal")
-        ok, failed = judge(out, stratum="homologous_superfamily", label="same_mechanism_class",
-                           kind="control_case", purpose="rbh_asserted_rejected")
-        record("rbh_asserted_rejected control fails when nothing was promoted",
-               (not ok) and "asserted_rbh_detected_as_unsupported" in failed, str(failed))
+        record("the retired rbh_asserted_rejected purpose is rejected",
+               (not ok) and "control_purpose_declared" in failed, str(failed))
 
         # An unknown control purpose must not pass silently.
         shutil.rmtree(root / "release")
