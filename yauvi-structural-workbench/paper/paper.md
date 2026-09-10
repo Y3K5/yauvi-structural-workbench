@@ -112,6 +112,8 @@ geometry is not possible. It declares that its output is not ready for force-fie
 work until a step that states a force field and pH has run. It answers no
 scientific question itself and is not one of the six workflows.
 
+![Six structural evidence questions. StructQC binds identity, provenance and a SHA-256 before any analysis interprets the coordinates; the five analyses consume that manifest independently and their evidence is never combined.](figures/six-evidence-questions.png){#fig:questions width=100%}
+
 StructQC establishes coordinate provenance and residue identity before composed
 workflows. Modified chemical components are preserved separately from explicit
 parent-residue sequence normalization; normalization does not imply identical
