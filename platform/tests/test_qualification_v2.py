@@ -4,7 +4,10 @@ import hashlib
 import importlib.util
 import json
 import re
+import subprocess
 import sys
+
+import pytest
 from pathlib import Path
 
 
@@ -384,3 +387,268 @@ def test_archive_reader_never_extracts_unsafe_members(tmp_path):
     rows = module.load_summaries(tmp_path)
     assert rows[0]['error']
     assert not (tmp_path.parent/'EXECUTION_SUMMARY.json').exists()
+
+
+def _acquirer_module():
+    spec = importlib.util.spec_from_file_location(
+        "acquire_sources",
+        ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "acquire_sources.py",
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _fake_response(body: bytes, content_type: str):
+    import email.message, io
+
+    headers = email.message.Message()
+    headers["Content-Length"] = str(len(body))
+    headers["Content-Type"] = content_type
+
+    class Response(io.BytesIO):
+        def __init__(self):
+            super().__init__(body)
+            self.headers = headers
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            self.close()
+
+    return Response()
+
+
+def test_a_definitive_provider_answer_is_not_retried(tmp_path, monkeypatch):
+    """What made a broken acquisition step unreadable in CI.
+
+    Every failure -- a 404, a truncated read, a landing page where a gzip stream
+    was expected -- collapsed into "6 attempts failed", after fifty seconds of
+    backoff per artifact. A status that will not change on the seventh ask has to
+    be reported, once, with its number.
+    """
+    import urllib.error
+
+    module = _acquirer_module()
+
+    def refuse(*_args, **_kwargs):
+        raise urllib.error.HTTPError("https://example.invalid/x.fasta.gz", 404, "Not Found", None, None)
+
+    monkeypatch.setattr(module.urllib.request, "urlopen", refuse)
+    calls = []
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: calls.append(seconds))
+
+    with pytest.raises(module.Unacquirable) as caught:
+        module.fetch("https://example.invalid/x.fasta.gz", tmp_path / "x.fasta", "0" * 64)
+
+    assert "404" in str(caught.value)
+    assert calls == [], "a terminal status must not consume the retry budget"
+
+
+def test_a_landing_page_served_for_a_gz_url_names_what_arrived(tmp_path, monkeypatch):
+    """A URL that addresses a preview page rather than a file says so.
+
+    Decompressing HTML raises "Not a gzipped file", which reads as a corrupt
+    download and invites a retry. It is neither: the URL names a page.
+    """
+    module = _acquirer_module()
+    page = b"<!doctype html><html><body>record preview</body></html>"
+    monkeypatch.setattr(module.urllib.request, "urlopen",
+                        lambda *a, **k: _fake_response(page, "text/html"))
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: None)
+
+    with pytest.raises(module.Unacquirable) as caught:
+        module.fetch("https://example.invalid/x.fasta.gz", tmp_path / "x.fasta", "0" * 64)
+
+    message = str(caught.value)
+    assert "markup" in message and "text/html" in message
+    assert not (tmp_path / "x.fasta").exists(), "a refused fetch must leave no artifact behind"
+
+
+def test_a_transient_status_still_exhausts_the_retry_budget(tmp_path, monkeypatch):
+    """The truncation case the retry loop exists for is unchanged."""
+    import urllib.error
+
+    module = _acquirer_module()
+    monkeypatch.setattr(module.urllib.request, "urlopen", lambda *a, **k: (_ for _ in ()).throw(
+        urllib.error.HTTPError("https://example.invalid/x.fasta.gz", 502, "Bad Gateway", None, None)))
+    slept = []
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: slept.append(seconds))
+
+    with pytest.raises(RuntimeError):
+        module.fetch("https://example.invalid/x.fasta.gz", tmp_path / "x.fasta", "0" * 64)
+
+    assert len(slept) == 5, "a busy provider must still be retried"
+
+
+def test_no_tracked_file_publishes_a_local_home_path():
+    """The screen that reads the resolved tree rather than the change.
+
+    51 occurrences of one home directory reached public history through a
+    generated `output_dir` field, in a class the publishing protocol had already
+    recorded once. Nobody wrote those lines, so no diff review could catch them.
+    """
+    spec = importlib.util.spec_from_file_location(
+        "verify_no_local_paths_in_evidence", ROOT / "tools" / "verify_no_local_paths_in_evidence.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    disclosed, exempt = module.findings(
+        ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+        / "results" / "execution-structqc" / "EXECUTION_STATUS.json"
+    )
+    assert disclosed == [], f"recorded evidence still publishes {sorted(set(disclosed))}"
+
+    # The whole-tree pass needs a git checkout. The private edit tree is not one,
+    # and the check that matters there is the per-file one above.
+    if subprocess.run(["git", "rev-parse", "--git-dir"], cwd=ROOT,
+                      capture_output=True).returncode != 0:
+        pytest.skip("not a git checkout; the published tree is checked in CI")
+    assert module.main([]) == 0, "a tracked file publishes a local home path"
+
+
+def test_a_throttled_provider_is_given_the_window_it_asked_for(tmp_path, monkeypatch):
+    """A 150 MB serial acquisition gets throttled, and 20 seconds is not the ask.
+
+    The backoff tops out below the window a repository usually names, so the whole
+    retry budget could be spent re-asking inside a throttle that had not lifted.
+    """
+    import email.message
+    import urllib.error
+
+    module = _acquirer_module()
+    headers = email.message.Message()
+    headers["Retry-After"] = "45"
+    monkeypatch.setattr(module.urllib.request, "urlopen", lambda *a, **k: (_ for _ in ()).throw(
+        urllib.error.HTTPError("https://example.invalid/x.fasta.gz", 429, "Too Many Requests",
+                               headers, None)))
+    slept = []
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: slept.append(seconds))
+
+    with pytest.raises(RuntimeError):
+        module.fetch("https://example.invalid/x.fasta.gz", tmp_path / "x.fasta", "0" * 64)
+
+    assert slept and slept[0] == 45, f"honoured the provider's window, got {slept}"
+    assert max(slept) <= module.MAX_RETRY_AFTER, "one artifact must not hold the job open"
+
+
+def test_a_mirror_carries_the_traffic_and_the_archive_stays_the_record():
+    """Mirrors are tried first, the citable archive last.
+
+    Seven runners re-acquiring a 146 MB set on every push aimed roughly a
+    gigabyte a day at a preservation archive, which began returning gateway
+    timeouts. The location a manifest cites and the location CI hammers should
+    not be the same one.
+    """
+    module = _acquirer_module()
+    entry = {
+        "artifact": "sources/proteomes/UP000000579.fasta",
+        "url": "https://zenodo.org/records/22652863/files/UP000000579.fasta.gz",
+        "mirrors": ["https://huggingface.co/datasets/x/y/resolve/abc123/UP000000579.fasta.gz"],
+    }
+    assert module.candidates(entry) == [entry["mirrors"][0], entry["url"]]
+
+    # A bare string is accepted, and a mirror repeating the archive is not tried twice.
+    assert module.candidates({"url": "https://a/x", "mirrors": "https://b/x"}) == \
+        ["https://b/x", "https://a/x"]
+    assert module.candidates({"url": "https://a/x", "mirrors": ["https://a/x"]}) == ["https://a/x"]
+    assert module.candidates({"url": "https://a/x"}) == ["https://a/x"]
+    assert module.candidates({}) == []
+
+
+def test_a_failing_archive_falls_through_to_its_mirror(tmp_path, monkeypatch):
+    """And the run still says the archive failed, rather than reporting silence."""
+    import gzip
+    import urllib.error
+
+    module = _acquirer_module()
+    payload = b">sp|TEST\nMKVLAA\n"
+    digest = hashlib.sha256(payload).hexdigest()
+
+    def urlopen(request, *_args, **_kwargs):
+        url = request.full_url if hasattr(request, "full_url") else request
+        if "zenodo" in url:
+            raise urllib.error.HTTPError(url, 504, "Gateway Time-out", None, None)
+        return _fake_response(gzip.compress(payload), "application/gzip")
+
+    monkeypatch.setattr(module.urllib.request, "urlopen", urlopen)
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: None)
+
+    entry = {
+        "artifact": "sources/proteomes/x.fasta",
+        "sha256": digest,
+        "mirrors": ["https://huggingface.co/datasets/x/y/resolve/abc/x.fasta.gz"],
+        "url": "https://zenodo.org/records/1/files/x.fasta.gz",
+    }
+    served_by, attempted = module.acquire(entry, tmp_path / "x.fasta")
+
+    assert "huggingface" in served_by
+    assert (tmp_path / "x.fasta").read_bytes() == payload
+    assert attempted == [], "the mirror is tried first, so nothing failed before it"
+
+    # With the order reversed, the archive's failure is carried into the report.
+    entry_archive_first = {**entry, "mirrors": [], "url": entry["url"]}
+    entry_archive_first["mirrors"] = []
+    with pytest.raises(RuntimeError) as caught:
+        module.acquire(entry_archive_first, tmp_path / "y.fasta")
+    assert "504" in str(caught.value)
+
+
+def test_a_mirror_serving_different_bytes_is_refused(tmp_path, monkeypatch):
+    """A mirror can never weaken the lock; it is held to the same digest."""
+    import gzip
+
+    module = _acquirer_module()
+    monkeypatch.setattr(module.urllib.request, "urlopen",
+                        lambda *a, **k: _fake_response(gzip.compress(b"different\n"),
+                                                       "application/gzip"))
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: None)
+
+    entry = {
+        "artifact": "sources/proteomes/x.fasta",
+        "sha256": hashlib.sha256(b">sp|TEST\nMKVLAA\n").hexdigest(),
+        "mirrors": ["https://huggingface.co/datasets/x/y/resolve/abc/x.fasta.gz"],
+        "url": "https://zenodo.org/records/1/files/x.fasta.gz",
+    }
+    with pytest.raises(RuntimeError) as caught:
+        module.acquire(entry, tmp_path / "x.fasta")
+    assert "digest mismatch" in str(caught.value)
+    assert not (tmp_path / "x.fasta").exists()
+
+
+def test_health_reports_every_promise_the_lock_makes():
+    """Health checks all candidates; a live mirror must not mask a dead archive."""
+    spec = importlib.util.spec_from_file_location(
+        "verify_source_lock_health", ROOT / "tools" / "verify_source_lock_health.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    entry = {"url": "https://archive/x.gz", "mirrors": ["https://mirror/x.gz"]}
+    assert module.locked_urls(entry) == ["https://archive/x.gz", "https://mirror/x.gz"]
+    assert module.locked_urls({"mirrors": ["https://only-a-mirror/x.gz"]}) == \
+        ["https://only-a-mirror/x.gz"]
+
+
+def test_the_qualification_cache_key_is_the_lock_itself():
+    """Caching acquired sources is only safe if the key moves with the lock.
+
+    A key that outlived a lock change would restore artifacts belonging to a
+    different lock, and acquisition skips what is already present -- so the run
+    would quietly execute against superseded sources.
+    """
+    workflow = (ROOT / ".github" / "workflows" / "qualification.yml").read_text(encoding="utf-8")
+    assert "actions/cache/restore@v4" in workflow
+    assert "hashFiles('yauvi-structural-workbench/benchmarks/qualification-v2/SOURCE_LOCK.json')" \
+        in workflow, "the cache key must be derived from the lock"
+    # As a key, not as the comment explaining why it is absent.
+    assert not any(line.strip().startswith("restore-keys:") for line in workflow.splitlines()), \
+        "a partial key match would restore artifacts belonging to a different lock"
+    # The save must survive a red run, or the matrix can never bank what it fetched.
+    assert "actions/cache/save@v4" in workflow
+    assert "if: always() && steps.sources-cache.outputs.cache-hit != 'true'" in workflow

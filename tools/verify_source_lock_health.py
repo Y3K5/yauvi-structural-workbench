@@ -73,14 +73,29 @@ def digest_as_acquirer_would(data: bytes, url: str, artifact: str) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def locked_urls(entry: dict[str, Any]) -> list[str]:
+    """Every URL that promises these bytes: the archive of record, then mirrors.
+
+    Checked in the lock's own order rather than the acquirer's, because this asks
+    a different question. The acquirer wants the artifact and stops at the first
+    host that provides it; health wants to know the state of *every* promise the
+    lock makes, so a mirror silently carrying a red archive stays visible.
+    """
+    mirrors = entry.get("mirrors") or []
+    if isinstance(mirrors, str):
+        mirrors = [mirrors]
+    url = entry.get("url")
+    return list(dict.fromkeys([u for u in ([url] if url else []) + list(mirrors) if u]))
+
+
 def check_one(entry: dict[str, Any]) -> dict[str, Any]:
     artifact = str(entry["artifact"])
     expected = str(entry.get("sha256", ""))
-    url = entry.get("url")
+    urls = locked_urls(entry)
     result = {"source_id": entry.get("source_id"), "artifact": artifact,
-              "url": url, "expected": expected}
+              "url": entry.get("url"), "expected": expected}
 
-    if entry.get("acquisition") == "committed_in_repository" or not url:
+    if entry.get("acquisition") == "committed_in_repository" or not urls:
         local = QUALIFICATION / artifact
         if not local.is_file():
             return {**result, "state": "missing_from_repository"}
@@ -88,6 +103,25 @@ def check_one(entry: dict[str, Any]) -> dict[str, Any]:
         return {**result, "state": "in_repository" if observed == expected else "repository_mismatch",
                 "observed": observed}
 
+    if len(urls) == 1:
+        return {**result, **_check_url(urls[0], artifact, expected)}
+
+    checked = [{"url": u, **_check_url(u, artifact, expected)} for u in urls]
+    states = {c["state"] for c in checked}
+    # Drift anywhere is the loud finding: one host serving different bytes under a
+    # recorded digest is the failure this check exists for, and a healthy mirror
+    # must not be allowed to hide it. Only if nothing drifted does a single
+    # reachable copy count as health, and the unreachable ones are still named.
+    if "drifted" in states:
+        overall = "drifted"
+    elif "reproducible" in states:
+        overall = "reproducible" if states == {"reproducible"} else "reproducible_via_mirror"
+    else:
+        overall = "unreachable"
+    return {**result, "state": overall, "candidates": checked}
+
+
+def _check_url(url: str, artifact: str, expected: str) -> dict[str, Any]:
     last = ""
     for attempt in range(1, ATTEMPTS + 1):
         try:
@@ -99,7 +133,7 @@ def check_one(entry: dict[str, Any]) -> dict[str, Any]:
                 raise OSError(f"short read: {len(data)} of {declared} bytes")
             observed = digest_as_acquirer_would(data, url, artifact)
             state = "reproducible" if observed == expected else "drifted"
-            return {**result, "state": state, "observed": observed, "bytes": len(data),
+            return {"state": state, "observed": observed, "bytes": len(data),
                     "attempts": attempt}
         except Exception as exc:  # transport, truncation, HTTP status
             last = f"{type(exc).__name__}: {exc}"
@@ -108,7 +142,7 @@ def check_one(entry: dict[str, Any]) -> dict[str, Any]:
     # Exhausted retries without ever reading a complete response. This is the
     # provider being unavailable, not the lock being wrong, and is reported as
     # its own state so it is never mistaken for drift.
-    return {**result, "state": "unreachable", "error": last, "attempts": ATTEMPTS}
+    return {"state": "unreachable", "error": last, "attempts": ATTEMPTS}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -126,7 +160,8 @@ def main(argv: list[str] | None = None) -> int:
     entries = json.loads(LOCK.read_text(encoding="utf-8")).get("sources", [])
     if args.only:
         entries = [e for e in entries
-                   if args.only in str(e.get("artifact", "")) or args.only in str(e.get("url", ""))]
+                   if args.only in str(e.get("artifact", ""))
+                   or any(args.only in u for u in locked_urls(e))]
     if not entries:
         print("no locked sources matched")
         return 1
@@ -144,6 +179,11 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"      returned {result['observed'][:16]}  ({result.get('bytes', 0):,} bytes)")
                 elif result["state"] == "unreachable":
                     print(f"      {result.get('error', '')[:110]}")
+                for candidate in result.get("candidates", []):
+                    detail = candidate.get("error") or candidate.get("observed", "")
+                    print(f"      {candidate['state']:<14} {candidate['url'][:80]}")
+                    if candidate["state"] != "reproducible" and detail:
+                        print(f"        {str(detail)[:100]}")
 
     tally: dict[str, int] = {}
     for result in results:
@@ -169,6 +209,13 @@ def main(argv: list[str] | None = None) -> int:
               "provider re-released and the lock should be updated with the change recorded, or "
               "the URL cannot be locked at all -- see Finding 8.")
         return 1
+    via_mirror = tally.get("reproducible_via_mirror", 0)
+    if via_mirror:
+        # A working run and a warning at once. The bytes are right, and one of the
+        # hosts promising them is not answering -- which is the state that
+        # preceded three days of red CI, and went unsaid.
+        print(f"\n{via_mirror} source(s) reproduced only from a mirror. No drift, but a "
+              f"locked host is not answering; the detail above says which.")
     if unreachable:
         # Not a failure: the lock may be perfectly good and the provider down.
         # Saying so plainly beats a red run that means nothing.

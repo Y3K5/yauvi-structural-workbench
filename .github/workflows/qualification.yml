@@ -125,9 +125,47 @@ jobs:
           [ "$foldseek_got" = "10.941cd33" ] || { echo "foldseek drift: expected 10.941cd33, got ${foldseek_got}"; exit 1; }
           [ "$diamond_got" = "2.1.11" ] || { echo "diamond drift: expected 2.1.11, got ${diamond_got}"; exit 1; }
 
+      # Seven runners re-acquiring the same ~700 MB on every push is roughly five
+      # gigabytes per run aimed at wwPDB, UniProt, AlphaFold and a preservation
+      # archive -- and on 2026-09-08 the archive started answering with gateway
+      # timeouts, which took the whole matrix down for three days.
+      #
+      # The key is the lock's own digest, so the cache is exactly as frozen as
+      # the lock is: change a source and the key changes, which is the only
+      # correct invalidation rule here. Restoring is never trusted on its own --
+      # `--verify-only` re-digests every restored artifact below, so a corrupted
+      # or tampered cache entry fails the same way a bad download would.
+      - name: Restore the locked artifacts
+        id: sources-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: yauvi-structural-workbench/benchmarks/qualification-v2/sources
+          key: qualification-v2-sources-${{ hashFiles('yauvi-structural-workbench/benchmarks/qualification-v2/SOURCE_LOCK.json') }}
+          # No restore-keys: a partial key match would restore artifacts belonging
+          # to a different lock, and acquisition skips files that are already
+          # present. A miss must mean a full, honest acquisition.
+
       - name: Acquire the locked artifacts
         working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
         run: python acquire_sources.py
+
+      # Saved separately, and on failure too. The combined cache action skips its
+      # save when the job fails, which would be exactly backwards here: the matrix
+      # is red precisely when a provider is refusing, so the run that most needs
+      # to bank what it did manage to fetch is the run that would bank nothing.
+      #
+      # A partial save is safe by construction. Acquisition fetches only what is
+      # absent and then re-digests everything, so a half-filled cache resumes the
+      # next run rather than corrupting it.
+      - name: Bank the acquired artifacts
+        if: always() && steps.sources-cache.outputs.cache-hit != 'true'
+        # Seven runners race for one key; the six that lose are not a failure,
+        # and a caching step must never be able to fail a scientific run.
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: yauvi-structural-workbench/benchmarks/qualification-v2/sources
+          key: ${{ steps.sources-cache.outputs.cache-primary-key }}
 
       - name: Verify every artifact against the frozen source lock
         id: sources
