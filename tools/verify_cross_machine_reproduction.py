@@ -84,14 +84,46 @@ def _records(panel, definition):
         normalized[kind] = sorted((r['record_id'], r['passed'], sorted((c['check'], c['passed']) for c in r['checks'])) for r in rows)
     return normalized
 
-def build_report(loaded, min_environments=2, *, manifest=None, identity=None):
+def draft_definitions(definitions, root=None):
+    """Panels the manifest names but has not yet populated with records.
+
+    The workflow executes an unadopted panel on purpose -- adoption protocol
+    rule 7 wants cross-machine reproduction *before* a stratum is called adopted,
+    so the reproduction has to be produced while the panel is still a draft. The
+    checker did not know that, and validated every panel against the manifest.
+    An unadopted panel therefore had zero expected records, its 16 observed ones
+    were "unexpected", and the whole runner was discarded -- taking the five
+    adopted panels down with it. Adoption became unreachable through the only
+    second machine the project has.
+
+    So a draft is read only where the manifest is silent. If the manifest holds
+    records for a workflow, the manifest wins; a draft can never override an
+    adopted definition, only fill a gap the manifest leaves.
+    """
+    root = root if root is not None else QUALIFICATION
+    out = {}
+    for path in sorted(root.glob('ADOPTION_DRAFT_*.json')):
+        try:
+            draft = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        workflow = draft.get('workflow')
+        if (not workflow or workflow not in definitions
+                or definitions[workflow].get('records') or not draft.get('records')):
+            continue
+        out[workflow] = draft
+    return out
+
+
+def build_report(loaded, min_environments=2, *, manifest=None, identity=None, drafts=None):
     if min_environments < 2:
         raise ValueError('at least two environments are required')
     manifest = manifest if manifest is not None else json.loads((QUALIFICATION / 'PANEL_MANIFEST.json').read_text())
     identity = identity if identity is not None else execution_identity()
     definitions = {p['workflow']: p for p in manifest['panels']}
     expected = {s.split(':', 1)[0] for s in manifest['release_blocking_scopes']}
-    runners, errors, seen = [], [], set()
+    drafts = drafts if drafts is not None else draft_definitions(definitions)
+    runners, errors, panel_errors, seen = [], [], [], set()
     for entry in loaded:
         source = entry['source']
         try:
@@ -108,27 +140,36 @@ def build_report(loaded, min_environments=2, *, manifest=None, identity=None):
                 raise ValueError('duplicate runner runtime')
             seen.add(label)
             panels = {}
+            # A panel is validated on its own. One panel the manifest does not
+            # define must not void the evidence for every other panel on the
+            # runner -- that coupling is what discarded seven usable runners.
             for panel in summary['panels']:
-                workflow = panel['workflow']
-                if workflow not in definitions or workflow in panels:
-                    raise ValueError('unknown or duplicate panel')
-                if panel.get('evidence_identity') != identity:
-                    raise ValueError('missing or incompatible code, manifest, source lock, or protocol identity')
-                expected_digest = identity.get('execution_panels', {}).get(workflow)
-                if not expected_digest or panel.get('execution_panel_sha256') != expected_digest:
-                    raise ValueError('missing or incompatible execution-panel digest')
-                records = _records(panel, definitions[workflow])
-                cases, controls = panel['cases'], panel['controls']
-                passed = (panel['stratum_state'] == 'passed' and cases['total'] > 0
-                          and cases['failed'] == 0 and cases['passed'] == cases['total']
-                          and controls['passed'] == controls['total'] and not panel.get('coverage', {}).get('unmet'))
-                panels[workflow] = {'passed': passed, 'panel_sha256': panel['execution_panel_sha256'],
-                                    'signature': json.dumps({'state': panel['stratum_state'], 'records': records,
-                                                            'coverage': panel.get('coverage', {})}, sort_keys=True)}
+                workflow = panel.get('workflow')
+                try:
+                    if workflow not in definitions or workflow in panels:
+                        raise ValueError('unknown or duplicate panel')
+                    if panel.get('evidence_identity') != identity:
+                        raise ValueError('missing or incompatible code, manifest, source lock, or protocol identity')
+                    expected_digest = identity.get('execution_panels', {}).get(workflow)
+                    if not expected_digest or panel.get('execution_panel_sha256') != expected_digest:
+                        raise ValueError('missing or incompatible execution-panel digest')
+                    is_draft = workflow in drafts and not definitions[workflow].get('records')
+                    records = _records(panel, drafts[workflow] if is_draft else definitions[workflow])
+                    cases, controls = panel['cases'], panel['controls']
+                    passed = (panel['stratum_state'] == 'passed' and cases['total'] > 0
+                              and cases['failed'] == 0 and cases['passed'] == cases['total']
+                              and controls['passed'] == controls['total'] and not panel.get('coverage', {}).get('unmet'))
+                    panels[workflow] = {'passed': passed, 'draft': is_draft,
+                                        'panel_sha256': panel['execution_panel_sha256'],
+                                        'signature': json.dumps({'state': panel['stratum_state'], 'records': records,
+                                                                'coverage': panel.get('coverage', {})}, sort_keys=True)}
+                except (KeyError, TypeError, ValueError) as exc:
+                    panel_errors.append({'source': source, 'workflow': workflow, 'why': str(exc)})
             runners.append({'source': source, 'environment': env, 'label': label, 'panels': panels})
         except (KeyError, TypeError, ValueError) as exc:
             errors.append({'source': source, 'why': str(exc)})
-    panels = []
+    panels, draft_panels = [], []
+    errored = {e['workflow'] for e in panel_errors}
     for workflow in sorted(expected | {w for r in runners for w in r['panels']}):
         observations = [(r, r['panels'][workflow]) for r in runners if workflow in r['panels']]
         environments = sorted({r['environment'] for r, _ in observations})
@@ -137,36 +178,81 @@ def build_report(loaded, min_environments=2, *, manifest=None, identity=None):
         agreed = len(signatures) == 1
         passed = bool(observations) and all(p['passed'] for _, p in observations)
         internally = sorted(e for e in environments if len({p['signature'] for r,p in observations if r['environment'] == e}) > 1)
-        definition = definitions[workflow]
-        requirements = [r for r in definition['requirements'] if f"{workflow}:{r['stratum']}" in manifest['release_blocking_scopes']]
+        is_draft = bool(observations) and all(p.get('draft') for _, p in observations)
+        definition = drafts[workflow] if is_draft else definitions[workflow]
+        # A draft carries records but no `requirements`, so stratum coverage
+        # cannot be asserted from it. Reported rather than assumed: coverage is
+        # part of adoption, and this checker is not the thing that grants it.
+        #
+        # `release_blocking_scopes` entries are `workflow:scope-label`, not
+        # `workflow:stratum` -- `structure_qc:coordinate_provenance_and_validation`
+        # names the scope, while the strata under it are x_ray, cryo_em, nmr and
+        # alphafold. This line used to rebuild `workflow:stratum` and test it for
+        # membership, which never matched anything, so `requirements` was always
+        # empty, `coverage_complete` always False, and NO release-blocking panel
+        # could ever reach `reproduced: True`. The aggregate could not return true
+        # by construction.
+        #
+        # Every other reader of that field -- summarize_execution.py, the staging
+        # verifier, and `expected` twenty lines above -- takes `split(':', 1)[0]`
+        # and discards the label. Blocking-ness is a property of the workflow, so
+        # a blocking panel's coverage is complete when every requirement it
+        # declares is met, which is what the manifest means by "composes in full".
+        requirements = list(definition.get('requirements', []))
         coverage_complete = bool(requirements) and all(
             r['count'] > 0 and sum(row['stratum'] == r['stratum'] and row.get('split') == r.get('split')
                                   for row in definition.get('records', [])) == r['count']
             for r in requirements)
-        complete = bool(observations) and len(observations) == len(runners) and (workflow not in expected or coverage_complete)
-        panels.append({'workflow': workflow, 'release_blocking': workflow in expected,
-                       'environment_count': len(environments), 'environments': environments,
-                       'agreed_across_environments': agreed, 'passed_on_every_environment': passed,
-                       'internally_inconsistent_environments': internally,
-                       'complete': complete, 'protocols_match': len(digests) == 1,
-                       'reproduced': bool(complete and agreed and passed and len(digests) == 1
-                                          and len(environments) >= min_environments and not errors)})
+        complete = bool(observations) and len(observations) == len(runners) and (
+            workflow not in expected or is_draft or coverage_complete)
+        clean = not errors and workflow not in errored
+        entry = {'workflow': workflow, 'release_blocking': workflow in expected,
+                 'environment_count': len(environments), 'environments': environments,
+                 'agreed_across_environments': agreed, 'passed_on_every_environment': passed,
+                 'internally_inconsistent_environments': internally,
+                 'complete': complete, 'protocols_match': len(digests) == 1,
+                 'reproduced': bool(complete and agreed and passed and len(digests) == 1
+                                    and len(environments) >= min_environments and clean)}
+        if is_draft:
+            # Reproduced, and still not adopted. Kept out of `panels` so it can
+            # never be mistaken for a qualified scope, and reported so it can be
+            # used as the evidence adoption asks for.
+            entry['adopted'] = False
+            entry['coverage_assessed'] = False
+            entry['reproduced_as_draft'] = entry.pop('reproduced')
+            entry['note'] = ('Executed from its adoption draft. Reproduction is measured; '
+                             'coverage and adoption are not, and this does not count toward '
+                             'every_release_blocking_panel_reproduced.')
+            draft_panels.append(entry)
+        else:
+            panels.append(entry)
     blocking = [p for p in panels if p['release_blocking']]
+    # A release-blocking scope that exists only as a draft has NOT been reproduced
+    # for release purposes, however well it agreed across environments. Without
+    # this it would simply drop out of `blocking` and the aggregate could report
+    # success over the four scopes that remain -- silently shrinking the release
+    # bar to whatever happens to be adopted.
+    unadopted = sorted(w for w in expected if w not in {p['workflow'] for p in panels})
     failed = [p['workflow'] for p in blocking if p['environment_count'] and not p['passed_on_every_environment']]
     disagreed = [p['workflow'] for p in blocking if p['environment_count'] and not p['agreed_across_environments']]
     incomplete = [p['workflow'] for p in blocking if not p['complete'] or p['environment_count'] < min_environments or not p['protocols_match']]
-    success = bool(blocking) and all(p['reproduced'] for p in blocking) and not errors
+    success = (bool(blocking) and not unadopted
+               and all(p['reproduced'] for p in blocking) and not errors)
     return {'schema_version': '2.0', 'min_environments': min_environments,
             'evidence_identity': identity, 'runners_read': len(loaded), 'runners_usable': len(runners),
             'environments_observed': sorted({r['environment'] for r in runners}),
             'environment_count': len({r['environment'] for r in runners}), 'panels': panels,
-            'unusable_runners': errors, 'release_blocking_panels_failed': failed,
+            'unusable_runners': errors, 'unusable_panels': panel_errors,
+            'draft_panels': draft_panels,
+            'release_blocking_panels_failed': failed,
             'release_blocking_panels_disagreed': disagreed,
             'release_blocking_panels_under_minimum': [p['workflow'] for p in blocking if p['environment_count'] < min_environments],
             'release_blocking_panels_incomplete': incomplete,
             'release_blocking_panels_reproduced': [p['workflow'] for p in blocking if p['reproduced']],
+            'release_blocking_panels_unadopted': unadopted,
             'every_release_blocking_panel_reproduced': success,
-            'exit_code': 2 if errors or incomplete or not blocking else 1 if failed or disagreed else 0 if success else 2,
+            'exit_code': 2 if errors or incomplete or unadopted or not blocking
+                         else 1 if failed or disagreed else 0 if success else 2,
             'independence_note': 'Environment agreement does not establish independent scientific approval.'}
 
 def main(argv=None):

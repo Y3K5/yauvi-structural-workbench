@@ -295,11 +295,38 @@ def _contract_fixture():
     return manifest, identity, [runner('Linux', 'x86_64'), runner('Darwin', 'arm64')]
 
 
-def _report(change=None):
+def _report(change=None, drafts=None):
     manifest, identity, rows = _contract_fixture()
     if change:
         change(manifest, rows)
-    return _cross_machine_module().build_report(rows, manifest=manifest, identity=identity)
+    return _cross_machine_module().build_report(
+        rows, manifest=manifest, identity=identity, drafts=drafts)
+
+
+def _add_draft_panel(manifest, identity, rows, workflow='sf_csa'):
+    """A release-blocking scope the manifest names but has not populated.
+
+    This is the exact shape that discarded seven runners: the workflow executes
+    the panel from its adoption draft, because reproduction has to exist before
+    adoption can be granted, and the manifest therefore holds no records for it.
+    """
+    manifest['release_blocking_scopes'].append(workflow + ':curated')
+    manifest['panels'].append({'workflow': workflow, 'requirements': [], 'records': [], 'controls': []})
+    identity['execution_panels'][workflow] = 'c' * 64
+    draft = {'workflow': workflow, 'draft_state': 'not_adopted',
+             'records': [{'record_id': 'draft-a', 'stratum': 'curated'},
+                         {'record_id': 'draft-b', 'stratum': 'curated'}],
+             'controls': []}
+    for row in rows:
+        row['summary']['panels'].append({
+            'workflow': workflow, 'stratum_state': 'passed',
+            'evidence_identity': identity.copy(), 'execution_panel_sha256': 'c' * 64,
+            'cases': {'passed': 2, 'failed': 0, 'total': 2},
+            'controls': {'passed': 0, 'total': 0}, 'coverage': {'unmet': []},
+            'record_verdicts': {'cases': [{'record_id': x, 'passed': True,
+                'checks': [{'check': 'independent-reference', 'required': True, 'passed': True}]}
+                for x in ('draft-a', 'draft-b')], 'controls': []}})
+    return {workflow: draft}
 
 
 def test_cross_machine_complete_identity_bound_evidence_passes():
@@ -652,3 +679,122 @@ def test_the_qualification_cache_key_is_the_lock_itself():
     # The save must survive a red run, or the matrix can never bank what it fetched.
     assert "actions/cache/save@v4" in workflow
     assert "if: always() && steps.sources-cache.outputs.cache-hit != 'true'" in workflow
+
+
+def test_an_unadopted_panel_does_not_void_the_runners_that_carry_it():
+    """The deadlock that discarded seven usable runners.
+
+    sf-csa executed from its adoption draft, so its 16 record IDs were absent
+    from the manifest, so `_records` raised -- and because that validation sat
+    inside the per-runner load, one unadopted panel threw out the runner's whole
+    summary. All seven runners were unusable and the five adopted panels lost
+    their reproduction with it. Adoption became unreachable through the only
+    second machine the project has.
+    """
+    module = _cross_machine_module()
+    manifest, identity, rows = _contract_fixture()
+    drafts = _add_draft_panel(manifest, identity, rows)
+    report = module.build_report(rows, manifest=manifest, identity=identity, drafts=drafts)
+
+    assert report['runners_usable'] == len(rows), report['unusable_runners']
+    assert report['unusable_runners'] == []
+    adopted = {p['workflow']: p for p in report['panels']}
+    assert adopted['structure_qc']['reproduced'] is True, "the adopted panel still reproduces"
+
+
+def test_a_draft_panel_is_scored_but_never_counts_as_qualified():
+    """Reproduced and still not adopted are different states, and stay different."""
+    module = _cross_machine_module()
+    manifest, identity, rows = _contract_fixture()
+    drafts = _add_draft_panel(manifest, identity, rows)
+    report = module.build_report(rows, manifest=manifest, identity=identity, drafts=drafts)
+
+    drafted = {p['workflow']: p for p in report['draft_panels']}
+    assert 'sf_csa' in drafted, "the draft panel is reported"
+    assert drafted['sf_csa']['reproduced_as_draft'] is True
+    assert drafted['sf_csa']['adopted'] is False
+    assert drafted['sf_csa']['coverage_assessed'] is False, "a draft carries no requirements"
+    assert 'reproduced' not in drafted['sf_csa'], "must not read as a qualified scope"
+
+    # And the release bar does not shrink to whatever happens to be adopted.
+    assert report['release_blocking_panels_unadopted'] == ['sf_csa']
+    assert report['every_release_blocking_panel_reproduced'] is False
+    assert report['exit_code'] == 2
+    assert 'sf_csa' not in {p['workflow'] for p in report['panels']}
+
+
+def test_one_unusable_panel_does_not_silence_the_others():
+    """Per-panel isolation, without losing the fact that something was rejected."""
+    module = _cross_machine_module()
+    manifest, identity, rows = _contract_fixture()
+    identity['execution_panels']['rogue'] = 'd' * 64
+    manifest['panels'].append({'workflow': 'rogue', 'requirements': [], 'records': [], 'controls': []})
+    for row in rows:
+        row['summary']['panels'].append({
+            'workflow': 'rogue', 'stratum_state': 'passed',
+            'evidence_identity': identity.copy(), 'execution_panel_sha256': 'd' * 64,
+            'cases': {'passed': 1, 'failed': 0, 'total': 1}, 'controls': {'passed': 0, 'total': 0},
+            'coverage': {'unmet': []},
+            'record_verdicts': {'cases': [{'record_id': 'nobody-declared-me', 'passed': True,
+                'checks': [{'check': 'x', 'required': True, 'passed': True}]}], 'controls': []}})
+    report = module.build_report(rows, manifest=manifest, identity=identity, drafts={})
+
+    assert report['runners_usable'] == len(rows), "the runner survives its rogue panel"
+    assert [e['workflow'] for e in report['unusable_panels']] == ['rogue'] * len(rows)
+    assert {p['workflow'] for p in report['panels']} >= {'structure_qc'}
+
+
+def test_a_blocking_panel_short_of_its_declared_coverage_cannot_reproduce():
+    """The coverage check has teeth, and is not vacuously satisfied.
+
+    `release_blocking_scopes` entries are `workflow:scope-label`, but this checker
+    rebuilt `workflow:stratum` and tested it for membership. Nothing ever matched,
+    so `requirements` was always empty, `coverage_complete` always False, and no
+    release-blocking panel could reach `reproduced: True` by construction.
+
+    Fixing that must not replace an impossible check with an empty one. A panel
+    that declares a requirement it does not meet still fails.
+    """
+    def drop_a_record(manifest, rows):
+        panel = manifest['panels'][0]
+        panel['requirements'] = [{'stratum': 'x_ray', 'count': 3}]   # declares 3
+        # records still hold 2, so the declared coverage is not met
+    report = _report(drop_a_record)
+    assert report['panels'][0]['complete'] is False
+    assert report['panels'][0]['reproduced'] is False
+    assert report['release_blocking_panels_incomplete'] == ['structure_qc']
+    assert report['every_release_blocking_panel_reproduced'] is False
+
+
+def test_declared_coverage_is_read_from_the_panel_not_from_the_scope_label():
+    """A blocking panel whose requirements are met does reproduce.
+
+    The companion to the test above: with the same fixture and its declared
+    coverage satisfied, the panel reaches `reproduced`. Before the fix this was
+    unreachable no matter what the evidence said.
+    """
+    report = _report()
+    panel = report['panels'][0]
+    assert panel['workflow'] == 'structure_qc'
+    assert panel['complete'] is True
+    assert panel['reproduced'] is True
+    assert report['every_release_blocking_panel_reproduced'] is True
+    assert report['exit_code'] == 0
+
+
+def test_a_non_blocking_panel_is_not_held_to_release_coverage():
+    """Coverage gates the release scopes, not everything that runs.
+
+    membrane_orientation declares 32 records across four requirements and carries
+    16; it is non-blocking and research-only from collection 2.4, so its coverage
+    must not be assessed as if it gated a release it does not gate.
+    """
+    def add_non_blocking(manifest, rows):
+        manifest['panels'].append({'workflow': 'membrane_orientation',
+                                   'requirements': [{'stratum': 'beta_barrel', 'count': 99}],
+                                   'records': [], 'controls': []})
+    report = _report(add_non_blocking)
+    entry = [p for p in report['panels'] if p['workflow'] == 'membrane_orientation']
+    assert entry == [] or entry[0]['release_blocking'] is False
+    assert report['every_release_blocking_panel_reproduced'] is True, \
+        "an unmet requirement on a non-blocking panel must not gate the release"
