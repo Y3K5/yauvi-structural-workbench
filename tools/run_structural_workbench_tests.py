@@ -35,8 +35,10 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("structural workbench", ("platform/tests/test_structural_workbench.py",)),
     ("qualification v2", ("platform/tests/test_qualification_v2.py",)),
     ("product hardening", ("platform/tests/test_product_hardening.py",)),
+    ("workbench launcher", ("platform/tests/test_workbench_launch.py",)),
     ("protein import", ("platform/tests/test_protein_import.py",)),
     ("source registry", ("sources/tests",)),
+    ("structprep", ("structprep/tests",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")
 
@@ -46,6 +48,7 @@ PYPROJECTS: tuple[str, ...] = (
     "pyproject.toml", "structqc/pyproject.toml", "Membrane Orientor/memorient/pyproject.toml",
     "state-atlas/pyproject.toml", "site-context/pyproject.toml", "activity-state/pyproject.toml",
     "assembly-context/pyproject.toml", "sf-csa/pyproject.toml",
+    "structprep/pyproject.toml",
 )
 REQUIREMENT = re.compile(r"^\s*([A-Za-z0-9._-]+)\s*>=\s*([0-9][0-9A-Za-z.\-]*)")
 

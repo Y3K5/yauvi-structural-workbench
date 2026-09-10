@@ -3,6 +3,26 @@
 These are the changes made while assembling this distribution from the private
 development tree, recorded so the provenance of the published state is explicit.
 
+## Unreleased
+
+- Added `structprep` as **infrastructure**, not a seventh analysis scope. It
+  prepares coordinates for the existing workflows: drops solvent, cryoprotectant
+  and buffer components by class, resolves alternate locations, flattens assembly
+  copies onto unique chain ids, and writes a derivation record with the input and
+  output SHA-256. It refuses to remove any classed component that lies within
+  4 Å of the polymer, naming the override rather than guessing, so interface
+  geometry cannot change silently.
+- `structprep` is wired into the root distribution (console script, package
+  discovery) and into `tools/run_structural_workbench_tests.py`. Its 11 tests
+  pass against reference coordinates and skip cleanly without them: 3H8T is
+  third-party RCSB data and is not redistributed here, so the suite reads
+  `STRUCTPREP_TEST_STRUCTURES`. `core_workflows_required` stays at 6 and no
+  release-blocking scope was added.
+- Removed a hardcoded absolute path from the structprep tests. It named a home
+  directory and an unrelated private case study, and would have published both.
+- The README "verified working" figures still describe the nine-package build;
+  they are marked as requiring re-execution rather than being edited in place.
+
 ## Boundary
 
 - Assembled from the live tree, so this carries **Mark 1 identity and

@@ -1,7 +1,7 @@
 # YAUVI Structural Biology Platform — Mark 1
 
 Local, evidence-bounded structural protein analysis with deterministic reports
-and provenance. Nine installable Python packages covering six structural-analysis
+and provenance. Ten installable Python packages covering six structural-analysis
 workflows, taking protein coordinates to inspectable, checksum-bound evidence.
 
 **This is a pre-public scientific build in open development.** It is not a
@@ -11,9 +11,14 @@ the status section below before relying on any output.
 
 ## What this is
 
-Nine installable Python packages covering six structural-analysis workflows,
+Ten installable Python packages covering six structural-analysis workflows,
 plus the documentation, paper, community files, benchmarks, and evidence
 showcases that a JOSS reviewer would receive.
+
+Nine of the ten carry a workflow or the case store. The tenth, `structprep`, is
+**infrastructure**: it prepares coordinates for the others and is not a seventh
+analysis scope. It answers no scientific question on its own and is not
+release-blocking.
 
 | Package | CLI | Workflow |
 |---|---|---|
@@ -26,6 +31,7 @@ showcases that a JOSS reviewer would receive.
 | `yauvi-assembly-context` | `assembly-context` | Assembly interface |
 | `sf-csa` | `sf-csa` | Structure/sequence function comparison |
 | `yauvi-sources` | `yauvi-fetch` | Registered source acquisition |
+| `structprep` | `structprep` | Structure preparation (infrastructure) |
 
 ## Verified working
 
@@ -41,6 +47,12 @@ Every claim below was executed in this folder, offline:
   every CLI works and a full analysis reproduces the documented input digest
   `a598a520…` with no absolute-path leakage
 - Both evidence showcases rebuild and re-verify; all checksums intact
+
+**Not yet folded into the figures above:** `structprep` was added after that
+verification run. Its own 11 tests pass against reference coordinates (and skip
+without them, since 3H8T is not redistributed) and it is registered with the
+test runner, but the installed-console-script and aggregate test claims above still
+describe the nine-package build and must be re-executed before submission.
 
 Start with [`yauvi-structural-workbench/START_HERE.md`](yauvi-structural-workbench/START_HERE.md),
 then [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) and

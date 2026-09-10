@@ -103,6 +103,15 @@ OPM/PPM resources. Network access is disabled by default. When explicitly
 enabled, only registered artifact types and public identifiers can be acquired;
 cache acquisition and adoption into an analysis are separate operations.
 
+A preparation step, `structprep`, precedes these analyses where crystallographic
+coordinates carry crystallisation additives, alternate locations, or assembly
+copies. It derives new coordinates rather than editing in place, records what it
+removed and why, and refuses to remove a component that contacts the polymer
+unless that component is named explicitly, so a silent change to interface
+geometry is not possible. It declares that its output is not ready for force-field
+work until a step that states a force field and pH has run. It answers no
+scientific question itself and is not one of the six workflows.
+
 StructQC establishes coordinate provenance and residue identity before composed
 workflows. Modified chemical components are preserved separately from explicit
 parent-residue sequence normalization; normalization does not imply identical
