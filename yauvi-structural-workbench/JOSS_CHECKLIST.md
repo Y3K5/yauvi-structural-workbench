@@ -44,7 +44,7 @@ only after a public repository and independent research use exist.
   `RELEASE_STATUS.json` records both install matrices as not passed, so no test
   count from them is quoted here. They predate Qualification v2 and do not
   satisfy its required second-machine scientific reproduction.
-- The 1,095-word paper compiles with the official Open Journals Inara image and
+- The 1,691-word paper (JOSS allows 750-1,750) compiles with the official Open Journals Inara image and
   its four-page draft rendering has been visually checked.
 
 ## Required before `local_release_candidate`

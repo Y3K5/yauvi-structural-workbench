@@ -149,22 +149,35 @@ case, a deposited assembly evaluated with FreeSASA, and a CATH-labeled SF-CSA
 mini-database searched by Foldseek and DIAMOND. Four public cases pass their
 predeclared gates and two remain partial. Qualification v2 separately freezes
 scope-specific strata, development and held-out splits, evidence requirements,
-and unchanged gates. The reviewed collection 2.9 baseline contains five executed panels. Coordinate
-quality, functional-site context, and assembly interfaces each passed 16 cases;
-ABL state comparison passed four reference cases and ten held-out cases, with
-reference classifications informed by KinCore [@kincore]. These four blocking
-panels produced identical case verdicts across six recorded operating-system and
-Python combinations, including four additional control outcomes per runner.
-Membrane orientation passed 5/16 cases in five runners and 4/16 in one; it remains
-experimental. SF-CSA's sixteen required cases were unexecuted following withdrawal
-of changing live-query proteome inputs. These are historical measurements, not an
-accuracy estimate for the toolkit or qualification of subsequent code changes.
+and unchanged gates. Collection 2.11 adopts 94 of 110 records across six panels.
+Coordinate quality, functional-site context, and assembly interfaces each passed
+16 cases; ABL state comparison passed four reference cases and ten held-out
+cases, with reference classifications informed by KinCore [@kincore]; and SF-CSA
+passed its sixteen curator-frozen cases across four relationship strata. All five
+release-blocking panels produced identical case verdicts on seven runners
+spanning three environments -- Darwin/arm64, Linux/aarch64 and Linux/x86_64 --
+which is the cross-machine reproduction the adoption protocol requires before a
+scope is called adopted. The sixteen remaining records are membrane orientation's
+alpha-helical stratum, which is uncurated; membrane orientation is non-blocking
+and research-only from collection 2.4, does not agree across environments, and
+makes no accuracy claim. These are historical measurements, not an accuracy
+estimate for the toolkit or qualification of subsequent code changes.
 
-Recent hardening exposed a reproduction-checker defect: matching failing panels
-could produce aggregate success. The replacement checks required workflow coverage,
-input and protocol identities, exact case IDs, controls, and per-case verdicts.
-A missing panel, incompatible record, or insufficient environment count prevents
-release qualification. The distinction between software tests, cross-environment
+SF-CSA's no-false-promotion bound is labelled definitional, not scientific: its
+analogy and unrelated strata are defined as different superfamily and the
+classifier promotes only within a group, so the bound holds by construction.
+Adoption certifies that panel's recall and evidence-separation gates only.
+
+Hardening exposed three defects in the reproduction checker, each of which had
+silently limited what the evidence could say. Matching failing panels could
+produce aggregate success; one panel absent from the manifest discarded its
+runner's whole summary; and blocking scopes were compared against stratum names
+they never match, so no blocking panel could reach a reproduced verdict at all.
+The checker now validates panels independently, scores draft-executed panels
+apart from qualified scopes, and requires workflow coverage, input and protocol
+identities, exact case IDs, controls, and per-case verdicts. A missing panel,
+incompatible record, or insufficient environment count prevents release
+qualification. The distinction between software tests, cross-environment
 execution, independent scientific review, and human release authorization remains
 explicit. No scope is claimed independently qualified for the changed build.
 
