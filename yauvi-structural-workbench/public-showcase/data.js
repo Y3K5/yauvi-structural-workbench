@@ -727,7 +727,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "path": "qualification-v2/EXECUTION_SUMMARY.json"
       }
     ],
-    "missing_records": 32,
+    "missing_records": 16,
     "overall_state": "blocked_panel_incomplete",
     "panels": [
       {
@@ -767,9 +767,9 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       },
       {
         "execution_state": "not_executed",
-        "missing_count": 16,
-        "record_count": 0,
-        "state": "blocked_panel_incomplete",
+        "missing_count": 0,
+        "record_count": 16,
+        "state": "ready_for_execution",
         "workflow": "sf_csa"
       }
     ],
@@ -1520,7 +1520,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     {
       "analysis_type": "sf_csa",
       "external_benchmark": "public_case_passed",
-      "external_benchmark_detail": "qualification_v1_public_case_passed_real_engines_v2_four_family_panel_unadopted",
+      "external_benchmark_detail": "v2_panel_ADOPTED_collection_2_11_all_16_records_and_0_controls_in_PANEL_MANIFEST_four_strata_of_four_curator_frozen_executes_16_of_16_reproduced_on_seven_runners_across_three_environments_in_qualification_run_67_both_controls_retired_2026_09_01_and_the_no_false_promotion_bound_is_definitional_not_scientific_see_Finding_7_independent_second_machine_gate_outstanding",
       "inputs": [
         {
           "absence_effect": "blocked",

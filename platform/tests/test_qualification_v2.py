@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import importlib.util
 import json
@@ -55,14 +56,29 @@ def test_empty_v2_panel_is_blocked_not_vacuously_passed():
 
     # The guard this test exists for: a panel with no adopted records must be
     # reported blocked with its requirements outstanding, never vacuously passed
-    # because there was nothing to check. Panels that have since been adopted
-    # are held to the opposite standard.
-    empty = [(p, s) for p, s in pairs if not p.get("records")]
-    assert empty, "expected at least one unadopted panel while the collection is incomplete"
-    for panel, summary in empty:
+    # because there was nothing to check.
+    #
+    # It used to require the manifest to contain such a panel, and asserted so
+    # while one did. sf_csa was the last, and collection 2.11 adopted it -- at
+    # which point the assertion failed for the best possible reason and the guard
+    # would otherwise have been deleted along with the failure. A check that
+    # retires itself the moment everything is adopted stops protecting anything
+    # exactly when the stakes are highest, so it is exercised on a synthetic
+    # emptied panel instead. Real requirements, real shape, no records.
+    for panel in manifest["panels"]:
+        emptied = copy.deepcopy(panel)
+        emptied["records"] = []
+        emptied["controls"] = []
+        summary = module.validate_panel(emptied)[0]
         assert summary["state"] == "blocked_panel_incomplete", panel["panel_id"]
         assert any(row["missing_count"] > 0 for row in summary["requirements"]), panel["panel_id"]
         assert all(row["observed_count"] == 0 for row in summary["requirements"]), panel["panel_id"]
+
+    # And nothing in the real manifest is empty any more, which is the state
+    # collection 2.11 reached. If a future collection adds an unadopted panel,
+    # the loop above still covers it.
+    assert all(p.get("records") for p, _ in pairs), \
+        "an unadopted panel reappeared: " + str([p["panel_id"] for p, _ in pairs if not p.get("records")])
 
     # Composed panels are checked for composition only. This suite never
     # acquires artifacts -- third-party files are not committed -- so every
