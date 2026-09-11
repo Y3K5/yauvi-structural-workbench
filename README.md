@@ -37,7 +37,7 @@ release-blocking.
 
 Every claim below was executed in this folder, offline:
 
-- `pip install -e ".[dev]"` succeeds; all nine console scripts land on `PATH`
+- `pip install -e ".[dev]"` succeeds; all 10 console scripts land on `PATH`
 - **590 tests pass, 0 fail, 0 errors** (5 network/adapter deselected, 2 skipped),
   on an **arm64** interpreter — see [Running the tests](#running-the-tests)
 - A real StructQC analysis runs to completion and is **byte-identical across two runs**
@@ -92,7 +92,7 @@ is missing. Both failure modes are environment reports, not test results.
 ## Boundary
 
 The current local development build packages both the command-line tools and a
-standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench serve`.
+standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench open`, which starts the application and opens a browser on it; `workbench serve` starts the same application without opening one.
 Both interfaces use the same structural analysis store and scientific engines.
 The published commit recorded in the implementation baseline predates this extraction;
 publication of these changes remains pending review.

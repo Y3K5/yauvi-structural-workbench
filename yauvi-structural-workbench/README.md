@@ -60,7 +60,7 @@ analysis revision.
 ### Scope of this distribution
 
 The current local development build packages both the command-line tools and a
-standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench serve`.
+standalone loopback browser. Start it with `yauvi --workspace ./my-analysis workbench open`, which starts the application and opens a browser on it; `workbench serve` starts the same application without opening one.
 Both interfaces use the same structural analysis store and scientific engines.
 The published commit recorded in the implementation baseline predates this extraction;
 publication of these changes remains pending review.
