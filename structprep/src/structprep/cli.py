@@ -17,12 +17,14 @@ def describe() -> dict:
         "one_line": "Which atoms should downstream analysis see, and what was removed to get there?",
         "commands": ["describe", "validate", "classes", "run"],
         "inputs": [
-            {"name": "structure", "format": "PDB", "required": True},
+            {"name": "structure", "format": "PDB or mmCIF", "required": True},
             {"name": "policy", "format": "JSON", "required": False,
              "note": "declarative; defaults drop solvent, cryoprotectant and buffer"},
         ],
         "outputs": [
-            {"name": "PREPARED.pdb", "contract": "prepared_coordinates", "format": "pdb"},
+            {"name": "PREPARED.pdb or PREPARED.cif", "contract": "prepared_coordinates",
+             "format": "pdb or mmcif",
+             "note": "matches the parent format; atom records are re-emitted as written"},
             {"name": "PREPARATION.json", "contract": "preparation_record", "format": "json"},
             {"name": "REMOVED.tsv", "contract": "removed_atom_table", "format": "tsv"},
             {"name": "RUN_MANIFEST.json", "contract": "structure_analysis_run_manifest",

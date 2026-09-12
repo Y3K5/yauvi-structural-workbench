@@ -6,6 +6,11 @@ Removes solvent and crystallisation additives, selects chains and alternate
 locations, and flattens biological assemblies — then writes down exactly what it
 removed and what it refused to.
 
+PDB and mmCIF are both read and written. Atom records are re-emitted as written in
+the parent file rather than re-rendered, so no coordinate can drift through this
+step; on mmCIF only `_atom_site.auth_asym_id` is relabelled when an assembly is
+flattened, and `label_asym_id` is left as deposited.
+
 ## Why it derives instead of edits
 
 `structqc` binds a SHA-256 to a set of coordinates, and every downstream module
