@@ -366,6 +366,30 @@ def analyze(
         observed_all += observed
         chain_entries.append((str(ch.id), amino, observed))
 
+    # A single-copy reference aligned against several concatenated chains spreads
+    # across them: position 1 lands in one chain, position 2 in the next, and
+    # `coverage_fraction` -- computed over the set of mapped reference positions --
+    # still reports 1.0. The manifest then looks authoritative while the per-chain
+    # residue map is unusable, which is how a 30-entry survey once produced an
+    # "exactly one chain per entry" pattern that was an artefact of this line.
+    #
+    # This warns rather than refuses. Refusing would be the stronger fix, but one
+    # adopted qualification record (the declared clean multichain control) runs with
+    # no chain selected and carries a frozen coverage_fraction, and the panel's
+    # immutability policy forbids editing a threshold in place. Making the ambiguity
+    # visible costs nothing; changing the number requires a new collection version.
+    if chain is None and len(chain_entries) > 1:
+        warnings.append(
+            "reference mapped across "
+            + str(len(chain_entries))
+            + " concatenated chains ("
+            + ", ".join(cid for cid, _, _ in chain_entries)
+            + ") because no --chain was selected; per-chain residue identity is not "
+            "established and coverage_fraction counts distinct reference positions "
+            "across the concatenation, not coverage of any one chain. Re-run once per "
+            "chain for a usable residue map."
+        )
+
     mapping, completeness = _sequence_map(observed_all, reference_sequence)
     for chain_id, amino, observed in chain_entries:
         missing_backbone = 0
