@@ -19,7 +19,7 @@ from typing import Iterable, Mapping, Sequence
 
 from .core import ActivityAssessment, ProteinRecord
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 
 # Column aliases, so an export made with UniProt's own field names or with its
 # display headers both work without the user having to rename anything.

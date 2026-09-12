@@ -86,7 +86,8 @@ LABELS = (
 )
 
 # What a signal can say about itself.
-SIGNAL_STATES = ("supported", "contradicted", "unevaluated", "unavailable")
+SIGNAL_STATES = ("supported", "contradicted", "unevaluated", "unavailable",
+                 "unevaluable")
 
 
 @dataclass(frozen=True)
@@ -362,15 +363,28 @@ def geometry_signal(
     residues = structure.by_seq_id(chain)
     found = [residues[p] for p in positions if p in residues]
     missing = [p for p in positions if p not in residues]
-    if len(found) < 2:
+    coverage = {
+        "declared_set_coverage": {"declared": len(positions), "resolved": len(found)},
+        "missing_from_structure": missing,
+    }
+
+    # A declared catalytic position with no density cannot be measured, and the
+    # positions that *are* present will cluster perfectly well without it.
+    # Measuring the remainder and returning a verdict answers a question nobody
+    # asked -- whether the resolved subset is compact -- and on a protein whose
+    # signature is a mobile catalytic loop that is usually unmodelled it scores a
+    # site as better the less of that site was observed. Refuse instead, and say
+    # how much of the declared set was actually seen.
+    if missing:
         return Signal(
             "geometry",
-            "unavailable",
+            "unevaluable",
             (
-                f"only {len(found)} of {len(positions)} catalytic position(s) are resolved in "
-                f"the coordinates (missing {missing}); geometry cannot be evaluated"
+                f"{len(found)} of {len(positions)} declared catalytic position(s) are "
+                f"resolved in the coordinates (missing {missing}); site geometry is not "
+                "evaluated over part of a declared set"
             ),
-            {"missing_from_structure": missing},
+            coverage,
         )
 
     pairs = pairwise_distances(found)
@@ -387,17 +401,16 @@ def geometry_signal(
                 f"{max_distance} A between {widest[0].seq_id} and {widest[1].seq_id}, "
                 f"above the {max_separation} A bound for one site"
             ),
-            {"max_separation_angstrom": max_distance, "resolved": len(found), "missing_from_structure": missing},
+            {"max_separation_angstrom": max_distance, **coverage},
         )
     return Signal(
         "geometry",
         "supported",
         (
             f"catalytic residues ({detail_positions}) form a cluster: widest separation "
-            f"{max_distance} A"
-            + (f"; {len(missing)} position(s) unresolved in the coordinates" if missing else "")
+            f"{max_distance} A across the complete declared set"
         ),
-        {"max_separation_angstrom": max_distance, "resolved": len(found), "missing_from_structure": missing},
+        {"max_separation_angstrom": max_distance, **coverage},
     )
 
 
@@ -585,6 +598,15 @@ def assign_label(signals: Sequence[Signal], *, structure: Structure | None) -> t
     # From here, completeness is supported.
     if geometry.state == "contradicted":
         return "inactive_conformation", geometry.detail
+
+    if geometry.state == "unevaluable":
+        # Part of the declared catalytic set has no density. `completeness` reads
+        # the sequence and may report every catalytic residue present; "the site
+        # is intact" is a claim about coordinates, and these coordinates cannot
+        # carry it. Returned rather than collected as a cap, so no downstream
+        # signal can lift it to a positive label.
+        return "indeterminate", geometry.detail
+
     if conformation.state == "contradicted":
         return "inactive_conformation", conformation.detail
 

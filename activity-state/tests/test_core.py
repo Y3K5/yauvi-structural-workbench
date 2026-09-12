@@ -78,11 +78,17 @@ def test_a_single_catalytic_position_has_no_geometry(write_pdb):
 def test_unresolved_positions_block_geometry_rather_than_biasing_it(
     intact_record, write_pdb
 ):
-    """Two of three residues missing from the coordinates is not a verdict."""
+    """Two of three residues missing from the coordinates is not a verdict.
+
+    The state is `unevaluable` rather than `unavailable` since 2026-09-11: both mean
+    "not judged", but they mean it for different reasons, and only this one says the
+    declared set was incomplete. `unavailable` still means no structure was supplied.
+    """
     structure = read_structure(write_pdb("x.pdb", [(5, "HIS", (0.0, 0.0, 0.0))]))
     signal = assess(intact_record, structure=structure).signal("geometry")
-    assert signal.state == "unavailable"
+    assert signal.state == "unevaluable"
     assert signal.values["missing_from_structure"] == [9, 14]
+    assert signal.values["declared_set_coverage"] == {"declared": 3, "resolved": 1}
 
 
 def test_the_cluster_bound_is_configurable(intact_record, write_pdb, dispersed_triad):
