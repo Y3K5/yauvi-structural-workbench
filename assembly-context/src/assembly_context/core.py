@@ -18,8 +18,26 @@ import numpy as np
 import scipy
 from Bio.PDB import MMCIFIO, MMCIFParser, PDBIO, PDBParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
-from Bio.PDB.SASA import ShrakeRupley
 from scipy.spatial import cKDTree
+
+# Bio.PDB.SASA arrived in Biopython 1.79 and this package declares biopython>=1.81.
+# The offline install recipe used in this workspace passes --no-deps, which does not
+# enforce a floor, so an older Biopython reaches this import and raises a bare
+# ModuleNotFoundError naming a submodule -- which reads like a broken package rather
+# than an unmet requirement. Say which floor was missed and what was found instead.
+# The engines already record Bio.__version__ into their run records; the gap this
+# closes is that none of them compared it.
+try:
+    from Bio.PDB.SASA import ShrakeRupley
+except ModuleNotFoundError as exc:  # pragma: no cover - environment-dependent
+    import Bio
+
+    raise ImportError(
+        f"assembly-context requires biopython>=1.81 for Bio.PDB.SASA; "
+        f"found biopython {Bio.__version__}. A --no-deps install does not enforce "
+        f"declared floors: run `python3 tools/run_structural_workbench_tests.py`, "
+        f"whose preflight checks every pyproject floor and fails closed."
+    ) from exc
 
 SCHEMA_VERSION = "1.0"
 RELATIONSHIPS = {"exact_protein", "homolog_assembly", "architecture_analogy", "unresolved"}
