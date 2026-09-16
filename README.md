@@ -122,7 +122,7 @@ blocks submission:
   it. **No scope has completed the independent second-machine reproduction
   gate**, which is required on its own and is untouched by any of the above.
   Counts here come from
-  [`EXECUTION_SUMMARY.json`](yauvi-structural-workbench/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json),
+  [`EXECUTION_SUMMARY.json`](evidence/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json),
   derived from the executed evidence rather than typed. The historical v1
   collection passed four public cases and left two partial; those are named
   cases, not workflow-general accuracy evidence.

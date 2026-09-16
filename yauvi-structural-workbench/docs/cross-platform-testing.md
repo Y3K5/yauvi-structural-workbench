@@ -19,7 +19,7 @@ python -m pip install ".[dev]"
 python tools/run_structural_workbench_tests.py --core-only --json-out TEST_RESULT.json
 ```
 
-Open `yauvi-structural-workbench/public-showcase/index.html` directly for the
+Open `evidence/public-showcase/index.html` directly for the
 offline narrative. The privacy-minimized test ZIP deliberately omits the larger
 source-checkout controller and private-platform support surface. From the full
 local source checkout, the loopback interface is:

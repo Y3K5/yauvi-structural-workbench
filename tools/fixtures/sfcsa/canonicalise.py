@@ -17,7 +17,7 @@ records paths relative to the database root, so no substitution is needed and
 the file is portable as produced. That was a privacy fix rather than a fixture
 one -- the absolute form reached release evidence staged for a public
 repository -- and the property is held by
-`sf-csa/tests/test_release_paths_are_portable.py`. This note stays because a
+`software/sf-csa/tests/test_release_paths_are_portable.py`. This note stays because a
 canonicaliser that silently keeps substituting a field the pipeline no longer
 emits is how the next reader concludes the pipeline still emits it.
 

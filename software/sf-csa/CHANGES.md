@@ -64,4 +64,4 @@ were passing `rbh` through `target_meta` while asserting non-promotion and would
 have gone on passing without exercising the path. All migrated. Suite: 119 passing.
 
 Full record, including the two withdrawn statements this supersedes:
-`yauvi-structural-workbench/benchmarks/qualification-v2/SF_CSA_PREADOPTION_FINDINGS.md`.
+`evidence/benchmarks/qualification-v2/SF_CSA_PREADOPTION_FINDINGS.md`.

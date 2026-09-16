@@ -162,7 +162,7 @@ sequence differences at all. That is worth stating plainly: the `exact` identity
 gate has only ever been exercised on the easiest possible input.
 
 How much this matters depends on how StructQC computes identity, so I checked.
-`structqc/src/structqc/core.py` runs a **global Biopython pairwise alignment** and
+`software/structqc/src/structqc/core.py` runs a **global Biopython pairwise alignment** and
 reports `identity_fraction = identity / len(mapping)` — identity over aligned
 positions, not over reference length. The consequence:
 

@@ -24,28 +24,28 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("structqc", ("structqc/tests",)),
-    ("memorient", ("Membrane Orientor/memorient/tests",)),
-    ("state-atlas", ("state-atlas/tests",)),
-    ("site-context", ("site-context/tests",)),
-    ("activity-state", ("activity-state/tests",)),
-    ("assembly-context", ("assembly-context/tests",)),
-    ("sf-csa", ("sf-csa/tests",)),
+    ("structqc", ("software/structqc/tests",)),
+    ("memorient", ("software/Membrane Orientor/memorient/tests",)),
+    ("state-atlas", ("software/state-atlas/tests",)),
+    ("site-context", ("software/site-context/tests",)),
+    ("activity-state", ("software/activity-state/tests",)),
+    ("assembly-context", ("software/assembly-context/tests",)),
+    ("sf-csa", ("software/sf-csa/tests",)),
     ("sf-csa fixture", ("tools/fixtures/sfcsa",)),
-    ("structural workbench", ("platform/tests/test_structural_workbench.py",)),
-    ("qualification v2", ("platform/tests/test_qualification_v2.py",)),
-    ("product hardening", ("platform/tests/test_product_hardening.py",)),
-    ("workbench launcher", ("platform/tests/test_workbench_launch.py",)),
-    ("protein import", ("platform/tests/test_protein_import.py",)),
-    ("source registry", ("sources/tests",)),
-    ("structprep", ("structprep/tests",)),
+    ("structural workbench", ("software/platform/tests/test_structural_workbench.py",)),
+    ("qualification v2", ("software/platform/tests/test_qualification_v2.py",)),
+    ("product hardening", ("software/platform/tests/test_product_hardening.py",)),
+    ("workbench launcher", ("software/platform/tests/test_workbench_launch.py",)),
+    ("protein import", ("software/platform/tests/test_protein_import.py",)),
+    ("source registry", ("software/sources/tests",)),
+    ("structprep", ("software/structprep/tests",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")
 
 # Every pyproject in the distribution, so a floor is read from the package that
 # declares it rather than from a list here that can drift away from them.
 PYPROJECTS: tuple[str, ...] = (
-    "pyproject.toml", "structqc/pyproject.toml", "Membrane Orientor/memorient/pyproject.toml",
+    "pyproject.toml", "structqc/pyproject.toml", "software/Membrane Orientor/memorient/pyproject.toml",
     "state-atlas/pyproject.toml", "site-context/pyproject.toml", "activity-state/pyproject.toml",
     "assembly-context/pyproject.toml", "sf-csa/pyproject.toml",
     "structprep/pyproject.toml",

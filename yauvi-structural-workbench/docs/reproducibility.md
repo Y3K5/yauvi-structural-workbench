@@ -31,14 +31,14 @@ The historical v1 scientific panel is separate from the synthetic software
 tests. Its exact named-case result remains reproducible offline with:
 
 ```bash
-python yauvi-structural-workbench/benchmarks/qualification-v1/run_qualification.py
+python evidence/benchmarks/qualification-v1/run_qualification.py
 ```
 
 The current Mark 1 release gate is Qualification v2. Audit its frozen strata,
 splits, source adoption, and exact thresholds with:
 
 ```bash
-python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
+python evidence/benchmarks/qualification-v2/run_qualification.py
 ```
 
 The v2 runner makes no network requests and currently returns `1` with

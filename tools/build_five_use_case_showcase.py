@@ -26,11 +26,11 @@ DEFAULT_OUT = ROOT / "yauvi-structural-workbench" / "showcase" / "five-human-use
 DEFAULT_PUBLIC_OUT = ROOT / "yauvi-structural-workbench" / "public-showcase"
 PUBLIC_SOURCE_FILES = ("index.html", "styles.css", "app.js", "README.md")
 PACKAGE_PATHS = (
-    "structqc/src",
-    "Membrane Orientor/memorient/src",
-    "state-atlas/src",
-    "site-context/src",
-    "assembly-context/src",
+    "software/structqc/src",
+    "software/Membrane Orientor/memorient/src",
+    "software/state-atlas/src",
+    "software/site-context/src",
+    "software/assembly-context/src",
 )
 
 QUALIFICATION_SOURCE_LINKS = {

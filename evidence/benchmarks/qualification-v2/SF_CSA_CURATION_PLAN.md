@@ -199,7 +199,7 @@ Decision 3 is unchanged and was already implemented in `gate_semantics`.
   reaches the label.
 - `rbh_asserted_rejected` is retired. Its input is refused by the manifest reader
   before classification, so it cannot be curated as a record at all. The guard is
-  enforced in `sf-csa/tests/test_rbh_provenance.py` instead.
+  enforced in `software/sf-csa/tests/test_rbh_provenance.py` instead.
 - `rbh_without_whole_architecture` replaces it: a genuine reciprocal best hit on a
   pair that is not a whole-architecture match must still not be promoted. This
   keeps a false-positive bound inside the panel, observed rather than assumed.

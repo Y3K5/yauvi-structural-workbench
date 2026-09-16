@@ -1006,7 +1006,7 @@ def _gates_sf_csa(record, expected, ev, checks, manifest) -> bool:
             # asserted-evidence path it probed is now refused by the module's
             # manifest reader, so its input never reaches classification and it
             # cannot exist as a record. That guard moved to
-            # sf-csa/tests/test_rbh_provenance.py.
+            # software/sf-csa/tests/test_rbh_provenance.py.
             #
             # The panel keeps a false-positive bound of its own: a genuine
             # reciprocal best hit on a pair that is not a whole-architecture

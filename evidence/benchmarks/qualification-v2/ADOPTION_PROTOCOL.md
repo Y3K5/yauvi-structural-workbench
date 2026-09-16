@@ -87,7 +87,7 @@ A stratum that passes only where its expectations were recorded is not adopted.
 
 **`sf_csa` (16).** Needs Foldseek and DIAMOND, version-pinned in v1 as
 `foldseek 10.941cd33` and `diamond 2.1.11`. Read how `sf_csa` invokes them before
-writing code — the module is at `sf-csa/src/sf_csa/`, at the repository root, not
+writing code — the module is at `software/sf-csa/src/sf_csa/`, at the repository root, not
 under `yauvi-structural-workbench/`. It carries a known defect: reciprocal-best-hit
 is computed *after* structural classification, so `probable_same_function` is
 unreachable end to end.

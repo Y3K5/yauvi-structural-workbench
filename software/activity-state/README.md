@@ -139,7 +139,7 @@ exactly once, so the golden tests need no download and no licence.
 ## Inside the platform
 
 Registered as `catalogs/modules/activity_state.yaml`, adapter at
-`platform/src/yauvi_platform/modules/native/activity_state.py`. Only
+`software/platform/src/yauvi_platform/modules/native/activity_state.py`. Only
 `active_state_supported` maps to a passing `EvidenceState`; `probable_active`
 maps to `indeterminate`, because a signal that could not be evaluated is not a
 favourable one.

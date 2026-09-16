@@ -49,17 +49,17 @@ structprep = "structprep.cli:main"
 
 [tool.setuptools.packages.find]
 where = [
-  "structural-workbench/src",
-  "platform/src",
-  "sources/src",
-  "structqc/src",
-  "Membrane Orientor/memorient/src",
-  "state-atlas/src",
-  "site-context/src",
-  "activity-state/src",
-  "assembly-context/src",
-  "sf-csa/src",
-  "structprep/src",
+  "software/structural-workbench/src",
+  "software/platform/src",
+  "software/sources/src",
+  "software/structqc/src",
+  "software/Membrane Orientor/memorient/src",
+  "software/state-atlas/src",
+  "software/site-context/src",
+  "software/activity-state/src",
+  "software/assembly-context/src",
+  "software/sf-csa/src",
+  "software/structprep/src",
 ]
 include = [
   "yauvi_structural_workbench*", "yauvi_platform.structural_workbench*", "yauvi_sources*", "structqc*", "memorient*",

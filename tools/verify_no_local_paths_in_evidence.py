@@ -54,7 +54,7 @@ SECRET = re.compile(
 #: why the list stays short and is reviewed rather than grown by reflex.
 EXEMPT_ACCOUNTS = frozenset({
     "runner", "runneradmin",              # GitHub-hosted runners
-    "researcher", "example-account",      # platform/tests/test_product_hardening.py
+    "researcher", "example-account",      # software/platform/tests/test_product_hardening.py
     "example", "user", "someone",         # documentation placeholders
 })
 

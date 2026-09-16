@@ -52,7 +52,7 @@ boundaries. They do not establish accuracy against independent biology.
 After acquiring the exact artifacts in `benchmarks/qualification-v1/SOURCE_LOCK.json`:
 
 ```bash
-python yauvi-structural-workbench/benchmarks/qualification-v1/run_qualification.py
+python evidence/benchmarks/qualification-v1/run_qualification.py
 ```
 
 The v1 runner performs no network access. Its current expected state is exit
@@ -62,7 +62,7 @@ qualification records, not the current Mark 1 release gate.
 Audit the expanded Qualification v2 panel separately:
 
 ```bash
-python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
+python evidence/benchmarks/qualification-v2/run_qualification.py
 ```
 
 The composition audit is currently `blocked_panel_incomplete`. It checks composition,

@@ -126,6 +126,6 @@ absence.
 ## Inside the platform
 
 Registered as `catalogs/modules/sf_csa.yaml`, adapter at
-`platform/src/yauvi_platform/modules/native/sf_csa.py`. That descriptor's output
+`software/platform/src/yauvi_platform/modules/native/sf_csa.py`. That descriptor's output
 paths are project-scoped on purpose: it records how the module is wired into one
 campaign. The module's independence lives here, in the package and its CLI.

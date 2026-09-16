@@ -139,14 +139,14 @@ jobs:
         id: sources-cache
         uses: actions/cache/restore@v4
         with:
-          path: yauvi-structural-workbench/benchmarks/qualification-v2/sources
-          key: qualification-v2-sources-${{ hashFiles('yauvi-structural-workbench/benchmarks/qualification-v2/SOURCE_LOCK.json') }}
+          path: evidence/benchmarks/qualification-v2/sources
+          key: qualification-v2-sources-${{ hashFiles('evidence/benchmarks/qualification-v2/SOURCE_LOCK.json') }}
           # No restore-keys: a partial key match would restore artifacts belonging
           # to a different lock, and acquisition skips files that are already
           # present. A miss must mean a full, honest acquisition.
 
       - name: Acquire the locked artifacts
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: python acquire_sources.py
 
       # Saved separately, and on failure too. The combined cache action skips its
@@ -164,22 +164,22 @@ jobs:
         continue-on-error: true
         uses: actions/cache/save@v4
         with:
-          path: yauvi-structural-workbench/benchmarks/qualification-v2/sources
+          path: evidence/benchmarks/qualification-v2/sources
           key: ${{ steps.sources-cache.outputs.cache-primary-key }}
 
       - name: Verify every artifact against the frozen source lock
         id: sources
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: python acquire_sources.py --verify-only
 
       - name: Execute the StructQC panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: python run_execution.py --out results/execution-structqc
 
       - name: Execute the assembly-interface panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           python run_execution.py \
             --panel ADOPTION_DRAFT_ASSEMBLY.json \
@@ -199,7 +199,7 @@ jobs:
       - name: Execute the membrane panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
         continue-on-error: true
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           python run_execution.py \
             --panel ADOPTION_DRAFT_MEMBRANE.json \
@@ -207,7 +207,7 @@ jobs:
 
       - name: Execute the functional-site panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           python run_execution.py \
             --panel ADOPTION_DRAFT_SITECONTEXT.json \
@@ -233,7 +233,7 @@ jobs:
       # 153 MB DIAMOND indexes.
       - name: Execute the sf-csa panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           python run_execution.py \
             --panel ADOPTION_DRAFT_SFCSA.json \
@@ -246,7 +246,7 @@ jobs:
       # needs no pinned external runtime.
       - name: Execute the ABL state-atlas panel offline
         if: ${{ !cancelled() && steps.sources.outcome == 'success' }}
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           python run_execution.py \
             --panel ADOPTION_DRAFT_ABL.json \
@@ -265,7 +265,7 @@ jobs:
       # finding in a research-only scope.
       - name: Summarize the executed evidence
         if: always()
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: python summarize_execution.py
 
       # The evidence, not just the exit code. Every recorded check -- including
@@ -279,7 +279,7 @@ jobs:
       # Its ledger records every replaced field; raw local provenance is retained.
       - name: Archive the execution evidence
         if: always()
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           set -euo pipefail
           # work/ is pipeline scratch, excluded from the repository for the same
@@ -305,7 +305,7 @@ jobs:
       # on the day the last one is adopted. The exit code reports composition,
       # so compare it to the composition state the audit itself recorded.
       - name: Composition audit agrees with its own recorded state
-        working-directory: yauvi-structural-workbench/benchmarks/qualification-v2
+        working-directory: evidence/benchmarks/qualification-v2
         run: |
           set +e
           python run_qualification.py

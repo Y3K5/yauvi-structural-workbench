@@ -687,7 +687,7 @@ def test_the_qualification_cache_key_is_the_lock_itself():
     """
     workflow = (ROOT / ".github" / "workflows" / "qualification.yml").read_text(encoding="utf-8")
     assert "actions/cache/restore@v4" in workflow
-    assert "hashFiles('yauvi-structural-workbench/benchmarks/qualification-v2/SOURCE_LOCK.json')" \
+    assert "hashFiles('evidence/benchmarks/qualification-v2/SOURCE_LOCK.json')" \
         in workflow, "the cache key must be derived from the lock"
     # As a key, not as the comment explaining why it is absent.
     assert not any(line.strip().startswith("restore-keys:") for line in workflow.splitlines()), \

@@ -9,7 +9,7 @@ from matplotlib.patches import FancyBboxPatch
 from pathlib import Path
 import json,hashlib,csv,shutil
 R=Path(__file__).resolve().parents[1];P=R/'yauvi-structural-workbench/paper';F=P/'figures';F.mkdir(exist_ok=True)
-S=R/'yauvi-structural-workbench/implementation-evidence/2026-09-06'
+S=R/'evidence/implementation-evidence/2026-09-06'
 qp=S
 plt.rcParams.update({'font.family':'DejaVu Sans','font.size':11,'svg.fonttype':'none'})
 navy='#193641';teal='#26786b';gold='#a16929'
@@ -34,7 +34,7 @@ side.axis('off');side.text(0,.94,'What was actually measured?',fontsize=16,fontw
 lines=[f"Mapped residues: {e['completeness']['mapped_residues']} of {e['completeness']['reference_length']}",f"Sequence identity: {e['completeness']['identity_fraction']:.0%} within this toy mapping",f"Imported clashscore: {e['external_validation']['metrics']['clashscore']} (synthetic fixture)",'PAE: not supplied; not inferred','Input and validation records identified by SHA-256','Limit: these two residues demonstrate software behavior.','They do not establish structure validity or function.']
 for i,t in enumerate(lines):side.text(0,.78-i*.105,t,color=navy if i<5 else gold,fontsize=10.5)
 save(fig,'worked-example')
-summary_path=R/'yauvi-structural-workbench/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json';summary=json.loads(summary_path.read_text());by={p['workflow']:p for p in summary['panels']}
+summary_path=R/'evidence/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json';summary=json.loads(summary_path.read_text());by={p['workflow']:p for p in summary['panels']}
 fig,ax=plt.subplots(figsize=(10.8,3.8));ax.axis('off');ax.set_title('Historical collection 2.9 · changed code requires fresh qualification',loc='left',fontsize=15,color=navy,pad=20)
 pretty=[('structure_qc','StructQC'),('functional_site_state','SiteContext'),('assembly_interface','AssemblyContext'),('conformational_state','ABL StateAtlas'),('sf_csa','SF-CSA'),('membrane_orientation','MembraneOrient')]
 rs=[]

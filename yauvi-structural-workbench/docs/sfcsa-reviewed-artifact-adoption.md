@@ -44,7 +44,7 @@ The remaining qualification work is explicit:
 ## Reproduction
 
 ```bash
-PYTHONPATH=sf-csa/src python -m pytest tools/fixtures/sfcsa -q
+PYTHONPATH=software/sf-csa/src python -m pytest tools/fixtures/sfcsa -q
 python tools/build_sfcsa_showcase_case.py --replace
 python tools/verify_sfcsa_showcase_case.py
 python tools/build_five_use_case_showcase.py --replace

@@ -12,7 +12,7 @@ import numpy as np
 import scipy
 
 ROOT = Path(__file__).resolve().parents[1]
-ENGINE = ROOT / 'Membrane Orientor/memorient'
+ENGINE = ROOT / 'software/Membrane Orientor/memorient'
 sys.path.insert(0, str(ENGINE / 'tests'))
 from synthetic import make_barrel
 from memorient.contexts import get_context

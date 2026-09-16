@@ -51,7 +51,7 @@ jobs:
       - name: Documented test runner loads on this interpreter
         run: python tools/run_structural_workbench_tests.py --help
       - name: Product hardening contracts
-        run: python -m pytest platform/tests/test_product_hardening.py -q
+        run: python -m pytest software/platform/tests/test_product_hardening.py -q
       - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null
@@ -66,7 +66,7 @@ jobs:
       # the remaining suites running, so one run reports every failure rather
       # than only the first.
       - name: Suite · StructQC
-        run: python -m pytest structqc/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/structqc/tests -m "not network and not adapter" --tb=short
       # Cross-platform determinism record for the membrane scope. Prints the
       # fitted half-thickness, normal, and zone assignment on every OS and
       # Python in the matrix, so drift is visible in the log of every run
@@ -74,7 +74,7 @@ jobs:
       # Reference values: d = 9.918221 (macOS arm64), 9.914208 (linux/amd64).
       - name: Record membrane fit geometry
         if: always()
-        run: PYTHONPATH="Membrane Orientor/memorient/tests" python tools/diagnose_membrane_fit.py
+        run: PYTHONPATH="software/Membrane Orientor/memorient/tests" python tools/diagnose_membrane_fit.py
 
       # continue-on-error on both membrane steps, for the reason qualification.yml
       # already gives: collection 2.4 moved membrane orientation to non-blocking,
@@ -109,22 +109,22 @@ jobs:
       - name: Suite · MembraneOrient
         if: always()
         continue-on-error: true
-        run: python -m pytest "Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
+        run: python -m pytest "software/Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
       - name: Suite · StateAtlas
         if: always()
-        run: python -m pytest state-atlas/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/state-atlas/tests -m "not network and not adapter" --tb=short
       - name: Suite · SiteContext
         if: always()
-        run: python -m pytest site-context/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/site-context/tests -m "not network and not adapter" --tb=short
       - name: Suite · ActState
         if: always()
-        run: python -m pytest activity-state/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/activity-state/tests -m "not network and not adapter" --tb=short
       - name: Suite · AssemblyContext
         if: always()
-        run: python -m pytest assembly-context/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/assembly-context/tests -m "not network and not adapter" --tb=short
       - name: Suite · SF-CSA
         if: always()
-        run: python -m pytest sf-csa/tests -m "not network and not adapter" --tb=short
+        run: python -m pytest software/sf-csa/tests -m "not network and not adapter" --tb=short
       - name: Suite · SF-CSA fixture
         if: always()
         run: python -m pytest tools/fixtures/sfcsa -m "not network and not adapter" --tb=short
@@ -146,21 +146,21 @@ jobs:
           # not the private platform's campaign, cell-fate, oral-atlas, or
           # vaccine-orchestration modules. The packaged controller uses only
           # the structural service.
-          python -m pytest platform/tests/test_structural_workbench.py platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
-          python -m pytest sources/tests -m "not network and not adapter" --tb=short
+          python -m pytest software/platform/tests/test_structural_workbench.py software/platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
+          python -m pytest software/sources/tests -m "not network and not adapter" --tb=short
       - name: Showcase bundle parses without a network build
-        run: node --check yauvi-structural-workbench/public-showcase/app.js
+        run: node --check evidence/public-showcase/app.js
       - name: Qualification v2 never claims a qualified scope
         run: |
           set +e
-          python yauvi-structural-workbench/benchmarks/qualification-v2/run_qualification.py
+          python evidence/benchmarks/qualification-v2/run_qualification.py
           qualification_code=$?
           set -e
           python - "$qualification_code" <<'PY'
           import json
           import sys
           from pathlib import Path
-          results = Path("yauvi-structural-workbench/benchmarks/qualification-v2/results")
+          results = Path("evidence/benchmarks/qualification-v2/results")
           audit = json.loads((results / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
           # This asserted a bare exit 1 and the literal string
           # "blocked_panel_incomplete". Both are true today and both stop being

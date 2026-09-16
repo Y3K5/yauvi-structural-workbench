@@ -11,7 +11,7 @@ The runner performs no network access. Public artifacts must already match
 [`SOURCE_LOCK.json`](SOURCE_LOCK.json).
 
 ```bash
-python yauvi-structural-workbench/benchmarks/qualification-v1/run_qualification.py
+python evidence/benchmarks/qualification-v1/run_qualification.py
 ```
 
 Exit code `0` means every required check for all six workflows passed. Exit code
