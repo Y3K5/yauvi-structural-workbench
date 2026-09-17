@@ -21,7 +21,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PORTFOLIO = ROOT / "examples" / "structural-portfolio"
-QC_EXAMPLE = ROOT / "structqc" / "examples"
+QC_EXAMPLE = ROOT / "software" / "structqc" / "examples"
 DEFAULT_OUT = ROOT / "evidence" / "showcase" / "five-human-use-cases"
 DEFAULT_PUBLIC_OUT = ROOT / "evidence" / "public-showcase"
 PUBLIC_SOURCE_FILES = ("index.html", "styles.css", "app.js", "README.md")
@@ -411,7 +411,7 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     executed_states = {
         panel["workflow"]: panel["stratum_state"] for panel in execution_summary["panels"]
     }
-    sys.path.insert(0, str(ROOT / "platform" / "src"))
+    sys.path.insert(0, str(ROOT / "software" / "platform" / "src"))
     try:
         from yauvi_platform.structural_workbench.store import analysis_definitions, tool_readiness
         definitions = analysis_definitions()

@@ -102,7 +102,7 @@ def build(output: Path, *, replace: bool = False) -> dict[str, Any]:
     shutil.copyfile(FIXTURE / "stub_bin" / "hits.json", runtime / "hits.json")
 
     env = dict(os.environ)
-    env["PYTHONPATH"] = str(ROOT / "sf-csa" / "src") + (
+    env["PYTHONPATH"] = str(ROOT / "software" / "sf-csa" / "src") + (
         os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else ""
     )
     env["PATH"] = str(FIXTURE / "stub_bin") + os.pathsep + env.get("PATH", "")
