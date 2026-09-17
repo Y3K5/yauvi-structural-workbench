@@ -144,7 +144,7 @@ IMMUNE_CLASSES = {"B-cell": "#5b9df9", "MHC-I": "#4fc47f", "MHC-II": "#8f6cf9"}
 SPECIES_COLORS = {"pg": "#cbd24b", "tf": "#97d8b1", "td": "#4385b1"}
 
 PORTAL_CSS = (
-    pathlib.Path(__file__).resolve().parents[3]
+    pathlib.Path(__file__).resolve().parents[4]
     / "projects" / "YAUVI-PeriodontalPathogens" / "showcase" / "portal" / "assets" / "portal.css"
 )
 

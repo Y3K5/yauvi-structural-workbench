@@ -349,14 +349,14 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           pattern: execution-evidence-*
-          path: evidence
+          path: runner-evidence
 
       # Failure, disagreement, and insufficient evidence all block this release gate.
       # They remain distinct in the uploaded report and exit code.
       - name: Combine the per-runner evidence into one verdict
         run: |
           python tools/verify_cross_machine_reproduction.py \
-            --evidence-dir evidence \
+            --evidence-dir runner-evidence \
             --json-out "${RUNNER_TEMP}/cross-machine-reproduction.json"
 
       - name: Upload the cross-machine verdict

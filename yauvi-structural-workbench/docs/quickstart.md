@@ -26,10 +26,10 @@ emits, and the ceiling on what its output may be claimed to mean.
 
 ```bash
 structqc run \
-  --structure structqc/examples/model.pdb \
-  --reference-fasta structqc/examples/reference.fasta \
-  --provenance structqc/examples/provenance.json \
-  --validation-report structqc/examples/validation.json \
+  --structure software/structqc/examples/model.pdb \
+  --reference-fasta software/structqc/examples/reference.fasta \
+  --provenance software/structqc/examples/provenance.json \
+  --validation-report software/structqc/examples/validation.json \
   --out qc-demo
 ```
 
@@ -66,10 +66,10 @@ just did and the shipped evidence refer to provably identical input.
 
 ```bash
 structqc run \
-  --structure structqc/examples/model.pdb \
-  --reference-fasta structqc/examples/reference.fasta \
-  --provenance structqc/examples/provenance.json \
-  --validation-report structqc/examples/validation.json \
+  --structure software/structqc/examples/model.pdb \
+  --reference-fasta software/structqc/examples/reference.fasta \
+  --provenance software/structqc/examples/provenance.json \
+  --validation-report software/structqc/examples/validation.json \
   --out qc-demo-again
 
 diff -r qc-demo qc-demo-again && echo "byte-identical"
@@ -84,7 +84,7 @@ Ask for external validation that was never supplied:
 
 ```bash
 structqc run \
-  --structure structqc/examples/model.pdb \
+  --structure software/structqc/examples/model.pdb \
   --require-external-validation \
   --out qc-incomplete
 ```

@@ -132,11 +132,11 @@ blocks submission:
 - Both interpretation defects the pre-public audit recorded are now closed.
   SF-CSA computed reciprocal-best-hit after structural classification, so
   `probable_same_function` was unreachable end-to-end; fixed 2026-09-01
-  ([`sf-csa/CHANGES.md`](sf-csa/CHANGES.md)). ActState reached
+  ([`sf-csa/CHANGES.md`](software/sf-csa/CHANGES.md)). ActState reached
   `active_site_disrupted` from membership in a broad residue set, which is not a
   position-specific chemistry test; narrowed 2026-09-02 to require an expected
   residue from a validated reference
-  ([`activity-state/CHANGES.md`](activity-state/CHANGES.md)). ActState's
+  ([`activity-state/CHANGES.md`](software/activity-state/CHANGES.md)). ActState's
   occupancy caveat is unchanged and still open: a non-solvent heteroatom is
   detected, but its identity is not proven against the declared cofactor.
 

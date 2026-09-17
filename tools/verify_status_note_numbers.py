@@ -39,7 +39,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WB = ROOT / "yauvi-structural-workbench"
 STATUS = WB / "RELEASE_STATUS.json"
-SUMMARY = WB / "benchmarks" / "qualification-v2" / "results" / "EXECUTION_SUMMARY.json"
+SUMMARY = ROOT / "evidence" / "benchmarks" / "qualification-v2" / "results" / "EXECUTION_SUMMARY.json"
 
 # How each panel is named in the prose. The workflow id is what the evidence uses.
 PROSE_NAME = {

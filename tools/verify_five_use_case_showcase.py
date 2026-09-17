@@ -10,7 +10,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SHOWCASE = ROOT / "yauvi-structural-workbench" / "showcase" / "five-human-use-cases"
+SHOWCASE = ROOT / "evidence" / "showcase" / "five-human-use-cases"
 
 
 def fail(message: str) -> None:

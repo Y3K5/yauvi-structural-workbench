@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 STATUS = ROOT / "yauvi-structural-workbench" / "RELEASE_STATUS.json"
-BASE = STATUS.parent
+BASE = ROOT / "evidence"
 
 
 def sha256(path: Path) -> str | None:

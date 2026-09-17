@@ -11,7 +11,7 @@ from yauvi_platform.structural_workbench import StructuralAnalysisStore, Analysi
 from yauvi_structural_workbench.jobs import JobManager
 from yauvi_structural_workbench.server import Handler
 
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[3]
 
 def module(name):
     spec=importlib.util.spec_from_file_location(name,ROOT/'tools'/f'{name}.py')
@@ -21,7 +21,7 @@ def case(tmp_path):
     store=StructuralAnalysisStore(tmp_path)
     store.create('qc',analysis_type='structure_qc',question='What evidence is available?')
     for role,name in [('structure','model.pdb'),('provenance','provenance.json'),('validation_report','validation.json')]:
-        store.add_file('qc',role=role,path=ROOT/'structqc/examples'/name)
+        store.add_file('qc',role=role,path=ROOT/'software/structqc/examples'/name)
     return store
 
 def test_case_revisions_are_preserved(tmp_path):

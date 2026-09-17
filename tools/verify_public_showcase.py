@@ -10,9 +10,9 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "yauvi-structural-workbench" / "public-showcase"
-TECHNICAL = ROOT / "yauvi-structural-workbench" / "showcase" / "five-human-use-cases"
-SFCSA = ROOT / "yauvi-structural-workbench" / "showcase" / "sfcsa-ceiling-case"
+PUBLIC = ROOT / "evidence" / "public-showcase"
+TECHNICAL = ROOT / "evidence" / "showcase" / "five-human-use-cases"
+SFCSA = ROOT / "evidence" / "showcase" / "sfcsa-ceiling-case"
 TEXT_SUFFIXES = {".html", ".css", ".js", ".json", ".tsv", ".md", ".txt"}
 
 
@@ -92,9 +92,9 @@ def main() -> int:
     # composed panel. The check is now consistency with the evidence: the
     # showcase must say exactly what the executed results and the composition
     # audit say, and must never claim a qualified scope.
-    v2_status = json.loads((ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+    v2_status = json.loads((ROOT / "evidence" / "benchmarks" / "qualification-v2"
                             / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
-    summary = json.loads((ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+    summary = json.loads((ROOT / "evidence" / "benchmarks" / "qualification-v2"
                           / "results" / "EXECUTION_SUMMARY.json").read_text(encoding="utf-8"))
     if qualification_v2.get("overall_state") != v2_status["overall_state"]:
         fail("Qualification v2 composition state drifted from the audit")
@@ -213,11 +213,11 @@ def main() -> int:
         "PLATFORM_IDENTITY.json": digest(ROOT / "yauvi-structural-workbench" / "PLATFORM_IDENTITY.json"),
         "START_HERE.md": digest(ROOT / "yauvi-structural-workbench" / "START_HERE.md"),
         "JOSS_PUBLICATION_ROADMAP.json": digest(ROOT / "yauvi-structural-workbench" / "JOSS_PUBLICATION_ROADMAP.json"),
-        "QUALIFICATION_RESULTS.json": digest(ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v1" / "results" / "QUALIFICATION_RESULTS.json"),
-        "SOURCE_VERIFICATION.json": digest(ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v1" / "results" / "SOURCE_VERIFICATION.json"),
-        "SOURCE_LOCK.json": digest(ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v1" / "SOURCE_LOCK.json"),
-        "QUALIFICATION_V2_STATUS.json": digest(ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "results" / "QUALIFICATION_V2_STATUS.json"),
-        "QUALIFICATION_V2_PANEL_MANIFEST.json": digest(ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "PANEL_MANIFEST.json"),
+        "QUALIFICATION_RESULTS.json": digest(ROOT / "evidence" / "benchmarks" / "qualification-v1" / "results" / "QUALIFICATION_RESULTS.json"),
+        "SOURCE_VERIFICATION.json": digest(ROOT / "evidence" / "benchmarks" / "qualification-v1" / "results" / "SOURCE_VERIFICATION.json"),
+        "SOURCE_LOCK.json": digest(ROOT / "evidence" / "benchmarks" / "qualification-v1" / "SOURCE_LOCK.json"),
+        "QUALIFICATION_V2_STATUS.json": digest(ROOT / "evidence" / "benchmarks" / "qualification-v2" / "results" / "QUALIFICATION_V2_STATUS.json"),
+        "QUALIFICATION_V2_PANEL_MANIFEST.json": digest(ROOT / "evidence" / "benchmarks" / "qualification-v2" / "PANEL_MANIFEST.json"),
     }
     for name, value in expected_sources.items():
         if manifest.get("source_sha256", {}).get(name) != value:

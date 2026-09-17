@@ -27,7 +27,7 @@ def _workspace_root() -> Path | None:
 
 @pytest.fixture(scope="session")
 def workspace() -> Path:
-    return Path(__file__).resolve().parents[2]
+    return Path(__file__).resolve().parents[3]
 
 
 @pytest.fixture(scope="session")

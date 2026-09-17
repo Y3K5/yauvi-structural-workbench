@@ -44,7 +44,7 @@ import re
 import sys
 from pathlib import Path
 
-PANEL_ROOT = Path(__file__).resolve().parent.parent / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+PANEL_ROOT = Path(__file__).resolve().parent.parent / "evidence" / "benchmarks" / "qualification-v2"
 PANELS = ("structqc", "sitecontext", "assembly", "abl", "membrane")
 LEDGER = PANEL_ROOT / "results" / "OUTPUT_DIR_REMEDIATION_2026-09-09.json"
 

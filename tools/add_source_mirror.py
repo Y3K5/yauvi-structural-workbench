@@ -46,7 +46,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-COLLECTION = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+COLLECTION = ROOT / "evidence" / "benchmarks" / "qualification-v2"
 LOCK = COLLECTION / "SOURCE_LOCK.json"
 ACQUIRER = COLLECTION / "acquire_sources.py"
 

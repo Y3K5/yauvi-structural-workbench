@@ -40,10 +40,10 @@ retrieval; it installs an HTTP client and enables nothing by itself.
 
 ```bash
 structqc run \
-  --structure structqc/examples/model.pdb \
-  --reference-fasta structqc/examples/reference.fasta \
-  --provenance structqc/examples/provenance.json \
-  --validation-report structqc/examples/validation.json \
+  --structure software/structqc/examples/model.pdb \
+  --reference-fasta software/structqc/examples/reference.fasta \
+  --provenance software/structqc/examples/provenance.json \
+  --validation-report software/structqc/examples/validation.json \
   --out qc-demo
 ```
 

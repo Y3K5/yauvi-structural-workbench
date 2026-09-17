@@ -12,8 +12,8 @@ import pytest
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[2]
-QUALIFICATION = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+ROOT = Path(__file__).resolve().parents[3]
+QUALIFICATION = ROOT / "evidence" / "benchmarks" / "qualification-v2"
 
 
 def runner_module():
@@ -435,7 +435,7 @@ def test_archive_reader_never_extracts_unsafe_members(tmp_path):
 def _acquirer_module():
     spec = importlib.util.spec_from_file_location(
         "acquire_sources",
-        ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "acquire_sources.py",
+        ROOT / "evidence" / "benchmarks" / "qualification-v2" / "acquire_sources.py",
     )
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
@@ -541,7 +541,7 @@ def test_no_tracked_file_publishes_a_local_home_path():
     spec.loader.exec_module(module)
 
     disclosed, exempt = module.findings(
-        ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+        ROOT / "evidence" / "benchmarks" / "qualification-v2"
         / "results" / "execution-structqc" / "EXECUTION_STATUS.json"
     )
     assert disclosed == [], f"recorded evidence still publishes {sorted(set(disclosed))}"
@@ -828,7 +828,7 @@ def test_the_sf_csa_gates_are_falsifiable():
 
     A rule-2 harness nobody runs is a claim, not a check. This runs it.
     """
-    module = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2" / "sf_csa_gate_falsification.py"
+    module = ROOT / "evidence" / "benchmarks" / "qualification-v2" / "sf_csa_gate_falsification.py"
     assert module.is_file(), module
     result = subprocess.run([sys.executable, str(module)], capture_output=True, text=True,
                             cwd=module.parent)

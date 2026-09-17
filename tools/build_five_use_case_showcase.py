@@ -22,8 +22,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 PORTFOLIO = ROOT / "examples" / "structural-portfolio"
 QC_EXAMPLE = ROOT / "structqc" / "examples"
-DEFAULT_OUT = ROOT / "yauvi-structural-workbench" / "showcase" / "five-human-use-cases"
-DEFAULT_PUBLIC_OUT = ROOT / "yauvi-structural-workbench" / "public-showcase"
+DEFAULT_OUT = ROOT / "evidence" / "showcase" / "five-human-use-cases"
+DEFAULT_PUBLIC_OUT = ROOT / "evidence" / "public-showcase"
 PUBLIC_SOURCE_FILES = ("index.html", "styles.css", "app.js", "README.md")
 PACKAGE_PATHS = (
     "software/structqc/src",
@@ -387,12 +387,12 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     identity_path = ROOT / "yauvi-structural-workbench" / "PLATFORM_IDENTITY.json"
     start_here_path = ROOT / "yauvi-structural-workbench" / "START_HERE.md"
     roadmap_path = ROOT / "yauvi-structural-workbench" / "JOSS_PUBLICATION_ROADMAP.json"
-    qualification_root = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v1"
+    qualification_root = ROOT / "evidence" / "benchmarks" / "qualification-v1"
     qualification_results_path = qualification_root / "results" / "QUALIFICATION_RESULTS.json"
     source_verification_path = qualification_root / "results" / "SOURCE_VERIFICATION.json"
     source_lock_path = qualification_root / "SOURCE_LOCK.json"
     qualification_report_path = qualification_root / "QUALIFICATION_REPORT.md"
-    qualification_v2_root = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+    qualification_v2_root = ROOT / "evidence" / "benchmarks" / "qualification-v2"
     qualification_v2_status_path = qualification_v2_root / "results" / "QUALIFICATION_V2_STATUS.json"
     qualification_v2_manifest_path = qualification_v2_root / "PANEL_MANIFEST.json"
     qualification_v2_report_path = qualification_v2_root / "results" / "QUALIFICATION_REPORT.html"

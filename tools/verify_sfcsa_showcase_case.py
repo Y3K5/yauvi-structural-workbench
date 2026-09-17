@@ -10,7 +10,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SHOWCASE = ROOT / "yauvi-structural-workbench" / "showcase" / "sfcsa-ceiling-case"
+SHOWCASE = ROOT / "evidence" / "showcase" / "sfcsa-ceiling-case"
 ADOPTION = ROOT / "yauvi-structural-workbench" / "docs" / "SFCSA_ARTIFACT_ADOPTION.json"
 ARTIFACT = ROOT / "artifacts" / "protein-platform-modularization-reviewed.zip"
 

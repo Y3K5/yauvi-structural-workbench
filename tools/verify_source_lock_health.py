@@ -56,7 +56,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-QUALIFICATION = ROOT / "yauvi-structural-workbench" / "benchmarks" / "qualification-v2"
+QUALIFICATION = ROOT / "evidence" / "benchmarks" / "qualification-v2"
 LOCK = QUALIFICATION / "SOURCE_LOCK.json"
 USER_AGENT = "yauvi-qualification/2.0"
 

@@ -15,7 +15,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
-QUALIFICATION = ROOT / 'yauvi-structural-workbench' / 'benchmarks' / 'qualification-v2'
+QUALIFICATION = ROOT / 'evidence' / 'benchmarks' / 'qualification-v2'
 sys.path.insert(0, str(QUALIFICATION))
 from evidence_contract import execution_identity
 MAX_SUMMARY_BYTES = 16 * 1024 * 1024

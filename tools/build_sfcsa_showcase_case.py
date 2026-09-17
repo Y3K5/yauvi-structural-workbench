@@ -23,7 +23,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tools" / "fixtures" / "sfcsa"
-DEFAULT_OUT = ROOT / "yauvi-structural-workbench" / "showcase" / "sfcsa-ceiling-case"
+DEFAULT_OUT = ROOT / "evidence" / "showcase" / "sfcsa-ceiling-case"
 ARTIFACT = ROOT / "artifacts" / "protein-platform-modularization-reviewed.zip"
 
 

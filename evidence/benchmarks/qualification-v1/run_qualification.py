@@ -33,12 +33,12 @@ BUILD = HERE / "build"
 RESULTS = HERE / "results"
 
 PYTHONPATHS = [
-    REPO / "structqc" / "src",
-    REPO / "state-atlas" / "src",
-    REPO / "site-context" / "src",
-    REPO / "assembly-context" / "src",
-    REPO / "sf-csa" / "src",
-    REPO / "Membrane Orientor" / "memorient" / "src",
+    REPO / "software" / "structqc" / "src",
+    REPO / "software" / "state-atlas" / "src",
+    REPO / "software" / "site-context" / "src",
+    REPO / "software" / "assembly-context" / "src",
+    REPO / "software" / "sf-csa" / "src",
+    REPO / "software" / "Membrane Orientor" / "memorient" / "src",
 ]
 for source_root in reversed(PYTHONPATHS):
     sys.path.insert(0, str(source_root))

@@ -45,10 +45,10 @@ COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|er
 # Every pyproject in the distribution, so a floor is read from the package that
 # declares it rather than from a list here that can drift away from them.
 PYPROJECTS: tuple[str, ...] = (
-    "pyproject.toml", "structqc/pyproject.toml", "software/Membrane Orientor/memorient/pyproject.toml",
-    "state-atlas/pyproject.toml", "site-context/pyproject.toml", "activity-state/pyproject.toml",
-    "assembly-context/pyproject.toml", "sf-csa/pyproject.toml",
-    "structprep/pyproject.toml",
+    "pyproject.toml", "software/structqc/pyproject.toml", "software/Membrane Orientor/memorient/pyproject.toml",
+    "software/state-atlas/pyproject.toml", "software/site-context/pyproject.toml", "software/activity-state/pyproject.toml",
+    "software/assembly-context/pyproject.toml", "software/sf-csa/pyproject.toml",
+    "software/structprep/pyproject.toml",
 )
 REQUIREMENT = re.compile(r"^\s*([A-Za-z0-9._-]+)\s*>=\s*([0-9][0-9A-Za-z.\-]*)")
 
