@@ -26,6 +26,9 @@ REQUIRED = (
     "docs/install.md", "docs/quickstart.md", "docs/workflows.md",
     "docs/files-and-sources.md", "docs/methods-and-limitations.md",
     "docs/benchmarks.md", "docs/reproducibility.md", "docs/reviewer-quickstart.md",
+)
+# Moved to evidence/ on 2026-09-16, so checked against that root instead.
+REQUIRED_EVIDENCE = (
     "benchmarks/benchmark-manifest.yaml",
     "benchmarks/qualification-v2/PANEL_MANIFEST.json",
     "benchmarks/qualification-v2/SOURCE_LOCK.json",
@@ -42,6 +45,8 @@ def main() -> int:
     staging = root / "yauvi-structural-workbench"
     problems = [f"missing {name}" for name in REQUIRED if not (staging / name).is_file()]
     problems += [f"missing root {name}" for name in REQUIRED_ROOT if not (root / name).is_file()]
+    problems += [f"missing evidence {name}" for name in REQUIRED_EVIDENCE
+                 if not (root / "evidence" / name).is_file()]
     if problems:
         print("\n".join(problems), file=sys.stderr)
         return 1
@@ -57,10 +62,10 @@ def main() -> int:
     if state not in ALLOWED_RELEASE_STATES:
         problems.append(f"unknown release state: {state}")
     gates = status.get("gates", {})
-    manifest = json.loads((staging / "benchmarks/qualification-v2/PANEL_MANIFEST.json").read_text())
+    manifest = json.loads((root / "evidence" / "benchmarks/qualification-v2/PANEL_MANIFEST.json").read_text())
     expected_workflows = {scope.split(":", 1)[0] for scope in manifest["release_blocking_scopes"]}
     if state == "submission_eligible":
-        cross_path = staging / "benchmarks/qualification-v2/results/CROSS_MACHINE_REPRODUCTION.json"
+        cross_path = root / "evidence" / "benchmarks/qualification-v2/results/CROSS_MACHINE_REPRODUCTION.json"
         if not cross_path.is_file():
             problems.append("submission_eligible requires current cross-machine evidence")
         else:
@@ -87,13 +92,13 @@ def main() -> int:
     ):
         if phrase not in paper:
             problems.append(f"paper lacks {phrase}")
-    benchmark = yaml.safe_load((staging / "benchmarks" / "benchmark-manifest.yaml").read_text(encoding="utf-8"))
+    benchmark = yaml.safe_load((root / "evidence" / "benchmarks" / "benchmark-manifest.yaml").read_text(encoding="utf-8"))
     benchmark_ids = set(benchmark.get("workflows", {}))
     definitions = analysis_definitions()
     workflow_ids = {item["analysis_type"] for item in definitions}
     if benchmark_ids != workflow_ids:
         problems.append(f"benchmark coverage differs from workflows: {sorted(benchmark_ids ^ workflow_ids)}")
-    v2 = json.loads((staging / "benchmarks" / "qualification-v2" / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
+    v2 = json.loads((root / "evidence" / "benchmarks" / "qualification-v2" / "results" / "QUALIFICATION_V2_STATUS.json").read_text(encoding="utf-8"))
     if v2.get("scientific_execution_performed") is not False:
         problems.append("composition audit cannot claim scientific execution")
     if not v2.get("panel_composition_ready") and v2.get("overall_state") != "blocked_panel_incomplete":

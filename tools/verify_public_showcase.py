@@ -129,7 +129,7 @@ def main() -> int:
     # between a machine with sources/ populated and the reviewer gate, which
     # audits composition offline. Its recorded digest cannot be a contract, and
     # asserting it here passed locally and failed CI for exactly that reason.
-    workbench = ROOT / "yauvi-structural-workbench"
+    workbench = ROOT / "evidence"
     v2_evidence = release["qualification_evidence"]["current_v2"]
     digests = [
         (v2_evidence["panel_manifest"], v2_evidence["panel_manifest_sha256"]),
