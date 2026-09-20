@@ -1,0 +1,56 @@
+{
+  "adopted_records": 94,
+  "as_of": "2026-09-20",
+  "candidate_scientific_qualification": "not_claimed",
+  "interpretation": "Adopted records, historical case passes, CI job verdicts, changed-code verification, and independent human research use are separate evidence. Do not sum these into a toolkit accuracy score. Old raw execution outputs have not been overwritten.",
+  "later_ci_observation": "preparation-2026-09-20/CI_OBSERVATION.json",
+  "manifest": {
+    "collection_version": "2.11",
+    "path": "benchmarks/qualification-v2/PANEL_MANIFEST.json",
+    "release_blocking_scopes": [
+      "structure_qc:coordinate_provenance_and_validation",
+      "conformational_state:abl_family",
+      "functional_site_state:curated_functional_site_mapping",
+      "assembly_interface:deposited_biological_assembly",
+      "sf_csa:curated_structure_sequence_comparison"
+    ],
+    "sha256": "c6a4ec6350f1485f63f7a5596b74706fed8b2d26b78196d9b144d5a5448a1200"
+  },
+  "panels": [
+    {
+      "adopted_records": 16,
+      "workflow": "membrane_orientation"
+    },
+    {
+      "adopted_records": 14,
+      "workflow": "conformational_state"
+    },
+    {
+      "adopted_records": 16,
+      "workflow": "structure_qc"
+    },
+    {
+      "adopted_records": 16,
+      "workflow": "functional_site_state"
+    },
+    {
+      "adopted_records": 16,
+      "workflow": "assembly_interface"
+    },
+    {
+      "adopted_records": 16,
+      "workflow": "sf_csa"
+    }
+  ],
+  "required_records": 110,
+  "retained_execution": {
+    "cases_passed": 67,
+    "path": "benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
+    "scope": "historical_single_machine_summary_not_latest_CI",
+    "sha256": "9f954e9a53cec1787d6af66f8b917c308b12064dc74943068f26a45483146a5b",
+    "workflows_not_executed": [
+      "sf_csa"
+    ]
+  },
+  "schema_version": "1.0"
+}

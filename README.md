@@ -33,26 +33,25 @@ release-blocking.
 | `yauvi-sources` | `yauvi-fetch` | Registered source acquisition |
 | `structprep` | `structprep` | Structure preparation (infrastructure) |
 
-## Verified working
+## Current local verification
 
-Every claim below was executed in this folder, offline:
+These records describe separate checks on the local candidate; their totals and
+interpretations are not combined:
 
-- `pip install -e ".[dev]"` succeeds; all 10 console scripts land on `PATH`
-- **590 tests pass, 0 fail, 0 errors** (5 network/adapter deselected, 2 skipped),
-  on an **arm64** interpreter — see [Running the tests](#running-the-tests)
-- A real StructQC analysis runs to completion and is **byte-identical across two runs**
-- The fail-closed path exits `1` and names its missing evidence rather than scoring around it
-- The wheel builds offline and contains only canonical structural namespaces
-- Installed from that wheel into a fresh environment in an unrelated directory,
-  every CLI works and a full analysis reproduces the documented input digest
-  `a598a520…` with no absolute-path leakage
-- Both evidence showcases rebuild and re-verify; all checksums intact
-
-**Not yet folded into the figures above:** `structprep` was added after that
-verification run. Its own 11 tests pass against reference coordinates (and skip
-without them, since 3H8T is not redistributed) and it is registered with the
-test runner, but the installed-console-script and aggregate test claims above still
-describe the nine-package build and must be re-executed before submission.
+- The offline suite reports **684 passed, 15 skipped, 5 deselected, 0 failed,
+  and 0 errors** on macOS arm64 / Python 3.12.0. See
+  [`OFFLINE_TESTS.json`](evidence/preparation-2026-09-20/OFFLINE_TESTS.json).
+- A separate public-case safety and input-validation run reports **5 passed**;
+  it is not added to the full offline-suite count. See
+  [`PUBLIC_CASE_SAFETY_TESTS.json`](evidence/preparation-2026-09-20/PUBLIC_CASE_SAFETY_TESTS.json).
+- The fresh wheel was installed in an isolated environment. The installed
+  distribution reproduced the public-data case twice with 12 compared files
+  byte-identical. A browser check completed the synthetic StructQC flow with
+  zero console errors. See
+  [`CANDIDATE_VERIFICATION.json`](evidence/preparation-2026-09-20/CANDIDATE_VERIFICATION.json).
+- An earlier README snapshot reported 590 passing tests and referred to a
+  different build. That count is historical and superseded by the dated suite
+  record above; it is not evidence about the present candidate.
 
 Start with [`yauvi-structural-workbench/START_HERE.md`](yauvi-structural-workbench/START_HERE.md),
 then [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) and
@@ -106,29 +105,24 @@ the out-of-scope module directories.
 Assembling a working build does not clear the publication gates. What still
 blocks submission:
 
-- **Public development has only just begun** (first public commit 2026-08-27).
-  JOSS expects sustained public history, tagged releases, and evidence of
-  independent use. None of that exists yet.
-- **No scope is scientifically qualified.** Qualification v2 requires 110 cases
-  across six panels. Four panels are adopted and executed and **two are not** --
-  ABL StateAtlas and SF-CSA, both release-blocking -- so the collection's
-  composition state is `blocked_panel_incomplete` and no scope can be qualified
-  whatever the executed panels report. Of the five release-blocking scopes,
-  three are adopted and pass their predeclared gates offline on six OS/Python
-  combinations in CI: StructQC 16/16 with 2 controls, site-context 16/16 with 1
-  control, assembly-context 16/16. Membrane orientation executes at 5/16 against
-  the accuracy gate collection 2.3 added, and collection 2.4 moved it to
-  non-blocking, research-only, both strata: Mark 1 makes no accuracy claim for
-  it. **No scope has completed the independent second-machine reproduction
-  gate**, which is required on its own and is untouched by any of the above.
-  Counts here come from
-  [`EXECUTION_SUMMARY.json`](evidence/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json),
-  derived from the executed evidence rather than typed. The historical v1
-  collection passed four public cases and left two partial; those are named
-  cases, not workflow-general accuracy evidence.
-- **The paper still states its own ineligibility** and carries unresolved
-  conflict-of-interest and funding statements.
-- No independent installation or research-use evidence is recorded.
+- **The public-history gate remains open.** Public development began on
+  2026-08-27; more than six months of active development would be reached only
+  after 2027-02-27, conditional on continued substantive public activity.
+- **The changed local candidate is not scientifically qualified.** Collection
+  2.11 adopts 94/110 records. The retained single-machine summary reports
+  67/110 across five executed panels and predates recorded SF-CSA execution.
+  Separately, public CI run [35295451246](https://github.com/Y3K5/yauvi-structural-workbench/actions/runs/35295451246)
+  passed its configured blocking gate on commit
+  `7981148e70c5eaa6424e3608f09cd65bcfb35834`; this is historical CI job
+  evidence, not qualification of the changed candidate. Membrane coverage is
+  beta-barrel-only and research-only/nonblocking. These records do not form a
+  combined accuracy score; see
+  [`QUALIFICATION_RECONCILIATION.json`](evidence/preparation-2026-09-20/QUALIFICATION_RECONCILIATION.json).
+- A fresh installed-wheel case reproduction and synthetic StructQC browser flow
+  are recorded, but independent-human research-use interpretation remains
+  pending. Software checks and reproducible output do not establish biological
+  validity. Author review of scientific claims and journal-facing disclosures
+  remains open.
 - Both interpretation defects the pre-public audit recorded are now closed.
   SF-CSA computed reciprocal-best-hit after structural classification, so
   `probable_same_function` was unreachable end-to-end; fixed 2026-09-01

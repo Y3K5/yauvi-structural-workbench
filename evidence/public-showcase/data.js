@@ -69,7 +69,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "MEMBRANE_ORIENTATION.json",
           "path": "evidence/HUC-02/MEMBRANE_ORIENTATION.json",
-          "sha256": "61e90c3f567ba29125913b45747b780116c67e82add2117eb2922d449ca4b45a"
+          "sha256": "7f5bcc1d7f5b6af8391037cf84ec13897cce7499d22a76a30de434cc807d02b2"
         },
         {
           "label": "RESIDUE_ORIENTATION.tsv",
@@ -428,49 +428,93 @@ window.YAUVI_PUBLIC_SHOWCASE = {
   },
   "product": "YAUVI Structural Biology Platform — Mark 1",
   "publication_roadmap": {
-    "current_phase": "local_hardening",
-    "edition": "Mark 1",
+    "current_phase": "local_candidate_review",
+    "evidence": {
+      "historical_public_ci": {
+        "commit": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+        "completed_at_utc": "2026-09-18T01:59:56Z",
+        "result": "the configured blocking gate passed in the recorded public workflow run",
+        "run_id": "35295451246",
+        "runner_count": 7,
+        "scope": "historical CI job metadata for the cited public commit; not qualification of the changed local candidate and not newly inspected per-case scientific evidence"
+      },
+      "legacy_execution_summary": {
+        "cases_passed": 67,
+        "cases_required": 110,
+        "scope": "retained aggregate from five executed panels; predates the later SF-CSA result and is not the collection 2.11 adopted-record count"
+      },
+      "manuscript_review": {
+        "build_record": "evidence/preparation-2026-09-20/PAPER_BUILD.json",
+        "current_revision_compile": "Inara exited 0; all six pages visually inspected",
+        "remaining": "Draft placeholders remain; author review of scientific claims, citations, disclosures, metadata, and final wording is pending; rebuild after revisions",
+        "review_pdf": "build/joss-preparation-2026-09-20/paper-review-2026-09-20.pdf",
+        "state": "author_scientific_and_editorial_review_pending"
+      },
+      "qualification_v2": {
+        "adopted_records": 94,
+        "collection_version": "2.11",
+        "non_blocking_unadopted_scope": "membrane alpha-helical stratum",
+        "panels": {
+          "abl_state_atlas": 14,
+          "assembly_context": 16,
+          "functional_site_context": 16,
+          "membrane_beta_barrel": 16,
+          "sf_csa": 16,
+          "structure_qc": 16
+        },
+        "required_records": 110
+      },
+      "research_use": {
+        "completed_local_case_study": true,
+        "independent_adoption_required_by_joss": false,
+        "independent_human_use_recorded": false,
+        "protocol": "../examples/structural-portfolio/PUBLIC_RESEARCH_PROTOCOL.md",
+        "report": "../examples/structural-portfolio/PUBLIC_RESEARCH_REPORT.md",
+        "selected_internal_target": "public-data structural-portfolio case study",
+        "state": "author_qualifying_use_assessment_pending"
+      }
+    },
     "gates": [
       {
-        "evidence": "Four passed and two partial",
+        "evidence": "Collection 2.11 adopts 94/110 records. The retained single-machine summary reports 67/110 across five panels and predates SF-CSA execution. Separate public CI run 35295451246 passed its configured blocking gate on commit 7981148e70c5eaa6424e3608f09cd65bcfb35834; this is historical job metadata, not per-case re-verification or changed-candidate qualification.",
         "gate_id": "six_scientific_cases",
-        "label": "Six external scientific case gates",
+        "label": "Qualification evidence across adopted and executed cases",
         "state": "partial"
       },
       {
-        "evidence": "Current local reviewer selection: 524 passed and 6 network or adapter tests deselected; cross-platform clean-install reproduction remains a separate gate",
+        "evidence": "OFFLINE_TESTS.json records 684 passed, 15 skipped, 5 deselected, 0 failures, and 0 errors. The separate five-case safety suite, installed-wheel reproduction, and browser flow are recorded independently.",
         "gate_id": "offline_software_baseline",
-        "label": "Complete recorded offline regression",
+        "label": "Recorded local software verification",
         "state": "passed"
       },
       {
-        "evidence": "Not started or not verified",
+        "evidence": "Public history began 2026-08-27; the six-month checkpoint is 2027-02-28, conditional on continued substantive public activity.",
         "gate_id": "public_history",
         "label": "More than six months of active public history",
         "state": "blocked"
       },
       {
-        "evidence": "Not recorded",
+        "evidence": "The public-data structural-portfolio case is complete and reproducible from an installed wheel. The author's assessment of whether it documents qualifying developer research use is pending; independent human use is not required by JOSS and none is recorded.",
         "gate_id": "independent_use",
-        "label": "Independent installation and research use",
-        "state": "blocked"
+        "label": "Documented research use and external uptake",
+        "state": "partial"
       },
       {
-        "evidence": "Incomplete",
+        "evidence": "Remaining attribution and notice questions require review against the exact outgoing artifact.",
         "gate_id": "license_audit",
-        "label": "License and third-party redistribution audit",
+        "label": "License and third-party attribution review",
         "state": "blocked"
       },
       {
-        "evidence": "The 1,095-word paper compiles with official Inara and the four-page draft was visually reviewed; final approvals, journal metadata, and exact tool records remain",
+        "evidence": "The 1,631-word draft compiled with Inara and all six pages were visually inspected. Draft placeholders and author scientific/editorial/disclosure review remain; see PAPER_BUILD.json.",
         "gate_id": "paper_and_disclosures",
         "label": "Paper, authorship, funding, conflicts, and AI disclosure",
         "state": "partial"
       },
       {
-        "evidence": "Not granted by local preparation",
+        "evidence": "Human approval is required for the exact resolved outgoing artifact set and destination. Local preparation and successful compilation do not authorize public repository changes, release, archival deposit, or JOSS submission.",
         "gate_id": "publication_approval",
-        "label": "Explicit approval for the exact public repository and release",
+        "label": "Explicit approval for the exact public artifact and destination",
         "state": "blocked"
       }
     ],
@@ -488,68 +532,52 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         "url": "https://joss.readthedocs.io/en/latest/review_checklist.html"
       }
     ],
+    "paper": "YAUVI Structural Workbench: evidence-bounded, reproducible structural protein analysis",
     "phases": [
       {
         "deliverables": [
-          "Six task-first showcase narratives",
-          "Separate synthetic and public qualification evidence",
-          "Passing macOS and Linux installation matrix on Python 3.10-3.12",
-          "Resolved or explicitly narrowed membrane-orientation and conformational-state claims",
-          "Completed third-party license and redistribution audit",
-          "Complete AI-use, authorship, funding, and conflict records"
+          "Reconcile current paper and preparation documents with Qualification v2 collection 2.11 and retained CI evidence",
+          "Author review and assessment of the completed public-data structural-portfolio case study",
+          "Draft paper compiled successfully with Inara and visually reviewed across all six pages; author/editorial review remains",
+          "Record author review of scientific claims, citations, disclosures, and final metadata",
+          "Fresh isolated wheel installation and repeat public-case run are recorded; repeat if the later release artifact differs"
         ],
-        "duration": "2-4 weeks",
-        "label": "Harden and explain",
-        "phase_id": "local_hardening",
+        "phase_id": "local_candidate_review",
         "state": "in_progress"
       },
       {
         "deliverables": [
-          "Freely cloneable public repository",
-          "Public issue and contribution pathways",
-          "Continuous integration and tagged alpha release",
-          "Public documentation and static evidence showcase",
-          "Changelog, support policy, governance, and security reporting"
+          "Author-selected exact public artifact and destination",
+          "Reviewed outgoing file set, license notices, and publication metadata",
+          "Explicit approval for public repository, release, and archive actions"
         ],
-        "duration": "Approval boundary",
-        "label": "Open the project",
-        "phase_id": "approved_public_launch",
+        "phase_id": "author_approved_release",
         "state": "awaiting_explicit_approval"
       },
       {
         "deliverables": [
-          "Active public development distributed across the period",
-          "Tagged releases and documented changes",
-          "Independent installation feedback",
-          "Documented research use or workflow integration",
-          "Public issues, discussions, or external contributions",
-          "Software changes traceable to user and scientific feedback"
+          "More than six months of substantive public development",
+          "Publicly traceable releases, changes, and issue-driven refinement",
+          "Documented research use of the software; developer use can satisfy this requirement"
         ],
-        "duration": "More than 6 months",
-        "label": "Develop through use",
-        "phase_id": "open_development",
-        "state": "blocked_public_history_not_started"
+        "earliest_six_month_checkpoint": "2027-02-28",
+        "phase_id": "sustained_public_development",
+        "state": "in_progress_public_history_began_2026-08-27"
       },
       {
         "deliverables": [
-          "Stable tagged release",
-          "JOSS paper with required sections and verified references",
-          "Approved author, affiliation, ORCID, funding, conflict, and AI-use statements",
-          "Submission through the JOSS process",
-          "Public response to reviewer issues",
-          "Final archived software release and DOI when requested"
+          "All applicable submission criteria satisfied",
+          "Author-reviewed paper and journal-facing metadata",
+          "Stable, author-approved release and archive record",
+          "Submission and reviewer responses handled by the author"
         ],
-        "duration": "After every gate passes",
-        "label": "Submit and review",
         "phase_id": "joss_submission",
         "state": "blocked"
       }
     ],
     "policy": "Local preparation does not authorize repository publication, release, archival deposit, or JOSS submission.",
     "product": "YAUVI Structural Biology Platform — Mark 1",
-    "schema_version": "1.0",
-    "scientific_suite": "YAUVI Structural Workbench",
-    "submission_rule": "All scientific, packaging, public-history, research-use, and approval gates must be satisfied before submission."
+    "schema_version": "1.2"
   },
   "qualification": {
     "cases": [
@@ -777,7 +805,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "all_release_blocking_scopes_qualified": false,
       "cases_passed": 67,
       "cases_required": 110,
-      "collection_note": "Four panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6, adopted into PANEL_MANIFEST.json as collection 2.9 after Qualification v2 run #44 reproduced it on all six runners; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. sf_csa is the one workflow not executed: its ten reference-proteome sources are UniProt stream queries that no sha256 can lock, recorded as Finding 8 in SF_CSA_PREADOPTION_FINDINGS.md. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 67 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum and sf-csa remain unadopted, membrane executes from a draft rather than adopted records, and no scope has completed the independent second-machine gate.",
+      "collection_note": "Historical retained execution only: StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6; membrane 5/16 (11 failed), research-only and non-blocking. Totals: 67 of 110 required cases pass in this retained single-machine summary. This historical file has no SF-CSA execution and no second-machine record. It does not describe the later collection 2.11 adoption or public CI. See current_reconciliation for those distinct records; neither historical CI nor this summary qualifies the changed candidate.",
       "counts_are_single_machine": true,
       "every_executed_panel_passed": false,
       "panels": [
@@ -1489,7 +1517,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "measures": "Assembly identity, stoichiometry evidence, heavy-atom contacts, interface residues, SASA, burial, and lower-bound status.",
       "non_claim": "Assembly geometry does not establish native abundance, intact-cell accessibility, or measured binding.",
       "optional_runtimes": {
-        "freesasa": "## FreeSASA 2.1.3 ##",
+        "freesasa": "## FreeSASA 2.1.2 ##",
         "gemmi": "available"
       },
       "public_question": "Which residues form an assembly interface?",
@@ -1607,8 +1635,8 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "public_question": "How does this protein relate to other proteins?",
       "question": "How do structural similarity and sequence homology compare without collapsing them into one claim?",
       "required_runtimes": {
-        "diamond": "diamond version 2.1.11",
-        "foldseek": "10.941cd33"
+        "diamond": "missing",
+        "foldseek": "missing"
       },
       "scientific_scopes": [
         {
@@ -1630,7 +1658,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       ],
       "showcase_note": "Canonical pipeline and release audit passed through deterministic test doubles. Foldseek and DIAMOND computed no alignments; external binary benchmarks remain pending.",
       "showcase_state": "passed_stubbed_pipeline_case",
-      "software_state": "prototype",
+      "software_state": "blocked_missing_runtime",
       "title": "SF-CSA comparison"
     }
   ]

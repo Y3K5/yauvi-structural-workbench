@@ -32,13 +32,16 @@ to track substantial contribution, so testers are expected to land in
 Acknowledgements rather than the author list unless their involvement goes
 further. Recorded here so a reviewer sees a decision with a trigger, not a gap.
 
-**AI model/version records — recovered from records.** Recovered by reading local
-session logs, not reconstructed from memory, and no version was inferred where a
-record was absent. Both vendors are scoped identically: sessions whose transcript
-references this repository. OpenAI `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`,
-`gpt-5.6-luna`, `gpt-5.4-mini` across nineteen sessions, 25 August to 7 September
-2026. Anthropic `claude-opus-5` across twenty-one sessions, 29 August to
-7 September 2026.
+**AI model/version records — partial, with this preparation separately scoped.**
+The earlier session-log recovery covers transcripts referencing this repository:
+OpenAI `gpt-5.6-sol`, `gpt-6-astra`, `gpt-reserve`, `gpt-5.6-luna`, and
+`gpt-5.4-mini` across nineteen sessions, 25 August to 7 September 2026; Anthropic
+`claude-opus-5` across twenty-one sessions, 29 August to 7 September 2026. For
+the 20 September 2026 manuscript and readiness-document preparation, OpenAI
+Codex `gpt-6-astra` and `gpt-5.6-luna` assisted. This separate entry does not
+reconstruct assistance from 8–19 September. No version should be inferred where
+the record is incomplete; the author must review the complete disclosure before
+release.
 
 An earlier draft of this record listed `claude-sonnet-5` and `claude-opus-4-8`
 alongside them. Scoping the search to this repository showed those belonged to
@@ -105,10 +108,15 @@ The existing paper.pdf is retained as historical; paper-working-draft.pdf is the
 new reviewed rendering. Tie the final manuscript to a specific released version
 and its qualifying evidence, not to an unpinned working directory.
 
-More than six months of active public development and real research use are
-required under the checked [JOSS submission requirements](https://joss.readthedocs.io/en/latest/submitting.html).
-Given the reviewed start of 27 August 2026, the earliest calendar checkpoint is
-after 27 February 2027, conditional on actual history and all other gates.
+More than six months of active public development and documented research use
+are required under the checked [JOSS submission requirements](https://joss.readthedocs.io/en/latest/submitting.html).
+The developer's own documented research use can meet the use criterion;
+independent adoption is not required. Given the reviewed public-history start
+of 27 August 2026, the earliest calendar checkpoint is after 27 February 2027,
+conditional on substantive activity and all other gates. The local public-data
+structural-portfolio case study is complete; the author still needs to decide
+whether it documents qualifying developer research use. See
+[JOSS_RESEARCH_HANDOFF.md](JOSS_RESEARCH_HANDOFF.md).
 The [AI policy](https://joss.readthedocs.io/en/latest/submitting.html#ai-usage-policy)
 requires disclosure; Yuvraj handles editor/reviewer conversations, with only the
 policy's translation exception. This is not a promised submission or acceptance.

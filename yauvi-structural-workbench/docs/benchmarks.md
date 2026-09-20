@@ -2,7 +2,7 @@
 
 Software tests and scientific qualification are independent gates.
 
-| Workflow | Public qualification collection | Current result |
+| Workflow | First public case set (qualification v1) | Result in that historical case set |
 |---|---|---|
 | StructQC | 1CRN wwPDB validation, AlphaFold P69905 v6 model/PAE, and unknown-provenance control | Public case passed; workflow-general qualification not established |
 | MembraneOrient | Five beta-barrel and three alpha-helical OPM structures with rotation invariance | Partial: beta-barrel stratum passed; alpha-helical normal error and 1U19 rotation invariance failed |
@@ -17,19 +17,26 @@ external tools compare scientific invariants and tolerances rather than claiming
 cross-hardware byte identity.
 
 The historical lock, measurements, and offline reproduction command remain in
-[`benchmarks/qualification-v1/`](../benchmarks/qualification-v1/README.md).
+[`qualification-v1/`](../../evidence/benchmarks/qualification-v1/README.md).
 Those named cases are retained; their thresholds are not rewritten.
 
-The current release gate is
-[`benchmarks/qualification-v2/`](../benchmarks/qualification-v2/README.md).
-Qualification v2 freezes scope-specific readiness, the full stratified panel,
-development and held-out splits, exact ABL mappings, and unchanged numerical
-gates. Its current audit state is `blocked_panel_incomplete`: four of six panels
-are adopted and executed, and two -- ABL StateAtlas and SF-CSA, both
-release-blocking -- are not. That visible block prevents historical
-demonstrations or absent data from becoming a favorable release result, and it
-holds regardless of how the executed panels performed.
+The retained Qualification v2 source manifest is collection 2.11. It adopts 94
+of 110 required records across six panels: ABL StateAtlas (14), StructQC (16),
+functional-site context (16), AssemblyContext (16), SF-CSA (16), and beta-barrel
+MembraneOrient (16). The alpha-helical membrane stratum remains unadopted and
+non-blocking.
 
-All five Mark 1 release-blocking scopes must pass v2 and reproduce on a second
-machine before `local_release_candidate`. Alpha-helical membrane orientation is
-an experimental, non-blocking scope and cannot appear qualified.
+Public workflow run 35295451246 on commit
+`7981148e70c5eaa6424e3608f09cd65bcfb35834` recorded passing results for the five
+release-blocking panels on seven CI runners. This historical evidence belongs to
+that public commit. The checked-in aggregate `EXECUTION_SUMMARY.json` is older:
+it totals 67/110 across five executed panels and predates the later SF-CSA
+result. It is neither the collection's adopted-record count nor a result for
+the changed local candidate. Consult the [JOSS research-use and human-review
+handoff](JOSS_RESEARCH_HANDOFF.md) for evidence boundaries and remaining work.
+
+The collection and CI outcomes describe curated cases and recorded software
+behavior only. They do not establish biological validation or qualify source
+changes made after the cited public commit. Alpha-helical membrane orientation
+remains experimental; beta-barrel orientation failed its objective accuracy
+gate and carries no Mark 1 accuracy claim.

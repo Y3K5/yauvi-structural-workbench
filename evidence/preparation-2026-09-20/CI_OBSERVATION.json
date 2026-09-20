@@ -1,0 +1,1508 @@
+{
+  "candidate_coverage": "historical_public_commit_only",
+  "observed_at": "2026-09-20T05:20:32.169827+00:00",
+  "public_commit": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+  "schema_version": "1.0",
+  "scientific_artifacts_downloaded": false,
+  "scope_note": "Job metadata confirms configured CI job outcomes, not independent human use or per-case scientific validity. The changed local candidate must be tested separately.",
+  "workflows": [
+    {
+      "api_url": "https://api.github.com/repos/Y3K5/yauvi-structural-workbench/actions/runs/35295451246/jobs",
+      "jobs": [
+        {
+          "completed_at": "2026-09-18T01:50:12Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.11 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:59:01Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.12 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:59:46Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.11 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:51:33Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.10 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:53:56Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.10 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:52:51Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.12 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:52:29Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Adopted panels \u00b7 py3.12 \u00b7 ubuntu-24.04-arm",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install FreeSASA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install the sf-csa runtimes, pinned"
+            },
+            {
+              "conclusion": "success",
+              "name": "Assert the pinned runtime versions"
+            },
+            {
+              "conclusion": "success",
+              "name": "Restore the locked artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Acquire the locked artifacts"
+            },
+            {
+              "conclusion": "skipped",
+              "name": "Bank the acquired artifacts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Verify every artifact against the frozen source lock"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the StructQC panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the assembly-interface panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the membrane panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the functional-site panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the sf-csa panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Execute the ABL state-atlas panel offline"
+            },
+            {
+              "conclusion": "success",
+              "name": "Summarize the executed evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Archive the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the execution evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Composition audit agrees with its own recorded state"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:59:56Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Required scopes passed and reproduced",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Download every runner's evidence"
+            },
+            {
+              "conclusion": "success",
+              "name": "Combine the per-runner evidence into one verdict"
+            },
+            {
+              "conclusion": "success",
+              "name": "Upload the cross-machine verdict"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        }
+      ],
+      "name": "qualification",
+      "response_sha256": "9c9c6b1be9c02dfb9d89b2e4be5e45a94aa7215d8f39129afd19cff651dcfc21",
+      "total_count": 8,
+      "url": "https://github.com/Y3K5/yauvi-structural-workbench/actions/runs/35295451246"
+    },
+    {
+      "api_url": "https://api.github.com/repos/Y3K5/yauvi-structural-workbench/actions/runs/35295451242/jobs",
+      "jobs": [
+        {
+          "completed_at": "2026-09-18T01:30:59Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.12 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:30:50Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.11 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:30:24Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.10 \u00b7 ubuntu-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:31:04Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.10 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:30:43Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.11 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:30:24Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.12 \u00b7 ubuntu-24.04-arm",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:30:27Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Reviewer install \u00b7 py3.12 \u00b7 macos-latest",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "One-command reviewer installation"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the environment this install was proven on"
+            },
+            {
+              "conclusion": "success",
+              "name": "Documented test runner loads on this interpreter"
+            },
+            {
+              "conclusion": "success",
+              "name": "Product hardening contracts"
+            },
+            {
+              "conclusion": "success",
+              "name": "Seven module CLIs answer describe"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StructQC"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record membrane fit geometry"
+            },
+            {
+              "conclusion": "success",
+              "name": "Record the exact arm64 regression fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 MembraneOrient"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 StateAtlas"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SiteContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 ActState"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 AssemblyContext"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA"
+            },
+            {
+              "conclusion": "success",
+              "name": "Suite \u00b7 SF-CSA fixture"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        },
+        {
+          "completed_at": "2026-09-18T01:29:24Z",
+          "conclusion": "success",
+          "head_sha": "7981148e70c5eaa6424e3608f09cd65bcfb35834",
+          "name": "Workbench contracts, security, and pre-public materials",
+          "steps": [
+            {
+              "conclusion": "success",
+              "name": "Set up job"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Install reviewer distribution"
+            },
+            {
+              "conclusion": "success",
+              "name": "Controller, source, report, and contract tests"
+            },
+            {
+              "conclusion": "success",
+              "name": "Showcase bundle parses without a network build"
+            },
+            {
+              "conclusion": "success",
+              "name": "Qualification v2 never claims a qualified scope"
+            },
+            {
+              "conclusion": "success",
+              "name": "Public showcase and five human use cases reproduce byte-for-byte"
+            },
+            {
+              "conclusion": "success",
+              "name": "CLI reference matches the installed parsers"
+            },
+            {
+              "conclusion": "success",
+              "name": "Wheel contains only canonical package namespaces"
+            },
+            {
+              "conclusion": "success",
+              "name": "Pre-public JOSS material is internally honest"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6"
+            },
+            {
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v5"
+            },
+            {
+              "conclusion": "success",
+              "name": "Complete job"
+            }
+          ]
+        }
+      ],
+      "name": "reviewer",
+      "response_sha256": "9edc53fd62f56a6ccadf94382f9235bdac24b6a10d86b92cf0db8c8ebb256e94",
+      "total_count": 8,
+      "url": "https://github.com/Y3K5/yauvi-structural-workbench/actions/runs/35295451242"
+    }
+  ]
+}

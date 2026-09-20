@@ -26,6 +26,14 @@ SIFTS or explicit UniProt ABL1 242-495 residue map with at least 90 percent
 coverage. That scope remains prototype until its Qualification v2 held-out gate
 passes. Labels describe resemblance, not activity.
 
+The showcase separately compares the two locked ABL endpoints 2GQG and 2HYY
+with a proper Cα rigid-body fit over 252 shared mapped residues. It displays
+per-residue displacement, actual endpoint φ/ψ/χ1 and N–Cα–C geometry, and an
+explicitly illustrative Cα interpolation. Missing/modified positions are not
+filled or bridged. These derived measurements and their source hashes can be
+downloaded; the interpolation is not a molecular-dynamics trajectory and the
+original classification gate does not qualify its intermediate shapes.
+
 ## Functional-site evidence
 
 Maps declared residues, roles, ligands, metals, and cofactors to exact
@@ -42,3 +50,10 @@ in a declared assembly. Incomplete assemblies produce lower bounds.
 Runs checksum-pinned structural and sequence search legs using Foldseek and
 DIAMOND. Exact protein, homolog, shared fold, analogy, and unresolved evidence
 remain distinct; no similarity result is automatically transferred as function.
+
+The showcase illustrates two fold spaces: ferredoxin-like electron carriers
+(P00198 / P00208) and OB-fold cold-shock proteins (P32081 / P0A9X9). It separates
+frozen structural/sequence comparisons from independent experimental literature
+supporting a shared functional role. Same-fold counterexamples show why a fold
+assignment alone is insufficient. See the [guided onboarding examples](PILOT_PARTICIPANT_GUIDE.md#cross-species-comparison-two-guided-examples)
+and [case references](SF_CSA_SHOWCASE_CASES.json).

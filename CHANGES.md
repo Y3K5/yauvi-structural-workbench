@@ -28,10 +28,9 @@ development tree, recorded so the provenance of the published state is explicit.
 - Assembled from the live tree, so this carries **Mark 1 identity and
   Qualification v2**. (The older `artifacts/joss-prepublic/` bundle predates
   both and was used only as a shape reference.)
-- Excluded `apps/` and the loopback browser controller: it imports
-  `yauvi_platform.oral_atlas` and `yauvi_platform.protein_case`, which are
-  private. `yauvi_platform.structural_workbench` has no sibling imports and
-  ships alone.
+- Excluded `apps/` and the loopback browser controller because they depend on
+  private platform modules. `yauvi_platform.structural_workbench` has no sibling
+  imports and ships alone.
 - Excluded `benchmarks/qualification-v1/{sources,build}` — 12 MB of wwPDB, OPM,
   CATH, AlphaFold and M-CSA records. `benchmark-manifest.yaml` declares
   `ships_public_records: false`, and now that is true. The source lock ships so
@@ -45,11 +44,10 @@ The first assembly pass copied `tools/` and `examples/` wholesale, which pulled
 in material that does not belong in a publication candidate. Removed:
 
 - `tools/` reduced from 50+ scripts to the 10 this distribution actually uses.
-  The discarded set included TDVax portal builders, `prepare_cloudflare_deploy.py`,
+  The discarded set included legacy portal builders, `prepare_cloudflare_deploy.py`,
   `prepare_cloudflare_private_deploy.py`, and `yauvi_private_release.py`.
-- `examples/oral-ecosystem/` and `examples/composition/` — private oral
-  microbiome research, unrelated to the six structural workflows. Only
-  `examples/structural-portfolio/`, which the showcase builder needs, remains.
+- Excluded private research examples unrelated to the six structural workflows.
+  Only `examples/structural-portfolio/`, which the showcase builder needs, remains.
 - Build residue: `build/`, `dist/` intermediates, `*.egg-info/`.
 
 `tools/build_cli_reference.py` also embedded the generating user's home

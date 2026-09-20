@@ -22,11 +22,15 @@ instead of silently substituting another method.
 Run the packaged local server with an explicit analysis workspace:
 
 ```bash
-yauvi --workspace ./my-analysis workbench serve
+yauvi --workspace ./my-analysis workbench open
 ```
 
 The controller binds only to loopback and uses same-origin session tokens for
 file ingestion, acquisition, analysis launch, and cancellation.
+
+The browser opens on port 8947 by default. Its footer identifies the exact build;
+click it for version details. `workbench serve` starts without opening a browser.
+See [Launch and versions](LAUNCH_AND_VERSIONS.md) for multiple local copies.
 
 `python tools/run_structural_workbench_tests.py` is the authoritative local
 reviewer check. It runs suites separately to avoid legacy test-module name

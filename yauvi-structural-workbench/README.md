@@ -115,20 +115,28 @@ python tools/verify_public_showcase.py
 - [JOSS readiness](RELEASE_STATUS.json)
 - [JOSS publication roadmap](JOSS_PUBLICATION_ROADMAP.json)
 - [JOSS preparation checklist](JOSS_CHECKLIST.md)
+- [Research-use and human-review handoff](docs/JOSS_RESEARCH_HANDOFF.md)
 - [Recorded offline baseline](BASELINE.json)
-- [Independent public qualification v1](benchmarks/qualification-v1/README.md)
-- [Mark 1 Qualification v2 panel and current gaps](benchmarks/qualification-v2/README.md)
+- [Independent public qualification v1](../evidence/benchmarks/qualification-v1/README.md)
+- [Mark 1 Qualification v2 panel and current gaps](../evidence/benchmarks/qualification-v2/README.md)
 
 ## Current release status
 
 The repository is public and remains in development. Local implementation work is
-tracked in [IMPLEMENTATION.md](IMPLEMENTATION.md). Historical evidence files retain
-their original dates and release-stage vocabulary; they do not certify the changed code.
-Collection 2.9 includes five executed panels, with SF-CSA still unexecuted. Four required
-panels passed 62 cases and four controls in the reviewed six-runner evidence. Membrane
-orientation is experimental and did not meet its reference-orientation accuracy gate.
-New scientific changes require fresh qualification. Independent research use, external
-review, and the public-development interval remain outstanding.
+tracked in [IMPLEMENTATION.md](IMPLEMENTATION.md). Collection 2.11 adopts 94 of
+110 required records across six panels. Public workflow run 35295451246 recorded
+passing results for all five release-blocking panels on commit
+`7981148e70c5eaa6424e3608f09cd65bcfb35834`; the retained aggregate execution
+summary reports 67/110 across five panels and predates the later SF-CSA result.
+These records describe historical runs, not the changed local candidate, which
+requires fresh review and qualification. Membrane orientation remains
+non-blocking and research-only, with no accuracy claim. The public-data
+structural-portfolio case study is complete; the author must review it and decide
+whether it documents qualifying developer research use. The manuscript and
+current candidate still require review, and the project must meet the
+more-than-six-month active public-development criterion. Developer use can meet
+the JOSS research-use criterion; independent adoption is not required. See the
+[research-use handoff](docs/JOSS_RESEARCH_HANDOFF.md).
 
 The pre-public audit recorded two code-interpretation decisions that had to be
 resolved or explicitly narrowed before submission. Both are now narrowed:

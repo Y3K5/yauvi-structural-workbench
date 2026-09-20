@@ -1,111 +1,97 @@
 # JOSS preparation checklist
 
-This checklist separates work completed locally from evidence that can exist
-only after a public repository and independent research use exist.
+This checklist separates retained historical evidence, the changed local
+candidate, work that requires the author, and JOSS eligibility gates. The
+current draft and records do not authorize a public release or submission.
 
-## Implemented locally
+## Manuscript and retained evidence
 
-- One root reviewer distribution with canonical structural package namespaces.
-- Root and standalone wheels build offline; the root wheel passes an isolated
-  smoke install using the current dependency set and can create an analysis case.
-- Independently runnable StructQC, MembraneOrient, StateAtlas, SiteContext,
-  ActState, AssemblyContext, and SF-CSA command lines.
-- Six task-first builders with input purpose, formats, absence effects,
-  templates, official source links, claim ceilings, and readiness disclosures.
-- Explicit accession acquisition behind `--allow-reference-fetch`; acquisition
-  never adopts a file into an analysis automatically.
-- Content-addressed ingestion, checksum verification, preflight, registered
-  command execution, deterministic report bundles, and print CSS.
-- Offline software baseline recorded in [BASELINE.json](BASELINE.json).
-- Checksum-locked public qualification runner and evidence report in
-  [benchmarks/qualification-v1/](benchmarks/qualification-v1/README.md).
-- Frozen Qualification v2 scope, stratum, split, evidence, and tolerance
-  specification with a deterministic fail-closed panel audit in
-  [benchmarks/qualification-v2/](benchmarks/qualification-v2/README.md).
-- Four Qualification v2 panels executed offline against checksum-verified
-  artifacts on six OS/Python combinations in CI, with coverage verified from
-  executed evidence rather than asserted. Three pass; the membrane stratum does
-  not, and the tightened gate that surfaced it is recorded in
-  `PANEL_MANIFEST.json` `threshold_revisions`. Passing execution is not
-  scope qualification: the second-machine reproduction gate is untouched by it.
-- Shareable public-safe microsite with file-role guidance, six synthetic
-  demonstrations, six separate public qualification narratives, biological
-  context, raw evidence, reviewer quickstart, and a gated publication roadmap.
-- Public cases passed for StructQC, functional-site mapping, AssemblyContext,
-  and SF-CSA; the current Python 3.12 reviewer selection reports 590 passed
-  and 5 network/adapter tests deselected.
-- FreeSASA (version not captured by the runner), Foldseek 10.941cd33, and
-  DIAMOND 2.1.11 were invoked in the
-  local public qualification run.
-- Apache-2.0 text, citation metadata, contribution/support/security/governance
-  documents, paper draft, benchmark plan, and CI definitions.
-- Historical privacy-minimized ZIP install tests were run on macOS arm64 and
-  Linux arm64. No `TEST_RESULT.json` from those runs is committed, and
-  `RELEASE_STATUS.json` records both install matrices as not passed, so no test
-  count from them is quoted here. They predate Qualification v2 and do not
-  satisfy its required second-machine scientific reproduction.
-- The 1,691-word paper (JOSS allows 750-1,750) compiles with the official Open Journals Inara image and
-  its four-page draft rendering has been visually checked.
+- The paper includes Summary, Statement of need, State of the field and
+  build-versus-contribute justification, Software design, Validation and
+  research use, Research impact statement, Limitations, AI usage disclosure,
+  Conflicts of interest and funding, Acknowledgements, and References.
+- The current body is 1,631 whitespace-delimited words after excluding YAML
+  front matter, the `# References` section, and image-caption lines; section
+  headings are included. This is within the 750–1,750-word range; the count does
+  not replace review of the final compiled manuscript.
+- Qualification v2 collection 2.11 adopts 94 of 110 records across six panels:
+  ABL 14, StructQC 16, functional-site context 16, assembly 16, SF-CSA 16, and
+  beta-barrel membrane orientation 16. The alpha-helical membrane stratum is
+  unadopted and non-blocking.
+- Public workflow run [35295451246](https://github.com/Y3K5/yauvi-structural-workbench/actions/runs/35295451246)
+  completed on 18 September 2026 for commit
+  `7981148e70c5eaa6424e3608f09cd65bcfb35834`. Its seven CI runners passed all
+  five release-blocking panels and covered macOS and Ubuntu on Python 3.10,
+  3.11, and 3.12, plus Ubuntu arm64 on Python 3.12. See the retained, sanitized
+  [sanitized CI observation](../evidence/preparation-2026-09-20/CI_OBSERVATION.json).
+  This is evidence for that public commit, not the changed local
+  candidate.
+- The retained aggregate `EXECUTION_SUMMARY.json` reports 67/110 across five
+  executed panels and predates the later SF-CSA result. It is a historical
+  execution total, not the adopted-record count or a replacement for the later
+  CI observation.
+- The current local offline suite reports 684 passed, 15 skipped, 5 deselected,
+  and zero failures or errors on macOS arm64 / Python 3.12.0. Its machine-readable
+  record is [`OFFLINE_TESTS.json`](../evidence/preparation-2026-09-20/OFFLINE_TESTS.json).
+  A separate case-safety/input-validation suite reports 5 passed in
+  [`PUBLIC_CASE_SAFETY_TESTS.json`](../evidence/preparation-2026-09-20/PUBLIC_CASE_SAFETY_TESTS.json);
+  keep this count separate from the full offline suite.
+- The current wheel was freshly installed into an isolated environment. The
+  installed distribution reproduced the public case twice with 12 output files
+  byte-identical. The installed-wheel browser check exercised the synthetic
+  StructQC flow with zero console errors. See
+  [`CANDIDATE_VERIFICATION.json`](../evidence/preparation-2026-09-20/CANDIDATE_VERIFICATION.json)
+  and the [research-use handoff](docs/JOSS_RESEARCH_HANDOFF.md). These checks
+  establish software behavior and reproducibility, not scientific qualification
+  or whether the author considers the case qualifying research use.
+- The manuscript describes the public workflow results as historical and makes
+  no claim that they qualify the changed local candidate. The current 1,631-word
+  draft compiled successfully with Inara (exit 0), and all six pages were
+  visually inspected. The review rendering is
+  [paper-review-2026-09-20.pdf](../build/joss-preparation-2026-09-20/paper-review-2026-09-20.pdf);
+  its build record is
+  [PAPER_BUILD.json](../evidence/preparation-2026-09-20/PAPER_BUILD.json).
+  Draft placeholders remain. The author still needs to review scientific
+  claims, citations, disclosures, metadata, and final wording; rebuild the PDF
+  after any resulting changes.
 
-## Required before `local_release_candidate`
+## Local preparation and author handoff
 
-- Adopt and execute every source-locked Qualification v2 case and pass all
-  **five** Mark 1 release-blocking scopes. Collection 2.4 moved
-  `membrane_orientation` to non-blocking, both strata: Mark 1 makes no accuracy
-  claim for membrane orientation, and the scope is research-only.
+- Review the completed public-data structural-portfolio case study in the
+  [research-use handoff](docs/JOSS_RESEARCH_HANDOFF.md) and decide whether it
+  documents qualifying developer research use. The report, locked protocol,
+  sources, outputs, and limitations are recorded under `../examples/structural-portfolio/`.
+  This is not independent-human use or biological validation.
+- The current wheel's clean installation and repeated public-case reproduction
+  are recorded above. If the artifact selected for any later release differs,
+  repeat the installation and case checks against that exact artifact, recording
+  its hash, inputs, environment, outputs, and discrepancies. This does not
+  retroactively change the historical CI record.
+- Have the author review scientific claims, citations, author metadata,
+  acknowledgements, funding, conflicts, and the AI disclosure. The current
+  manuscript explicitly records that human review is pending.
+- Resolve remaining third-party attribution questions and ensure notices match
+  the sources actually used. Keep any unresolved licensing decision visible.
+- Review the successful draft rendering and build record above, complete the
+  author reviews, then rebuild and inspect the exact manuscript and metadata
+  selected for any later release.
 
-  Of the blocking scopes, three are adopted and pass: StructQC 16/16 with 2
-  controls, site-context 16/16 with 1 control, assembly-context 16/16. ABL
-  StateAtlas (14 records since the 2026-09-01 requirement revision, which took
-  the collection from 114 required cases to 110) and SF-CSA (16) remain
-  unadopted.
+## JOSS eligibility gates
 
-  Membrane continues to execute and report, at 5/16. Collection 2.3 added the
-  panel's first orientation-accuracy gate; before it every normal gate measured
-  rotational self-consistency, so a stable wrong answer passed. Eleven of the
-  sixteen fitted orientations sit 2.5 to 17.4 degrees from the deposited OPM
-  reference; the five that pass are within 0.14. See
-  `benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md`. ABL StateAtlas and SF-CSA are
-  unadopted, so the collection's composition state remains
-  `blocked_panel_incomplete` and no scope is qualified. Counts here are derived
-  from `benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json`, not typed.
-- Reproduce the successful scientific invariants on a second machine.
-- Keep alpha-helical MembraneOrient visibly experimental and non-blocking until
-  its own unchanged development and held-out gates pass.
-- Pass the exact-mapped ABL-family StateAtlas held-out gate; other protein
-  families remain prototype-only.
-- Complete the third-party license and redistribution audit.
-- Resolve the ActState occupancy caveat: a non-solvent heteroatom is detected,
-  but its identity is not yet proven against the declared cofactor in every
-  case. (The generic catalytic-residue screen was narrowed on 2026-09-02:
-  `active_site_disrupted` now requires a position-specific expected residue, and
-  membership in a broad residue set caps the label at `indeterminate` instead of
-  establishing disruption.)
-- ~~Resolve the SF-CSA reciprocal-best-hit integration.~~ Done 2026-09-01: the
-  sequence leg runs before structural classification, `rbh` is an explicit
-  keyword-only argument, and reserved fields a curator might declare are
-  refused. See `sf-csa/CHANGES.md`.
+- Demonstrate more than six months of active public development. The recorded
+  public history began on 27 August 2026; the calendar threshold is after
+  27 February 2027, conditional on continued substantive public activity.
+- Document research use of the software. The developer's own documented use can
+  satisfy this requirement; independent adoption is not a prerequisite. The
+  public-data case study is complete, but the author's assessment and review of
+  whether it meets this criterion remain pending. The exact software revision
+  and research-use record must be traceable.
+- Confirm journal-facing author, affiliation, ORCID, citation, funding, conflict,
+  acknowledgements, and AI-use statements, and complete human review.
+- Select and identify the exact release and archive record only after the
+  author approves the exact outgoing artifact. Public release, archival deposit,
+  and JOSS submission remain separate approval boundaries.
 
-## Required before `submission_eligible`
-
-- Create the public repository only after explicit approval.
-- Establish genuine public development history and public issue/review channels.
-- Record successful independent installation and meaningful research use.
-- Resolve contributor identities, affiliations, ORCIDs, and citation metadata.
-- Recover exact versions for every AI tool used and finalize the required
-  tool/scope/human-review disclosure.
-- Approve conflict-of-interest and funding statements.
-- Complete human scientific/editorial review of the compiled paper and replace
-  journal-assigned draft metadata during submission.
-- Make a release and archive only after explicit approval.
-
-The current authoritative state is `pre_public_preparation`; passing local tests
-must never be presented as JOSS acceptance or external scientific validation.
-
-## External readiness review
-
-An independent readiness audit against the JOSS review checklist is recorded in
-`docs/JOSS_READINESS_REVIEW_2026-08-26.md` (historical private review; not included in this distribution).
-It confirms this file's blocking items and adds packaging, documentation, and
-claim-sourcing findings not tracked here. Its verdict matches `PREPUBLIC_AUDIT.md`:
-not submission-eligible.
+Software tests, benchmark execution, qualification, research use, journal
+eligibility, and author approval are distinct claims. Passing one does not
+establish another.

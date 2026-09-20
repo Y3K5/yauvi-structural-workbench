@@ -19,69 +19,54 @@ bibliography: paper.bib
 
 # Summary
 
-Researchers often need to assess several kinds of evidence before interpreting a
-protein structure. YAUVI Structural Workbench brings those records into a local
-Python suite and browser interface for six structural-protein questions: coordinate identity and
-quality, membrane orientation, conformational resemblance, functional-site
-context, biological assembly interfaces, and comparative structural/sequence
-relationships. Each analysis remains an independently installable command-line
-package. The workbench creates typed configurations, verifies files by SHA-256,
-invokes the registered command, and renders its JSON and tabular evidence into a
-readable, printable report.
+Researchers need several evidence types to interpret protein structures. YAUVI
+Structural Workbench combines a local Python suite and browser interface for six
+questions: coordinate identity and quality, membrane orientation, conformational
+resemblance, functional-site context, assembly interfaces, and structural or
+sequence relationships. Each analysis is an installable command-line package.
+The workbench validates typed configurations and SHA-256 inputs, runs registered
+commands, and presents JSON and tabular evidence in printable reports.
 
-The central design constraint is that evidence dimensions are not collapsed into
-a universal protein or function score. Unknown provenance remains unknown;
-active-like describes coordinate resemblance rather than biochemical activity;
-an annotated catalytic site is not observed catalysis; and a shared fold is not
-exact functional transfer. Missing references, mappings, runtimes, or validation
-reports remain visible as missing or scientifically incomplete evidence.
+Evidence dimensions remain separate: unknown provenance stays unknown;
+active-like resemblance is not biochemical activity; an annotated site is not
+observed catalysis; and fold similarity does not transfer function. Missing
+references, mappings, runtimes, and validation remain visible.
 
 # Statement of need
 
-Structural bioinformatics typically requires moving between coordinate
-validation, residue numbering systems, sequence annotations, reference
-conformations, biological assemblies, surface areas, and similarity searches.
-Author and label residue identities in PDBx/mmCIF are particularly important
-when a measurement must trace back to an exact sequence position. Community
-validation systems such as wwPDB and MolProbity provide essential model-quality
-evidence [@wwpdb; @molprobity], while Gemmi provides robust macromolecular format
-support [@gemmi]. However, these results are often reviewed in separate tools,
-and missing evidence can be mistaken for a favorable or negative result.
+Structural analyses span coordinate validation, residue numbering, sequence
+annotations, conformations, assemblies, surface area, and similarity searches.
+Author and label residue identities in PDBx/mmCIF are essential for tracing
+measurements to sequence positions. wwPDB and MolProbity provide model-quality
+evidence [@wwpdb; @molprobity], and Gemmi supports macromolecular formats
+[@gemmi], but evidence often remains split across tools, with gaps easy to
+misread.
 
-YAUVI provides one reproducible case boundary while leaving scientific
-calculations in standalone packages. It is intended for structural biologists,
-bioinformaticians, and trainees who need inspectable evidence and explicit claim
-limits rather than an opaque ranking. The same deterministic reports can support
-method development, target characterization, comparison of experimental and
-predicted structures, and planning of follow-up validation without generating a
-wet-lab protocol.
+YAUVI defines one reproducible case boundary while leaving calculations in
+standalone packages. It serves structural biologists, bioinformaticians, and
+trainees who need inspectable evidence and explicit claim limits. Deterministic
+reports support method development, target characterization, and comparison of
+experimental with predicted structures without generating wet-lab protocols.
 
 # State of the field and build-versus-contribute justification
 
-Existing programs already provide stronger specialist calculations than a new
-implementation should attempt to replace. Gemmi supplies standards-aware
-coordinate parsing [@gemmi]; wwPDB and MolProbity supply community model
-validation [@wwpdb; @molprobity]; OPM/PPM supplies a richer membrane-positioning
-reference system [@opm]; and Foldseek and DIAMOND supply established structure
-and sequence searches [@foldseek; @diamond]. YAUVI therefore invokes or imports
-these methods through named adapters and preserves their scores, parameters,
-units, versions, and limitations rather than reimplementing them.
+Existing tools provide stronger specialist calculations: Gemmi parses
+coordinates [@gemmi], wwPDB and MolProbity validate models [@wwpdb; @molprobity],
+OPM/PPM positions membranes [@opm], and Foldseek and DIAMOND search structures
+and sequences [@foldseek; @diamond]. YAUVI invokes or imports them through named
+adapters, preserving scores, parameters, units, versions, and limitations.
 
-Broader libraries already integrate important parts of this workflow. Biotite
-combines sequence and structure representations, database access, and interfaces
-to external applications [@biotite]. ProDy provides established tools for protein
-structural dynamics and ensemble analysis [@prody]. These are relevant foundations
-and alternatives for users building their own analyses. YAUVI's present comparison
-is architectural; no benchmark establishing superior speed or accuracy over these
-packages has been performed.
+Biotite integrates sequence and structure representations, database access, and
+external applications [@biotite]; ProDy supports structural dynamics and
+ensembles [@prody]. Both are foundations and alternatives. YAUVI's comparison is
+architectural; no speed or accuracy advantage has been benchmarked.
 
-The contribution proposed here is an explicit case and reporting contract: exact
-input identity, residue mapping, explicit provenance, fail-closed preflight,
-separation of scientific dimensions, deterministic reports, and claim ceilings
-shared across six independently runnable workflows. A separate workbench is intended to make these contracts usable across several
-engines and accessible to researchers who do not write Python. This choice adds
-packaging and adapter maintenance; reusable numerical or parsing improvements
-should still be contributed upstream where appropriate.
+YAUVI's contribution is a case and reporting contract shared across six
+independent workflows: exact input identity and residue mapping, provenance,
+fail-closed preflight, separate evidence dimensions, deterministic reports, and
+claim ceilings. The browser workbench makes these contracts accessible across
+engines. This adds packaging and adapter maintenance; reusable numerical or
+parsing improvements should still go upstream.
 
 # Software design
 
@@ -142,57 +127,56 @@ run manifest. Display rounding never modifies the underlying scientific values.
 The suite uses synthetic offline fixtures, schema tests, fail-closed boundary
 tests, transformation and ordering invariance tests, deterministic output
 comparisons, controller security tests, and standalone package tests. External
-scientific qualification is reported separately from software correctness. The
-first checksum-locked public collection includes wwPDB validation, OPM membrane
-strata, KinCore-labeled two-sided conformational references, an M-CSA enzyme
-case, a deposited assembly evaluated with FreeSASA, and a CATH-labeled SF-CSA
-mini-database searched by Foldseek and DIAMOND. Four public cases pass their
-predeclared gates and two remain partial. Qualification v2 separately freezes
-scope-specific strata, development and held-out splits, evidence requirements,
-and unchanged gates. Collection 2.11 adopts 94 of 110 records across six panels.
-Coordinate quality, functional-site context, and assembly interfaces each passed
-16 cases; ABL state comparison passed four reference cases and ten held-out
-cases, with reference classifications informed by KinCore [@kincore]; and SF-CSA
-passed its sixteen curator-frozen cases across four relationship strata. All five
-release-blocking panels produced identical case verdicts on seven runners
-spanning three environments -- Darwin/arm64, Linux/aarch64 and Linux/x86_64 --
-which is the cross-machine reproduction the adoption protocol requires before a
-scope is called adopted. The sixteen remaining records are membrane orientation's
-alpha-helical stratum, which is uncurated; membrane orientation is non-blocking
-and research-only from collection 2.4, does not agree across environments, and
-makes no accuracy claim. These are historical measurements, not an accuracy
-estimate for the toolkit or qualification of subsequent code changes.
+scientific qualification is separate from software correctness. Qualification
+v2 freezes scope-specific strata, development and held-out splits, evidence
+requirements, and numerical gates. Collection 2.11 adopts 94 of 110 records:
+14 ABL state
+records, 16 each for coordinate quality, functional-site context, assembly
+interfaces, and SF-CSA, plus 16 beta-barrel membrane records. The alpha-helical
+membrane stratum remains unadopted and non-blocking. Reference classifications
+for ABL are informed by KinCore [@kincore]. A [public workflow run
+35295451246](https://github.com/Y3K5/yauvi-structural-workbench/actions/runs/35295451246)
+on 18 September 2026 (commit
+`7981148e70c5eaa6424e3608f09cd65bcfb35834`) recorded passing results for all five
+release-blocking panels: 14 ABL cases and one control; 16 coordinate-quality cases
+and two controls; 16 functional-site cases and one control; 16 assembly cases;
+and 16 SF-CSA cases. Its seven successful runners covered macOS and Ubuntu on
+Python 3.10–3.12 and Ubuntu arm64 on Python 3.12. The retained aggregate execution
+report records 67 of 110 cases across five executed panels and predates the
+SF-CSA result; this is not the adopted-record count or a summary of that later
+run. These are historical results for the cited public commit, not qualification
+of the changed local candidate. Membrane orientation is research-only and
+non-blocking; its beta-barrel accuracy gate failed, so no accuracy claim is made.
 
 SF-CSA's no-false-promotion bound is labelled definitional, not scientific: its
 analogy and unrelated strata are defined as different superfamily and the
 classifier promotes only within a group, so the bound holds by construction.
 Adoption certifies that panel's recall and evidence-separation gates only.
 
-Hardening exposed three defects in the reproduction checker, each of which had
-silently limited what the evidence could say. Matching failing panels could
-produce aggregate success; one panel absent from the manifest discarded its
-runner's whole summary; and blocking scopes were compared against stratum names
-they never match, so no blocking panel could reach a reproduced verdict at all.
-The checker now validates panels independently, scores draft-executed panels
-apart from qualified scopes, and requires workflow coverage, input and protocol
-identities, exact case IDs, controls, and per-case verdicts. A missing panel,
-incompatible record, or insufficient environment count prevents release
-qualification. The distinction between software tests, cross-environment
-execution, independent scientific review, and human release authorization remains
-explicit. No scope is claimed independently qualified for the changed build.
+Hardening fixed three reproduction-checker defects: failing panels could be
+aggregated as success, missing panels could discard runner summaries, and
+blocking scopes could never receive a reproduced verdict. The checker now
+validates panels independently and requires workflow coverage, source and
+protocol identities, exact case IDs, controls, and per-case results. Missing or
+incompatible evidence blocks qualification. Software tests, execution,
+independent review, and author approval remain separate; no scope is claimed
+qualified for the changed build.
 
 ![Historical qualification evidence. Counts describe curated panels and retain reference, experimental and unexecuted distinctions; they are not toolkit accuracy.](figures/qualification-history.png){#fig:qualification width=100%}
 
 # Research impact statement
 
-During public development, the project has not recorded independent adoption,
-published research use, or five completed external benchmark gates. The software
-is therefore not presented as JOSS submission-eligible. Current reproducible
-benchmark records expose both successful cases and scientific limitations; they
-do not substitute for documented use in real structural-biology analyses,
-independent installation feedback, and public issue-driven refinement.
-Aspirational utility is not counted as realized research impact in the release
-state.
+The public benchmark collection demonstrates workflows on curated structural
+cases; it is not research impact by itself. A local public-data case study
+compares two deposited human carbonic anhydrase II structures against the
+UniProt reference sequence, with locked inputs, a predeclared protocol, and
+reported limits. Its report and reproduction instructions accompany the
+software. The author must review the case and decide whether it constitutes
+documented developer research use for JOSS; it is not independent use or
+biological validation. No private research inputs or results are included here.
+JOSS also requires more than six months of active public development;
+independent adoption is not a prerequisite. This draft and historical software
+results do not establish submission eligibility.
 
 # Limitations
 
@@ -231,6 +215,11 @@ The human author remains responsible for originality, accuracy, licensing,
 ethical and legal compliance, and all claims. AI output is not scientific evidence.
 The author will handle editor/reviewer conversations without AI assistance,
 except translation where journal policy permits it.
+
+For this preparation on 20 September 2026, OpenAI Codex (`gpt-6-astra` and
+`gpt-5.6-luna`) assisted with manuscript, checklist, roadmap, and research-handoff
+updates. This entry covers this preparation only; it does not reconstruct model
+use from 8–19 September.
 
 # Conflicts of interest and funding
 

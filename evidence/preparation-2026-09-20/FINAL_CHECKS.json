@@ -1,0 +1,37 @@
+{
+  "as_of": "2026-09-20",
+  "checks": {
+    "final_research_kit": "37 payload files plus manifest; exact ZIP screened; all hashes verified after extraction; case replay produced same12 output files",
+    "focused_final_regression": "46 passed, 1 skipped; qualification-v2, export boundaries, public-case safety; not additional unique tests beyond recorded suites",
+    "generated_showcase": "rebuilt successfully with temporary native FreeSASA 2.1.2; six demonstrations, including explicitly stubbed SF-CSA",
+    "public_showcase_verifier": "passed after matching actual roadmap phase and retaining source-recorded public CI timestamp",
+    "release_status_digests": "8 of 8 matched",
+    "staging_verifier": "passed: six workflows; pre_public_preparation",
+    "status_prose_numbers": "matched retained executed evidence"
+  },
+  "checksums": {
+    ".github/workflows/structural-workbench.yml": "70a6b5b27f9b6b3eb06396cffd91480d8673dad6df9f8cdb73c626f50ce73eba",
+    "tools/build_review_candidate.py": "cd05249bb26e6e316ba78979a0f12d9897d25f141928c1d705ec1053697d6ee7",
+    "tools/build_scientific_figures.py": "8cd460d520a7dd4776aa1c71c5bb7786552139ac7ec4c9018c959b0c418d1ccf",
+    "tools/run_structural_workbench_tests.py": "be2369d4728988f57c3febeb42cad32c137ba3aee7e7af5ca68f2d0a6690c277",
+    "tools/verify_public_showcase.py": "e2f016ae949f9d94a9b80196aefdfc588cc302c290671387a74160873be098bd",
+    "tools/verify_structural_joss_staging.py": "44386fdcaef3cc54df29263e973c58857d323aec00e6e3a35ac1d4506c716f21"
+  },
+  "limitations": [
+    "No fresh external scientific qualification of changed candidate",
+    "No current cross-platform candidate CI execution",
+    "No independent human use or scientific/editorial approval",
+    "Full source export held for owner privacy decision",
+    "Public history below more-than-six-month requirement",
+    "No publication or submission authorized"
+  ],
+  "raw_evidence_preserved": true,
+  "schema_version": "1.0",
+  "source_changes_verified": [
+    "CLI version/input-discovery and launcher behavior",
+    "ReferenceRefreshManager export",
+    "public research input locking and output boundaries",
+    "manifest-based archive builder",
+    "staging research-use gate and showcase roadmap consistency"
+  ]
+}

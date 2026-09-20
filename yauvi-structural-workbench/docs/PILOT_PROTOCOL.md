@@ -30,3 +30,6 @@ Use a local record with fields: participant_code, audience, date, artifact_sha25
 workflow, task_completed, interventions, interpretation_limit_response,
 misunderstandings, environment, evidence_paths, consent_to_quote, follow_up.
 No names, participation or consent should be invented.
+
+Participant-facing kit: [PILOT_PARTICIPANT_GUIDE.md](PILOT_PARTICIPANT_GUIDE.md) and the empty
+[PILOT_RECORD_TEMPLATE.json](PILOT_RECORD_TEMPLATE.json).

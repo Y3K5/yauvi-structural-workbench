@@ -1,0 +1,26 @@
+{
+  "changes": [
+    "Generic legacy builder description; further CHANGES.md references awaiting owner decision",
+    "Explicit optional portal CSS environment variable; missing supplied file fails",
+    "External private denylist in showcase verifier",
+    "Visible exact-hash and count-bound invented-home-path exception in review builder"
+  ],
+  "checks": {
+    "focused_tests": {
+      "passed": 17,
+      "skipped": 1
+    },
+    "public_showcase_verifier_with_private_denylist": "passed"
+  },
+  "file_hashes": {
+    "software/Membrane Orientor/memorient/tests/test_palette.py": "f303d881a3b70b2010314f88d6082e68ff54dca7115656336ad5f893e0c0e8eb",
+    "tools/build_review_candidate.py": "0a055f50ba34f4a6aa339f0124e9f6ac06036a5c1ebf2f7c14f5747e852f7a0d",
+    "tools/test_review_candidate.py": "ab0d642da2415c2f5b326d70d83cb4bf00412fedf23ef1f56a2f53aad6894c5c",
+    "tools/verify_public_showcase.py": "377ae8c2b0f518fd67d5da34dc7f6f8e3c5baab355d0761c5ebe6257bc896d3c"
+  },
+  "publication_authorized": false,
+  "record_scope": "Follow-up to frozen earlier preparation checks; earlier file hashes describe that earlier revision",
+  "remaining_hold": "CHANGES.md; four additional private component/case references awaiting owner decision",
+  "schema_version": "1.0",
+  "scope": "Approved local privacy fixes; no scientific algorithm changes"
+}

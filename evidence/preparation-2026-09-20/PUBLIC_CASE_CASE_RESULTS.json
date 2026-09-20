@@ -1,0 +1,97 @@
+{
+  "case_id": "public-ca2-structure-coverage-v1",
+  "claim_limits": [
+    "The measurements describe deposited coordinate files and their sequence mapping.",
+    "Resolution and per-residue B factors are contextual descriptors, not directly comparable model-quality scores across separate experiments.",
+    "No ligand effect, affinity, catalytic activity, native-state, clinical, or causal claim is tested."
+  ],
+  "environment": {
+    "acquisition_script_sha256": "a85a7ec8c3add651258b20e86af2c493d55ea98f6416aaee047f6c9d998d735c",
+    "biopython": "1.88",
+    "case_driver_sha256": "b8ce4d2a259e827f37d99225bc6b650d7c99a42fd19ec910432ba3e3c8400225",
+    "distributions_providing_package": [
+      {
+        "name": "yauvi-structural-workbench",
+        "version": "0.1.0.dev0"
+      }
+    ],
+    "module_distributions": [
+      {
+        "name": "yauvi-structural-workbench",
+        "version": "0.1.0.dev0"
+      }
+    ],
+    "module_origin_state": "installed_distribution",
+    "numpy": "2.5.3",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "python": "3.12.0",
+    "structqc_core_sha256": "c15cb56344274806844919ba7be02b74a6ee5297741287871eb3bc9754d41ad4",
+    "structqc_schema_version": "1.1"
+  },
+  "protocol_sha256": "39f9737f5615f9431183f0e9db1971dcdc78f8a838064c7d59a579e4bcba941d",
+  "results": [
+    {
+      "coordinate_residues": 257,
+      "coverage_fraction": 0.988462,
+      "entry_id": "2POW",
+      "entry_url": "https://www.rcsb.org/structure/2POW",
+      "external_validation_state": "missing",
+      "identity_fraction": 1.0,
+      "ligand_context": "I7C inhibitor; zinc is also present",
+      "mapped_residues": 257,
+      "method": "X-ray diffraction",
+      "missing_reference_positions": [
+        1,
+        2,
+        3
+      ],
+      "pae_state": "unevaluated",
+      "per_residue_mean_b_factor": {
+        "maximum": 35.895556,
+        "median": 14.47,
+        "minimum": 6.234,
+        "n_residues": 257
+      },
+      "reference_id": "P00918",
+      "reference_length": 260,
+      "resolution_angstrom": 1.75,
+      "selected_chain": "A",
+      "selected_model": 0,
+      "structure_sha256": "378221980ca5c658048f8cf1b88bad27ad0f7ad15673d6796a14a282329e1173",
+      "title": "The crystal structure of human carbonic anhydrase II in complex with 4-amino-6-trifluoromethyl-benzene-1,3-disulfonamide",
+      "warnings": []
+    },
+    {
+      "coordinate_residues": 258,
+      "coverage_fraction": 0.992308,
+      "entry_id": "4RN4",
+      "entry_url": "https://www.rcsb.org/structure/4RN4",
+      "external_validation_state": "missing",
+      "identity_fraction": 1.0,
+      "ligand_context": "acetazolamide derivative 3T7; zinc is also present",
+      "mapped_residues": 258,
+      "method": "X-ray diffraction",
+      "missing_reference_positions": [
+        1,
+        2
+      ],
+      "pae_state": "unevaluated",
+      "per_residue_mean_b_factor": {
+        "maximum": 44.753333,
+        "median": 14.196572,
+        "minimum": 6.154,
+        "n_residues": 258
+      },
+      "reference_id": "P00918",
+      "reference_length": 260,
+      "resolution_angstrom": 1.53,
+      "selected_chain": "A",
+      "selected_model": 0,
+      "structure_sha256": "5cd0cbc3e95161c58de03e27d8df772a388feaa6af14139128fbc44db4c04f43",
+      "title": "Human carbonic anhydrase II complexed with a two-tail acetazolamide derivative",
+      "warnings": []
+    }
+  ],
+  "schema_version": "1.0",
+  "source_lock_sha256": "0f341f810472544e8e205f8f9e190de2578aa0941ffa3313556a526fe3dd8a30"
+}

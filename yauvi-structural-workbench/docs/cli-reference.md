@@ -5,6 +5,9 @@ Regenerate with `python tools/build_cli_reference.py`.
 
 Common conventions across the scientific modules:
 
+- `yauvi --version` identifies the installed distribution.
+- `yauvi analysis types` lists the six workflows and their interpretation limits.
+- `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.
 - `run` performs the analysis and writes a result bundle to `--out`.
@@ -26,6 +29,7 @@ Common conventions across the scientific modules:
 | [`assembly-context`](#assembly-context) | Biological assembly, stoichiometry, contacts, and burial. |
 | [`sf-csa`](#sf-csa) | Structure- and sequence-based functional comparison. |
 | [`yauvi-fetch`](#yauvi-fetch) | Registered public-source acquisition and staging. |
+| [`structprep`](#structprep) | Coordinate preparation with explicit chain and sequence handling. |
 
 
 ---
@@ -35,7 +39,8 @@ Common conventions across the scientific modules:
 Structural analysis case store: create, add inputs, validate, run, export.
 
 ```
-usage: yauvi [-h] [--workspace WORKSPACE] {analysis,example,workbench} ...
+usage: yauvi [-h] [--version] [--workspace WORKSPACE]
+             {analysis,example,workbench} ...
 
 Local, evidence-bounded structural protein analysis.
 
@@ -47,21 +52,37 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
+  --version             show program's version number and exit
   --workspace WORKSPACE
                         Local analysis workspace (default: current directory).
 ```
 
-### `yauvi workbench serve`
+### `yauvi workbench open`
 
 ```
-usage: yauvi workbench serve [-h] [--host HOST] [--port PORT]
-                             [--allow-reference-fetch]
+usage: yauvi workbench open [-h] [--host HOST] [--port PORT]
+                            [--allow-reference-fetch] [--label LABEL]
 
 options:
   -h, --help            show this help message and exit
   --host HOST
   --port PORT
   --allow-reference-fetch
+  --label LABEL         Name shown for this local workspace.
+```
+
+### `yauvi workbench serve`
+
+```
+usage: yauvi workbench serve [-h] [--host HOST] [--port PORT]
+                             [--allow-reference-fetch] [--label LABEL]
+
+options:
+  -h, --help            show this help message and exit
+  --host HOST
+  --port PORT
+  --allow-reference-fetch
+  --label LABEL         Name shown for this local workspace.
 ```
 
 ### `yauvi example`
@@ -75,16 +96,39 @@ options:
   --without-validation
 ```
 
-### `yauvi analysis create`
+### `yauvi analysis types`
 
 ```
-usage: yauvi analysis create [-h] --analysis ANALYSIS --type TYPE --question
-                             QUESTION [--subject-id SUBJECT_ID]
+usage: yauvi analysis types [-h]
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### `yauvi analysis inputs`
+
+```
+usage: yauvi analysis inputs [-h] --type
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
 
 options:
   -h, --help            show this help message and exit
-  --analysis ANALYSIS
-  --type TYPE
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+                        Analysis type from 'analysis types'.
+```
+
+### `yauvi analysis create`
+
+```
+usage: yauvi analysis create [-h] --analysis ANALYSIS --type
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+                             --question QUESTION [--subject-id SUBJECT_ID]
+
+options:
+  -h, --help            show this help message and exit
+  --analysis ANALYSIS   Local case identifier.
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+                        Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
 ```
@@ -93,6 +137,8 @@ options:
 
 ```
 usage: yauvi analysis add [-h] --analysis ANALYSIS --role ROLE --file FILE
+
+Use 'analysis inputs --type TYPE' to see allowed roles and file formats.
 
 options:
   -h, --help           show this help message and exit
@@ -782,7 +828,8 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --registry REGISTRY   path to catalogs/sources.yaml
+  --registry REGISTRY   path to a registry YAML (default: the public
+                        structural registry inside this package)
   --cache CACHE         source cache directory (default:
                         ~/.cache/yauvi/sources)
 ```
@@ -805,7 +852,7 @@ usage: yauvi-fetch plan [-h] --for MODULE [--manifest MANIFEST] [--json] [-v]
 
 options:
   -h, --help           show this help message and exit
-  --for MODULE         module id, e.g. subproteo
+  --for MODULE         module id, e.g. structqc
   --manifest MANIFEST  explicit path to the module's sources.yaml
   --json               machine-readable output
   -v, --verbose
@@ -820,7 +867,7 @@ usage: yauvi-fetch get [-h] --for MODULE [--manifest MANIFEST]
 
 options:
   -h, --help            show this help message and exit
-  --for MODULE          module id, e.g. subproteo
+  --for MODULE          module id, e.g. structqc
   --manifest MANIFEST   explicit path to the module's sources.yaml
   --source-id SOURCE_ID
                         fetch only this source
@@ -868,5 +915,92 @@ positional arguments:
 
 options:
   -h, --help  show this help message and exit
+```
+
+
+---
+
+## structprep
+
+Coordinate preparation with explicit chain and sequence handling.
+
+```
+usage: structprep [-h] [--version] {describe,classes,validate,run} ...
+
+Structure preparation
+
+positional arguments:
+  {describe,classes,validate,run}
+    describe            print the machine-readable IO contract
+    classes             print the component classification table
+    validate            check inputs without writing
+    run                 prepare the structure
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
+
+### `structprep describe`
+
+```
+usage: structprep describe [-h]
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### `structprep classes`
+
+```
+usage: structprep classes [-h]
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### `structprep validate`
+
+```
+usage: structprep validate [-h] --structure STRUCTURE [--policy POLICY]
+                           [--keep KEEP] [--drop DROP] [--chains CHAINS]
+                           [--altloc ALTLOC] [--no-flatten]
+                           [--allow-contacting]
+
+options:
+  -h, --help            show this help message and exit
+  --structure STRUCTURE
+  --policy POLICY       JSON policy file
+  --keep KEEP           residue name always retained. Repeatable.
+  --drop DROP           residue name always removed, overriding contact
+                        protection.
+  --chains CHAINS       comma-separated chains to retain
+  --altloc ALTLOC       alternate location to keep (default A)
+  --no-flatten          do not give assembly MODEL copies unique chain ids
+  --allow-contacting    remove classed components even when they touch the
+                        polymer
+```
+
+### `structprep run`
+
+```
+usage: structprep run [-h] --structure STRUCTURE [--policy POLICY]
+                      [--keep KEEP] [--drop DROP] [--chains CHAINS]
+                      [--altloc ALTLOC] [--no-flatten] [--allow-contacting]
+                      --out OUT
+
+options:
+  -h, --help            show this help message and exit
+  --structure STRUCTURE
+  --policy POLICY       JSON policy file
+  --keep KEEP           residue name always retained. Repeatable.
+  --drop DROP           residue name always removed, overriding contact
+                        protection.
+  --chains CHAINS       comma-separated chains to retain
+  --altloc ALTLOC       alternate location to keep (default A)
+  --no-flatten          do not give assembly MODEL copies unique chain ids
+  --allow-contacting    remove classed components even when they touch the
+                        polymer
+  --out OUT
 ```
 

@@ -1,0 +1,72 @@
+{
+  "architecture": "arm64",
+  "channel": "conda-forge",
+  "dependencies": [
+    {
+      "build": "he4178ee_0",
+      "name": "json-c",
+      "sha256": "73179a1cd0b45c09d4f631cb359d9e755e6e573c5d908df42006728e0bf8297c",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/json-c-0.18-he4178ee_0.conda",
+      "version": "0.18"
+    },
+    {
+      "build": "h55c6f16_0",
+      "name": "libcxx",
+      "sha256": "3f902803f0fc2643a4f82ff15a06811d974ff5fb6fa8f957720a7ef84e13ad98",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/libcxx-23.1.1-h55c6f16_0.conda",
+      "version": "23.1.1"
+    },
+    {
+      "build": "he4c29f2_3",
+      "name": "libiconv",
+      "sha256": "689a14968267f2f97c07112fca5636e7d756036b9aee969911267c20bd3eea1f",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/libiconv-1.18-he4c29f2_3.conda",
+      "version": "1.18"
+    },
+    {
+      "build": "h8088a28_1",
+      "name": "liblzma",
+      "sha256": "23d0630046a3e8b164d8f80f2b74ed2605af2e7050ab9913018056402fae4311",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/liblzma-5.8.3-h8088a28_1.conda",
+      "version": "5.8.3"
+    },
+    {
+      "build": "hdcc4aff_0",
+      "name": "libxml2",
+      "sha256": "e718d42d14e2fd917def92402b0a73bf92431205590652cd446478f458e9cab8",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/libxml2-2.15.4-hdcc4aff_0.conda",
+      "version": "2.15.4"
+    },
+    {
+      "build": "hea22233_0",
+      "name": "libxml2-16",
+      "sha256": "91d2279e812f694d2dc1376bbbf5a5041daef3da550f9d772c05019471eb7c58",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/libxml2-16-2.15.4-hea22233_0.conda",
+      "version": "2.15.4"
+    },
+    {
+      "build": "h8088a28_3",
+      "name": "libzlib",
+      "sha256": "a18fa5d5bac452401459f966cf0d872224e8080c4ff93c77e168d43ab42ef9d7",
+      "url": "https://conda.anaconda.org/conda-forge/osx-arm64/libzlib-1.3.2-h8088a28_3.conda",
+      "version": "1.3.2"
+    }
+  ],
+  "installer": {
+    "name": "Miniforge3",
+    "sha256": "d70bfa2e97afcda96927c9b9ca0e2316cb7750e4ce651c94388267cbe9588711",
+    "url": "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh",
+    "version": "26.7.2-0"
+  },
+  "purpose": "Temporary native FreeSASA runtime for local JOSS preparation tests",
+  "raw_record_sha256": "dc46cdb99148823dfc76809cbfacdb98ef1524cd35853a427db06237eaac6819",
+  "runtime": {
+    "build": "h45cdd40_1",
+    "name": "freesasa-c",
+    "sha256": "6bdea560eee0cc790f0c9e74135420594e92c3b909e03773b46571b10d549f9e",
+    "url": "https://conda.anaconda.org/conda-forge/osx-arm64/freesasa-c-2.1.2-h45cdd40_1.conda",
+    "version": "2.1.2"
+  },
+  "scope": "Temporary native FreeSASA 2.1.2 used for local assembly software tests; not candidate scientific qualification or CI runtime parity",
+  "verified_command": "freesasa --format=json --depth=chain --n-threads=1"
+}

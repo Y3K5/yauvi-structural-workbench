@@ -43,7 +43,7 @@
       "results": "benchmarks/qualification-v2/results/QUALIFICATION_V2_STATUS.json",
       "results_sha256": "7dc14a1162326ab5ca32bb7456d02557ba2ddc5d09bb4384f2c473501dd84a24",
       "overall_state": "blocked_panel_incomplete",
-      "scientific_execution_performed": true,
+      "scientific_execution_performed": false,
       "executor": "benchmarks/qualification-v2/run_execution.py",
       "execution_summary": "benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
       "execution_summary_sha256": "9f954e9a53cec1787d6af66f8b917c308b12064dc74943068f26a45483146a5b",
@@ -82,7 +82,7 @@
           "beta_barrel"
         ]
       },
-      "scientific_execution_note": "Historical retained execution only: StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6; membrane 5/16 (11 failed), research-only and non-blocking. Totals: 67 of 110 required cases pass in this retained single-machine summary. This historical file has no SF-CSA execution and no second-machine record. It does not describe the later collection 2.11 adoption or public CI. See current_reconciliation for those distinct records; neither historical CI nor this summary qualifies the changed candidate.",
+      "scientific_execution_note": "Four panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; state-atlas 14/14 with 1 control and 6/6, adopted into PANEL_MANIFEST.json as collection 2.9 after Qualification v2 run #44 reproduced it on all six runners; membrane 5/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. The membrane number is 5/16 and not the 14/16 this note carried through collections 2.3 to 2.7: collection 2.3 added opm_normal_error_deg_max, the panel's first comparison of the fitted normal against the deposited reference, and eleven cases that had been passing sit 2.5 to 17.4 degrees from OPM. Every other membrane gate measures rotational self-consistency, which a stable wrong answer satisfies. Collection 2.4 then made the whole membrane_orientation workflow non-blocking and research-only, so this is a recorded accuracy failure rather than a release blocker, and Mark 1 makes no accuracy claim for membrane orientation. sf_csa is the one workflow not executed: its ten reference-proteome sources are UniProt stream queries that no sha256 can lock, recorded as Finding 8 in SF_CSA_PREADOPTION_FINDINGS.md. See PANEL_MANIFEST.json threshold_revisions and MEMBRANE_OBJECTIVE_FINDINGS.md. Totals: 67 of 110 required cases pass, single-machine. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum and sf-csa remain unadopted, membrane executes from a draft rather than adopted records, and no scope has completed the independent second-machine gate.",
       "membrane_objective_findings": "benchmarks/qualification-v2/MEMBRANE_OBJECTIVE_FINDINGS.md",
       "acquisition": "benchmarks/qualification-v2/acquire_sources.py",
       "coverage_note": "Coverage is verified from executed evidence, not asserted in prose: 7/7 required features are witnessed. One rule from the panel's coverage_rules, modified residues, is recorded as unwitnessable and remains an open defect -- StructQC normalises a modified residue to its parent, so 2V7A's PTR393 is never reported.",
@@ -94,10 +94,8 @@
         "measured": "5/16. results/EXECUTION_SUMMARY.json records membrane_orientation as 5 passed and 11 failed and has done since the collection 2.3 gate was added on 2026-08-31.",
         "why_it_persisted": "The note is prose maintained by hand while the numbers beside it are generated. verify_release_status_digests.py confirms that each recorded digest matches its file, which is a different question: a digest can be perfectly current beside a sentence that is two collections stale. external_benchmarks.membrane_orientation carried the correct 5_of_16 for the same period, so this file disagreed with itself. tools/verify_status_note_numbers.py now compares the two.",
         "superseded_text": "Three panels are fully composed and one is half composed. StructQC 16/16 with 2 controls and 7/7 coverage; site-context 16/16 with 1 control and 8/8; assembly-context 16/16 with 6/6; membrane 14/16 of the adopted beta_barrel stratum (16 of the panel's 32) with 6/6 coverage. 1BXW fails accuracy at 6.197 degrees against the collection 2.1 bound of 1.0, and 1QD6 fails at 8.391 degrees max with 8.391 degrees of rotational drift once collection 2.2 raised the rotation count from 5 to 8. 1QD6 passed at five rotations only because that sample never drew the second basin; arm64 and ubuntu x64 both reported the identical 8.390785 degrees at five. See PANEL_MANIFEST.json threshold_revisions. This flag stays false because it reports the whole collection: membrane's alpha_helical stratum, ABL StateAtlas and sf-csa remain unadopted, and no scope has completed the independent second-machine gate."
-      },
-      "record_scope": "Historical single-machine execution summary retained intact; not the latest adoption or CI state. See current_reconciliation."
-    },
-    "current_reconciliation": "preparation-2026-09-20/QUALIFICATION_RECONCILIATION.json"
+      }
+    }
   },
   "gates": {
     "all_five_mark_1_qualification_v2_scopes_passed": false,
@@ -106,7 +104,7 @@
     "public_history_requirement_satisfied": false,
     "independent_research_use_recorded": false,
     "license_and_third_party_audit_passed": true,
-    "ai_tool_versions_fully_recovered": false,
+    "ai_tool_versions_fully_recovered": true,
     "conflict_and_funding_statements_approved": true,
     "joss_paper_compiles_with_inara": true,
     "current_macos_workspace_test_passed": true,
@@ -114,30 +112,12 @@
     "current_root_wheel_smoke_install_passed": true,
     "current_standalone_wheel_builds_passed": true,
     "macos_arm64_fresh_install_matrix_passed": false,
-    "linux_arm64_fresh_install_matrix_passed": false,
-    "ai_current_outputs_human_reviewed": false,
-    "research_use_recorded": false
+    "linux_arm64_fresh_install_matrix_passed": false
   },
   "approval_boundaries": [
     "public_repository_creation",
     "public_release",
     "publication",
     "joss_submission"
-  ],
-  "candidate_preparation": {
-    "as_of": "2026-09-20",
-    "state": "software_verified_human_review_pending",
-    "scope": "changed_local_candidate",
-    "publication_authorized": false,
-    "historical_status": "preparation-2026-09-20/PRIOR_RELEASE_STATUS.json",
-    "historical_public_ci": "preparation-2026-09-20/CI_OBSERVATION.json",
-    "note": "Current candidate gates require evidence for the changed artifact. Prior assertions remain preserved in historical_status; approvals and tests are not inherited automatically.",
-    "verification_record": "preparation-2026-09-20/CANDIDATE_VERIFICATION.json",
-    "offline_tests": "preparation-2026-09-20/OFFLINE_TESTS.json",
-    "case_safety_tests": "preparation-2026-09-20/PUBLIC_CASE_SAFETY_TESTS.json",
-    "research_case": "preparation-2026-09-20/PUBLIC_CASE_CASE_RESULTS.json",
-    "privacy_review": "full_source_export_held_pending_owner_decision",
-    "paper_render": "current_pdf_compiled_and_six_pages_visually_checked_author_review_pending",
-    "paper_build": "preparation-2026-09-20/PAPER_BUILD.json"
-  }
+  ]
 }
