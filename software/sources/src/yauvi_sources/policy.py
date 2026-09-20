@@ -40,7 +40,7 @@ class FetchClass(str, Enum):
         return self is FetchClass.OPEN_FETCHABLE
 
 
-# Every `access` value that appears in catalogs/sources.yaml, mapped to what code
+# Every `access` value that appears in a registry file, mapped to what code
 # may do with it. Keeping this exhaustive is deliberate: an unmapped access value
 # raises rather than defaulting, so adding a source with a new access mode forces
 # an explicit decision about whether it may be downloaded.
@@ -102,73 +102,34 @@ def classify(source: Source) -> FetchClass:
         ) from None
 
 
-# Acquisition instructions for the license-gated sources, so `plan` can tell a
-# user exactly what to do instead of just refusing. Keyed by source_id; the
-# registry's own `license_note` and `versioning` are printed alongside these.
-MANUAL_INSTRUCTIONS: Mapping[str, str] = {
-    "deg": (
-        "DEG (Database of Essential Genes) requires accepting its academic terms.\n"
-        "  1. Register at http://origin.tubic.org/deg/public/index.php\n"
-        "  2. Download the bacterial protein set (DEG10 / deg_bacteria.faa)\n"
-        "  3. Stage it and record its digest:\n"
-        "       yauvi-fetch stage deg <path-to-deg_bacteria.faa>"
-    ),
-    "drugbank": (
-        "DrugBank requires a licence for the full data download; the academic\n"
-        "licence is free but must be requested per user.\n"
-        "  1. Request access at https://go.drugbank.com/releases/latest\n"
-        "  2. Download the protein identifiers / target sequences FASTA\n"
-        "  3. yauvi-fetch stage drugbank <path>"
-    ),
-    "ogee": (
-        "OGEE bulk downloads are served from https://v3.ogee.info/#/downloads\n"
-        "after accepting the site terms.\n"
-        "  yauvi-fetch stage ogee <path>"
-    ),
-    "depmap": (
-        "DepMap releases are versioned and require accepting the DepMap terms.\n"
-        "  1. Choose a release at https://depmap.org/portal/data_page/\n"
-        "  2. Download the gene-effect matrix\n"
-        "  3. yauvi-fetch stage depmap <path>   (record the release name)"
-    ),
-    "human_protein_atlas": (
-        "The Human Protein Atlas bulk TSV is at https://www.proteinatlas.org/about/download\n"
-        "and is CC BY-SA 3.0 — attribution is required wherever its values are shown.\n"
-        "  yauvi-fetch stage human_protein_atlas <path>"
-    ),
-}
-
-
-# Sources whose files we never hold at all: the human runs a web server or a
-# licensed binary and gives us the export. `plan` prints the expected shape.
-TABLE_EXPECTATIONS: Mapping[str, str] = {
-    "vaxijen": "TSV/CSV export with columns: protein_id, score, prediction (threshold declared in the registry).",
-    "allertop": "Export with columns: protein_id, prediction (allergen | non-allergen).",
-    "toxinpred": "Export with columns: peptide_or_protein_id, score, prediction.",
-    "deeploc2": "DeepLoc 2 CSV: protein_id, localization, per-compartment probabilities.",
-    "cello": "CELLO output table: protein_id, localization, reliability.",
-    "netmhcpan": "NetMHCpan output: peptide, allele, rank, affinity.",
-    "iedb": "IEDB export (epitope table): epitope, source antigen, assay, MHC restriction.",
-    "chembl": "ChEMBL export: target_chembl_id, uniprot accession, activity summary.",
-}
+# Acquisition instructions and table shapes used to live here, keyed by
+# source_id. They no longer do. A description of how to obtain a source belongs
+# to the entry that declares the source, not to the code that reads it: keeping
+# it here meant this package carried the source list of every catalogue that had
+# ever been pointed at it, including entries no public registry declares and no
+# public code path can reach. `Source.manual_instructions` and
+# `Source.table_expectation` carry that text now, so a catalogue describes its
+# own sources and this module only decides what kind of instruction to print.
+#
+# `manual_instructions` was already parsed into `Source` and then ignored, which
+# is how the two drifted apart in the first place.
 
 
 def instructions_for(source: Source) -> str:
     """Human-facing acquisition text for a source code may not fetch."""
     fetch_class = classify(source)
     if fetch_class is FetchClass.LICENSE_GATED:
-        base = MANUAL_INSTRUCTIONS.get(
-            source.source_id,
+        base = source.manual_instructions or (
             f"{source.display_name} must be obtained manually; the registry records\n"
             f"its access mode as {source.access!r}. Stage it with:\n"
-            f"  yauvi-fetch stage {source.source_id} <path>",
+            f"  yauvi-fetch stage {source.source_id} <path>"
         )
         if source.license_note:
             base += f"\n  Licence: {source.license_note}"
         return base
     if fetch_class is FetchClass.TABLE_ONLY:
-        expectation = TABLE_EXPECTATIONS.get(
-            source.source_id, "a tabular export keyed by protein identifier"
+        expectation = (
+            source.table_expectation or "a tabular export keyed by protein identifier"
         )
         return (
             f"{source.display_name} is consumed as a table the platform never produces.\n"

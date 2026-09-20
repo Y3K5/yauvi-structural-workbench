@@ -1,16 +1,29 @@
 """Standalone loopback browser, using the same store and engines as the CLI."""
 from __future__ import annotations
 import json
+import os
 import mimetypes
 import secrets
 import socket
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
+from pathlib import Path
 from urllib.parse import urlsplit, unquote
 from yauvi_platform.structural_workbench import (AnalysisError, StructuralAnalysisStore, StructuralSourceStore,
     StructuralSourceError, analysis_definitions, structural_source_descriptors, template_artifact)
 from .jobs import JobManager
+from .build_info import application_build, ui_assets, workspace_identity
+
+SHOWCASE=('index.html','showcase.js')
+
+
+def showcase_assets():
+    """Optional landing page built by tools/build_3d_showcase.py --workbench; absent unless YAUVI_SHOWCASE_DIR names it."""
+    base=os.environ.get('YAUVI_SHOWCASE_DIR')
+    if not base:return {}
+    try:return {name:(Path(base)/name).read_bytes() for name in SHOWCASE}
+    except OSError:return {}
 
 MAX_JSON=1024*1024
 MAX_CHUNK=8*1024*1024
@@ -18,9 +31,15 @@ MAX_FILE=250*1024*1024
 
 class WorkbenchServer(ThreadingHTTPServer):
     daemon_threads=True
-    def __init__(self,address,workspace,allow_reference_fetch=False):
+    def __init__(self,address,workspace,allow_reference_fetch=False,*,label='Local workspace'):
         if address[0] not in {'127.0.0.1','localhost','::1'}:raise AnalysisError('loopback host required')
+        if not isinstance(label,str) or not label.strip() or len(label)>80:raise AnalysisError('workspace label must contain 1–80 characters')
+        self.workspace_label=label.strip()
         if address[0]=='::1':self.address_family=socket.AF_INET6
+        self.ui_assets=ui_assets()
+        self.showcase=showcase_assets()
+        self.build_info=application_build(self.ui_assets)
+        self.workspace_id=workspace_identity(workspace)
         self.store=StructuralAnalysisStore(workspace)
         self.jobs=JobManager(self.store)
         self.allow_reference_fetch=allow_reference_fetch
@@ -79,9 +98,22 @@ class Handler(BaseHTTPRequestHandler):
         except Exception:self._send(500,{'error':'unexpected local request failure; inspect the case and job records before retrying'})
     def _get(self,p):
         store=self.server.store
+        if p==['api','build']:
+            try:changed=application_build()['build_id']!=self.server.build_info['build_id']
+            except (OSError,RuntimeError):changed=True
+            return self._send(200,{**self.server.build_info,'workspace_id':self.server.workspace_id,'workspace_label':self.server.workspace_label,
+                'reference_fetch_enabled':self.server.allow_reference_fetch,'restart_required':changed,'showcase_available':bool(self.server.showcase)})
         if p==['api','session']:return self._send(200,{'token':self.server.token,'reference_fetch_enabled':self.server.allow_reference_fetch})
         if p==['api','definitions']:return self._send(200,analysis_definitions())
         if p==['api','sources']:return self._send(200,structural_source_descriptors())
+        if len(p)==4 and p[:2]==['api','sources'] and p[3]=='file':
+            sources=StructuralSourceStore(store.workspace)
+            record=sources.load(p[2]);path=sources.artifact_path(p[2])
+            return self._send(200,path.read_bytes(),'application/octet-stream',attachment=record['artifact']['file_name'])
+        if len(p)==4 and p[:2]==['api','proteins'] and p[3]=='record':
+            from yauvi_platform.structural_workbench.protein_import import ProteinImportStore
+            record=ProteinImportStore(store).export_record(p[2])
+            return self._send(200,record,attachment=record['accession']+'-source-record.json')
         if p==['api','analyses']:return self._send(200,store.list())
         if p==['api','jobs']:return self._send(200,self.server.jobs.list())
         if len(p)==3 and p[:2]==['api','templates']:
@@ -100,10 +132,13 @@ class Handler(BaseHTTPRequestHandler):
         if len(p)==5 and p[:2]==['api','analyses'] and p[3]=='membrane-layer':
             path=store.artifact_path(p[2],p[4],'outputs/memorient/MEMBRANE_LAYER.json')
             return self._send(200,path.read_bytes(),'application/json',attachment='MEMBRANE_LAYER.json')
+        if p[:1]==['showcase']:
+            name='/'.join(p[1:]) or 'index.html'
+            if name not in self.server.showcase:return self._send(404,{'error':'not found'})
+            return self._send(200,self.server.showcase[name],mimetypes.guess_type(name)[0] or 'application/octet-stream')
         name='/'.join(p) if p else 'index.html'
-        if name not in {'index.html','app.js','style.css','vendor/3Dmol-min.js','vendor/membrane-bilayer.js','vendor/3DMOL-LICENSE.txt'}:return self._send(404,{'error':'not found'})
-        resource=files('yauvi_structural_workbench').joinpath('ui',*name.split('/'))
-        return self._send(200,resource.read_bytes(),mimetypes.guess_type(name)[0] or 'application/octet-stream')
+        if name not in self.server.ui_assets:return self._send(404,{'error':'not found'})
+        return self._send(200,self.server.ui_assets[name],mimetypes.guess_type(name)[0] or 'application/octet-stream')
     def _mutate(self,p):
         store=self.server.store
         if len(p)==4 and p[:2]==['api','ingests'] and self.command=='PUT':
@@ -111,7 +146,7 @@ class Handler(BaseHTTPRequestHandler):
         data=self._body()
         if p==['api','proteins'] or (len(p)==4 and p[:2]==['api','proteins']):
             from yauvi_platform.structural_workbench.protein_import import ProteinImportStore
-            if p==['api','proteins'] or p[3]=='prepare':
+            if p==['api','proteins'] or p[3] in {'prepare','retrieve'}:
                 if data.get('allow_public_fetch') is not True:
                     raise PermissionError('Choose Retrieve protein files to allow this public-accession download.')
             if not self.server.protein_import_lock.acquire(blocking=False):
@@ -120,6 +155,7 @@ class Handler(BaseHTTPRequestHandler):
                 importer=ProteinImportStore(store)
                 if p==['api','proteins']:return self._send(201,importer.lookup(data['link']))
                 if p[3]=='prepare':return self._send(200,importer.prepare(p[2]))
+                if p[3]=='retrieve':return self._send(200,importer.retrieve(p[2],data['resource_id']))
                 if p[3]=='adopt':
                     if any(j['analysis_id']==data['analysis_id'] and j['state'] in {'queued','running'} for j in self.server.jobs.list()):
                         raise AnalysisError('Wait for this analysis to finish before changing its inputs.')
@@ -150,10 +186,14 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(201,StructuralSourceStore(store.workspace).acquire(data['artifact_type'],data['identifier']))
         return self._send(404,{'error':'unknown action'})
 
-def serve(workspace,host='127.0.0.1',port=8931,allow_reference_fetch=False):
-    server=WorkbenchServer((host,port),workspace,allow_reference_fetch)
+def serve(workspace,host='127.0.0.1',port=8947,allow_reference_fetch=False,*,open_browser=False,label='Local workspace'):
+    server=WorkbenchServer((host,port),workspace,allow_reference_fetch,label=label)
     hostname='[::1]' if host=='::1' else host
     print(f'YAUVI local workbench: http://{hostname}:{server.server_port}',flush=True)
+    print(f"{server.build_info['channel']} {server.build_info['version']} · build {server.build_info['build_id'][:12]}",flush=True)
+    if open_browser:
+        import webbrowser
+        threading.Timer(.2,lambda:webbrowser.open(f'http://{hostname}:{server.server_port}')).start()
     try:server.serve_forever()
     except KeyboardInterrupt:pass
     finally:server.server_close()

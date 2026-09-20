@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import itertools
 import math
+import os
 import pathlib
 
 import pytest
@@ -143,10 +144,8 @@ IMMUNE_CLASSES = {"B-cell": "#5b9df9", "MHC-I": "#4fc47f", "MHC-II": "#8f6cf9"}
 #: with both palettes above, so it is held to the same separation.
 SPECIES_COLORS = {"pg": "#cbd24b", "tf": "#97d8b1", "td": "#4385b1"}
 
-PORTAL_CSS = (
-    pathlib.Path(__file__).resolve().parents[4]
-    / "projects" / "YAUVI-PeriodontalPathogens" / "showcase" / "portal" / "assets" / "portal.css"
-)
+_portal_css = os.environ.get("YAUVI_PORTAL_CSS")
+PORTAL_CSS = pathlib.Path(_portal_css).expanduser() if _portal_css else None
 
 
 def _token(name: str) -> str:
@@ -181,8 +180,9 @@ def test_species_colors_never_collide_with_a_data_palette():
 
 def test_portal_css_matches_the_values_these_tests_derive():
     """Keep the private portal integration in step when that consumer is present."""
-    if not PORTAL_CSS.is_file():
-        pytest.skip("private portal consumer is outside the standalone reviewer package")
+    if PORTAL_CSS is None:
+        pytest.skip("optional portal stylesheet was not supplied through YAUVI_PORTAL_CSS")
+    assert PORTAL_CSS.is_file(), "YAUVI_PORTAL_CSS does not name a stylesheet file"
     for name, expected in (("bcell", IMMUNE_CLASSES["B-cell"]),
                            ("mhci", IMMUNE_CLASSES["MHC-I"]),
                            ("mhcii", IMMUNE_CLASSES["MHC-II"]),

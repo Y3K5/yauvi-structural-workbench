@@ -1,4 +1,9 @@
-"""Load `catalogs/sources.yaml` as typed records.
+"""Load an evidence-source registry as typed records.
+
+`yauvi_sources/structural_sources.yaml`, shipped inside this package, is the
+default and is what a plain install reads. A workspace with its own catalogue
+points at it with `--registry` or `YAUVI_SOURCES_REGISTRY`; the format is the
+same either way.
 
 The registry file is the identity/provenance/meaning layer for every external
 database, reference panel, and predictor the platform can compare a protein
@@ -91,6 +96,7 @@ class Source:
     identifier_pattern: str = ""
     format_guides: Mapping[str, str] = field(default_factory=dict)
     manual_instructions: str = ""
+    table_expectation: str = ""
 
     @property
     def is_internal(self) -> bool:
@@ -149,13 +155,15 @@ def _build_source(raw: Mapping[str, Any], *, index: int) -> Source:
         identifier_pattern=str(raw.get("identifier_pattern", "")),
         format_guides={str(key): str(value) for key, value in dict(raw.get("format_guides") or {}).items()},
         manual_instructions=str(raw.get("manual_instructions", "")).strip(),
+        table_expectation=str(raw.get("table_expectation", "")).strip(),
     )
 
 
 class SourceRegistry:
     """The declared evidence sources, keyed by `source_id`."""
 
-    def __init__(self, sources: Iterable[Source], *, catalog_id: str = "", updated_at: str = ""):
+    def __init__(self, sources: Iterable[Source], *, catalog_id: str = "",
+                 updated_at: str = "", path: "str | Path | None" = None):
         self._sources: dict[str, Source] = {}
         for source in sources:
             if source.source_id in self._sources:
@@ -163,6 +171,9 @@ class SourceRegistry:
             self._sources[source.source_id] = source
         self.catalog_id = catalog_id
         self.updated_at = updated_at
+        #: Where this registry was read from, so a refusal can name the file the
+        #: user would actually have to edit. Empty when built in-process.
+        self.path = Path(path) if path else None
 
     # -- construction -----------------------------------------------------
 
@@ -187,6 +198,7 @@ class SourceRegistry:
             sources,
             catalog_id=str(document.get("catalog_id", "")),
             updated_at=str(document.get("updated_at", "")),
+            path=path,
         )
 
     # -- lookup -----------------------------------------------------------
@@ -207,7 +219,8 @@ class SourceRegistry:
         except KeyError:
             raise RegistryError(
                 f"source {source_id!r} is not declared in the registry. "
-                f"Add it to catalogs/sources.yaml before any code depends on it."
+                f"Add it to {self.path or 'the registry file in use'} "
+                f"before any code depends on it."
             ) from None
 
     def resolve_many(self, source_ids: Iterable[str]) -> list[Source]:

@@ -1,8 +1,8 @@
 """`yauvi-fetch` — plan, acquire, and verify a module's raw input files.
 
-    yauvi-fetch plan   --for subproteo          what is needed, what is here
-    yauvi-fetch get    --for subproteo          retrieve what policy permits
-    yauvi-fetch stage  deg <path>               adopt a manually acquired file
+    yauvi-fetch plan   --for structqc          what is needed, what is here
+    yauvi-fetch get    --for structqc          retrieve what policy permits
+    yauvi-fetch stage  mcsa <path>               adopt a manually acquired file
     yauvi-fetch verify [--source-id ID]         re-hash the cache
     yauvi-fetch where  uniprot_proteomes        print the cached path
     yauvi-fetch sources [--channel localization]  list the registry
@@ -51,7 +51,12 @@ def find_registry(explicit: str | None = None, start: Path | None = None) -> Pat
 
 
 def workspace_of(registry_path: Path) -> Path:
-    """The workspace root implied by a registry at <root>/catalogs/sources.yaml."""
+    """The workspace root implied by a registry at <root>/catalogs/sources.yaml.
+
+    Only meaningful for a workspace-style registry supplied by --registry or the
+    environment. The packaged default has no workspace above it, and manifest
+    resolution falls back to the installed modules.
+    """
     return registry_path.resolve().parent.parent
 
 
@@ -124,7 +129,7 @@ def cmd_get(args) -> int:
     # lazy import: keeps `plan` usable without the network extra installed
     from .fetchers import FETCH_HOSTS, NAMED_FETCHERS, fetch_url, host_reachable
 
-    plan, cache, _ = _load_plan(args)
+    plan, cache, registry = _load_plan(args)
     fetch_args = _parse_args_pairs(args.arg)
 
     targets = [i for i in plan.fetchable() if not args.source_id or i.source_id == args.source_id]
@@ -165,7 +170,8 @@ def cmd_get(args) -> int:
         else:
             failures.append(
                 f"{source_id}: the registry entry names no download URL and there is no "
-                f"named fetcher for it. Add a `url:` to catalogs/sources.yaml or stage it by hand."
+                f"named fetcher for it. Add a `url:` to "
+                f"{registry.path or 'the registry file in use'} or stage it by hand."
             )
             continue
 
@@ -320,7 +326,9 @@ def build_parser() -> argparse.ArgumentParser:
         prog="yauvi-fetch",
         description="Plan, acquire, and verify the raw input files a module declares.",
     )
-    parser.add_argument("--registry", help="path to catalogs/sources.yaml")
+    parser.add_argument("--registry",
+                        help="path to a registry YAML "
+                             "(default: the public structural registry inside this package)")
     parser.add_argument(
         "--cache",
         help=f"source cache directory (default: {default_cache_dir()})",
@@ -328,7 +336,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     def add_module_args(p):
-        p.add_argument("--for", dest="module", required=True, help="module id, e.g. subproteo")
+        p.add_argument("--for", dest="module", required=True, help="module id, e.g. structqc")
         p.add_argument("--manifest", help="explicit path to the module's sources.yaml")
 
     p_plan = sub.add_parser("plan", help="report what a module needs and what is present")

@@ -25,10 +25,6 @@ from yauvi_sources.fetchers import (
     fetch_uniprot_sequence,
     fetch_wwpdb_validation,
     fetch_url,
-    fetch_homd_release,
-    fetch_hpa_salivary_gland,
-    fetch_proteomexchange_metadata,
-    fetch_rhea_release,
     host_reachable,
 )
 
@@ -226,31 +222,25 @@ def test_generic_url_fetch_reports_an_empty_body(fake_requests):
     assert fetch_url("https://example.invalid/x").reason == "empty_response"
 
 
-# --- Oral ecosystem public reference sources ----------------------------
+# --- allowlist and response bounds ----------------------------------------
+#
+# These two properties used to be checked through fetchers for sources this
+# distribution no longer declares. They belong to `_public_get` itself, so they
+# are checked here through a fetcher that ships.
 
 
-def test_hpa_and_rhea_fetchers_check_archive_signatures(fake_requests):
-    fake_requests.queue.append(_Response(content=b"PK\x03\x04data", url="https://www.proteinatlas.org/download/proteinatlas.tsv.zip"))
-    fake_requests.queue.append(_Response(content=b"\x1f\x8bdata", url="https://ftp.expasy.org/databases/rhea/tsv/rhea-tsv.tar.gz"))
-    assert fetch_hpa_salivary_gland("current").ok
-    assert fetch_rhea_release("current").ok
-
-
-def test_oral_public_fetchers_reject_unsafe_hosts_and_wrong_dataset_identity(fake_requests):
-    assert fetch_homd_release("https://attacker.invalid/release.tsv").reason == "unsafe_host"
-    fake_requests.queue.append(_Response(content=b'{"dataset":"PXD999999"}', url="https://proteomecentral.proteomexchange.org/cgi/GetDataset"))
-    assert fetch_proteomexchange_metadata("PXD006367").reason == "dataset_identity_mismatch"
-
-
-def test_homd_redirect_cannot_escape_allowlist(fake_requests):
-    fake_requests.queue.append(_Response(status=302, headers={"Location": "https://attacker.invalid/file.tsv"}, url="https://v31a.homd.org/download"))
-    assert fetch_homd_release("https://v31a.homd.org/download").reason == "unsafe_host"
+def test_public_get_refuses_a_host_outside_the_allowlist(fake_requests):
+    from yauvi_sources.fetchers.http import _public_get
+    response, reason = _public_get("https://attacker.invalid/x.cif")
+    assert response is None and reason == "unsafe_host"
+    assert not fake_requests.calls  # refused before any request was made
 
 
 def test_public_fetcher_bounds_declared_response_size(fake_requests):
-    fake_requests.queue.append(_Response(content=b"PK", headers={"Content-Length": str(200 * 1024 * 1024)},
-                                           url="https://www.proteinatlas.org/download/proteinatlas.tsv.zip"))
-    assert fetch_hpa_salivary_gland("current").reason == "response_too_large"
+    fake_requests.queue.append(_Response(content=b"data",
+                                         headers={"Content-Length": str(200 * 1024 * 1024)},
+                                         url="https://files.rcsb.org/download/1ABC.cif"))
+    assert fetch_pdb_structure("1abc").reason == "response_too_large"
 
 
 # --- reachability --------------------------------------------------------

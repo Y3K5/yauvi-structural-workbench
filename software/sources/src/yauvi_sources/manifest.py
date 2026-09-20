@@ -12,13 +12,13 @@ registry itself.
 Manifest shape:
 
     schema_version: "1.0"
-    module_id: subproteo
+    module_id: structqc
     requires:
       - source_id: uniprot_proteomes
         role: "target and host proteomes"
         required: true
-      - source_id: deg
-        role: "essentiality reference"
+      - source_id: mcsa
+        role: "catalytic-site annotation"
         required: false
 """
 from __future__ import annotations
@@ -106,9 +106,12 @@ def load_manifest(path: str | Path) -> ModuleManifest:
 
 # Import names for the modules that ship a manifest, so `--for <id>` can find one
 # in an installed environment without knowing where the workspace is.
+#
+# Only modules this distribution actually contains belong here. Entries for
+# modules that live in a different workspace made this package advertise
+# capability it does not have, and named private project directories while
+# doing it. A workspace with its own modules resolves them through --manifest.
 KNOWN_MODULE_PACKAGES: Mapping[str, str] = {
-    "subproteo": "subproteo",
-    "subproteo-pipeline": "subproteo_pipeline",
     "memorient": "memorient",
     "sf_csa": "sf_csa",
     "sf-csa": "sf_csa",
@@ -123,17 +126,11 @@ KNOWN_MODULE_PACKAGES: Mapping[str, str] = {
     "state_atlas": "state_atlas",
     "state-atlas": "state_atlas",
     "conformational_state": "state_atlas",
-    "structcons": "structcons",
-    "structural_conservation": "structcons",
-    "oral_ecosystem": "oral_ecosystem",
-    "oral-ecosystem": "oral_ecosystem",
 }
 
 # Where each module's manifest lives relative to the workspace root, for the
 # common case of running inside a checkout before anything is pip-installed.
 WORKSPACE_MANIFEST_PATHS: Mapping[str, str] = {
-    "subproteo": "Subtractive Proteomics/src/subproteo/sources.yaml",
-    "subproteo-pipeline": "Subtractive Proteomics/src/subproteo_pipeline/sources.yaml",
     "memorient": "software/Membrane Orientor/memorient/src/memorient/sources.yaml",
     "sf_csa": "software/sf-csa/src/sf_csa/sources.yaml",
     "sf-csa": "software/sf-csa/src/sf_csa/sources.yaml",
@@ -148,10 +145,6 @@ WORKSPACE_MANIFEST_PATHS: Mapping[str, str] = {
     "state_atlas": "software/state-atlas/src/state_atlas/sources.yaml",
     "state-atlas": "software/state-atlas/src/state_atlas/sources.yaml",
     "conformational_state": "software/state-atlas/src/state_atlas/sources.yaml",
-    "structcons": "structcons/src/structcons/sources.yaml",
-    "structural_conservation": "structcons/src/structcons/sources.yaml",
-    "oral_ecosystem": "oral-ecosystem/src/oral_ecosystem/sources.yaml",
-    "oral-ecosystem": "oral-ecosystem/src/oral_ecosystem/sources.yaml",
 }
 
 

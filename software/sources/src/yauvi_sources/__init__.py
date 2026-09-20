@@ -1,7 +1,9 @@
 """yauvi-sources — the executable half of the evidence-source registry.
 
-`catalogs/sources.yaml` declares every external database, reference panel, and
-predictor the platform can compare a protein against. This package reads that
+A source registry declares every external database, reference panel, and
+predictor the platform can compare a protein against. A plain install reads
+the public structural registry shipped inside this package; `--registry` or
+`YAUVI_SOURCES_REGISTRY` substitutes another. This package reads that
 declaration and acts on it: it reports what a module needs, retrieves what the
 licence permits, refuses what it does not, and records the digest of everything
 that lands on disk.

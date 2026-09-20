@@ -86,6 +86,7 @@ SOURCE_DESCRIPTORS: tuple[dict[str, Any], ...] = (
         "https://www.rcsb.org/docs/programmatic-access/file-download-services", "CC0",
         [
             _artifact("pdb.coordinates", "Experimental coordinates", "Deposited asymmetric-unit coordinates in PDBx/mmCIF.", [".cif", ".mmcif"], "PDB ID", "1CRN", fetchable=True),
+            _artifact("pdb.legacy", "Legacy PDB coordinates", "Selected deposited entry; some structures have no legacy PDB representation.", [".pdb"], "PDB ID", "1CRN", fetchable=False),
             _artifact("pdb.biological_assembly", "Biological assembly", "A deposited biological assembly selected by PDB ID and assembly number.", [".cif", ".mmcif"], "PDB ID:assembly", "4HHB:1", fetchable=True),
         ],
         limitations=("A deposited assembly is an author/provider model and is not proof of the dominant assembly in the tested biological context.",),
@@ -111,9 +112,10 @@ SOURCE_DESCRIPTORS: tuple[dict[str, Any], ...] = (
         "https://www.uniprot.org/help/api_queries", "CC BY 4.0",
         [
             _artifact("uniprot.entry", "UniProt entry metadata", "Versioned provider response for a selected public protein.", [".json"], "UniProt accession", "P69905", fetchable=False),
+            _artifact("uniprot.proteome_metadata", "Proteome context metadata", "Exact organism, taxon, strain, assembly, proteome type and provider protein count.", [".json"], "Proteome ID", "UP000000625", fetchable=False),
             _artifact("uniprot.sequence", "Protein sequence FASTA", "The current UniProtKB sequence for one public accession.", [".fasta", ".fa", ".faa"], "UniProt accession", "P69905", fetchable=True),
             _artifact("uniprot.annotations", "UniProt feature table", "A TSV containing catalytic, binding, cofactor, function, and cross-reference fields.", [".tsv"], "UniProt accession", "P69905", fetchable=True),
-            _artifact("uniprot.proteome", "Reference proteome FASTA", "A UniProt reference proteome used for a declared sequence-comparison universe.", [".fasta", ".fa", ".faa"], "Proteome ID", "UP000005640", fetchable=True),
+            _artifact("uniprot.proteome", "Proteome FASTA", "One explicitly selected proteome; reference status must be read from its metadata.", [".fasta", ".fa", ".faa"], "Proteome ID", "UP000005640", fetchable=True),
         ],
         limitations=("Annotations have heterogeneous evidence levels; an annotation is not an observation in the submitted structure.",),
     ),
@@ -312,7 +314,7 @@ class StructuralSourceStore:
 
     def acquire(self, artifact_type: str, identifier: str, *, prepared_outcome=None) -> dict[str, Any]:
         source, artifact = self._artifact_descriptor(artifact_type)
-        if not artifact["fetchable"] and not (prepared_outcome is not None and artifact_type in {"uniprot.entry", "alphafold.metadata"}):
+        if not artifact["fetchable"] and not (prepared_outcome is not None and artifact_type in {"uniprot.entry", "uniprot.proteome_metadata", "pdb.legacy", "alphafold.metadata"}):
             raise StructuralSourceError(f"{artifact_type} is link-only or locally generated and cannot be fetched by the workbench")
         identifier = identifier.strip()
         if not identifier or len(identifier) > 64 or not re.fullmatch(r"[A-Za-z0-9:_-]+", identifier):
@@ -339,6 +341,7 @@ class StructuralSourceStore:
             "artifact_type": artifact_type, "identifier": identifier,
             "file_name": entry.filename, "sha256": entry.sha256, "bytes": entry.bytes,
             "origin": entry.origin, "release": entry.version,
+            "retrieved_at": entry.retrieved_at,
             "license": source["license"], "format_validation": "passed",
             "cache_source_id": cache_source_id,
         }

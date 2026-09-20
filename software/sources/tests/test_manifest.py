@@ -62,7 +62,7 @@ def test_resolve_reports_where_to_look_when_nothing_is_found(tmp_path):
 def test_resolve_prefers_an_explicit_path(tmp_path):
     path = tmp_path / "custom.yaml"
     path.write_text("module_id: custom\nrequires: []\n", encoding="utf-8")
-    assert resolve_manifest("subproteo", explicit_path=path).module_id == "custom"
+    assert resolve_manifest("anything", explicit_path=path).module_id == "custom"
 
 
 # --- the shipped manifests ----------------------------------------------

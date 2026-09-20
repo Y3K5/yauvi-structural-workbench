@@ -36,13 +36,11 @@ RCSB_FILE = "https://files.rcsb.org/download/{pdb_id}.cif"
 RCSB_ASSEMBLY = "https://files.rcsb.org/download/{pdb_id}-assembly{assembly_id}.cif"
 WWPDB_VALIDATION = "https://files.rcsb.org/pub/pdb/validation_reports/{middle}/{pdb_id}/{pdb_id}_validation.xml.gz"
 UNIPROT_ENTRY_FASTA = "https://rest.uniprot.org/uniprotkb/{accession}.fasta"
-HPA_BULK = "https://www.proteinatlas.org/download/proteinatlas.tsv.zip"
-RHEA_BULK = "https://ftp.expasy.org/databases/rhea/tsv/rhea-tsv.tar.gz"
-PROTEOMEXCHANGE_DATASET = "https://proteomecentral.proteomexchange.org/cgi/GetDataset"
 PUBLIC_MAX_BYTES = 128 * 1024 * 1024
+# Every host this package is permitted to contact. It is an allowlist, not a
+# convenience: a redirect to anything absent here is refused rather than
+# followed. Entries exist for the sources the registry declares and no others.
 PUBLIC_ALLOWED_HOSTS = {
-    "www.proteinatlas.org", "ftp.expasy.org", "proteomecentral.proteomexchange.org",
-    "v31a.homd.org", "homd.org", "www.homd.org",
     "files.rcsb.org", "rest.uniprot.org", "alphafold.ebi.ac.uk",
 }
 _PROVIDER_LOCKS = {host: threading.Lock() for host in PUBLIC_ALLOWED_HOSTS}
@@ -197,10 +195,6 @@ FETCH_HOSTS = (
     "rest.uniprot.org",
     "alphafold.ebi.ac.uk",
     "files.rcsb.org",
-    "www.proteinatlas.org",
-    "ftp.expasy.org",
-    "proteomecentral.proteomexchange.org",
-    "v31a.homd.org",
 )
 
 
@@ -495,51 +489,12 @@ def _public_get(url: str, *, params: Mapping[str, Any] | None = None,
     return None, "unsafe_redirect"
 
 
-def fetch_hpa_salivary_gland(_: str = "current", *, timeout=DEFAULT_TIMEOUT) -> FetchOutcome:
-    response, reason = _public_get(HPA_BULK, timeout=timeout)
-    if response is None:
-        return FetchOutcome(ok=False, reason=reason)
-    if not response.content.startswith(b"PK"):
-        return FetchOutcome(ok=False, reason="not_zip")
-    return FetchOutcome(True, response.content, "proteinatlas.tsv.zip", response.url,
-                        str(response.headers.get("Last-Modified", "")))
 
 
-def fetch_rhea_release(_: str = "current", *, timeout=DEFAULT_TIMEOUT) -> FetchOutcome:
-    response, reason = _public_get(RHEA_BULK, timeout=timeout)
-    if response is None:
-        return FetchOutcome(ok=False, reason=reason)
-    if not response.content.startswith(b"\x1f\x8b"):
-        return FetchOutcome(ok=False, reason="not_gzip")
-    return FetchOutcome(True, response.content, "rhea-tsv.tar.gz", response.url,
-                        str(response.headers.get("Last-Modified", "")))
 
 
-def fetch_proteomexchange_metadata(dataset_id: str, *, timeout=DEFAULT_TIMEOUT) -> FetchOutcome:
-    identifier = dataset_id.strip().upper()
-    if not re.fullmatch(r"PXD[0-9]{6,}", identifier):
-        return FetchOutcome(ok=False, reason="invalid_dataset_id")
-    response, reason = _public_get(PROTEOMEXCHANGE_DATASET, params={"ID": identifier, "outputMode": "JSON"}, timeout=timeout,
-                                   max_bytes=8 * 1024 * 1024)
-    if response is None:
-        return FetchOutcome(ok=False, reason=reason)
-    payload = response.content
-    if identifier.encode() not in payload:
-        return FetchOutcome(ok=False, reason="dataset_identity_mismatch")
-    return FetchOutcome(True, payload, f"{identifier}.json", response.url,
-                        str(response.headers.get("Last-Modified", "")))
 
 
-def fetch_homd_release(download_url: str, *, timeout=DEFAULT_TIMEOUT) -> FetchOutcome:
-    """Fetch an explicitly selected HOMD/eHOMD release URL from an allowlisted host."""
-    response, reason = _public_get(download_url, timeout=timeout)
-    if response is None:
-        return FetchOutcome(ok=False, reason=reason)
-    payload = response.content
-    if not payload or payload.lstrip().lower().startswith(b"<html"):
-        return FetchOutcome(ok=False, reason="not_release_data")
-    name = urlparse(response.url).path.rsplit("/", 1)[-1] or "ehomd-release"
-    return FetchOutcome(True, payload, name, response.url, str(response.headers.get("Last-Modified", "")))
 
 
 # Retrieval strategies keyed by source_id, for the sources that need a bespoke
@@ -552,8 +507,4 @@ NAMED_FETCHERS: Mapping[str, Callable[..., FetchOutcome]] = {
     "strain_panel": fetch_uniprot_proteome,
     "alphafold_db": fetch_alphafold_model,
     "pdb": fetch_pdb_structure,
-    "human_protein_atlas": fetch_hpa_salivary_gland,
-    "rhea": fetch_rhea_release,
-    "proteomexchange": fetch_proteomexchange_metadata,
-    "homd": fetch_homd_release,
 }

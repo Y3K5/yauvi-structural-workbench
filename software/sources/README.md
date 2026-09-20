@@ -2,14 +2,18 @@
 
 The executable half of the evidence-source registry.
 
-`catalogs/sources.yaml` declares every external database, reference panel, and
+A source registry declares every external database, reference panel, and
 predictor the platform can compare a protein against — what each one is, how it
 is reached, what its licence permits, and what it cannot tell you. It was written
 to be read. This package makes it act.
 
-    yauvi-fetch plan   --for subproteo     what this module needs, and what is here
-    yauvi-fetch get    --for subproteo     retrieve what the licence permits
-    yauvi-fetch stage  deg <path>          adopt a file you obtained by hand
+A plain install needs no setup: `yauvi_sources/structural_sources.yaml` ships
+inside this package and is what `yauvi-fetch` reads by default. Point it at a
+different catalogue with `--registry <path>` or `YAUVI_SOURCES_REGISTRY`.
+
+    yauvi-fetch plan   --for structqc     what this module needs, and what is here
+    yauvi-fetch get    --for structqc     retrieve what the licence permits
+    yauvi-fetch stage  mcsa <path>          adopt a file you obtained by hand
     yauvi-fetch verify                     re-hash the cache against its manifests
     yauvi-fetch where  uniprot_proteomes   print a cached path, for use in --in
     yauvi-fetch sources                    list the registry
@@ -69,12 +73,12 @@ Each module ships a `sources.yaml` next to its code:
 
 ```yaml
 schema_version: "1.0"
-module_id: subproteo
+module_id: structqc
 requires:
   - source_id: uniprot_proteomes
     role: "target proteome, and every panel proteome the config names"
     required: true
-  - source_id: deg
+  - source_id: mcsa
     role: "stage 2 essentiality reference; licence-gated, so staged by hand"
     required: false
 ```

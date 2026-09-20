@@ -7,6 +7,24 @@ const friendly=v=>String(v??'').replaceAll('_',' ');
 let token='',definitions=[],sourceRows=[],caseRows=[],jobs=[],selected='structure_qc',current=null,snapshot=null,canFetch=false;
 let viewer=null,model=null,membraneLayer=null,loadedCoordinate='',panel='setup',selectionVersion=0,historyVersion=0,dirty=false,busy=false,polling=false;
 const seenJobs=new Map(), pendingResults=new Set();
+let initialBuild=null;
+$('show-build').onclick=()=>{$('build-dialog').showModal();refreshBuild().catch(e=>{$('build-state').textContent='Could not check this build: '+e.message;});};
+$('close-build').onclick=()=>$('build-dialog').close();
+async function refreshBuild(){
+ const build=await api('/api/build');
+ if(!initialBuild)initialBuild=build.build_id;
+ const changed=initialBuild!==build.build_id;
+ $('workspace-label').textContent=build.workspace_label;
+ $('open-showcase').hidden=!build.showcase_available;
+ $('sidebar-showcase').hidden=!build.showcase_available;
+ $('show-build').textContent=`${build.workspace_label} · ${build.version} · ${build.build_id.slice(0,8)}${changed||build.restart_required?' · Update needed':''}`;
+ document.title=`${build.workspace_label} · YAUVI Workbench · ${build.build_id.slice(0,8)}`;
+ const details=[['Product',build.name],['Workspace',build.workspace_label],['Release',build.channel+' · '+build.version],['Application build',build.build_id.slice(0,12)],['Browser interface',build.interface_id.slice(0,12)],['Analysis library',build.workspace_id.slice(0,12)],['Running from',build.distribution]];
+ $('build-details').replaceChildren(...details.flatMap(([label,value])=>[el('dt',label),el('dd',value)]));
+ $('build-state').textContent=changed?'The server was replaced after this page opened. Save any pending changes, then reload this window.':build.restart_required?'New application files are available locally. Finish active jobs, close the server, and use the launcher again.':'This window matches the application files loaded by its server. This check does not download updates or compare against GitHub.';
+}
+refreshBuild().catch(()=>{$('show-build').textContent='YAUVI · Build unavailable';});
+setInterval(()=>refreshBuild().catch(()=>{$('show-build').textContent='YAUVI · Server unavailable';}),30000);
 function notice(message,error=false){$('notice').textContent=message;$('notice').className=error?'error':'';const dialog=document.querySelector('dialog[open]');if(dialog&&error){let n=dialog.querySelector('.dialog-notice');if(!n){n=el('p',undefined,'dialog-notice boundary');n.setAttribute('role','alert');dialog.append(n);}n.textContent=message;}}
 async function api(path,data,method='POST'){
  const raw=data instanceof ArrayBuffer;
@@ -19,6 +37,9 @@ function setPanel(name){panel=name;for(const b of document.querySelectorAll('[da
 for(const b of document.querySelectorAll('[data-panel]'))b.onclick=()=>setPanel(b.dataset.panel);
 function showNew(){if(busy)return;$('new-dialog').showModal();choose(selected);}
 $('new').onclick=showNew;$('start').onclick=showNew;$('close-new').onclick=()=>$('new-dialog').close();
+$('open-showcase').onclick=$('sidebar-showcase').onclick=()=>{location.href='/showcase/';};
+$('plain-help').onclick=()=>$('help-dialog').showModal();
+$('close-help').onclick=()=>$('help-dialog').close();
 for(const id of ['try-example','welcome-example'])$(id).onclick=()=>$('example-dialog').showModal();
 $('close-example').onclick=()=>$('example-dialog').close();$('close-activity').onclick=()=>$('activity-dialog').close();
 $('show-activity').onclick=()=>{$('activity-dialog').showModal();renderJobs();};
@@ -169,9 +190,25 @@ function renderTrace(){
  for(const name of snapshot.available_artifacts||[]){const link=el('a',labels[name][0]);link.href=`/api/analyses/${current}/artifacts/${run.run_id}/${name}`;link.download=name;link.append(el('span',labels[name][1]));$('downloads').append(link);}if(!$('downloads').children.length)$('downloads').append(el('p','Downloads appear when report files are available.','muted'));
 }
 function styleViewer(){if(!viewer||!model)return;const rep=$('representation').value;viewer.setStyle({},rep==='cartoon'?{cartoon:{color:'spectrum'}}:rep==='stick'?{stick:{colorscheme:'Jmol'}}:{sphere:{colorscheme:'Jmol',scale:.5}});viewer.setStyle({hetflag:true},$('ligands').checked?{stick:{colorscheme:'Jmol'}}:{});if($('accessibility-colors').checked&&membraneLayer?.residue_colors){const groups=new Map();for(const item of membraneLayer.residue_colors){const key=item.chain+'|'+item.color;const group=groups.get(key)||{chain:item.chain,color:item.color,resi:[],extracellular:[]};group.resi.push(item.resid);if(item.extracellular)group.extracellular.push(item.resid);groups.set(key,group);}for(const group of groups.values()){viewer.setStyle({chain:group.chain,resi:group.resi},rep==='cartoon'?{cartoon:{color:group.color}}:rep==='stick'?{stick:{color:group.color}}:{sphere:{color:group.color,scale:.5}});if(group.extracellular.length)viewer.addStyle({chain:group.chain,resi:group.extracellular},{stick:{color:group.color,radius:.2}});}}const chain=$('chain').value,residue=$('residue').value;if(chain!=='*'&&rep==='cartoon')viewer.setStyle({chain},{cartoon:{color:'#2670b5'}});if(residue){const selection={serial:JSON.parse(residue)};viewer.addStyle(selection,{stick:{color:'#d79635'},sphere:{scale:.3}});viewer.zoomTo(selection);}drawMembraneOverlay();viewer.render();}
-function drawMembraneOverlay(){if(!viewer||!model)return;viewer.removeAllShapes();viewer.removeAllLabels();if(!membraneLayer||!$('membrane-overlay').checked||typeof MembraneBilayer==='undefined')return;const slab=membraneLayer.membrane_slab||{},half=Number(slab.half_thickness);if(!Number.isFinite(half))return;MembraneBilayer.draw(viewer,{axis:'z',core:[Number(slab.core_lower_z??-half),Number(slab.core_upper_z??half)],leaflets:[{at:Number(slab.core_upper_z??half),color:'#6d5bd0'},{at:Number(slab.core_lower_z??-half),color:'#6d5bd0'},Number(slab.lps_upper_z)?{at:Number(slab.lps_upper_z),color:'#c8791f'}:null].filter(Boolean)});}
-function renderMembraneLegend(){const box=$('membrane-legend');if(!membraneLayer){box.hidden=true;box.replaceChildren();return;}const legend=membraneLayer.color_legend||{};box.hidden=false;box.replaceChildren(el('strong','Modeled membrane context'),el('span','Experimental placement from this run; it is not an experimental membrane or a cell-exposure measurement.','muted'));const row=el('div',undefined,'legend-items');for(const [key,color] of Object.entries(legend)){const item=el('span',undefined,'legend-item'),dot=el('i');dot.style.backgroundColor=color;item.append(dot,friendly(key).replaceAll('lps','LPS'));row.append(item);}box.append(row,el('span','Extracellular side ↑ · modeled +Z axis','muted'));}
-function configureMembraneControls(oriented){const available=oriented&&!!membraneLayer;$('membrane-overlay-wrap').hidden=!available;$('accessibility-colors-wrap').hidden=!available;for(const id of ['membrane-overlay','accessibility-colors'])$(id).disabled=!available;if(available){$('membrane-overlay').checked=true;$('accessibility-colors').checked=true;renderMembraneLegend();}else{$('membrane-overlay').checked=false;$('accessibility-colors').checked=false;renderMembraneLegend();}}
+/* Did this run actually place the protein across the bilayer?
+
+   memorient answers that itself. It labels a fitted barrel `barrel`, and a chain
+   it could not seat `surface` — and it still returns a slab either way, because
+   the slab is the frame it measured in, not a claim that anything sits in it.
+   The viewer used to draw the bilayer whenever a layer existed, which turned a
+   declined placement into a picture of a protein skewered by a membrane. A
+   surface-anchored lipoprotein came out standing on end through the bilayer.
+
+   So the geometry follows the label, not the presence of the file. Anything the
+   run did not seat gets no membrane drawn, and `membraneUnplaced` says why in
+   the legend rather than leaving the absence unexplained. Placing such a chain
+   needs a partner that IS seated — the membrane then comes from the partner's
+   frame, not from a fit to a protein with no transmembrane segment. */
+function membraneSpanning(){return (membraneLayer||{}).label==='barrel';}
+function embeddedCount(){const layer=membraneLayer||{},lipid=(layer.color_legend||{}).lipid_embedded;if(!lipid||!Array.isArray(layer.residue_colors))return null;return layer.residue_colors.filter(r=>r.color===lipid).length;}
+function drawMembraneOverlay(){if(!viewer||!model)return;viewer.removeAllShapes();viewer.removeAllLabels();if(!membraneLayer||!$('membrane-overlay').checked||typeof MembraneBilayer==='undefined')return;if(!membraneSpanning())return;const slab=membraneLayer.membrane_slab||{},half=Number(slab.half_thickness);if(!Number.isFinite(half))return;MembraneBilayer.draw(viewer,{axis:'z',core:[Number(slab.core_lower_z??-half),Number(slab.core_upper_z??half)],leaflets:[{at:Number(slab.core_upper_z??half),color:'#6d5bd0'},{at:Number(slab.core_lower_z??-half),color:'#6d5bd0'},Number(slab.lps_upper_z)?{at:Number(slab.lps_upper_z),color:'#c8791f'}:null].filter(Boolean)});}
+function renderMembraneLegend(){const box=$('membrane-legend');if(!membraneLayer){box.hidden=true;box.replaceChildren();return;}const legend=membraneLayer.color_legend||{};box.hidden=false;box.replaceChildren(el('strong','Modeled membrane context'),el('span','Experimental placement from this run; it is not an experimental membrane or a cell-exposure measurement.','muted'));const row=el('div',undefined,'legend-items');for(const [key,color] of Object.entries(legend)){const item=el('span',undefined,'legend-item'),dot=el('i');dot.style.backgroundColor=color;item.append(dot,friendly(key).replaceAll('lps','LPS'));row.append(item);}box.append(row,el('span','Extracellular side ↑ · modeled +Z axis','muted'));if(!membraneSpanning()){const n=embeddedCount();box.append(el('span','This run did not seat this chain in the bilayer'+(membraneLayer.label?` — it reported “${membraneLayer.label}”`:'')+(n===null?'':`, with ${n} of ${membraneLayer.residue_colors.length} residues in the hydrophobic core`)+'. No membrane is drawn, because the slab is the frame the run measured in, not a placement. A surface-anchored chain is placed through a partner that is seated, not by fitting a normal to a protein with no transmembrane segment.','muted'));}}
+function configureMembraneControls(oriented){const available=oriented&&!!membraneLayer;$('membrane-overlay-wrap').hidden=!available;$('accessibility-colors-wrap').hidden=!available;for(const id of ['membrane-overlay','accessibility-colors'])$(id).disabled=!available;if(available){const spanning=membraneSpanning();$('membrane-overlay').checked=spanning;$('membrane-overlay').disabled=!spanning;$('accessibility-colors').checked=true;renderMembraneLegend();}else{$('membrane-overlay').checked=false;$('accessibility-colors').checked=false;renderMembraneLegend();}}
 function updateResidues(){if(!model)return;const chain=$('chain').value,seen=new Map();for(const atom of model.selectedAtoms(chain==='*'?{}:{chain})){const key=JSON.stringify([atom.chain||'',atom.resi,atom.icode||'',atom.resn]);if(!seen.has(key))seen.set(key,{label:`${atom.chain||'(blank)'} · ${atom.resn} ${atom.resi}${atom.icode||''}`,serials:[]});seen.get(key).serials.push(atom.serial);}$('residue').replaceChildren(new Option('Select a residue',''),...Array.from(seen.values(),r=>new Option(r.label,JSON.stringify(r.serials))));}
 $('view').onclick=guard(()=>loadCoordinateModel($('coordinate').value));
 async function loadCoordinateModel(selection){
@@ -201,7 +238,7 @@ function renderSources(){
  b.onclick=guard(async()=>{const id=current,roles=snapshot.definition.inputs.filter(r=>r.accepted_artifact_types?.includes(a.artifact_type));if(!input.value.trim())throw Error('Enter a public accession to retrieve.');b.disabled=true;try{const record=await api('/api/sources',{artifact_type:a.artifact_type,identifier:input.value.trim()});const role=el('select');role.setAttribute('aria-label','Adopted reference role');roles.forEach(r=>role.append(new Option(r.label||friendly(r.role),r.role)));const adopt=el('button','Adopt into this analysis');adopt.onclick=guard(()=>exclusive(async()=>{if(current!==id||dirty)throw Error('Return to the original analysis and save parameters before adopting.');await api(`/api/analyses/${id}/adopt`,{role:role.value,acquisition_id:record.acquisition_id});await openCase(id,{internal:true});notice('Reference adopted. Check readiness for this revision.');}));line.append(el('p','Retrieved and hashed. Choose its role in this case.'),role,adopt);}finally{b.disabled=false;}});line.append(input,b);}else line.append(el('p','Supply this evidence as a local file. Automatic retrieval is not supported.','muted'));box.append(line);}boxes.push(box);}
  $('sources').replaceChildren(...boxes);if(!boxes.length)$('sources').append(el('p','This workflow uses attached local evidence.','muted'));
 }
-(async()=>{try{const session=await api('/api/session');token=session.token;canFetch=session.reference_fetch_enabled;definitions=await api('/api/definitions');sourceRows=await api('/api/sources');$('workflows').replaceChildren(...definitions.map(d=>{const b=el('button',undefined,'workflow');b.dataset.type=d.analysis_type;b.append(el('strong',names[d.analysis_type]||d.title),el('span',d.analysis_type==='membrane_orientation'?'Experimental':d.analysis_type==='sf_csa'?'Qualification references unresolved':'Qualification incomplete'));b.onclick=()=>choose(d.analysis_type);return b;}));choose(selected);await refreshCases();await refreshJobs();setInterval(()=>refreshJobs().catch(e=>notice(e.message,true)),2000);setInterval(updateClocks,1000);}catch(e){notice('Could not connect to the local workbench: '+e.message,true);}})();
+(async()=>{try{const session=await api('/api/session');token=session.token;canFetch=session.reference_fetch_enabled;definitions=await api('/api/definitions');sourceRows=await api('/api/sources');$('workflows').replaceChildren(...definitions.map(d=>{const b=el('button',undefined,'workflow');b.dataset.type=d.analysis_type;b.append(el('strong',names[d.analysis_type]||d.title),el('span',d.analysis_type==='membrane_orientation'?'Experimental':'Qualification incomplete'));b.onclick=()=>choose(d.analysis_type);return b;}));choose(selected);await refreshCases();await refreshJobs();setInterval(()=>refreshJobs().catch(e=>notice(e.message,true)),2000);setInterval(updateClocks,1000);}catch(e){notice('Could not connect to the local workbench: '+e.message,true);}})();
 
 function renderProteinRecord(){
  const imported=snapshot.analysis.protein_import;if(!imported)return;
@@ -209,6 +246,51 @@ function renderProteinRecord(){
  const box=$('protein-preview');box.replaceChildren(el('strong',imported.name+' · '+imported.accession),el('p',imported.organism,'muted'));
  box.append(el('p','Imported files are attached below. Their sources are recorded in Evidence.'));
  for(const warning of imported.warnings||[])box.append(el('p',warning,'boundary'));
+ const sourceRecord=el('a','Download full source record');sourceRecord.href=`/api/proteins/${imported.import_id}/record`;sourceRecord.download='';box.append(sourceRecord);
+}
+function renderReferenceContext(record, container){
+ container.replaceChildren();
+ const c=record.context||{};
+ container.append(el('h4','Identity and source context'));
+ const details=[c.taxon_id?'Taxon '+c.taxon_id:'Taxon not supplied',c.strain?'Strain '+c.strain:null,c.proteome_type,
+  c.protein_count?c.protein_count.toLocaleString()+' proteins':null,c.genome_assembly?.assemblyId,
+  c.entry_audit?.entryVersion?'Entry version '+c.entry_audit.entryVersion:null,
+  c.entry_audit?.sequenceVersion?'Sequence version '+c.entry_audit.sequenceVersion:null].filter(Boolean);
+ container.append(el('p',details.join(' · '),'muted'));
+ const exportLink=el('a','Download full source record (JSON)');exportLink.href=`/api/proteins/${record.import_id}/record`;exportLink.download='';container.append(exportLink);
+ function fileLink(acquisition,label){
+  const a=el('a',label);a.href=`/api/sources/${acquisition.acquisition_id}/file`;a.download='';return a;
+ }
+ const inventory=el('details');inventory.open=true;inventory.append(el('summary','Files and traceability'));
+ for(const a of [...record.metadata,...record.files.map(f=>f.acquisition)]){
+  const row=el('div',undefined,'reference-file');row.append(fileLink(a,a.artifact.file_name));
+  row.append(el('p',`${a.artifact.provider} · release ${a.artifact.release} · ${a.artifact.retrieved_at||'time in source cache'}`,'muted'));
+  const trace=el('details');trace.append(el('summary','Source URL and checksum'),el('p',a.artifact.origin,'trace-value'),el('p','SHA-256 '+a.artifact.sha256,'trace-value'));row.append(trace);inventory.append(row);
+ }container.append(inventory);
+ for(const [title,kinds] of [['Whole proteomes',['uniprot.proteome']],['Experimental structure files',['pdb.coordinates','pdb.legacy']]]){
+  const items=(record.resources||[]).filter(r=>kinds.includes(r.artifact_type));if(!items.length)continue;
+  const group=el('details');group.append(el('summary',title+' · '+items.length+' choices'));
+  group.append(el('p',title==='Whole proteomes'?'Select the exact proteome. Retrieval checks its taxon, release, protein count and, when linked from a protein, exact sequence membership.':'These are deposited entries, not automatically selected biological assemblies. UniProt chain coverage is a cross-reference; exact sequence, strain, mutations and biological context require review. mmCIF preserves the full deposited format; legacy PDB may be unavailable.','muted'));
+  for(const r of items){
+   const row=el('div',undefined,'reference-file');row.append(el('strong',r.label));
+   const rc=r.context||{};row.append(el('p',[rc.component,rc.method,rc.resolution,rc.chain_coverage?'UniProt chain coverage: '+rc.chain_coverage:null].filter(Boolean).join(' · '),'muted'));
+   if(r.url){const provider=el('a','Open provider record');provider.href=r.url;provider.target='_blank';provider.rel='noreferrer';row.append(provider);}
+   const retrievals=(record.retrievals||[]).filter(x=>x.resource_id===r.resource_id),done=retrievals.find(x=>x.state==='completed');
+   if(done){
+    const a=done.acquisition;row.append(el('p','Retrieved and checked. Analysis inputs have not changed.'),fileLink(a,'Download '+a.artifact.file_name));
+    row.append(el('p',[done.context?.organism,done.context?.strain,done.context?.proteome_type,done.context?.genome_assembly?.assemblyId,done.checks?.record_count?done.checks.record_count+' proteins':null,done.checks?.protein_membership,done.checks?.chain_mapping].filter(Boolean).join(' · '),'muted'));
+    const trace=el('details');trace.append(el('summary','Retrieval evidence'),el('p','Release '+a.artifact.release+' · '+a.artifact.retrieved_at,'muted'),el('p',a.artifact.origin,'trace-value'),el('p','SHA-256 '+a.artifact.sha256,'trace-value'));row.append(trace);
+   }else{
+    const button=el('button','Retrieve this file','secondary');button.onclick=guard(()=>exclusive(async()=>{
+     button.disabled=true;const status=el('p','Retrieving this selected public reference…');row.append(status);
+     try{const updated=await api(`/api/proteins/${record.import_id}/retrieve`,{resource_id:r.resource_id,allow_public_fetch:true});renderReferenceContext(updated,container);}
+     catch(error){status.textContent=error.message;throw error;}finally{button.disabled=false;}
+    }));row.append(button);
+   }
+   for(const failed of retrievals.filter(x=>x.state==='failed'))row.append(el('p','Earlier retrieval stopped: '+failed.reason,'boundary'));
+   group.append(row);
+  }container.append(group);
+ }
 }
 $('protein-lookup').onsubmit=guard(event=>{event.preventDefault();return exclusive(async()=>{
  if(dirty)throw Error('Save your parameters before retrieving a protein.');
@@ -216,10 +298,12 @@ $('protein-lookup').onsubmit=guard(event=>{event.preventDefault();return exclusi
  const progress=$('protein-progress'),preview=$('protein-preview');preview.replaceChildren();progress.textContent='1 of 2 · Looking up the UniProt entry…';
  try{
   const identified=await api('/api/proteins',{link:$('protein-link').value.trim(),allow_public_fetch:true});
-  progress.textContent='2 of 2 · '+identified.name+' found. Retrieving and verifying the available AlphaFold files…';
+  progress.textContent=identified.kind==='proteome'?'Proteome identified. Preparing its context and file choices…':'2 of 2 · '+identified.name+' found. Retrieving and verifying the available AlphaFold files…';
   const protein=await api(`/api/proteins/${identified.import_id}/prepare`,{allow_public_fetch:true});
   progress.textContent='Retrieval finished. Review the available files below.';
-  preview.append(el('h3',protein.name),el('p',`${protein.accession} · ${protein.organism} · ${protein.length} amino acids`,'muted'));
+  preview.append(el('h3',protein.name),el('p',`${protein.accession} · ${protein.organism}${protein.length?' · '+protein.length+' amino acids':''}`,'muted'));
+  const references=el('div',undefined,'reference-context');preview.append(references);renderReferenceContext(protein,references);
+  if(protein.kind==='proteome'){preview.append(el('p',protein.limitations.join(' '),'boundary'));return;}
   const list=el('ul');for(const f of protein.files){const label={structure:'Predicted structure',reference_fasta:'Reference sequence',pae:'Predicted aligned error'}[f.role]||friendly(f.role);list.append(el('li',label+' · '+f.acquisition.artifact.file_name));}if(protein.provenance)list.append(el('li','Provenance declaration · bound to these exact coordinates'));preview.append(list);
   if(protein.chain)preview.append(el('p','Verified coordinate chain: '+protein.chain+'. Existing parameter choices are preserved.'));
   const available=new Set(protein.files.map(f=>type==='sf_csa'?({structure:'query_structure',reference_fasta:'query_fasta'}[f.role]||f.role):f.role));if(protein.provenance)available.add('provenance');
@@ -227,7 +311,6 @@ $('protein-lookup').onsubmit=guard(event=>{event.preventDefault();return exclusi
   if(missing.length)preview.append(el('p','Still supplied separately: '+missing.map(r=>r.label||friendly(r.role)).join('; ')+'.','boundary'));
   for(const warning of protein.warnings)preview.append(el('p',warning,'boundary'));
   preview.append(el('p',protein.limitations[0],'muted'));
-  if(protein.pdb_ids.length){const d=el('details');d.append(el('summary',protein.pdb_ids.length+' experimental PDB cross-references'));d.append(el('p','These entries may cover different fragments, ligands or assemblies. Choose the appropriate experimental structure separately.','muted'));for(const id of protein.pdb_ids){const a=el('a',id+' ');a.href='https://www.rcsb.org/structure/'+id;a.target='_blank';a.rel='noreferrer';d.append(a);}preview.append(d);}
   const actions=el('div',undefined,'actions'),apply=el('button','Fill this analysis'),create=el('button','Create a new analysis with these files','secondary');
   async function adopt(newCase){
    if(current!==analysisId||dirty)throw Error('Return to the original analysis and save your parameters before using this import.');

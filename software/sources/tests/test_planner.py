@@ -54,7 +54,7 @@ def test_manual_lists_what_a_human_must_supply(manifest, registry, cache):
 
 
 def test_a_staged_source_stops_being_manual(manifest, registry, cache):
-    cache.store("gated_db", PAYLOAD, filename="deg.faa", origin="staged:/x")
+    cache.store("gated_db", PAYLOAD, filename="gated.faa", origin="staged:/x")
     manual = {i.source_id for i in build_plan(manifest, registry, cache).manual()}
     assert "gated_db" not in manual
 

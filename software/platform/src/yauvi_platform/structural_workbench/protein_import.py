@@ -1,6 +1,6 @@
 """Explicit public-accession acquisition, followed by reviewed case adoption.
 
-Only a UniProt accession leaves the machine. Provider responses and derived
+Only selected public protein, proteome and PDB identifiers leave the machine. Provider responses and derived
 inputs are retained by hash. No annotations are promoted to measured biology.
 """
 from __future__ import annotations
@@ -16,6 +16,9 @@ from urllib.parse import urlsplit
 
 from .sources import StructuralSourceStore, StructuralSourceError
 from .store import AnalysisError, _write_json
+from .reference_context import (proteome_identifier, protein_context, proteome_context,
+    proteome_url, validate_proteome, validate_pdb, resource)
+from datetime import datetime, timezone
 
 ACCESSION = re.compile(r'(?:[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9](?:[A-Z][A-Z0-9]{2}[0-9]){1,2})')
 IMPORT_ID = re.compile(r'protein_[0-9a-f]{24}')
@@ -27,7 +30,7 @@ def parse_uniprot_link(value):
     value = value.strip()
     if '://' in value:
         url = urlsplit(value)
-        if url.scheme != 'https' or url.hostname not in {'uniprot.org', 'www.uniprot.org', 'rest.uniprot.org'} or url.username or url.password or url.port not in {None, 443}:
+        if url.scheme != 'https' or url.hostname not in {'uniprot.org', 'www.uniprot.org', 'rest.uniprot.org'} or url.username or url.password or url.port not in {None, 443} or url.query or url.fragment:
             raise ValueError('Use an https UniProt entry link; other hosts are not accepted.')
         match = re.fullmatch(r'/(?:uniprotkb|uniprot)/([A-Za-z0-9]+)(?:/entry|\.fasta|\.json)?/?', url.path)
         if not match:
@@ -62,6 +65,8 @@ class ProteinImportStore:
         response, reason = self.get(url, timeout=(8, 30), max_bytes=limit)
         if response is None:
             raise StructuralSourceError(f'{kind}: {reason}')
+        if kind in {'uniprot.entry', 'uniprot.proteome_metadata', 'alphafold.metadata'}:
+            json.loads(response.content)
         return self.sources.acquire(kind, accession, prepared_outcome=FetchOutcome(
             True, response.content, name, response.url, release or response.headers.get('X-UniProt-Release', 'unknown')))
 
@@ -69,6 +74,20 @@ class ProteinImportStore:
         return json.loads(self.sources.artifact_path(acquisition['acquisition_id']).read_text())
 
     def lookup(self, link):
+        proteome = proteome_identifier(link)
+        if proteome:
+            metadata = self.download('uniprot.proteome_metadata', proteome,
+                f'https://rest.uniprot.org/proteomes/{proteome}.json', f'{proteome}-metadata.json')
+            context = proteome_context(self.document(metadata), proteome)
+            return self.save({'schema_version':'2.0', 'import_id':'protein_'+secrets.token_hex(12),
+                'kind':'proteome', 'accession':proteome, 'name':proteome,
+                'organism':context['organism'], 'context':context, 'state':'identified',
+                'metadata':[metadata], 'files':[], 'warnings':[], 'pdb_ids':[],
+                'resources':[resource('uniprot.proteome', proteome, proteome+' · whole proteome FASTA',
+                    context=context, url=f'https://www.uniprot.org/proteomes/{proteome}')],
+                'retrievals':[], 'requested_input':link, 'identified_at':datetime.now(timezone.utc).isoformat(),
+                'limitations':['A whole proteome is a comparison universe, not a single-protein reference or structure.',
+                    'Reference status and strain are provider metadata; missing context is not inferred.']})
         accession = parse_uniprot_link(link)
         entry_artifact = self.download('uniprot.entry', accession,
             f'https://rest.uniprot.org/uniprotkb/{accession}.json', f'{accession}-entry.json')
@@ -80,7 +99,10 @@ class ProteinImportStore:
             raise ValueError('The UniProt sequence is missing or exceeds the supported import size.')
         description = entry.get('proteinDescription', {})
         recommended = description.get('recommendedName') or next(iter(description.get('submissionNames', [])), {})
-        record = {'schema_version':'1.0', 'import_id':'protein_'+secrets.token_hex(12),
+        context, resources = protein_context(entry, entry_artifact['artifact']['sha256'])
+        record = {'schema_version':'2.0', 'kind':'protein', 'import_id':'protein_'+secrets.token_hex(12),
+            'context':context, 'resources':resources, 'retrievals':[], 'requested_input':link,
+            'identified_at':datetime.now(timezone.utc).isoformat(),
             'accession':accession, 'name':recommended.get('fullName', {}).get('value', accession),
             'organism':entry.get('organism', {}).get('scientificName', ''), 'length':len(sequence),
             'sequence':sequence, 'state':'identified', 'metadata':[entry_artifact], 'files':[], 'warnings':[],
@@ -96,6 +118,9 @@ class ProteinImportStore:
             return record
         if record['state'] != 'identified':
             raise ValueError('This import was interrupted; start a new lookup to preserve its record.')
+        if record.get('kind') == 'proteome':
+            record['state'] = 'prepared'
+            return self.save(record)
         record['state'] = 'retrieving'
         self.save(record)
         accession, sequence = record['accession'], record['sequence']
@@ -153,6 +178,82 @@ class ProteinImportStore:
         record['state']='prepared'
         return self.save(record)
 
+    def retrieve(self, identifier, resource_id):
+        """Retrieve one explicitly selected linked reference without changing analysis inputs."""
+        record = self.load(identifier)
+        if record['state'] != 'prepared':
+            raise ValueError('Finish identifying this reference before selecting files.')
+        selected = next((r for r in record.get('resources', []) if r['resource_id'] == resource_id), None)
+        if selected is None:
+            raise ValueError('Select a reference listed by this exact source record.')
+        # Recheck source bytes before trusting relationships extracted from them.
+        for metadata in record['metadata']:
+            self.sources.artifact_path(metadata['acquisition_id'])
+        previous = next((r for r in record.get('retrievals', [])
+                         if r['resource_id'] == resource_id and r['state'] == 'completed'), None)
+        if previous:
+            self.sources.artifact_path(previous['acquisition']['acquisition_id'])
+            return record
+        attempt = {'resource_id':resource_id, 'selected_at':datetime.now(timezone.utc).isoformat(),
+                   'state':'retrieving', 'source_context':selected['context']}
+        record.setdefault('retrievals', []).append(attempt)
+        self.save(record)
+        from yauvi_sources.fetchers.http import FetchOutcome
+        kind, rid = selected['artifact_type'], selected['identifier']
+        try:
+            if kind == 'uniprot.proteome':
+                is_protein = record.get('kind', 'protein') == 'protein'
+                if is_protein:
+                    metadata = self.download('uniprot.proteome_metadata', rid,
+                        f'https://rest.uniprot.org/proteomes/{rid}.json', f'{rid}-metadata.json')
+                    record['metadata'].append(metadata)
+                else:
+                    metadata = record['metadata'][0]
+                context = proteome_context(self.document(metadata), rid,
+                    record.get('context', {}).get('taxon_id') if is_protein else None)
+                attempt['metadata'] = metadata
+                response, reason = self.get(proteome_url(rid), timeout=(8, 120), max_bytes=128*1024*1024)
+                if response is None:
+                    raise StructuralSourceError(reason)
+                release = response.headers.get('X-UniProt-Release', 'unknown')
+                expected_releases = [metadata['artifact']['release'], record['metadata'][0]['artifact']['release']]
+                if release == 'unknown' or any(r != release for r in expected_releases):
+                    raise ValueError('UniProt releases are missing or differ; start a new lookup for consistent files.')
+                checks = validate_proteome(response.content, context,
+                    record['accession'] if is_protein else None, record.get('sequence'))
+                outcome = FetchOutcome(True, response.content, rid+'.fasta', response.url, release)
+                attempt['context'] = context
+            elif kind in {'pdb.coordinates', 'pdb.legacy'}:
+                suffix = 'pdb' if kind == 'pdb.legacy' else 'cif'
+                response, reason = self.get(f'https://files.rcsb.org/download/{rid}.{suffix}',
+                    timeout=(8, 60), max_bytes=128*1024*1024)
+                if response is None:
+                    raise StructuralSourceError(reason)
+                checks = validate_pdb(response.content, rid, legacy=suffix == 'pdb')
+                outcome = FetchOutcome(True, response.content, rid+'.'+suffix, response.url,
+                    ';'.join(checks.get('revision_dates', [])) or 'revision_not_reported')
+                attempt['context'] = selected['context']
+            else:
+                raise ValueError('Unsupported linked artifact.')
+            acquired = self.sources.acquire(kind, rid, prepared_outcome=outcome)
+            attempt.update(state='completed', acquisition=acquired, checks=checks,
+                parent_metadata_sha256=record['metadata'][0]['artifact']['sha256'])
+        except (StructuralSourceError, ValueError, KeyError, TypeError, UnicodeError) as exc:
+            attempt.update(state='failed', reason=str(exc))
+            self.save(record)
+            raise ValueError('Reference retrieval stopped: '+str(exc)) from exc
+        return self.save(record)
+
+    def export_record(self, identifier):
+        """Portable JSON manifest, including retained failures and provider/derived distinctions."""
+        record = self.load(identifier)
+        for row in record.get('metadata', []):
+            self.sources.artifact_path(row['acquisition_id'])
+        for row in record.get('files', []) + record.get('retrievals', []):
+            if row.get('acquisition'):
+                self.sources.artifact_path(row['acquisition']['acquisition_id'])
+        return record
+
     @staticmethod
     def model_url(url, entity, version, kind, suffix):
         expected=f'https://alphafold.ebi.ac.uk/files/{entity}-{kind}_v{version}.{suffix}'
@@ -175,6 +276,8 @@ class ProteinImportStore:
 
     def adopt(self, identifier, analysis_id, revision):
         record=self.load(identifier)
+        if record.get('kind') == 'proteome':
+            raise ValueError('A whole proteome cannot fill single-protein inputs. Download it and select its comparison-universe role explicitly.')
         if record['state']!='prepared':
             raise ValueError('Retrieve the protein files before using them.')
         with self.store._lock:
@@ -216,7 +319,7 @@ class ProteinImportStore:
             if parameters!=case['parameters']:
                 self.store.update_parameters(analysis_id,parameters)
             latest=self.store.load(analysis_id)
-            latest['protein_import']={k:record[k] for k in ('import_id','accession','name','organism','metadata','warnings','limitations','pdb_ids')}
+            latest['protein_import']={k:record[k] for k in ('import_id','accession','name','organism','metadata','warnings','limitations','pdb_ids','context','resources','retrievals') if k in record}
             latest['revision']+=1
             self.store._commit(self.store._case_dir(analysis_id),latest)
             missing=[r['label'] for r in definition['inputs'] if not any(i['role']==r['role'] for i in latest['inputs'])]

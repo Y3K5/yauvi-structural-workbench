@@ -17,10 +17,6 @@ from .http import (  # noqa: F401
     fetch_uniprot_annotation,
     fetch_uniprot_proteome,
     fetch_url,
-    fetch_homd_release,
-    fetch_hpa_salivary_gland,
-    fetch_proteomexchange_metadata,
-    fetch_rhea_release,
     host_reachable,
     proxy_configured,
 )
@@ -43,10 +39,6 @@ __all__ = [
     "fetch_uniprot_annotation",
     "fetch_uniprot_proteome",
     "fetch_url",
-    "fetch_homd_release",
-    "fetch_hpa_salivary_gland",
-    "fetch_proteomexchange_metadata",
-    "fetch_rhea_release",
     "host_reachable",
     "proxy_configured",
 ]
