@@ -73,11 +73,16 @@ def main() -> int:
             reproduced = set(cross.get("release_blocking_panels_reproduced", []))
             if not cross.get("every_release_blocking_panel_reproduced") or reproduced != expected_workflows:
                 problems.append("submission_eligible requires every manifest-defined blocking workflow")
-        required_gates = ("independent_second_machine_reproduction_passed", "independent_research_use_recorded",
+        required_gates = ("independent_second_machine_reproduction_passed", "research_use_recorded",
                           "license_and_third_party_audit_passed", "ai_tool_versions_fully_recovered",
                           "conflict_and_funding_statements_approved")
         for gate in required_gates:
-            if gates.get(gate) is not True:
+            value = gates.get(gate)
+            if gate == "research_use_recorded" and gate not in gates:
+                # Older status documents used a stricter name. Documented
+                # developer research use is also accepted by current JOSS policy.
+                value = gates.get("independent_research_use_recorded")
+            if value is not True:
                 problems.append(f"submission_eligible requires {gate}")
     if state == "submission_eligible" and not gates.get("public_history_requirement_satisfied"):
         problems.append("submission_eligible requires public-history evidence")

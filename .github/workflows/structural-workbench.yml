@@ -52,6 +52,13 @@ jobs:
         run: python tools/run_structural_workbench_tests.py --help
       - name: Product hardening contracts
         run: python -m pytest software/platform/tests/test_product_hardening.py -q
+      - name: Suite · Workbench launcher
+        run: python -m pytest software/platform/tests/test_workbench_launch.py -q
+      - name: Reference context and public research case contracts
+        run: |
+          python -m pytest software/platform/tests/test_reference_context.py -q
+          python -m pytest examples/structural-portfolio/test_public_research_case.py -q
+          python -m pytest tools/test_review_candidate.py -q
       - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null

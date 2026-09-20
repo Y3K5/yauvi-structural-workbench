@@ -18,7 +18,7 @@ from pathlib import Path
 
 CLIS: list[tuple[str, str, list[str]]] = [
     ("yauvi", "Structural analysis case store: create, add inputs, validate, run, export.",
-     ["workbench serve", "example", "analysis create", "analysis add", "analysis parameters", "analysis validate", "analysis run", "analysis export"]),
+     ["workbench open", "workbench serve", "example", "analysis types", "analysis inputs", "analysis create", "analysis add", "analysis parameters", "analysis validate", "analysis run", "analysis export"]),
     ("structqc", "Coordinate trust: completeness, provenance class, imported validation.",
      ["describe", "validate", "fetch", "run"]),
     ("memorient", "Membrane orientation and sidedness labelling.",
@@ -35,6 +35,8 @@ CLIS: list[tuple[str, str, list[str]]] = [
      ["describe", "validate", "fetch", "run", "verify", "build-manifests"]),
     ("yauvi-fetch", "Registered public-source acquisition and staging.",
      ["sources", "plan", "get", "stage", "verify", "where"]),
+    ("structprep", "Coordinate preparation with explicit chain and sequence handling.",
+     ["describe", "classes", "validate", "run"]),
 ]
 
 PREAMBLE = """# CLI reference
@@ -44,6 +46,9 @@ Regenerate with `python tools/build_cli_reference.py`.
 
 Common conventions across the scientific modules:
 
+- `yauvi --version` identifies the installed distribution.
+- `yauvi analysis types` lists the six workflows and their interpretation limits.
+- `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.
 - `run` performs the analysis and writes a result bundle to `--out`.
@@ -62,6 +67,8 @@ def capture(args: list[str]) -> str | None:
     try:
         done = subprocess.run([exe, *args[1:]], capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError):
+        return None
+    if done.returncode != 0:
         return None
     text = (done.stdout or done.stderr).rstrip()
     if not text:
@@ -92,6 +99,8 @@ def build() -> tuple[str, list[str]]:
             if body:
                 out.append(f"### `{name} {sub}`\n")
                 out.append(f"```\n{body}\n```\n")
+            else:
+                missing.append(f"{name} {sub}")
     return "\n".join(out) + "\n", missing
 
 

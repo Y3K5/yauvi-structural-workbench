@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import re
@@ -33,6 +34,13 @@ def load_data() -> dict:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--denylist", type=Path,
+                        help="External private JSON list of terms; never copied to generated output.")
+    args = parser.parse_args()
+    terms = json.loads(args.denylist.read_text()) if args.denylist else []
+    if not isinstance(terms, list) or any(not isinstance(term, str) or not term for term in terms):
+        parser.error("denylist must contain nonempty strings")
     required = {
         "index.html", "styles.css", "app.js", "data.js", "README.md",
         "PUBLIC_SHOWCASE_MANIFEST.json", "CHECKSUMS.json",
@@ -172,7 +180,11 @@ def main() -> int:
                 fail(f'{case.get("analysis_type")} contains an unsafe source link')
 
     roadmap = data.get("publication_roadmap", {})
-    if roadmap.get("current_phase") != "local_hardening" or len(roadmap.get("phases", [])) != 4:
+    expected_roadmap = json.loads((ROOT / "yauvi-structural-workbench" /
+                                  "JOSS_PUBLICATION_ROADMAP.json").read_text(encoding="utf-8"))
+    phase_ids = {item.get("phase_id") for item in roadmap.get("phases", [])}
+    if (roadmap != expected_roadmap or not roadmap.get("current_phase")
+            or roadmap["current_phase"] not in phase_ids):
         fail("publication roadmap is missing or drifted")
     if not any(item.get("gate_id") == "publication_approval" and item.get("state") == "blocked"
                for item in roadmap.get("gates", [])):
@@ -265,14 +277,21 @@ def main() -> int:
             fail(f"progressive-disclosure UX is missing: {phrase}")
 
     forbidden = re.compile(
-        r"(?:/Users/|/private/var/|file://|20\d\d-\d\d-\d\dT\d\d:|"
-        r"YAUVI-PeriodontalPathogens|OralomeVax|K9-PeriodontalVax|unpublished[_ -]sequence)",
+        r"(?:/Users/|/home/|/private/var/|file://|unpublished[_ -]sequence)",
         flags=re.IGNORECASE,
     )
+    # A source-recorded public CI completion time is provenance. Still reject
+    # fresh local timestamps, which would make the generated package drift.
+    public_ci_time = expected_roadmap.get("evidence", {}).get(
+        "historical_public_ci", {}).get("completed_at_utc")
+    timestamp = re.compile(r"20\d\d-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)?")
     for path in PUBLIC.rglob("*"):
         if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES:
-            if forbidden.search(path.read_text(encoding="utf-8", errors="replace")):
-                fail(f"private path, timestamp, or campaign identifier leaked into {path.relative_to(PUBLIC)}")
+            content = path.read_text(encoding="utf-8", errors="replace")
+            private_term_found = any(term.casefold() in content.casefold() for term in terms)
+            if (forbidden.search(content) or private_term_found
+                    or any(value != public_ci_time for value in timestamp.findall(content))):
+                fail(f"private path, unrecorded timestamp, or campaign identifier leaked into {path.relative_to(PUBLIC)}")
     print(f"verified public evidence showcase: 6 workflows, 5 synthetic analysis cases, "
           f"1 stubbed SF-CSA pipeline case, 4 passed and 2 partial public qualification cases, "
           f"{baseline['total_passed']} baseline tests reported")

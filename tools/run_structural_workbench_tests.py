@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import importlib.metadata as importlib_metadata
 import json
+import platform
 from pathlib import Path
 import re
 import subprocess
@@ -37,8 +38,11 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("product hardening", ("software/platform/tests/test_product_hardening.py",)),
     ("workbench launcher", ("software/platform/tests/test_workbench_launch.py",)),
     ("protein import", ("software/platform/tests/test_protein_import.py",)),
+    ("reference context", ("software/platform/tests/test_reference_context.py",)),
     ("source registry", ("software/sources/tests",)),
     ("structprep", ("software/structprep/tests",)),
+    ("review export", ("tools/test_review_candidate.py",)),
+    ("public research case", ("examples/structural-portfolio/test_public_research_case.py",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")
 
@@ -190,6 +194,8 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "schema_version": "1.0",
         "python": sys.version.split()[0],
+        "system": platform.system(),
+        "machine": platform.machine(),
         "selection": "not network and not adapter",
         "scope": (
             "JOSS reviewer distribution"
