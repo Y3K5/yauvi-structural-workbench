@@ -98,6 +98,18 @@ class Handler(BaseHTTPRequestHandler):
         except Exception:self._send(500,{'error':'unexpected local request failure; inspect the case and job records before retrying'})
     def _get(self,p):
         store=self.server.store
+        if p[:2]==['api','biological-cases']:
+            from yauvi_platform.structural_workbench.biological_case import BiologicalCaseStore
+            cases=BiologicalCaseStore(store.workspace)
+            if len(p)==2:return self._send(200,cases.list())
+            case=cases.load(p[2])
+            if len(p)==3:return self._send(200,case.summary())
+            if len(p)==7 and p[3]=='view':return self._send(200,case.view(p[4],p[5],p[6]))
+            if len(p)==5 and p[3]=='sources':
+                source=case.sources[p[4]]
+                return self._send(200,case.payloads[p[4]],'application/octet-stream',
+                    attachment=Path(source['path']).name)
+            raise ValueError('Unknown biological case route')
         if p==['api','build']:
             try:changed=application_build()['build_id']!=self.server.build_info['build_id']
             except (OSError,RuntimeError):changed=True

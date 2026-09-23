@@ -9,7 +9,7 @@ from importlib.resources import files
 
 from . import __version__
 
-ASSETS = ('index.html', 'app.js', 'style.css', 'vendor/3Dmol-min.js',
+ASSETS = ('index.html', 'app.js', 'style.css', 'biological.html', 'biological.js', 'biological.css', 'vendor/3Dmol-min.js',
           'vendor/membrane-bilayer.js', 'vendor/3DMOL-LICENSE.txt')
 PACKAGES = ('yauvi_structural_workbench', 'yauvi_platform.structural_workbench',
             'yauvi_sources', 'structqc', 'memorient', 'state_atlas', 'site_context',
