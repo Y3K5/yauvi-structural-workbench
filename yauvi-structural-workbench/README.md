@@ -48,7 +48,7 @@ structqc run \
 ```
 
 Every scientific capability is reachable this way. See
-[docs/cli-reference.md](docs/cli-reference.md) for all nine commands and
+[docs/cli-reference.md](docs/cli-reference.md) for all ten commands and
 [docs/quickstart.md](docs/quickstart.md) for a guided run.
 
 Public-accession retrieval stays disabled unless a command is given
@@ -72,7 +72,7 @@ coordinates and requires no public or private data.
 
 ## Five tested human use cases
 
-The [plain-language showcase](showcase/five-human-use-cases/SHOWCASE.html)
+The [plain-language showcase](../evidence/showcase/five-human-use-cases/SHOWCASE.html)
 contains five actual CLI executions covering coordinate trust, membrane
 sidedness, conformational resemblance, functional-site mapping, and assembly
 interfaces. Every benefit is paired with an explicit non-claim, and the raw
@@ -85,7 +85,7 @@ python tools/verify_five_use_case_showcase.py
 
 ## Public evidence showcase
 
-The [public narrative microsite](public-showcase/index.html) explains all six
+The [public narrative microsite](../evidence/public-showcase/index.html) explains all six
 workflows for non-specialists, exposes five executed synthetic analyses and a
 checksum-bound SF-CSA process-boundary case, and then presents the separate
 six-workflow public qualification collection. It includes accepted file types,

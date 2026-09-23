@@ -27,7 +27,7 @@ The browser checks exercised:
 
 The endpoint check verified served assets against canonical source bytes, five report downloads, and every template role (20 checks total). It discovered and repaired a real defect: pre-encoded JSON template bytes were mistakenly serialized a second time, returning HTTP 400. A regression test now covers all template definitions. The archive screen found no matches for its declared local-path, username, private-project or secret-shaped patterns; it is not an exhaustive privacy certification.
 
-See the version-bound [verification record](../implementation-evidence/2026-09-06/UX_VERIFICATION.json) and [preview artifacts](../artifacts/local-preview-20260906-ux/).
+See the version-bound [verification record](../../evidence/implementation-evidence/2026-09-06/UX_VERIFICATION.json) and [preview artifacts](../../evidence/artifacts/local-preview-20260906-ux/).
 
 ## Remaining acceptance work
 

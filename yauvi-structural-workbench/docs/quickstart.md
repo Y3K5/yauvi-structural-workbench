@@ -13,7 +13,7 @@ source .venv/bin/activate
 python -m pip install -e ".[dev]"
 ```
 
-Nine console scripts land on `PATH`. Check one:
+Ten console scripts land on `PATH`. Check one:
 
 ```bash
 structqc describe
@@ -95,6 +95,6 @@ favorable value.
 
 ## Next
 
-- [`cli-reference.md`](cli-reference.md) — every command in all nine CLIs
+- [`cli-reference.md`](cli-reference.md) — every command in all ten CLIs
 - [`workflows.md`](workflows.md) — the six analyses and their claim ceilings
 - [`methods-and-limitations.md`](methods-and-limitations.md) — what each result may and may not be taken to mean

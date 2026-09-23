@@ -4,7 +4,7 @@ These examples use synthetic coordinates and annotations. Their purpose is to
 teach execution and interpretation limits; they are not research-use evidence
 or external scientific qualification. All six were regenerated locally on
 6 September 2026; their case-level evidence is recorded in
-[the worked-example record](../implementation-evidence/2026-09-06/six-synthetic-examples.json).
+[the worked-example record](../../evidence/implementation-evidence/2026-09-06/six-synthetic-examples.json).
 
 ## Installed offline start
 

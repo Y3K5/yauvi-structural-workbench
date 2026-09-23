@@ -14,7 +14,7 @@ source .venv/bin/activate
 python -m pip install -e ".[dev]"
 ```
 
-That single command installs the whole distribution and puts nine console
+That single command installs the whole distribution and puts ten console
 scripts on `PATH`. Confirm the install:
 
 ```bash

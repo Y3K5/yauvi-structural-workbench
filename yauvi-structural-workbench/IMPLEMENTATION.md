@@ -14,18 +14,18 @@ this implementation.
 
 ## Personal UX preview
 
-The subsequent [UX preview](docs/UX_PREVIEW.md) adds a quieter four-section interface, real stage tracking, preserved run selection, clearer downloads and the template-download repair. Its separate [local build](artifacts/local-preview-20260906-ux/) supersedes r4 for the interface. Earlier evidence and artifacts below are preserved as historical records; consult the UX verification record for the new checks.
+The subsequent [UX preview](docs/UX_PREVIEW.md) adds a quieter four-section interface, real stage tracking, preserved run selection, clearer downloads and the template-download repair. Its separate [local build](../evidence/artifacts/local-preview-20260906-ux/) supersedes r4 for the interface. Earlier evidence and artifacts below are preserved as historical records; consult the UX verification record for the new checks.
 
 ## Read next
 
 - [Installation and offline browser](docs/install.md)
 - [Six worked examples](docs/tutorials.md)
 - [Maintained backlog](IMPLEMENTATION_BACKLOG.json)
-- [Protocols awaiting scientific review](protocols/README.md)
+- [Protocols awaiting scientific review](../evidence/protocols/README.md)
 - [Claim-to-evidence ledger](CLAIM_LEDGER.json)
 - [Pilot and independent reproduction protocol](docs/PILOT_PROTOCOL.md)
 - [Release review and approval boundaries](docs/RELEASE_REVIEW.md)
-- [Fresh verification evidence](implementation-evidence/2026-09-06/)
+- [Fresh verification evidence](../evidence/implementation-evidence/2026-09-06/)
 
 ## Separate gate states
 
@@ -56,12 +56,12 @@ AI review does not fulfill that requirement.
 ## Local artifacts ready for inspection
 
 The final wheel and source archive are in
-[local-preview-20260906-r4](artifacts/local-preview-20260906-r4/).
+[local-preview-20260906-r4](../evidence/artifacts/local-preview-20260906-r4/).
 The preceding preview directories are retained as superseded local builds.
 All use the existing development version identifier; compare their exact SHA-256
 values rather than treating that shared version string as an identity.
 The final archive inventory has 85 wheel files and 91 source-archive files.
-[The screening report](artifacts/local-preview-20260906-r4/ARTIFACT_SCREEN.json)
+[The screening report](../evidence/artifacts/local-preview-20260906-r4/ARTIFACT_SCREEN.json)
 found no matches in its declared path, username, private-project-name and
 secret-shaped pattern checks. That is not an exhaustive privacy certification
 or a completed license review. No artifact is approved for publication.
