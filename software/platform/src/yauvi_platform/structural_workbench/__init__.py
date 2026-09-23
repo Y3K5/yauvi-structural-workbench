@@ -7,6 +7,15 @@ from .store import (
     metric_definitions,
     tool_readiness,
 )
+from .decision import (
+    DecisionError,
+    DecisionProvider,
+    ScientificDecision,
+    ScientificState,
+    decide,
+    permitted_actions,
+    register_provider,
+)
 from .sources import (
     StructuralSourceError,
     StructuralSourceStore,
@@ -16,6 +25,13 @@ from .sources import (
 
 __all__ = [
     "AnalysisError",
+    "DecisionError",
+    "DecisionProvider",
+    "ScientificDecision",
+    "ScientificState",
+    "decide",
+    "permitted_actions",
+    "register_provider",
     "StructuralAnalysisStore",
     "analysis_definitions",
     "metric_definitions",

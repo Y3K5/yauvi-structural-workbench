@@ -60,6 +60,7 @@ jobs:
           python -m pytest examples/structural-portfolio/test_public_research_case.py -q
           python -m pytest tools/test_review_candidate.py -q
           python -m pytest tools/test_content_screen.py -q
+          python -m pytest software/platform/tests/test_decision_provider.py -q
       - name: Seven module CLIs answer describe
         run: |
           structqc describe > /dev/null

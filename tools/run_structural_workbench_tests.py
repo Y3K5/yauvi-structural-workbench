@@ -38,6 +38,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("product hardening", ("software/platform/tests/test_product_hardening.py",)),
     ("workbench launcher", ("software/platform/tests/test_workbench_launch.py",)),
     ("biological case", ("software/platform/tests/test_biological_case.py",)),
+    ("decision provider", ("software/platform/tests/test_decision_provider.py",)),
     ("protein import", ("software/platform/tests/test_protein_import.py",)),
     ("reference context", ("software/platform/tests/test_reference_context.py",)),
     ("source registry", ("software/sources/tests",)),
