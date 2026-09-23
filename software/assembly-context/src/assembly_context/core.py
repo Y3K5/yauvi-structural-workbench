@@ -341,8 +341,12 @@ def _freesasa_chain(document: Mapping[str, Any], chain_id: str) -> float:
         raise InputError(f"FreeSASA JSON lacks subject chain {chain_id!r}") from exc
 
 
-def _sasa(chain, model) -> tuple[float, float, str]:
-    if shutil.which("freesasa"):
+def _sasa(chain, model, backend="auto") -> tuple[float, float, str]:
+    if backend not in {"auto", "freesasa", "biopython"}:
+        raise InputError("Unknown SASA backend")
+    if backend == "freesasa" and not shutil.which("freesasa"):
+        raise InputError("Requested FreeSASA runtime is unavailable")
+    if backend != "biopython" and shutil.which("freesasa"):
         with tempfile.TemporaryDirectory(prefix="yauvi-freesasa-") as temp_dir:
             isolated_doc = _freesasa_document(copy.deepcopy(chain), Path(temp_dir) / "isolated.pdb")
             assembly_doc = _freesasa_document(copy.deepcopy(model), Path(temp_dir) / "assembly.pdb")
@@ -372,6 +376,7 @@ def analyze(
     manifest: Mapping[str, Any], isolated_path: str | Path, assembly_path: str | Path, *,
     subject_chain: str, relationship: str, reference_id: str = "", assembly_id: str | None = None,
     expected_chains: Iterable[str] = (), contact_cutoff_A: float = CONTACT_CUTOFF_A,
+    sasa_backend: str = "auto",
 ) -> dict[str, Any]:
     if relationship not in RELATIONSHIPS:
         raise InputError(f"relationship must be one of {sorted(RELATIONSHIPS)}")
@@ -404,7 +409,7 @@ def analyze(
     for pair in pairs:
         key = (tuple(pair["subject"]), tuple(pair["partner"]))
         minimum[key] = min(minimum.get(key, float("inf")), float(pair["distance_A"]))
-    isolated_sasa, assembly_sasa, sasa_method = _sasa(subject, model)
+    isolated_sasa, assembly_sasa, sasa_method = _sasa(subject, model, sasa_backend)
     expected = sorted(set(str(c) for c in expected_chains))
     observed_identities = set(chains) | {
         row["source_chain_id"] for row in operator_record.get("chain_copies", [])

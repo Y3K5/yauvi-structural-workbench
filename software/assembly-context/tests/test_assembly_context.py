@@ -183,3 +183,18 @@ def test_available_freesasa_runtime_is_invoked_and_named(tmp_path: Path, monkeyp
         "subject_assembly_sasa_A2": 60.0,
         "buried_sasa_A2": 40.0,
     }
+
+
+def test_explicit_biopython_backend_does_not_launch_freesasa(monkeypatch):
+    from Bio.PDB import PDBParser
+    from io import StringIO
+    from assembly_context.core import _sasa, InputError
+    model=PDBParser(QUIET=True).get_structure('synthetic',StringIO(
+        'ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 20.00           C\nEND\n'))[0]
+    def forbidden(*args,**kwargs):
+        raise AssertionError('Explicit Biopython selection invoked FreeSASA')
+    monkeypatch.setattr('assembly_context.core._freesasa_document',forbidden)
+    monkeypatch.setattr('assembly_context.core.shutil.which',lambda name:'/unavailable/freesasa')
+    isolated,assembled,method=_sasa(model['A'],model,'biopython')
+    assert isolated==assembled and isolated>0 and method=='biopython_shrake_rupley_240_canonical_frame'
+    with pytest.raises(InputError,match='Unknown SASA'):_sasa(model['A'],model,'unrecognized')
