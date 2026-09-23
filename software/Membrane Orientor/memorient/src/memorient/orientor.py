@@ -111,6 +111,7 @@ class OrientationResult:
     scope_id: str = "unresolved"
     scientific_readiness: str = "prototype"
     input_normal: Optional[np.ndarray] = None
+    input_membrane: Dict[str, object] = field(default_factory=dict)
     topology_evidence: Dict[str, object] = field(default_factory=dict)
 
     # -- views the CLI / viz consume ----------------------------------------------------
@@ -209,6 +210,7 @@ class OrientationResult:
                 ]),
             },
             "topology_evidence": self.topology_evidence,
+            "input_coordinate_membrane": self.input_membrane,
         }
 
     def write_pdb(self, path: str) -> None:
@@ -466,6 +468,7 @@ def orient_structure(
     scope_id = "unresolved"
     scientific_readiness = "prototype"
     input_normal = None
+    input_membrane: Dict[str, object] = {}
     topology_summary: Dict[str, object] = {}
 
     if method in (OrientationMethod.BARREL_NORMAL, OrientationMethod.TM_HELIX_BELT):
@@ -500,6 +503,16 @@ def orient_structure(
                 scientific_state = side_state
 
         input_normal = canonical_R.T @ fit.normal
+        # Freeze the complete first-fit plane before the oriented-frame refit
+        # replaces ``fit``. A normal from the first fit and center/thickness
+        # from the second fit do not define a coherent input-coordinate slab.
+        input_center = canonical_R.T @ (fit.centroid + fit.center * fit.normal) + canonical_centroid
+        input_membrane = {
+            "frame": "input_coordinates", "normal": input_normal.tolist(),
+            "center": input_center.tolist(), "half_thickness": float(fit.half_thickness),
+            "sidedness": "unknown", "scope": "first fit in the input coordinate frame",
+            "interpretation_limit": "Unsigned modeled placement; no native-accessibility or orientation-accuracy claim.",
+        }
         oriented = _reframe_to_membrane(canon, fit, side.ec_sign)
         # recompute SASA + fit-derived quantities in the oriented frame for the labels
         rsa_o = compute_sasa(oriented, n_points=n_points)["rsa"]
@@ -585,6 +598,7 @@ def orient_structure(
         metrics=metrics, validation=validation, scientific_state=scientific_state,
         scope_id=scope_id, scientific_readiness=scientific_readiness,
         input_normal=input_normal, topology_evidence=topology_summary,
+        input_membrane=input_membrane,
     )
 
 

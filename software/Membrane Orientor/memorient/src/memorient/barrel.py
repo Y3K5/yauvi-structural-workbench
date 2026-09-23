@@ -15,8 +15,10 @@ Objective (maximized)::
 
 Search
 ------
-1. **Global scan** of ~80 candidate normals on a Fibonacci hemisphere, plus the three PCA
-   axes and a hydrophobic-moment seed.
+1. Put the ordered C-alpha point cloud in an intrinsic computational frame, then scan ~80
+   candidate normals on a Fibonacci hemisphere, plus the three PCA axes and a
+   hydrophobic-moment seed.  The intrinsic frame makes the search grid rotate with the
+   molecule; it is only a numerical gauge and is not evidence for the membrane axis.
 2. Per normal, a cheap 1-D inner search over ``(c, d)``.
 3. **Nelder-Mead polish** of the top-6 seeds (scipy) over the full ``(theta, phi, c, d)``.
 4. A final **embedded-residues-only re-fit**: recompute the normal from just the residues
@@ -55,6 +57,8 @@ def _fibonacci_hemisphere(n: int) -> np.ndarray:
 
     A membrane normal and its negation define the same plane, so we only need a hemisphere.
     """
+    if not isinstance(n, (int, np.integer)) or n < 1:
+        raise ValueError("n_scan must be a positive integer")
     i = np.arange(n, dtype=float) + 0.5
     phi = np.arccos(1.0 - i / n)  # z from 1 down to ~0
     golden = np.pi * (1.0 + 5.0 ** 0.5)
@@ -104,7 +108,15 @@ def _score_placement(
 ) -> Tuple[float, Dict[str, float], np.ndarray]:
     """Evaluate objective J for a candidate placement. Returns (J, components, embedded_mask)."""
     proj = _project(ca, centroid, normal) - center
-    embedded = np.abs(proj) <= half_thick
+    abs_proj = np.abs(proj)
+    # Rigid transforms change last-bit projection values. Keep points that are analytically
+    # on a slab boundary on the same side of each branch instead of letting round-off alter
+    # residue membership and the discontinuous mean-based objective.
+    boundary_tol = (
+        128.0 * np.finfo(float).eps
+        * max(1.0, abs(float(half_thick)), float(abs_proj.max()))
+    )
+    embedded = abs_proj <= half_thick + boundary_tol
     n_emb = int(embedded.count_nonzero() if hasattr(embedded, "count_nonzero") else embedded.sum())
     comps = {"delta_kd": 0.0, "belt": 0.0, "girdle": 0.0, "thickness": 0.0}
     if n_emb < 6:
@@ -119,8 +131,9 @@ def _score_placement(
     facing_out = np.einsum("ij,ij->i", sc_vec, perp_norm)  # >0 lipid-facing, <0 pore-facing
 
     emb = embedded
-    lipid = emb & (facing_out > 0.15)
-    pore = emb & (facing_out < -0.15)
+    facing_tol = 128.0 * np.finfo(float).eps
+    lipid = emb & (facing_out > 0.15 + facing_tol)
+    pore = emb & (facing_out < -0.15 - facing_tol)
 
     # -- delta KD (lipid minus pore) -------------------------------------------------
     if Metric.LIPID_PORE_GAP in ctx.metrics and lipid.sum() >= 3 and pore.sum() >= 3:
@@ -130,7 +143,7 @@ def _score_placement(
     comps["delta_kd"] = dkd
 
     # -- hydrophobic belt contrast: embedded vs flanking -----------------------------
-    flank = (~emb) & (np.abs(proj) <= half_thick + 8.0)
+    flank = (~emb) & (abs_proj <= half_thick + 8.0 + boundary_tol)
     if Metric.HYDROPHOBIC_BELT in ctx.metrics and emb.sum() >= 3 and flank.sum() >= 3:
         belt = float(kd[emb].mean() - kd[flank].mean())
     else:
@@ -139,8 +152,8 @@ def _score_placement(
 
     # -- aromatic girdle: Trp/Tyr enrichment at the two interfaces -------------------
     if Metric.AROMATIC_GIRDLE in ctx.metrics and emb.sum() >= 3:
-        interface = emb & (np.abs(proj) > half_thick - 3.5)
-        core = emb & (np.abs(proj) <= half_thick - 3.5)
+        interface = emb & (abs_proj > half_thick - 3.5 + boundary_tol)
+        core = emb & ~interface
         f_int = arom[interface].mean() if interface.sum() else 0.0
         f_core = arom[core].mean() if core.sum() else 0.0
         girdle = float(f_int - f_core)
@@ -179,16 +192,34 @@ def _inner_search_cd(
 
 def fit_membrane(structure, ctx: MembraneContext, n_scan: int = 80,
                  polish: bool = True) -> MembraneFit:
-    """Fit a bilayer slab by maximizing the membrane signature (see module docstring)."""
-    ca = structure.ca
-    sc_vec = structure.sc_vec
+    """Fit a bilayer slab by maximizing the membrane signature (see module docstring).
+
+    The numerical search runs in an ordered, structure-intrinsic coordinate frame and the
+    result is mapped back to the input frame.  This makes the fit equivariant to rigid input
+    rotation and translation.  It does not establish that the objective's preferred basin is
+    biologically correct; accuracy requires an external orientation reference.
+    """
+    ca_input = np.asarray(structure.ca, dtype=float)
+    if ca_input.ndim != 2 or ca_input.shape[1:] != (3,) or len(ca_input) < 6:
+        raise ValueError("membrane fitting requires at least six 3-D C-alpha coordinates")
+    if not np.isfinite(ca_input).all() or not np.isfinite(structure.sc_vec).all():
+        raise ValueError("membrane fitting requires finite coordinates and side-chain vectors")
+
+    # A fixed Fibonacci grid in the input/lab frame changes its phase when the molecule is
+    # rotated. Build a computational gauge from ordered intrinsic distances first, so every
+    # rigid copy is searched on the same molecular grid. The gauge is deliberately unrelated
+    # to PCA and therefore remains defined for barrels with degenerate in-plane PCA axes.
+    from .geometry import canonical_axis_sign, ordered_intrinsic_rotation, principal_axes
+
+    frame, centroid, _ = ordered_intrinsic_rotation(ca_input)
+    ca = (ca_input - centroid) @ frame.T
+    sc_vec = np.asarray(structure.sc_vec, dtype=float) @ frame.T
+    search_centroid = np.zeros(3, dtype=float)
     kd = _kd(structure.resnames)
     arom = np.array([1.0 if str(r) in AROMATIC_INTERFACE else 0.0 for r in structure.resnames])
-    centroid = ca.mean(axis=0)
 
     # candidate normals: fibonacci hemisphere + PCA axes + hydrophobic-moment seed
     normals = list(_fibonacci_hemisphere(n_scan))
-    from .geometry import principal_axes
     _, vecs, _ = principal_axes(ca)
     for i in range(3):
         normals.append(vecs[:, i])
@@ -196,7 +227,7 @@ def fit_membrane(structure, ctx: MembraneContext, n_scan: int = 80,
     w = kd - kd.min()
     if w.sum() > 0:
         hydro_center = (ca * w[:, None]).sum(axis=0) / w.sum()
-        seed = hydro_center - centroid
+        seed = hydro_center - search_centroid
         if np.linalg.norm(seed) > 1e-6:
             normals.append(seed / np.linalg.norm(seed))
 
@@ -204,29 +235,40 @@ def fit_membrane(structure, ctx: MembraneContext, n_scan: int = 80,
     for n in normals:
         n = np.asarray(n, dtype=float)
         n = n / (np.linalg.norm(n) + 1e-12)
-        J, c, d = _inner_search_cd(ca, sc_vec, kd, arom, centroid, n, ctx)
+        J, c, d = _inner_search_cd(ca, sc_vec, kd, arom, search_centroid, n, ctx)
         scored.append((J, n, c, d))
     scored.sort(key=lambda t: t[0], reverse=True)
 
     best = scored[0]
     if polish:
-        best = _polish(ca, sc_vec, kd, arom, centroid, ctx, scored[:6])
+        best = _polish(ca, sc_vec, kd, arom, search_centroid, ctx, scored[:6])
 
     J, n, c, d = best
     # embedded-residues-only re-fit: re-derive the normal from the membrane strands alone
-    n, c, d, J = _embedded_refit(ca, sc_vec, kd, arom, centroid, ctx, n, c, d)
+    n, c, d, J = _embedded_refit(
+        ca, sc_vec, kd, arom, search_centroid, ctx, n, c, d,
+    )
 
-    Jfinal, comps, embedded = _score_placement(ca, sc_vec, kd, arom, centroid, n, c, d, ctx)
+    Jfinal, comps, embedded = _score_placement(
+        ca, sc_vec, kd, arom, search_centroid, n, c, d, ctx,
+    )
     # hollowness: fraction of embedded residues within half the barrel radius of the axis
-    radial = _radial_distances(ca, centroid, n)
+    radial = _radial_distances(ca, search_centroid, n)
     emb_radial = radial[embedded]
     if len(emb_radial):
         rmax = np.percentile(emb_radial, 90)
         inner_frac = float(np.mean(emb_radial < 0.5 * rmax)) if rmax > 0 else 1.0
     else:
         inner_frac = 1.0
+
+    # Map the plane back to the caller's frame. Fix only the representative sign, and flip
+    # the signed centre with it; the fitted physical slab and embedded mask are unchanged.
+    normal = frame.T @ n
+    signed_normal = canonical_axis_sign(normal, ca_input - centroid)
+    if float(np.dot(signed_normal, normal)) < 0.0:
+        c = -c
     return MembraneFit(
-        normal=n, center=c, half_thickness=d, centroid=centroid, score=Jfinal,
+        normal=signed_normal, center=c, half_thickness=d, centroid=centroid, score=Jfinal,
         components=comps, embedded_mask=embedded, n_embedded=int(embedded.sum()),
         inner_frac=inner_frac, delta_kd=comps["delta_kd"],
     )
@@ -246,11 +288,17 @@ def fit_membrane_on_normal(
     whole-structure search to replace that evidence, so this public helper optimizes only
     the remaining centre/thickness dimensions.
     """
-    ca = structure.ca
+    ca = np.asarray(structure.ca, dtype=float)
+    if ca.ndim != 2 or ca.shape[1:] != (3,) or len(ca) < 1:
+        raise ValueError("fixed-normal membrane fitting requires 3-D C-alpha coordinates")
+    if not np.isfinite(ca).all() or not np.isfinite(structure.sc_vec).all():
+        raise ValueError(
+            "fixed-normal membrane fitting requires finite coordinates and side-chain vectors"
+        )
     normal = np.asarray(normal, dtype=float).reshape(3)
     norm = float(np.linalg.norm(normal))
-    if norm <= 1e-12:
-        raise ValueError("membrane normal cannot be zero")
+    if not np.isfinite(norm) or norm <= 1e-12:
+        raise ValueError("membrane normal must be finite and non-zero")
     normal = normal / norm
     centroid = ca.mean(axis=0)
     kd = _kd(structure.resnames)
@@ -341,15 +389,7 @@ def _embedded_refit(ca, sc_vec, kd, arom, centroid, ctx, n, c, d, iters: int = 3
             n, c, d = n_new, c_new, d_new
         else:
             break
-    # The reported normal gets a deterministic sign. The search itself is
-    # unaffected -- it explores both directions through the hemisphere scan --
-    # but the vector that ends up in an evidence record must not depend on which
-    # eigenvector sign the local LAPACK happened to return.
-    from .geometry import canonical_axis_sign
-    n_final = canonical_axis_sign(best[0], ca - ca.mean(axis=0))
-    if float(np.dot(n_final, best[0])) < 0:
-        return n_final, -best[1], best[2], best[3]
-    return n_final, best[1], best[2], best[3]
+    return best[0], best[1], best[2], best[3]
 
 
 # --------------------------------------------------------------------------------------

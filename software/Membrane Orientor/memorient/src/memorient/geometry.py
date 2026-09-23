@@ -164,8 +164,7 @@ def principal_axes(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarr
     """Return (centroid, eigvecs, eigvals) of the coordinate covariance.
 
     ``eigvecs`` columns are ordered by *descending* eigenvalue. ``eigvals`` are the matching
-    variances. No sign convention is imposed here; callers that record or compare an axis must
-    apply :func:`canonical_axis_sign`, because eigenvector signs are solver-dependent.
+    variances. No sign convention is imposed here (see :func:`canonical_rotation`).
     """
     coords = np.asarray(coords, dtype=float).reshape(-1, 3)
     centroid = coords.mean(axis=0)
@@ -176,27 +175,91 @@ def principal_axes(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarr
     return centroid, vecs[:, order], vals[order]
 
 
+def ordered_intrinsic_rotation(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, dict]:
+    """Return a rigid frame determined by the ordered point cloud itself.
+
+    The frame is a *computational gauge*, not a structural-axis estimate.  Its purpose is to
+    make a subsequent coordinate-grid search independent of the input file's rotation.  The
+    first basis vector points from the centroid to the first farthest point; the second points
+    toward the first point with the largest component perpendicular to the first.  Both
+    selections use only rotation-invariant distances and stable input order.  The third vector
+    is their cross product, so the result is a proper rotation.
+
+    A point cloud that is coincident or exactly collinear cannot define a full 3-D frame.  This
+    function reports that condition with ``ValueError`` rather than silently choosing a lab-
+    frame direction.  Near-collinearity is returned in ``info`` for callers that need to record
+    the conditioning of the gauge.
+    """
+    points = np.asarray(coords, dtype=float)
+    if points.ndim != 2 or points.shape[1:] != (3,) or len(points) < 2:
+        raise ValueError("at least two 3-D coordinates are required to define an intrinsic frame")
+    if not np.isfinite(points).all():
+        raise ValueError("coordinates must be finite")
+
+    centroid = points.mean(axis=0)
+    centred = points - centroid
+    squared_radius = np.einsum("ij,ij->i", centred, centred)
+    radius2 = float(squared_radius.max())
+    scale2 = max(radius2, 1.0)
+    tie_tol = 128.0 * np.finfo(float).eps * scale2
+    if radius2 <= tie_tol:
+        raise ValueError("coincident coordinates cannot define an intrinsic frame")
+
+    # Use the first point in a numerical tie. Input order is preserved by rigid transforms,
+    # whereas a lab-coordinate component fallback is not rotation-equivariant.
+    primary_index = int(np.flatnonzero(squared_radius >= radius2 - tie_tol)[0])
+    e0 = centred[primary_index] / np.sqrt(squared_radius[primary_index])
+
+    perpendicular = centred - (centred @ e0)[:, None] * e0[None, :]
+    squared_perp = np.einsum("ij,ij->i", perpendicular, perpendicular)
+    perp2 = float(squared_perp.max())
+    if perp2 <= tie_tol:
+        raise ValueError("collinear coordinates cannot define rotation about their line")
+    secondary_index = int(np.flatnonzero(squared_perp >= perp2 - tie_tol)[0])
+    e1 = perpendicular[secondary_index] / np.sqrt(squared_perp[secondary_index])
+    e2 = np.cross(e0, e1)
+    e2 /= np.linalg.norm(e2)
+    # Recompute e1 to remove the last round-off component along e0.
+    e1 = np.cross(e2, e0)
+
+    rotation = np.vstack([e0, e1, e2])
+    info = {
+        "primary_index": primary_index,
+        "secondary_index": secondary_index,
+        "perpendicular_ratio": float(np.sqrt(perp2 / radius2)),
+        "near_collinear": bool(perp2 / radius2 < 1e-12),
+    }
+    return rotation, centroid, info
+
+
 def canonical_axis_sign(axis: np.ndarray, centred: np.ndarray) -> np.ndarray:
-    """Return ``axis`` with a deterministic, frame-independent sign.
+    """Choose an intrinsic sign for an axis without consulting lab coordinates.
 
-    An eigenvector is defined only up to sign, and LAPACK builds differ in which
-    one they return, so a fitted axis can point either way depending on the
-    machine. The sign is chosen by the skew (third moment) of the projection --
-    an intrinsic property of the point cloud, not of the solver -- with a
-    largest-component fallback when the distribution is too symmetric for skew
-    to decide. This is the same rule :func:`canonical_rotation` applies.
-
-    Downstream sidedness is unaffected either way: the extracellular direction is
-    voted from biological signals rather than read off the axis. What this fixes
-    is that the recorded vector itself reproduces across machines.
+    Third-moment skew supplies the usual sign.  If the distribution is symmetric along the
+    axis, the first point with a non-zero projection supplies the sign.  That fallback depends
+    on point order and intrinsic projections, so it transforms with the structure.  A largest-
+    Cartesian-component fallback would instead change when the input file is rotated.
     """
     axis = np.asarray(axis, dtype=float).reshape(3)
-    proj = np.asarray(centred, dtype=float).reshape(-1, 3) @ axis
-    m3 = float(np.mean(proj ** 3))
-    if abs(m3) > 1e-9:
+    norm = float(np.linalg.norm(axis))
+    if norm <= np.finfo(float).eps or not np.isfinite(norm):
+        raise ValueError("axis must be a finite non-zero vector")
+    axis = axis / norm
+    points = np.asarray(centred, dtype=float).reshape(-1, 3)
+    if not np.isfinite(points).all():
+        raise ValueError("centred coordinates must be finite")
+    projection = points @ axis
+    m3 = float(np.mean(projection ** 3)) if len(projection) else 0.0
+    scale = max(float(np.max(np.abs(projection))) if len(projection) else 0.0, 1.0)
+    moment_tol = max(1e-9, 128.0 * np.finfo(float).eps * scale ** 3)
+    if abs(m3) > moment_tol:
         return -axis if m3 < 0 else axis
-    j = int(np.argmax(np.abs(axis)))
-    return -axis if axis[j] < 0 else axis
+    nonzero = np.flatnonzero(np.abs(projection) > 128.0 * np.finfo(float).eps * scale)
+    if len(nonzero):
+        return -axis if projection[int(nonzero[0])] < 0 else axis
+    # The point cloud contains no information about this axis's sign. Preserve the caller's
+    # representative; downstream code must continue to treat the plane as undirected.
+    return axis
 
 
 def canonical_rotation(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, dict]:
@@ -209,9 +272,8 @@ def canonical_rotation(coords: np.ndarray) -> Tuple[np.ndarray, np.ndarray, dict
     centroid, vecs, vals = principal_axes(coords)
     X = np.asarray(coords, dtype=float).reshape(-1, 3) - centroid
 
-    # Sign each of the first two axes by the skew (3rd moment) of the projection — an
-    # intrinsic, frame-independent tiebreak. If skew is ~0, fall back to a deterministic
-    # component-sign rule so the choice is still reproducible.
+    # Sign each of the first two axes using only intrinsic projections. Near-degenerate PCA
+    # subspaces remain explicitly reported below; this does not pretend to resolve them.
     axes = [vecs[:, i].copy() for i in range(3)]
     for i in (0, 1):
         axes[i] = canonical_axis_sign(axes[i], X)
