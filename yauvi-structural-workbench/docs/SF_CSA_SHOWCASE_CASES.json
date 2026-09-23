@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-09-19",
+  "purpose": "Literature-supported onboarding annotations; not new qualification evidence or automatic function transfer.",
+  "cases": [
+    {
+      "short_name": "Electron carriers",
+      "record_id": "v2-sfcsa-homologous_superfamily-ferredoxin_like-1FDN-1BLU",
+      "fold": "Ferredoxin-like, SCOP d.58; shared superfamily d.58.1",
+      "query": "Gottschalkia acidurici FdxA (strain 9a; P00198; experimental reference 1FDN chain A)",
+      "target": "Allochromatium vinosum ferredoxin (strain D; P00208; experimental reference 1BLU chain A)",
+      "function": "Both are bacterial electron carriers with two [4Fe-4S] clusters. Experimental structures support a conserved cluster-binding core. This is a shared broad role within a homologous family.",
+      "limit": "Equal redox potential, electron-transfer rate and partner specificity are not established. The 1BLU study reports local structural differences and unusually slow transfer between its clusters. Displayed AlphaFold monomers lack the experimental iron-sulfur cofactors; the cited PDB structures document those cofactors.",
+      "counterexample": "The panel also pairs 1FDN/P00198 with acylphosphatase 1APS/P00818 (d.58.10): the same broad SCOP fold does not transfer electron-carrier function to an acyl-phosphate hydrolase. The recorded comparison is below the structural threshold, so SF-CSA reports unresolved_or_conflicted.",
+      "references": [
+        {"label": "Duée et al. 1994: 1FDN experimental structure", "url": "https://doi.org/10.1016/0022-2836(94)90041-8"},
+        {"label": "Moulis et al. 1996: 1BLU structure and mechanistic differences", "url": "https://doi.org/10.1002/pro.5560050902"},
+        {"label": "1FDN identity and chain", "url": "https://www.rcsb.org/structure/1FDN"},
+        {"label": "1BLU identity and chain", "url": "https://www.rcsb.org/structure/1BLU"}
+      ]
+    },
+    {
+      "short_name": "Cold-shock RNA binding",
+      "record_id": "v2-sfcsa-homologous_superfamily-ob_fold-1CSP-1MJC",
+      "fold": "OB-fold, SCOP b.40; shared superfamily b.40.4",
+      "query": "Bacillus subtilis CspB (strain 168; P32081; experimental reference 1CSP chain A)",
+      "target": "Escherichia coli CspA (strain K-12; P0A9X9; experimental reference 1MJC chain A)",
+      "function": "Both bind single-stranded nucleic acids in the cold-shock protein family. Sachs et al. measured B. subtilis CspB RNA binding in crystals and solution; Rennella et al. studied E. coli CspA RNA binding and RNA-remodelling kinetics by NMR. Together these support a shared RNA-binding role independently of structural similarity.",
+      "limit": "The two studies do not establish identical RNA targets, affinities, chaperone rates or regulatory effects. The CspB RNA-complex experiments use separate structures from the apo 1CSP reference. The displayed models contain no RNA, and the recorded sequence hit is not reciprocal-best-hit support.",
+      "counterexample": "The panel also pairs CspB with yeast inorganic pyrophosphatase 1E6A/P00817 (b.40.5). Sharing the broad OB-fold assignment does not imply shared RNA-binding function; the recorded SF-CSA comparison is below threshold and unresolved_or_conflicted.",
+      "references": [
+        {"label": "Sachs et al. 2012: CspB RNA binding", "url": "https://doi.org/10.1261/rna.02809212"},
+        {"label": "Rennella et al. 2017: CspA RNA binding and chaperoning", "url": "https://doi.org/10.1093/nar/gkx044"},
+        {"label": "1CSP identity and chain", "url": "https://www.rcsb.org/structure/1CSP"},
+        {"label": "1MJC identity and chain", "url": "https://www.rcsb.org/structure/1MJC"}
+      ]
+    }
+  ],
+  "functional_analogy": {
+    "text": "A different concept: in Anabaena, flavodoxin can replace ferredoxin as an electron carrier between photosystem I and ferredoxin-NADP+ reductase under iron limitation. These proteins have different structures and cofactors. This is functional substitution supported by experiments, not the meaning of the panel's fold_analogy label. It concerns a different ferredoxin system from the bacterial two-cluster pair above.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/19150326/"
+  }
+}
