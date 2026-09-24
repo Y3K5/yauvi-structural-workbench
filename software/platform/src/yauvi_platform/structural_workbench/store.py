@@ -33,8 +33,8 @@ from typing import Any, Iterable, Mapping
 
 
 SCHEMA_VERSION = "1.0"
-PLATFORM_ID = "yauvi_structural_biology_platform_mark_1"
-PLATFORM_DISPLAY_NAME = "YAUVI Structural Biology Platform — Mark 1"
+PLATFORM_ID = "yauvi_structural_workbench"
+PLATFORM_DISPLAY_NAME = "YAUVI Structural Workbench"
 PLATFORM_SCIENTIFIC_SUITE = "YAUVI Structural Workbench"
 SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 SAFE_UPLOAD_ID = re.compile(r"^upload_[0-9a-f]{24}$")

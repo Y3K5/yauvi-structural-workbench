@@ -17,9 +17,9 @@
     "delta_kd": 0.0,
     "n_embedded": 22,
     "normal": [
-      0.002291,
-      0.000401,
-      0.999997
+      -0.002291,
+      -0.000401,
+      -0.999997
     ],
     "normal_frame": "input_coordinates",
     "ec_sign_confidence": 1.0,
@@ -1081,13 +1081,13 @@
       1.0
     ],
     "normal_angle_errors_deg": [
-      2e-06,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
       0.0,
       1e-06,
-      2e-06,
-      1e-06,
-      0.0,
-      2e-06,
       0.0
     ],
     "threshold": 0.95,
@@ -1113,5 +1113,22 @@
       "citation": "invented software fixture",
       "id": "synthetic-showcase-topology"
     }
+  },
+  "input_coordinate_membrane": {
+    "frame": "input_coordinates",
+    "normal": [
+      -0.002290802075432536,
+      -0.0004013382060479098,
+      -0.9999972955730909
+    ],
+    "center": [
+      -0.040636912877482535,
+      0.019609559786823827,
+      -0.7479388174288193
+    ],
+    "half_thickness": 16.0,
+    "sidedness": "unknown",
+    "scope": "first fit in the input coordinate frame",
+    "interpretation_limit": "Unsigned modeled placement; no native-accessibility or orientation-accuracy claim."
   }
 }

@@ -1,6 +1,6 @@
-# YAUVI Structural Biology Platform — Mark 1
+# YAUVI Structural Workbench
 
-**YAUVI Structural Biology Platform — Mark 1** is the primary integrated,
+**YAUVI Structural Workbench** is the primary integrated,
 local-first experience for the **YAUVI Structural Workbench** Python suite and
 its six evidence-bounded structural-protein analyses:
 

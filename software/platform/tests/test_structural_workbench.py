@@ -184,12 +184,12 @@ def test_structqc_case_runs_cli_and_writes_deterministic_report_bundle(tmp_path)
     assert str(tmp_path).encode() not in (run_dir / "RUN_MANIFEST.json").read_bytes()
     report = json.loads((run_dir / "REPORT_DATA.json").read_text(encoding="utf-8"))
     assert report["platform_identity"] == {
-        "display_name": "YAUVI Structural Biology Platform — Mark 1",
+        "display_name": "YAUVI Structural Workbench",
         "edition": "Mark 1",
-        "platform_id": "yauvi_structural_biology_platform_mark_1",
+        "platform_id": "yauvi_structural_workbench",
         "scientific_suite_name": "YAUVI Structural Workbench",
     }
-    assert "YAUVI Structural Biology Platform — Mark 1" in (run_dir / "REPORT.html").read_text(encoding="utf-8")
+    assert "YAUVI Structural Workbench" in (run_dir / "REPORT.html").read_text(encoding="utf-8")
     validation_doc = next(item["document"] for item in report["documents"] if item["path"].endswith("STRUCTURE_EVIDENCE.json"))
     assert validation_doc["external_validation"]["metrics"]["clashscore"] == 3.2
     with zipfile.ZipFile(run_dir / "RAW_EVIDENCE.zip") as archive:

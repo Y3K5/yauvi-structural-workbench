@@ -69,7 +69,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "MEMBRANE_ORIENTATION.json",
           "path": "evidence/HUC-02/MEMBRANE_ORIENTATION.json",
-          "sha256": "7f5bcc1d7f5b6af8391037cf84ec13897cce7499d22a76a30de434cc807d02b2"
+          "sha256": "a6adcf0d5bbf9664e1edb50693e91891e3a1467254aae7a89f859769a4c85274"
         },
         {
           "label": "RESIDUE_ORIENTATION.tsv",
@@ -234,7 +234,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "ASSEMBLY_CONTEXT.json",
           "path": "evidence/HUC-05/ASSEMBLY_CONTEXT.json",
-          "sha256": "5e54796a717d4ee49e6ca0f3d86d3c55df823b66085047ee9ac22e5068a4a2de"
+          "sha256": "fa2eee1cd352cae65b8ddb1cd6174589e9c633206692546469eadcad1c4bdb9a"
         },
         {
           "label": "INTERFACES.tsv",
@@ -269,16 +269,16 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "help": "Method-specific buried SASA",
           "label": "Buried surface",
-          "value": "62.106 Å²"
+          "value": "60.600 Å²"
         },
         {
           "help": "FreeSASA is preferred when installed",
           "label": "SASA method",
-          "value": "freesasa_lee_richards_default_single_thread"
+          "value": "biopython_shrake_rupley_240_canonical_frame"
         }
       ],
       "non_claim": "Native oligomer abundance, binding affinity, intact-cell accessibility, physiological interaction, or mechanism.",
-      "observed_result": "3 synthetic subject residues contacted chain B and 62.106 Å² became buried.",
+      "observed_result": "3 synthetic subject residues contacted chain B and 60.600 Å² became buried.",
       "test_state": "passed_synthetic_case",
       "tool": "AssemblyContext"
     },
@@ -386,7 +386,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "author": "Yuvraj Patel",
     "license": "Apache-2.0",
     "orcid": "https://orcid.org/0009-0002-2276-7336",
-    "title": "YAUVI Structural Biology Platform — Mark 1",
+    "title": "YAUVI Structural Workbench",
     "version": "0.1.0.dev0"
   },
   "data_class": "synthetic_demonstrations_plus_public_qualification_summaries",
@@ -408,13 +408,13 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "Structural or sequence similarity is not exact functional transfer."
   ],
   "platform_identity": {
-    "display_name": "YAUVI Structural Biology Platform — Mark 1",
+    "display_name": "YAUVI Structural Workbench",
     "distribution": "yauvi-structural-workbench",
     "distribution_scope": "Command-line distribution. The loopback browser workbench is excluded: its controller imports private control-plane modules outside the published boundary.",
     "edition": "Mark 1",
-    "identity_policy": "The Mark 1 name identifies the integrated platform. Standalone package, CLI, module, evidence-contract, and scientific-method names remain unchanged.",
-    "platform_id": "yauvi_structural_biology_platform_mark_1",
-    "primary_name": "YAUVI Structural Biology Platform",
+    "identity_policy": "One name identifies this software: YAUVI Structural Workbench. Mark 1 is the edition, not part of the name. Standalone package, CLI, module, evidence-contract and scientific-method names remain unchanged.",
+    "platform_id": "yauvi_structural_workbench",
+    "primary_name": "YAUVI Structural Workbench",
     "publication_authorized": false,
     "release_state": "pre_public_preparation",
     "schema_version": "1.0",
@@ -422,11 +422,11 @@ window.YAUVI_PUBLIC_SHOWCASE = {
     "share_non_claim": "It is not a clinical tool, a biochemical activity assay, or a universal protein-scoring system.",
     "share_status": "Mark 1 is a pre-public scientific build. Historical named cases remain visible; the expanded Qualification v2 panels are frozen but not yet source-adopted or executed.",
     "share_summary": "A local-first structural bioinformatics platform that turns protein coordinate files into inspectable, checksum-bound evidence across six analysis workflows.",
-    "short_name": "YAUVI SBP Mark 1",
+    "short_name": "YAUVI Workbench",
     "start_command": "python -m pip install -e \".[dev]\" && structqc describe",
     "tagline": "From protein coordinates to inspectable structural evidence."
   },
-  "product": "YAUVI Structural Biology Platform — Mark 1",
+  "product": "YAUVI Structural Workbench",
   "publication_roadmap": {
     "current_phase": "local_candidate_review",
     "evidence": {
@@ -576,7 +576,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       }
     ],
     "policy": "Local preparation does not authorize repository publication, release, archival deposit, or JOSS submission.",
-    "product": "YAUVI Structural Biology Platform — Mark 1",
+    "product": "YAUVI Structural Workbench",
     "schema_version": "1.2"
   },
   "qualification": {
@@ -1517,7 +1517,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "measures": "Assembly identity, stoichiometry evidence, heavy-atom contacts, interface residues, SASA, burial, and lower-bound status.",
       "non_claim": "Assembly geometry does not establish native abundance, intact-cell accessibility, or measured binding.",
       "optional_runtimes": {
-        "freesasa": "## FreeSASA 2.1.2 ##",
+        "freesasa": "missing",
         "gemmi": "available"
       },
       "public_question": "Which residues form an assembly interface?",

@@ -52,8 +52,8 @@ def main() -> int:
         return 1
     status = json.loads((staging / "RELEASE_STATUS.json").read_text(encoding="utf-8"))
     identity = json.loads((staging / "PLATFORM_IDENTITY.json").read_text(encoding="utf-8"))
-    if identity.get("display_name") != "YAUVI Structural Biology Platform — Mark 1":
-        problems.append("primary Mark 1 display identity is missing")
+    if identity.get("display_name") != "YAUVI Structural Workbench":
+        problems.append("primary display identity is missing")
     if identity.get("release_state") != status.get("release_state"):
         problems.append("platform identity and release state differ")
     if identity.get("publication_authorized") or identity.get("edition") != "Mark 1":

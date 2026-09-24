@@ -256,7 +256,7 @@ def main() -> int:
         "Inspect raw evidence", "Print / Save as PDF", "Six scientific questions",
         "Six traceable evidence cases", "Independent public qualification",
         "What agreed—and what did not", "JOSS publication path",
-        "YAUVI Structural Biology Platform — Mark 1", "Share and start",
+        "YAUVI Structural Workbench", "Share and start",
         "share/PLATFORM_IDENTITY.json", "share/START_HERE.md",
     ):
         if phrase not in index:

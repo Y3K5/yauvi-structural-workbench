@@ -1,4 +1,4 @@
-# Start YAUVI Structural Biology Platform — Mark 1
+# Start YAUVI Structural Workbench
 
 Mark 1 is the primary integrated experience for the six structural-analysis
 workflows in the YAUVI Structural Workbench. The platform name does not rename
@@ -14,7 +14,7 @@ source .venv/bin/activate
 python -m pip install -e ".[dev]"
 ```
 
-That single command installs the whole distribution and puts nine console
+That single command installs the whole distribution and puts ten console
 scripts on `PATH`. Confirm the install:
 
 ```bash
@@ -39,7 +39,7 @@ publication of these changes remains pending review.
 
 ## What to share
 
-**Name:** YAUVI Structural Biology Platform — Mark 1
+**Name:** YAUVI Structural Workbench
 
 **One-sentence description:** A local-first structural bioinformatics platform
 that turns protein coordinate files into inspectable, checksum-bound evidence

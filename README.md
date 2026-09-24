@@ -1,4 +1,4 @@
-# YAUVI Structural Biology Platform — Mark 1
+# YAUVI Structural Workbench
 
 Local, evidence-bounded structural protein analysis with deterministic reports
 and provenance. Ten installable Python packages covering six structural-analysis
