@@ -1,4 +1,4 @@
-# YAUVI Structural Biology Platform — Mark 1 public evidence showcase
+# YAUVI Structural Workbench public evidence showcase
 
 This directory is the public-safe, local microsite for **YAUVI Structural
 Biology Platform — Mark 1**, powered by the YAUVI Structural Workbench. Open
