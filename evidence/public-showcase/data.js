@@ -234,7 +234,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "label": "ASSEMBLY_CONTEXT.json",
           "path": "evidence/HUC-05/ASSEMBLY_CONTEXT.json",
-          "sha256": "fa2eee1cd352cae65b8ddb1cd6174589e9c633206692546469eadcad1c4bdb9a"
+          "sha256": "5e54796a717d4ee49e6ca0f3d86d3c55df823b66085047ee9ac22e5068a4a2de"
         },
         {
           "label": "INTERFACES.tsv",
@@ -269,16 +269,16 @@ window.YAUVI_PUBLIC_SHOWCASE = {
         {
           "help": "Method-specific buried SASA",
           "label": "Buried surface",
-          "value": "60.600 Å²"
+          "value": "62.106 Å²"
         },
         {
           "help": "FreeSASA is preferred when installed",
           "label": "SASA method",
-          "value": "biopython_shrake_rupley_240_canonical_frame"
+          "value": "freesasa_lee_richards_default_single_thread"
         }
       ],
       "non_claim": "Native oligomer abundance, binding affinity, intact-cell accessibility, physiological interaction, or mechanism.",
-      "observed_result": "3 synthetic subject residues contacted chain B and 60.600 Å² became buried.",
+      "observed_result": "3 synthetic subject residues contacted chain B and 62.106 Å² became buried.",
       "test_state": "passed_synthetic_case",
       "tool": "AssemblyContext"
     },
@@ -1517,7 +1517,7 @@ window.YAUVI_PUBLIC_SHOWCASE = {
       "measures": "Assembly identity, stoichiometry evidence, heavy-atom contacts, interface residues, SASA, burial, and lower-bound status.",
       "non_claim": "Assembly geometry does not establish native abundance, intact-cell accessibility, or measured binding.",
       "optional_runtimes": {
-        "freesasa": "missing",
+        "freesasa": "## FreeSASA 2.1.3 ##",
         "gemmi": "available"
       },
       "public_question": "Which residues form an assembly interface?",
