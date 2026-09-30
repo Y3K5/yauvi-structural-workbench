@@ -130,7 +130,7 @@ def _cmd_orient(args: argparse.Namespace) -> int:
         shown, tail = rows, ""
     hdr = [
         "resid", "insertion_code", "resname", "chain", "zone", "facing",
-        "accessibility", "extracellular", "rsa",
+        "accessibility", "extracellular", "rsa", "sidedness_state", "biological_compartment", "legacy_accessibility_basis",
     ]
     print("\t".join(hdr))
     for r in shown:

@@ -10,7 +10,7 @@ Two exporters, both driven by an :class:`~memorient.orientor.OrientationResult`:
   membrane zone / accessibility, and draws the two leaflet planes as pseudo-atoms.
 
 The oriented frame produced by the orientor already places the membrane centre at the origin
-with the extracellular side at +Z, so the viewer just needs the leaflet z-bounds.
+with a modeled normal along +Z. Compartment labels require mapped evidence.
 """
 
 from __future__ import annotations
@@ -165,8 +165,8 @@ def _membrane_slab(result) -> Optional[Dict[str, object]]:
         "half_thickness": d,
         "core_lower_z": -d,
         "core_upper_z": d,
-        "extracellular_z": d,       # +Z is extracellular (orientor convention)
-        "periplasmic_z": -d,
+        "side_a_z": d,
+        "side_b_z": -d,
         "asymmetric": ctx.is_asymmetric,
     }
     if ctx.is_asymmetric:
@@ -195,7 +195,8 @@ def display_oriented(result) -> Dict[str, object]:
         "method": result.method,
         "label": result.label,
         "pdb": to_pdb_string(result.structure),
-        "orientation": {"extracellular_axis": "+z", "membrane_center": [0.0, 0.0, 0.0]},
+        "orientation": {"axis": "+z", "membrane_center": [0.0, 0.0, 0.0],
+                        "side_assignment": result.input_membrane.get("oriented_side_assignment", {"state": "unknown"})},
         "membrane_slab": _membrane_slab(result),   # None for soluble/anchored
         "residue_colors": residue_colors,
         "surface_set": list(result.labels.surface_set),
@@ -239,7 +240,7 @@ def write_pymol_script(result, path: str) -> None:
         d = slab["half_thickness"]
         lines.append(f"pseudoatom mem_ec, pos=[0,0,{d:.1f}]")
         lines.append(f"pseudoatom mem_peri, pos=[0,0,{-d:.1f}]")
-        lines.append("# membrane core spans z = [%.1f, %.1f]; extracellular is +z" % (-d, d))
+        lines.append("# membrane core spans z = [%.1f, %.1f]; biological sidedness requires mapped evidence" % (-d, d))
     lines.append("orient mol")
     lines.append("zoom mol, 5")
 
@@ -275,14 +276,14 @@ for (const r of colors) {{
 }}
 // The bilayer is drawn by the shared MembraneBilayer module (inlined above), so this
 // page and the viewers that vendor this module cannot drift apart.
-// +Z is extracellular by the orientor convention, so the leaflets are z-planes.
+// Leaflets are z-planes; a positive geometric axis is not a biological side assignment.
 if (slab) {{
   MembraneBilayer.draw(v, {{
     axis: "z",
     core: [slab.core_lower_z, slab.core_upper_z],
     leaflets: [
-      {{at: slab.core_upper_z, color: "#6d5bd0"}},   // extracellular core boundary
-      {{at: slab.core_lower_z, color: "#6d5bd0"}},   // periplasmic core boundary
+      {{at: slab.core_upper_z, color: "#6d5bd0"}},   // positive core boundary
+      {{at: slab.core_lower_z, color: "#6d5bd0"}},   // negative core boundary
       // LPS keeps its own hue: in a gram-negative outer membrane the outer leaflet is
       // not the same chemistry as the inner one, and one colour would hide that.
       slab.lps_upper_z ? {{at: slab.lps_upper_z, color: "#c8791f"}} : null
@@ -409,7 +410,7 @@ def write_3dmol_html(result, path: str) -> None:
     Cartoon is coloured by accessibility (same palette as the PyMOL export); extracellular
     residues are additionally drawn as sticks. The membrane is drawn by the shared
     MembraneBilayer module, inlined into the page so it stays openable over file:// with no
-    sibling fetches. +Z is extracellular by the orientor convention, so top = outside.
+    sibling fetches. +Z is a geometric axis; mapped compartment evidence is separate.
     """
     import json as _json
 
@@ -420,7 +421,7 @@ def write_3dmol_html(result, path: str) -> None:
             legend_bits.append(f'<span class="sw" style="background:{hexc}"></span>{acc}')
     sm = result.summary()
     subtitle = (f"context={result.context} · method={result.method} · {result.label} · "
-                f"conf={sm.get('confidence')} · {sm.get('n_extracellular', 0)} extracellular · "
+                f"conf={sm.get('confidence')} · sidedness={disp['orientation']['side_assignment']['state']} · "
                 f"surface set {len(result.labels.surface_set)}")
     html = _HTML_TEMPLATE.format(
         title=f"{result.label} — oriented",

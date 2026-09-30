@@ -19,7 +19,8 @@ def describe() -> dict:
                    {"name": "reference_fasta", "format": "FASTA", "required": False},
                    {"name": "provenance", "format": "JSON", "required": False},
                    {"name": "pae", "format": "JSON", "required": False},
-                   {"name": "validation_report", "format": "wwPDB XML or validator JSON", "required": False}],
+                   {"name": "validation_report", "format": "wwPDB XML or validator JSON", "required": False},
+                   {"name": "chemical_reference", "format": "Local checksum-locked CCD JSON manifest", "required": False}],
         "outputs": [
             {"name": "STRUCTURE_EVIDENCE.json", "contract": "structure_evidence_manifest", "format": "json"},
             {"name": "RESIDUE_QUALITY.tsv", "contract": "residue_quality_table", "format": "tsv"},
@@ -43,6 +44,7 @@ def _analysis(args):
         reference_sequence=sequence, reference_id=reference_id, pae=read_json(args.pae),
         validation_report=read_validation_report(args.validation_report),
         model_index=args.model, chain=args.chain,
+        chemical_reference=args.chemical_reference,
     )
 
 
@@ -53,6 +55,7 @@ def _add_inputs(parser):
     parser.add_argument("--provenance")
     parser.add_argument("--pae")
     parser.add_argument("--validation-report")
+    parser.add_argument("--chemical-reference", help="local checksum-locked CCD reference manifest")
     parser.add_argument("--require-external-validation", action="store_true")
     parser.add_argument("--model", type=int, default=0)
     parser.add_argument("--chain")

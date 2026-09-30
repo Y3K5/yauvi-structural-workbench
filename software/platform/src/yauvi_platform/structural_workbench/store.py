@@ -295,6 +295,10 @@ _WORKFLOW_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
 
 
 _ROLE_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
+    "patch_declaration": {"description": "The exact residues defining each surface side.", "why_needed": "A side must have an inspectable scope before attaching measurements or biology.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON schema 1.0 with an exact binding, side IDs, chain-copy/author-residue sets and cited declaration sources. Use bio-orient describe --structure to inspect coordinate identities.", "template_id": "bio_orient_patches", "validator_id": "bio_orient_binding", "sensitivity": "sensitive_by_default"},
+    "supporting_evidence": {"description": "Membrane, site, assembly or recorded-state outputs with exact scope and method identities.", "why_needed": "Evidence cannot transfer silently between models, assemblies, conformers, frames or patches.", "absence_effect": "unevaluated", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON envelope with engine, binding, method id/source_sha256, output and canonical output_sha256. Side records require exact residue_set. See Bio-Orient README.", "validator_id": "bio_orient_evidence_binding", "sensitivity": "sensitive_by_default"},
+    "chemical_reference": {"description": "A local manifest identifying checksum-locked chemical definitions.", "why_needed": "Chirality is compared to atom-mapped CCD reference geometry; chemical names alone cannot establish handedness.", "absence_effect": "chirality_unevaluated", "accepted_artifact_types": [], "source_ids": ["pdb_ccd"], "format_guide": "JSON schema 1.0: components with component_id, path and sha256. Attach each matching CCD file separately.", "template_id": "bio_orient_chemical_references", "validator_id": "ccd_reference_manifest", "sensitivity": "sensitive_by_default"},
+    "chemical_component": {"description": "Locally supplied CCD component definitions.", "why_needed": "The manifest checksum must match each attached component's connectivity, stereochemistry and ideal coordinates.", "absence_effect": "chirality_unevaluated", "accepted_artifact_types": ["pdb_ccd.component"], "source_ids": ["pdb_ccd"], "format_guide": "CCD mmCIF containing _chem_comp.id, _chem_comp_atom and _chem_comp_bond categories; missing reference chemistry stays unevaluated.", "validator_id": "ccd_component", "sensitivity": "non_sensitive_public_or_sensitive_local"},
     "structure": {"description": "The coordinate model to analyze.", "why_needed": "All residue-level measurements must bind to exact coordinate bytes.", "absence_effect": "blocked", "accepted_artifact_types": ["pdb.coordinates", "alphafold.model"], "source_ids": ["pdb", "alphafold_db"], "format_guide": "PDB text or PDBx/mmCIF with at least one model and polymer chain.", "validator_id": "coordinate_structure", "sensitivity": "sensitive_by_default"},
     "query_structure": {"description": "The coordinate model used as the structural-search query.", "why_needed": "SF-CSA must checksum and search the exact query model.", "absence_effect": "blocked", "accepted_artifact_types": ["pdb.coordinates", "alphafold.model"], "source_ids": ["pdb", "alphafold_db"], "format_guide": "PDB text or PDBx/mmCIF; the selected chain must match the query FASTA.", "validator_id": "coordinate_structure", "sensitivity": "sensitive_by_default"},
     "assembly": {"description": "A deposited or explicitly expanded biological assembly.", "why_needed": "Contacts and burial cannot be inferred from an isolated chain.", "absence_effect": "blocked", "accepted_artifact_types": ["pdb.biological_assembly"], "source_ids": ["pdb"], "format_guide": "Prefer RCSB biological-assembly mmCIF and record its assembly number.", "validator_id": "coordinate_structure", "sensitivity": "sensitive_by_default"},
@@ -320,8 +324,36 @@ _ROLE_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
 def analysis_definitions() -> list[dict[str, Any]]:
     """Return human-readable, source-aware task definitions for CLI and UI."""
     definitions = _base_analysis_definitions()
+    definitions.append({
+        "analysis_type": "bio_orient", "title": "Bio-Orient", "question": "What sides does this structure have, what surrounds them, and what evidence supports their availability?",
+        "module_ids": ["structure_quality", "bio_orient"], "readiness": "experimental",
+        "claim_ceiling": "Structural geometry and recorded evidence only; sidedness, dynamics and functional availability remain distinct.",
+        "inputs": [
+            {"role": "structure", "label": "PDB or mmCIF coordinates", "required": True, "multiple": False, "extensions": [".pdb", ".cif", ".mmcif"]},
+            {"role": "patch_declaration", "label": "Identity-bound side declarations", "required": True, "multiple": False, "extensions": [".json"]},
+            {"role": "supporting_evidence", "label": "Bound membrane/site/assembly/state evidence", "required": False, "multiple": True, "extensions": [".json"]},
+            {"role": "topology_evidence", "label": "Coordinate-bound membrane topology", "required": False, "multiple": False, "extensions": [".json"]},
+            {"role": "provenance", "label": "Coordinate provenance", "required": False, "multiple": False, "extensions": [".json"]},
+            {"role": "validation_report", "label": "External structure validation", "required": False, "multiple": False, "extensions": [".xml", ".json"]},
+        ],
+        "parameters": [{"name": "model", "label": "Model index", "type": "integer", "default": 0},
+                       {"name": "assembly_id", "label": "Deposited assembly (asu for asymmetric unit)", "type": "text", "default": "asu"}],
+    })
     for definition in definitions:
-        definition.update(_WORKFLOW_GUIDANCE[definition["analysis_type"]])
+        if definition["analysis_type"] == "membrane_orientation":
+            from memorient.contexts import list_contexts
+            definition["parameters"][0]["choices"] = [c.name for c in list_contexts()]
+        definition["inputs"].extend([
+            {"role": "chemical_reference", "label": "CCD reference manifest", "required": False, "multiple": False, "extensions": [".json"]},
+            {"role": "chemical_component", "label": "Locked CCD component files", "required": False, "multiple": True, "extensions": [".cif", ".mmcif"]},
+        ])
+    for definition in definitions:
+        definition.update(_WORKFLOW_GUIDANCE.get(definition["analysis_type"], {
+            "use_when": "Inspect declared protein surfaces in their exact structural surroundings.",
+            "measures": "Patch geometry, contacts, burial, sidedness evidence and reference-relative chirality.",
+            "receives": ["Side-neighbor graph", "Availability dimensions", "Chemical review flags", "Exact provenance"],
+            "non_claim": "Geometry does not establish biological reachability, dynamics or function.",
+        }))
         definition["scientific_readiness"] = {
             "software_state": definition["readiness"],
             "external_benchmark": "qualification_v2_incomplete",
@@ -329,7 +361,12 @@ def analysis_definitions() -> list[dict[str, Any]]:
         }
         for input_role in definition["inputs"]:
             input_role["accepted_extensions"] = list(input_role["extensions"])
-            input_role.update(_ROLE_GUIDANCE[input_role["role"]])
+            input_role.update(_ROLE_GUIDANCE.get(input_role["role"], {
+                "description": input_role["label"], "why_needed": "Bio-Orient requires explicit, identity-bound evidence.",
+                "absence_effect": "blocked" if input_role["required"] else "unevaluated", "accepted_artifact_types": [],
+                "source_ids": [], "format_guide": "Versioned local JSON with exact bindings; see Bio-Orient documentation.",
+                "validator_id": input_role["role"], "sensitivity": "sensitive_by_default",
+            }))
             input_role.setdefault("template_id", None)
     return definitions
 
@@ -468,6 +505,14 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
         }],
     }
     rows = []
+    packages["bio_orient"] = source_root / "bio-orient" if source_root is not None else _installed_package_root("bio_orient")
+    required["bio_orient"] = ["gemmi"]
+    optional["bio_orient"] = []
+    scopes["bio_orient"] = [{"scope_id": "static_side_neighbor_graph", "scientific_state": "experimental",
+                            "benchmark_collection": "none", "release_blocking": False,
+                            "supported_subject_class": "declared patches in exact coordinate scopes",
+                            "required_evidence": ["exact coordinates", "identity-bound patch declarations"],
+                            "known_limitations": ["No biological or dynamic probability qualification."]}]
     for definition in analysis_definitions():
         tool = definition["analysis_type"]
         missing = [name for name in required[tool] if runtimes[name] == "missing"]
@@ -1053,7 +1098,8 @@ class StructuralAnalysisStore:
             checks.append({"name": "runtime:mdanalysis", "category": "runtimes", "ok": importlib.util.find_spec("MDAnalysis") is not None,
                            "detail": "required for trajectory input"})
         if manifest["analysis_type"] == "membrane_orientation":
-            alpha_scope = str(parameters.get("context", "")) in {"eukaryotic_pm", "tm_receptor"}
+            from memorient.contexts import get_context, OrientationMethod
+            alpha_scope = get_context(str(parameters.get("context", "gram_negative_om"))).orientation_method == OrientationMethod.TM_HELIX_BELT
             topology = None
             try:
                 _topology_path, topology = self._membrane_topology(inputs)
@@ -1065,6 +1111,30 @@ class StructuralAnalysisStore:
                 topology_detail = "alpha-helical analysis requires checksum-bound transmembrane spans"
             checks.append({"name": "evidence:membrane_topology", "category": "scientific_evidence",
                            "ok": topology_ok, "detail": topology_detail})
+        if manifest["analysis_type"] == "bio_orient" and inputs.get("structure") and inputs.get("patch_declaration"):
+            try:
+                from bio_orient.core import validate_declaration, _evidence, binding
+                from structqc.coordinate_scope import load_scope
+                scope = load_scope(self._one(inputs, "structure"), int(parameters.get("model", 0)), str(parameters.get("assembly_id", "asu")))
+                declaration = json.loads(self._one(inputs, "patch_declaration").read_text())
+                validate_declaration(declaration, scope)
+                for item in inputs.get("supporting_evidence", []):
+                    _evidence(self.object_path(item["sha256"]), binding(scope))
+                valid_patch, detail = True, "exact patch and supporting-evidence identities verified"
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                valid_patch, detail = False, str(exc)
+            checks.append({"name": "evidence:bio_orient_binding", "category": "identity_mapping", "ok": valid_patch, "detail": detail})
+        if inputs.get("chemical_reference") or inputs.get("chemical_component"):
+            try:
+                import tempfile
+                from structqc.chirality import read_references
+                with tempfile.TemporaryDirectory(prefix="yauvi-ccd-preflight-") as directory:
+                    references = self._chemical_reference(inputs, Path(directory))
+                    read_references(references)
+                reference_ok, reference_detail = True, "local CCD identities and checksums verified"
+            except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
+                reference_ok, reference_detail = False, str(exc)
+            checks.append({"name": "evidence:chemical_reference", "category": "identity_mapping", "ok": reference_ok, "detail": reference_detail})
         if manifest["analysis_type"] == "conformational_state":
             family_ok = str(parameters.get("subject_family", "")) == "ABL1"
             checks.append({"name": "scope:abl_family", "category": "scientific_evidence", "ok": family_ok,
@@ -1134,11 +1204,34 @@ class StructuralAnalysisStore:
             self.source_root / "site-context" / "src", self.source_root / "state-atlas" / "src",
             self.source_root / "activity-state" / "src", self.source_root / "sf-csa" / "src",
             self.source_root / "Membrane Orientor" / "memorient" / "src",
+            self.source_root / "bio-orient" / "src",
         ]
         env = os.environ.copy()
         existing = env.get("PYTHONPATH", "")
         env["PYTHONPATH"] = os.pathsep.join([*(str(p) for p in paths), *([existing] if existing else [])])
         return env
+
+    def _chemical_reference(self, inputs, run_dir):
+        source = self._one(inputs, "chemical_reference", required=False)
+        if source is None:
+            if inputs.get("chemical_component"):
+                raise AnalysisError("CCD component files require a chemical reference manifest")
+            return None
+        document = json.loads(source.read_text())
+        rows = []
+        directory = run_dir / "generated" / "chemical_reference"
+        directory.mkdir(parents=True, exist_ok=True)
+        for row in document.get("components", []):
+            matches = [i for i in inputs.get("chemical_component", []) if i["sha256"] == row.get("sha256")]
+            if len(matches) != 1:
+                raise AnalysisError("Each CCD reference must match one attached component checksum")
+            item = matches[0]
+            name = item["sha256"] + ".cif"
+            shutil.copyfile(self.object_path(item["sha256"]), directory / name)
+            rows.append({**row, "path": name})
+        derived = {**document, "components": rows, "source_manifest_sha256": _sha_file(source)}
+        _write_json(directory / "references.json", derived)
+        return directory / "references.json"
 
     def _execute(self, command: list[str], *, cwd: Path, log_path: Path,
                  cancel_event: Any | None = None, on_process: Any | None = None,
@@ -1188,6 +1281,9 @@ class StructuralAnalysisStore:
             if value:
                 command.extend((flag, str(value)))
         command.append("--require-external-validation")
+        chemical = self._chemical_reference(inputs, run_dir)
+        if chemical:
+            command.extend(("--chemical-reference", str(chemical)))
         params = manifest.get("parameters", {})
         if params.get("model") not in (None, ""):
             command.extend(("--model", str(params["model"])))
@@ -1198,7 +1294,8 @@ class StructuralAnalysisStore:
 
     def _write_memorient_manifest(self, run_dir: Path, inputs: Mapping[str, list[dict[str, Any]]], parameters: Mapping[str, Any]) -> None:
         output = run_dir / "outputs" / "memorient"
-        alpha_scope = str(parameters.get("context", "")) in {"eukaryotic_pm", "tm_receptor"}
+        from memorient.contexts import get_context, OrientationMethod
+        alpha_scope = get_context(str(parameters.get("context", "gram_negative_om"))).orientation_method == OrientationMethod.TM_HELIX_BELT
         document = {
             "schema_version": SCHEMA_VERSION, "module_id": "membrane_orientation", "version": "0.3.0",
             "input_sha256": {
@@ -1359,6 +1456,21 @@ class StructuralAnalysisStore:
         structure = self._one(inputs, "structure")
         if tool == "structure_qc":
             return steps, code
+        if tool == "bio_orient":
+            output = run_dir / "outputs" / "bio_orient"
+            command = [sys.executable, "-m", "bio_orient.cli", "run", "--structure", str(structure),
+                       "--patch-declaration", str(self._one(inputs, "patch_declaration")), "--out", str(output),
+                       "--model", str(params.get("model", 0)), "--assembly-id", str(params.get("assembly_id", "asu"))]
+            chemical = self._chemical_reference(inputs, run_dir)
+            if chemical: command.extend(("--chemical-reference", str(chemical)))
+            topology = self._one(inputs, "topology_evidence", required=False)
+            if topology: command.extend(("--topology-evidence", str(topology)))
+            for item in inputs.get("supporting_evidence", []):
+                command.extend(("--evidence", item["materialized_path"]))
+            result = self._execute(command, cwd=self.source_root, log_path=run_dir / "logs" / "bio-orient.log",
+                                   cancel_event=cancel_event, on_process=on_process)
+            steps.append({"module_id": "bio_orient", "exit_code": result})
+            return steps, 2 if result == 2 else 1 if code == 1 else result
         if tool == "membrane_orientation":
             output = run_dir / "outputs" / "memorient"; output.mkdir(parents=True, exist_ok=True)
             command = [sys.executable, "-m", "memorient.cli", "orient", str(structure), "--context", str(params.get("context", "gram_negative_om")),
@@ -1443,6 +1555,10 @@ class StructuralAnalysisStore:
             for tool in tools
         }
         digests["workbench_orchestrator"] = _tree_sha(Path(__file__).resolve().parent)
+        if analysis_type == "bio_orient":
+            for module in ("memorient", "assembly_context", "site_context", "state_atlas", "actstate"):
+                root = _installed_package_root(module)
+                digests[module] = _tree_sha(root) if root else None
         return digests
 
     @_serialized

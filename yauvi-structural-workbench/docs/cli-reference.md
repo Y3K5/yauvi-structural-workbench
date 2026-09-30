@@ -6,7 +6,7 @@ Regenerate with `python tools/build_cli_reference.py`.
 Common conventions across the scientific modules:
 
 - `yauvi --version` identifies the installed distribution.
-- `yauvi analysis types` lists the six workflows and their interpretation limits.
+- `yauvi analysis types` lists the seven workflows and their interpretation limits.
 - `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.
@@ -30,6 +30,7 @@ Common conventions across the scientific modules:
 | [`sf-csa`](#sf-csa) | Structure- and sequence-based functional comparison. |
 | [`yauvi-fetch`](#yauvi-fetch) | Registered public-source acquisition and staging. |
 | [`structprep`](#structprep) | Coordinate preparation with explicit chain and sequence handling. |
+| [`bio-orient`](#bio-orient) | Declared sides, neighbors and scoped availability (experimental). |
 
 
 ---
@@ -109,11 +110,11 @@ options:
 
 ```
 usage: yauvi analysis inputs [-h] --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
 
 options:
   -h, --help            show this help message and exit
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
                         Analysis type from 'analysis types'.
 ```
 
@@ -121,13 +122,13 @@ options:
 
 ```
 usage: yauvi analysis create [-h] --analysis ANALYSIS --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS   Local case identifier.
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
                         Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
@@ -222,6 +223,7 @@ usage: structqc validate [-h] --structure STRUCTURE [--subject-id SUBJECT_ID]
                          [--reference-fasta REFERENCE_FASTA]
                          [--provenance PROVENANCE] [--pae PAE]
                          [--validation-report VALIDATION_REPORT]
+                         [--chemical-reference CHEMICAL_REFERENCE]
                          [--require-external-validation] [--model MODEL]
                          [--chain CHAIN]
 
@@ -233,6 +235,8 @@ options:
   --provenance PROVENANCE
   --pae PAE
   --validation-report VALIDATION_REPORT
+  --chemical-reference CHEMICAL_REFERENCE
+                        local checksum-locked CCD reference manifest
   --require-external-validation
   --model MODEL
   --chain CHAIN
@@ -255,6 +259,7 @@ usage: structqc run [-h] --structure STRUCTURE [--subject-id SUBJECT_ID]
                     [--reference-fasta REFERENCE_FASTA]
                     [--provenance PROVENANCE] [--pae PAE]
                     [--validation-report VALIDATION_REPORT]
+                    [--chemical-reference CHEMICAL_REFERENCE]
                     [--require-external-validation] [--model MODEL]
                     [--chain CHAIN] --out OUT
 
@@ -266,6 +271,8 @@ options:
   --provenance PROVENANCE
   --pae PAE
   --validation-report VALIDATION_REPORT
+  --chemical-reference CHEMICAL_REFERENCE
+                        local checksum-locked CCD reference manifest
   --require-external-validation
   --model MODEL
   --chain CHAIN
@@ -1001,6 +1008,80 @@ options:
   --no-flatten          do not give assembly MODEL copies unique chain ids
   --allow-contacting    remove classed components even when they touch the
                         polymer
+  --out OUT
+```
+
+
+---
+
+## bio-orient
+
+Declared sides, neighbors and scoped availability (experimental).
+
+```
+usage: bio-orient [-h] {describe,validate,run} ...
+
+positional arguments:
+  {describe,validate,run}
+
+options:
+  -h, --help            show this help message and exit
+```
+
+### `bio-orient describe`
+
+```
+usage: bio-orient describe [-h] [--structure STRUCTURE] [--model MODEL]
+                           [--assembly-id ASSEMBLY_ID]
+
+options:
+  -h, --help            show this help message and exit
+  --structure STRUCTURE
+                        include exact scope and a patch declaration starter
+  --model MODEL
+  --assembly-id ASSEMBLY_ID
+```
+
+### `bio-orient validate`
+
+```
+usage: bio-orient validate [-h] --structure STRUCTURE --patch-declaration
+                           PATCH_DECLARATION [--model MODEL]
+                           [--assembly-id ASSEMBLY_ID]
+                           [--chemical-reference CHEMICAL_REFERENCE]
+                           [--topology-evidence TOPOLOGY_EVIDENCE]
+                           [--evidence EVIDENCE]
+
+options:
+  -h, --help            show this help message and exit
+  --structure STRUCTURE
+  --patch-declaration PATCH_DECLARATION
+  --model MODEL
+  --assembly-id ASSEMBLY_ID
+  --chemical-reference CHEMICAL_REFERENCE
+  --topology-evidence TOPOLOGY_EVIDENCE
+  --evidence EVIDENCE
+```
+
+### `bio-orient run`
+
+```
+usage: bio-orient run [-h] --structure STRUCTURE --patch-declaration
+                      PATCH_DECLARATION [--model MODEL]
+                      [--assembly-id ASSEMBLY_ID]
+                      [--chemical-reference CHEMICAL_REFERENCE]
+                      [--topology-evidence TOPOLOGY_EVIDENCE]
+                      [--evidence EVIDENCE] --out OUT
+
+options:
+  -h, --help            show this help message and exit
+  --structure STRUCTURE
+  --patch-declaration PATCH_DECLARATION
+  --model MODEL
+  --assembly-id ASSEMBLY_ID
+  --chemical-reference CHEMICAL_REFERENCE
+  --topology-evidence TOPOLOGY_EVIDENCE
+  --evidence EVIDENCE
   --out OUT
 ```
 

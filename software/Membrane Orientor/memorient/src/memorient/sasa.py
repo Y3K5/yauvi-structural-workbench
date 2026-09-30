@@ -13,7 +13,7 @@ residue types. RSA >= ~0.20 is the usual "exposed" threshold.
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Sequence
 
 import numpy as np
 
@@ -62,6 +62,9 @@ def atom_sasa(
     radii: np.ndarray,
     n_points: int = 240,
     probe: float = PROBE_RADIUS,
+    return_directions: bool = False,
+    target_indices: Optional[Sequence[int]] = None,
+    excluded_indices: Sequence[int] = (),
 ) -> np.ndarray:
     """Per-atom SASA (Angstrom^2) via Shrake-Rupley.
 
@@ -70,13 +73,23 @@ def atom_sasa(
     coords : (M,3) atom coordinates
     radii  : (M,) van der Waals radii (probe NOT yet added)
     n_points : test points per atom (240 is a good accuracy/speed tradeoff)
+    target_indices : optional atoms to measure; other output entries remain zero
+    excluded_indices : atoms omitted as occluders; coordinates and sampling frame
+        stay fixed for controlled neighbor-removal comparisons
     """
     coords = np.asarray(coords, dtype=float).reshape(-1, 3)
     radii = np.asarray(radii, dtype=float).reshape(-1)
     M = len(coords)
+    targets = list(range(M)) if target_indices is None else list(target_indices)
+    excluded = set(excluded_indices)
+    if any(type(i) not in (int, np.int64, np.int32) or not 0 <= i < M for i in [*targets, *excluded]):
+        raise ValueError("SASA atom indices must identify existing atoms")
+    if excluded.intersection(targets):
+        raise ValueError("SASA measured atoms cannot be excluded")
     sphere = _fibonacci_sphere(n_points)
     inflated = radii + probe
     out = np.zeros(M)
+    directions = np.zeros((M, 3))
 
     # neighbour cutoff: two atoms can occlude each other only if closer than the sum of
     # their inflated radii. Use a simple spatial hash on a grid of the max inflated diameter.
@@ -85,11 +98,13 @@ def atom_sasa(
     grid: Dict[tuple, list] = {}
     keys = np.floor(coords / cell).astype(int)
     for idx in range(M):
+        if idx in excluded:
+            continue
         grid.setdefault(tuple(keys[idx]), []).append(idx)
 
     area_per_point = 4.0 * np.pi / n_points
 
-    for i in range(M):
+    for i in targets:
         ri = inflated[i]
         ci = coords[i]
         # candidate neighbours from the 27 surrounding cells
@@ -118,10 +133,12 @@ def atom_sasa(
             dist2 = np.einsum("ijk,ijk->ij", diff, diff)
             buried = np.any(dist2 < (nr[None, :] ** 2), axis=1)
             accessible = np.count_nonzero(~buried)
+            directions[i] = sphere[~buried].sum(axis=0) * area_per_point * ri * ri
         else:
             accessible = n_points
+            directions[i] = sphere.sum(axis=0) * area_per_point * ri * ri
         out[i] = area_per_point * accessible * ri * ri
-    return out
+    return (out, directions) if return_directions else out
 
 
 def compute_sasa(structure, n_points: int = 240, probe: float = PROBE_RADIUS,
@@ -183,4 +200,3 @@ def compute_sasa(structure, n_points: int = 240, probe: float = PROBE_RADIUS,
 def total_sasa(structure, **kw) -> float:
     """Total molecular SASA (Angstrom^2)."""
     return float(compute_sasa(structure, **kw)["sasa"].sum())
-

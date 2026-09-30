@@ -23,7 +23,7 @@ def case_dir(tmp_path):
     directory.mkdir(parents=True)
     columns = ['id', 'group_PDB', 'type_symbol', 'label_atom_id', 'label_alt_id', 'label_comp_id',
                'label_asym_id', 'label_entity_id', 'label_seq_id', 'pdbx_PDB_ins_code', 'Cartn_x',
-               'Cartn_y', 'Cartn_z', 'occupancy', 'auth_seq_id', 'auth_asym_id', 'pdbx_PDB_model_num']
+               'Cartn_y', 'Cartn_z', 'occupancy', 'auth_seq_id', 'auth_asym_id', 'pdbx_PDB_model_num', 'auth_atom_id', 'auth_comp_id', 'B_iso_or_equiv']
     cif = '''data_TEST
 _entry.id TEST
 _entity_poly.entity_id 1
@@ -82,6 +82,10 @@ loop_
 6 ATOM C CA . GLY A 1 2 A 9 10 11 1 10 Z 2
 7 ATOM C CA . THR A 1 4 . 10 11 12 1 12 Z 2
 '''
+    # Explicit author atom/component names make this fixture readable by Gemmi.
+    cif = '\n'.join(line + ' ' + line.split()[3] + ' ' + line.split()[5] + ' 20'
+                    if len(line.split()) == 17 and line.split()[1] == 'ATOM' else line
+                    for line in cif.splitlines()) + '\n'
     (directory / 'structure.cif').write_text(cif)
     protein = {'primaryAccession': 'SYNTHETIC', 'sequence': {'value': 'AGST'},
                'organism': {'scientificName': 'Synthetic software fixture'}}
@@ -228,3 +232,44 @@ def test_store_refuses_traversal_and_symlink_cases(case_dir):
     (case_dir.parent/'alias').symlink_to(case_dir,target_is_directory=True)
     with pytest.raises(ValueError):store.load('alias')
     assert len(store.list())==1
+
+
+@pytest.mark.parametrize('state',['unknown','supported','predicted','conflicting'])
+def test_mapped_membrane_assignment_is_verified_and_retains_evidence_state(case_dir,state):
+    from memorient.sidedness import resolve_sidedness
+    atoms=[{'atom':'CA','chain_id':'Z','auth_seq_id':10,'insertion_code':'','xyz':[1,2,3]}]
+    markers=[] if state=='unknown' else [{'chain_id':'Z','auth_seq_id':10,'compartment':'er_lumen','basis':'predicted' if state=='predicted' else 'curated'}]
+    if state=='conflicting':markers.append({'chain_id':'Z','auth_seq_id':10,'compartment':'cytosol'})
+    assignment=resolve_sidedness(atoms,np.zeros(3),np.array([0,0,1]),2,'er_membrane',{'side_markers':markers,'source':{'id':'synthetic','citation':'Synthetic software control'}})
+    b=binding(case_dir)
+    source(case_dir,'mapped-placement',{'binding':b,'frame':'deposited_coordinates','normal':[0,0,1],'center':[0,0,0],'half_thickness':2,
+                                      'context':'er_membrane','sidedness':state,'side_assignment':assignment})
+    edit(case_dir,lambda d:d['membranes'].append({'binding':b,'source_id':'mapped-placement'}))
+    view=BiologicalCase(case_dir).view('structure','1','asu')
+    assert view['membrane']['side_assignment']['state']==state
+    assert BiologicalCase(case_dir).view('structure','2','asu')['membrane'] is None
+
+
+def test_graph_adapter_verifies_atoms_and_rejects_other_frames(case_dir):
+    from bio_orient.core import analyze, binding as graph_binding
+    from structqc.coordinate_scope import load_scope
+    scope=load_scope(case_dir/'structure.cif')
+    patch=case_dir/'patches.json'
+    dump(patch,{'schema_version':'1.0','binding':graph_binding(scope),'sides':[{'side_id':'selected-side','residue_set':[{'chain_id':scope['copies'][0]['chain_id'],'auth_seq_id':10,'insertion_code':''}],
+                                                                         'source':{'id':'synthetic','citation':'Software control'}}]})
+    graph=analyze(case_dir/'structure.cif',patch)
+    row=source(case_dir,'graph',graph)
+    b=binding(case_dir)
+    source(case_dir,'graph-run',{'binding':b,'output_sha256':row['sha256'],'method':'bio_orient.core.analyze','method_source_sha256':'a'*64})
+    edit(case_dir,lambda d:d['evidence'].append({'id':'graph-evidence','engine':'bio_orient','source_id':'graph','run_source_id':'graph-run','binding':b}))
+    view=BiologicalCase(case_dir).view('structure','1','asu')
+    assert view['evidence'][0]['graph']==graph
+    assert BiologicalCase(case_dir).view('structure','1','1')['evidence']==[]
+    # Correct headers and re-locked output hashes still cannot conceal moved atoms.
+    graph['atoms'][0]['x']+=100
+    dump(case_dir/'graph.json',graph)
+    changed=digest((case_dir/'graph.json').read_bytes())
+    edit(case_dir,lambda d:next(s for s in d['sources'] if s['id']=='graph').update(sha256=changed))
+    run=json.loads((case_dir/'graph-run.json').read_text());run['output_sha256']=changed;dump(case_dir/'graph-run.json',run)
+    edit(case_dir,lambda d:next(s for s in d['sources'] if s['id']=='graph-run').update(sha256=digest((case_dir/'graph-run.json').read_bytes())))
+    with pytest.raises(ValueError,match='identities or coordinates'):BiologicalCase(case_dir)

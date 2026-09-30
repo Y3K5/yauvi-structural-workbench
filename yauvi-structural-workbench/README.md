@@ -2,7 +2,7 @@
 
 **YAUVI Structural Workbench** is the primary integrated,
 local-first experience for the **YAUVI Structural Workbench** Python suite and
-its six evidence-bounded structural-protein analyses:
+its seven evidence-bounded structural-protein analyses:
 
 1. Structure provenance and coordinate quality (`structqc`)
 2. Membrane orientation (`memorient`)
@@ -10,6 +10,10 @@ its six evidence-bounded structural-protein analyses:
 4. Functional-site and catalytic-competence evidence (`site-context` with `actstate`)
 5. Biological assembly and interface context (`assembly-context`)
 6. Separate structural and sequence comparison (`sf-csa`)
+7. Declared sides, neighboring objects and scoped availability (`bio-orient`, experimental)
+
+Bio-Orient is local development beyond the frozen Mark 1 qualification scopes.
+See [Bio-Orient documentation](../software/bio-orient/README.md).
 
 Each package remains independently installable. The root distribution provides
 one reviewer install without copying scientific implementations.
@@ -103,7 +107,7 @@ python tools/verify_public_showcase.py
 ## Documentation
 
 - [Installation](docs/install.md)
-- [Six workflows](docs/workflows.md)
+- [Seven workflows and their limits](docs/workflows.md)
 - [Files and official sources](docs/files-and-sources.md)
 - [Scientific methods and limitations](docs/methods-and-limitations.md)
 - [Benchmarks and qualification](docs/benchmarks.md)

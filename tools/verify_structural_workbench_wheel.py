@@ -19,7 +19,7 @@ import zipfile
 # ships a command that cannot run. Required, therefore, rather than merely
 # tolerated.
 REQUIRED_ROOTS = {
-    "actstate", "assembly_context", "memorient", "sf_csa", "site_context",
+    "actstate", "assembly_context", "bio_orient", "memorient", "sf_csa", "site_context",
     "state_atlas", "structprep", "structqc", "yauvi_platform", "yauvi_sources",
     "yauvi_structural_workbench",
 }

@@ -17,7 +17,7 @@ from Bio import Align
 from Bio.PDB import MMCIFParser, PDBParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 PROVENANCE = {"experimental", "predicted", "unknown"}
 AA3 = {
     "ALA": "A", "ARG": "R", "ASN": "N", "ASP": "D", "CYS": "C",
@@ -91,6 +91,7 @@ def read_validation_report(path: str | Path | None) -> dict[str, Any] | None:
     if suffix not in {".json", ".xml"}:
         suffix = ".xml" if raw.lstrip().startswith(b"<") else ".json"
     candidates: dict[str, Any] = {}
+    imported_chirality: list[dict[str, Any]] = []
     if suffix == ".json":
         try:
             document = json.loads(raw)
@@ -100,6 +101,8 @@ def read_validation_report(path: str | Path | None) -> dict[str, Any] | None:
         def walk(value: Any, prefix: str = "") -> None:
             if isinstance(value, Mapping):
                 for key, child in value.items():
+                    if any(word in str(key).lower() for word in ("chiral", "stereo")):
+                        imported_chirality.append({"path": f"{prefix}_{key}" if prefix else str(key), "value": child})
                     walk(child, f"{prefix}_{key}" if prefix else str(key))
             elif isinstance(value, (int, float)) and not isinstance(value, bool):
                 candidates[prefix.lower()] = value
@@ -111,10 +114,14 @@ def read_validation_report(path: str | Path | None) -> dict[str, Any] | None:
             raise InputError(f"validation XML cannot be parsed: {exc}") from exc
         for element in root.iter():
             tag = element.tag.rsplit("}", 1)[-1].lower()
+            if any(word in tag for word in ("chiral", "stereo")):
+                imported_chirality.append({"tag": tag, "attributes": dict(element.attrib), "text": element.text})
             if element.text and element.text.strip():
                 try: candidates[tag] = float(element.text.strip())
                 except ValueError: pass
             for key, value in element.attrib.items():
+                if any(word in key.lower() for word in ("chiral", "stereo")):
+                    imported_chirality.append({"tag": tag, "attribute": key, "value": value})
                 try: candidates[f"{tag}_{key.lower()}"] = float(value)
                 except ValueError: pass
     else:
@@ -150,6 +157,8 @@ def read_validation_report(path: str | Path | None) -> dict[str, Any] | None:
         "state": "imported", "format": suffix.removeprefix("."),
         "file_name": source.name, "sha256": hashlib.sha256(raw).hexdigest(),
         "metrics": metrics,
+        "chirality_findings": {"state": "imported" if imported_chirality else "not_reported", "records": imported_chirality,
+                               "scope": "Producing validator scope; separate from local CCD checks."},
         "limitations": ["Imported values retain the producing validator's definitions and are not recomputed by StructQC."],
     }
 
@@ -332,6 +341,7 @@ def analyze(
     validation_report: Mapping[str, Any] | None = None,
     model_index: int = 0,
     chain: str | None = None,
+    chemical_reference: str | Path | None = None,
 ) -> dict[str, Any]:
     path = Path(structure_path)
     if not path.is_file():
@@ -455,6 +465,13 @@ def analyze(
 
     if not residues:
         raise InputError("selected model/chain contains no amino-acid residues")
+    from .chirality import analyze_chirality
+    try:
+        chirality = analyze_chirality(path, model_index=model_index, chain=chain, reference_manifest=chemical_reference)
+    except ImportError:
+        if chemical_reference is not None:
+            raise InputError("Chemical-reference checks require Gemmi")
+        chirality = {"state": "unevaluated", "reason": "gemmi_unavailable", "findings": [], "component_coverage": []}
     return {
         "schema_version": SCHEMA_VERSION,
         "module_id": "structure_quality",
@@ -482,6 +499,7 @@ def analyze(
             **({"pae": _json_sha256(pae)} if pae is not None else {}),
             **({"external_validation": str(validation_report["sha256"])}
                if validation_report is not None and validation_report.get("sha256") else {}),
+            **({"chemical_reference": hashlib.sha256(Path(chemical_reference).read_bytes()).hexdigest()} if chemical_reference else {}),
         },
         "provenance": prov,
         "reference": {"id": reference_id or "", "sequence_supplied": reference_sequence is not None},
@@ -492,6 +510,7 @@ def analyze(
             "limitations": ["No wwPDB, MolProbity, or Phenix validation report was supplied."],
         },
         "chain_summaries": chain_summaries,
+        "chirality": chirality,
         "residues": residues,
         "warnings": warnings,
         "limitations": [
@@ -531,6 +550,7 @@ def write_outputs(out_dir: str | Path, document: Mapping[str, Any]) -> list[Path
         "subject": document["subject"],
         "coordinate_sha256": document["coordinate"]["sha256"],
         "layer_id": "structure_quality",
+        "chirality": document.get("chirality", {"state": "unevaluated"}),
         "records": [
             {
                 "chain_id": r["chain_id"], "auth_seq_id": r["auth_seq_id"],
@@ -558,6 +578,8 @@ def write_outputs(out_dir: str | Path, document: Mapping[str, Any]) -> list[Path
             "reference_sequence_supplied": document["reference"]["sequence_supplied"],
             "pae_state": document["pae"]["state"],
             "external_validation_state": document["external_validation"]["state"],
+            "chirality_state": document.get("chirality", {}).get("state", "unevaluated"),
+            "chemical_reference_identity": document.get("chirality", {}).get("reference_identity", {}),
         },
         "runtime_versions": {
             "python": platform.python_version(),

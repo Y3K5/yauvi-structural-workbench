@@ -244,6 +244,15 @@ TEMPLATES: Mapping[str, tuple[str, str, bytes]] = {
         "component-map.template.json", "application/json",
         _canonical({"components": [{"observed_id": "ATP", "ccd_id": "ATP", "chebi_id": "CHEBI:15422", "mapping_state": "exact"}]}),
     ),
+    "bio_orient_patches": (
+        "bio-orient-patches.template.json", "application/json",
+        _canonical({"schema_version": "1.0", "binding": {"coordinate_sha256": "REPLACE_WITH_COORDINATE_SHA256", "model_id": "1", "assembly_id": "asu", "frame": "deposited_coordinates", "conformer_policy": "highest_mean_occupancy_per_component; chemistry with alternates remains unevaluated"},
+                    "sides": [{"side_id": "declared-side", "residue_set": [{"chain_id": "REPLACE_WITH_EXACT_CHAIN_COPY", "auth_seq_id": 1, "insertion_code": ""}], "source": {"id": "local-declaration", "citation": "REPLACE_WITH_DECLARATION_SOURCE"}, "basis": "curated"}]}),
+    ),
+    "bio_orient_chemical_references": (
+        "chemical-references.template.json", "application/json",
+        _canonical({"schema_version": "1.0", "components": [{"component_id": "ALA", "path": "ALA.cif", "sha256": "REPLACE_WITH_COMPONENT_SHA256"}]}),
+    ),
     "sf_csa_interpretation_tables": (
         "sf-csa-interpretation.template.json", "application/json",
         _canonical({"mechanism_families": [], "contested_groups": [], "divergence_sets": [], "classification_vocabulary": []}),

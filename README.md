@@ -1,7 +1,7 @@
 # YAUVI Structural Workbench
 
 Local, evidence-bounded structural protein analysis with deterministic reports
-and provenance. Ten installable Python packages covering six structural-analysis
+and provenance. Eleven installable Python packages covering seven structural-analysis
 workflows, taking protein coordinates to inspectable, checksum-bound evidence.
 
 **This is a pre-public scientific build in open development.** It is not a
@@ -11,13 +11,13 @@ the status section below before relying on any output.
 
 ## What this is
 
-Ten installable Python packages covering six structural-analysis workflows,
+Eleven installable Python packages covering seven structural-analysis workflows,
 plus the documentation, paper, community files, benchmarks, and evidence
 showcases that a JOSS reviewer would receive.
 
-Nine of the ten carry a workflow or the case store. The tenth, `structprep`, is
-**infrastructure**: it prepares coordinates for the others and is not a seventh
-analysis scope. It answers no scientific question on its own and is not
+Ten packages carry a workflow, the case store, or source acquisition. `structprep` is
+**infrastructure**: it prepares coordinates for the others and is not an analysis
+scope. It answers no scientific question on its own and is not
 release-blocking.
 
 | Package | CLI | Workflow |
@@ -31,9 +31,19 @@ release-blocking.
 | `yauvi-assembly-context` | `assembly-context` | Assembly interface |
 | `sf-csa` | `sf-csa` | Structure/sequence function comparison |
 | `yauvi-sources` | `yauvi-fetch` | Registered source acquisition |
+| `yauvi-bio-orient` | `bio-orient` | Declared sides, neighbors and recorded evidence (experimental) |
 | `structprep` | `structprep` | Structure preparation (infrastructure) |
 
+Bio-Orient is an additive local development workflow. Its chemistry checks, expanded
+membrane contexts, and static graphs do not add a qualified scope to the frozen
+Mark 1 collection. See [its input contract and examples](software/bio-orient/README.md).
+
 ## Current local verification
+
+The Bio-Orient upgrade passed **801 tests, 15 skipped, 5 deselected** with no
+failures/errors and dependency preflight enabled on macOS ARM64 / Python 3.11.15.
+See [its checks and limitations](software/bio-orient/VERIFICATION.md).
+The earlier records below keep their original scope.
 
 These records describe separate checks on the local candidate; their totals and
 interpretations are not combined:

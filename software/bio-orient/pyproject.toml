@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-bio-orient"
+version = "0.1.0.dev0"
+description = "Evidence-bounded structural sides, neighbors and recorded states"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = ["numpy>=1.24", "scipy>=1.10", "gemmi>=0.6", "yauvi-structqc>=0.1.0", "memorient>=0.2", "yauvi-assembly-context>=0.1.0"]
+
+[project.scripts]
+bio-orient = "bio_orient.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

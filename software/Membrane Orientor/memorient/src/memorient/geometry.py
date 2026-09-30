@@ -113,6 +113,10 @@ class Structure:
         """
         R = np.asarray(R, dtype=float).reshape(3, 3)
         t = np.zeros(3) if t is None else np.asarray(t, dtype=float).reshape(3)
+        if (not np.isfinite(R).all() or not np.isfinite(t).all()
+                or not np.allclose(R.T @ R, np.eye(3), atol=1e-6, rtol=0)
+                or not np.isclose(np.linalg.det(R), 1, atol=1e-6, rtol=0)):
+            raise ValueError("Transform requires a finite proper rotation; reflections are not allowed")
         out = self.copy()
         out.ca = self.ca @ R.T + t
         # rotate side-chain unit vectors (no translation)

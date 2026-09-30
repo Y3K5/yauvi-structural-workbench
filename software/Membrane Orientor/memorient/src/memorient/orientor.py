@@ -42,7 +42,7 @@ from .barrel import (
     fit_membrane,
     fit_membrane_on_normal,
 )
-from .contexts import MembraneContext, OrientationMethod
+from .contexts import MembraneContext, OrientationMethod, EXTENDED_CONTEXTS
 from .geometry import Structure, canonical_rotation, rotation_matrix_to_z
 from .labeler import LabelSet, ResidueLabel, SideCall, call_extracellular_side, label_residues
 from .membrane import (
@@ -117,7 +117,19 @@ class OrientationResult:
     # -- views the CLI / viz consume ----------------------------------------------------
 
     def residue_table(self) -> List[dict]:
-        return self.labels.to_rows()
+        rows = self.labels.to_rows()
+        assignment = self.input_membrane.get("oriented_side_assignment", {"state": "unknown"})
+        for i, row in enumerate(rows):
+            row["sidedness_state"] = assignment["state"] if self.input_membrane else "not_applicable"
+            row["legacy_accessibility_basis"] = "geometry_prediction"
+            row["biological_compartment"] = None
+            if self.fit and assignment["state"] in {"supported", "predicted"}:
+                z = float(self.structure.ca[i, 2])
+                if z > self.fit.half_thickness:
+                    row["biological_compartment"] = assignment["positive_compartment"]
+                elif z < -self.fit.half_thickness:
+                    row["biological_compartment"] = assignment["negative_compartment"]
+        return rows
 
     def extracellular_resids(self) -> List[int]:
         return self.labels.extracellular_resids()
@@ -184,6 +196,8 @@ class OrientationResult:
             for label in self.labels.labels if label.extracellular
         ]
         return {
+            "schema_version": "1.1",
+            "legacy_accessibility_basis": "geometry_prediction; compartment assignments require separately mapped evidence",
             "summary": self.summary(),
             "residues": self.residue_table(),
             "surface_set": self.labels.surface_set,
@@ -346,6 +360,10 @@ def _tm_side_call(
             sign = votes["declared_topology"]
             return SideCall(sign, votes, scores, 1.0, 1.0), "placement_evaluated"
 
+    if ctx.name in EXTENDED_CONTEXTS:
+        # Never apply a plasma-membrane extracellular convention or charge
+        # heuristic to an organelle. Evidence is resolved in the input frame.
+        return SideCall(1, votes, scores, 0.0, 0.0), "sides_unresolved"
     charge_gap = abs(f_plus - f_minus)
     enough_flanks = plus.sum() >= 4 and minus.sum() >= 4
     if enough_flanks and charge_gap >= 0.10:
@@ -470,6 +488,8 @@ def orient_structure(
     input_normal = None
     input_membrane: Dict[str, object] = {}
     topology_summary: Dict[str, object] = {}
+    if context.name in EXTENDED_CONTEXTS and not (topology_evidence and topology_evidence.get("spans")):
+        raise ValueError("Extended membrane contexts require mapped transmembrane spans")
 
     if method in (OrientationMethod.BARREL_NORMAL, OrientationMethod.TM_HELIX_BELT):
         if method == OrientationMethod.BARREL_NORMAL:
@@ -513,6 +533,17 @@ def orient_structure(
             "sidedness": "unknown", "scope": "first fit in the input coordinate frame",
             "interpretation_limit": "Unsigned modeled placement; no native-accessibility or orientation-accuracy claim.",
         }
+        from .sidedness import resolve_sidedness
+        marker_atoms = [{"atom": "CA", "chain_id": str(structure.chains[i]),
+                         "auth_seq_id": int(structure.resids[i]),
+                         "insertion_code": str(structure.icodes[i]) if hasattr(structure, "icodes") else "",
+                         "xyz": structure.ca[i]} for i in range(len(structure))]
+        assignment = resolve_sidedness(marker_atoms, input_center, input_normal, float(fit.half_thickness), context, topology_evidence)
+        input_membrane.update(sidedness=assignment["state"], side_assignment=assignment,
+                              context=context.name)
+        if assignment["state"] in {"supported", "predicted"}:
+            desired_sign = 1 if assignment["positive_compartment"] == assignment["compartments"][0] else -1
+            side.ec_sign = desired_sign
         oriented = _reframe_to_membrane(canon, fit, side.ec_sign)
         # recompute SASA + fit-derived quantities in the oriented frame for the labels
         rsa_o = compute_sasa(oriented, n_points=n_points)["rsa"]
@@ -529,6 +560,17 @@ def orient_structure(
         projection = project_membrane(oriented, fit_o, context, ec_sign=side_o.ec_sign, rsa=rsa_o)
         metrics = context_metrics(oriented, fit_o, context, projection)
         labels = label_residues(oriented, projection, rsa_o, context, fit_o)
+        oriented_marker_atoms = [{"atom": "CA", "chain_id": str(oriented.chains[i]), "auth_seq_id": int(oriented.resids[i]),
+                                  "insertion_code": str(oriented.icodes[i]), "xyz": oriented.ca[i]} for i in range(len(oriented))]
+        input_membrane["oriented_side_assignment"] = resolve_sidedness(oriented_marker_atoms, np.zeros(3), np.array([0., 0., 1.]),
+                                                                     float(fit_o.half_thickness), context, topology_evidence)
+        if context.name in EXTENDED_CONTEXTS:
+            for residue_label in labels.labels:
+                residue_label.extracellular = False
+                if residue_label.zone != "hydrophobic_core":
+                    residue_label.zone = "compartment_side_unresolved"
+                residue_label.accessibility = "compartment_geometry_only"
+            labels.surface_set = []
         if scope_id == "alpha_helical" and scientific_state != "placement_evaluated":
             # Preserve membrane depth/core evidence while suppressing an unsupported side.
             labels.surface_set = []

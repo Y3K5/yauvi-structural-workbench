@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.metadata as importlib_metadata
+import importlib.util
 import json
 import platform
 from pathlib import Path
@@ -26,6 +27,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("structqc", ("software/structqc/tests",)),
+    ("bio-orient", ("software/bio-orient/tests",)),
     ("memorient", ("software/Membrane Orientor/memorient/tests",)),
     ("state-atlas", ("software/state-atlas/tests",)),
     ("site-context", ("software/site-context/tests",)),
@@ -44,6 +46,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("source registry", ("software/sources/tests",)),
     ("structprep", ("software/structprep/tests",)),
     ("review export", ("tools/test_review_candidate.py",)),
+    ("distribution preflight", ("tools/test_distribution_preflight.py",)),
     ("public research case", ("examples/structural-portfolio/test_public_research_case.py",)),
 )
 COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|error|errors)\b")
@@ -55,6 +58,7 @@ PYPROJECTS: tuple[str, ...] = (
     "software/state-atlas/pyproject.toml", "software/site-context/pyproject.toml", "software/activity-state/pyproject.toml",
     "software/assembly-context/pyproject.toml", "software/sf-csa/pyproject.toml",
     "software/structprep/pyproject.toml",
+    "software/bio-orient/pyproject.toml",
 )
 REQUIREMENT = re.compile(r"^\s*([A-Za-z0-9._-]+)\s*>=\s*([0-9][0-9A-Za-z.\-]*)")
 
@@ -112,8 +116,10 @@ def preflight() -> list[str]:
         try:
             installed = importlib_metadata.version(name)
         except importlib_metadata.PackageNotFoundError:
-            problems.append(f"{name}: not installed, {source} requires >={floor}")
-            continue
+            installed = bundled_version(name)
+            if installed is None:
+                problems.append(f"{name}: not installed, {source} requires >={floor}")
+                continue
         if _version_tuple(installed) < _version_tuple(floor):
             problems.append(f"{name}: {installed} installed, {source} requires >={floor}")
     for module, package in (("Bio.PDB.PDBParser", "biopython"), ("Bio.Align", "biopython"),
@@ -123,6 +129,41 @@ def preflight() -> list[str]:
         except ImportError as exc:
             problems.append(f"{module} ({package}) will not import: {exc.__class__.__name__}: {exc}")
     return problems
+
+
+def bundled_version(name: str) -> str | None:
+    """Recognize engines shipped inside the reviewer distribution.
+
+    Their standalone metadata is absent after `pip install .[dev]`. Only accept
+    a module from this source tree or owned by the installed workbench wheel;
+    an unrelated module with the same import name cannot satisfy the floor.
+    External dependencies still require their own distribution metadata.
+    """
+    for relative in PYPROJECTS[1:]:
+        project_path = ROOT / relative
+        if not project_path.is_file():
+            continue
+        data = tomllib.loads(project_path.read_text(encoding="utf-8"))
+        project = data.get("project", {})
+        if project.get("name", "").lower() != name:
+            continue
+        source_root = project_path.parent / "src"
+        modules = sorted(p for p in source_root.iterdir() if (p / "__init__.py").is_file())
+        for module in modules:
+            spec = importlib.util.find_spec(module.name)
+            if spec is None or spec.origin is None:
+                return None
+            origin = Path(spec.origin).resolve()
+            if origin == (module / "__init__.py").resolve():
+                continue
+            # A build can leave source egg-info beside an installed wheel.
+            # Inspect every candidate rather than whichever metadata appears first.
+            bundles = importlib_metadata.distributions(name="yauvi-structural-workbench")
+            if not any(origin == Path(bundle.locate_file(file)).resolve()
+                       for bundle in bundles for file in bundle.files or []):
+                return None
+        return project.get("version") if modules else None
+    return None
 
 
 

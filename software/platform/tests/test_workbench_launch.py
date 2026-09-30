@@ -101,7 +101,7 @@ def test_analysis_types_are_discoverable_without_creating_a_case(capsys):
     result = json.loads(capsys.readouterr().out)
     assert {item['analysis_type'] for item in result} == {
         'structure_qc', 'membrane_orientation', 'conformational_state',
-        'functional_site_state', 'assembly_interface', 'sf_csa',
+        'functional_site_state', 'assembly_interface', 'sf_csa', 'bio_orient',
     }
     assert all(item['claim_ceiling'] for item in result)
 

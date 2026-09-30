@@ -37,6 +37,8 @@ CLIS: list[tuple[str, str, list[str]]] = [
      ["sources", "plan", "get", "stage", "verify", "where"]),
     ("structprep", "Coordinate preparation with explicit chain and sequence handling.",
      ["describe", "classes", "validate", "run"]),
+    ("bio-orient", "Declared sides, neighbors and scoped availability (experimental).",
+     ["describe", "validate", "run"]),
 ]
 
 PREAMBLE = """# CLI reference
@@ -47,7 +49,7 @@ Regenerate with `python tools/build_cli_reference.py`.
 Common conventions across the scientific modules:
 
 - `yauvi --version` identifies the installed distribution.
-- `yauvi analysis types` lists the six workflows and their interpretation limits.
+- `yauvi analysis types` lists the seven workflows and their interpretation limits.
 - `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.

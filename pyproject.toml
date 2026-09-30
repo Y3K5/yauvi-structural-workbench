@@ -46,6 +46,7 @@ actstate = "actstate.cli:main"
 assembly-context = "assembly_context.cli:main"
 sf-csa = "sf_csa.cli:main"
 structprep = "structprep.cli:main"
+bio-orient = "bio_orient.cli:main"
 
 [tool.setuptools.packages.find]
 where = [
@@ -60,11 +61,12 @@ where = [
   "software/assembly-context/src",
   "software/sf-csa/src",
   "software/structprep/src",
+  "software/bio-orient/src",
 ]
 include = [
   "yauvi_structural_workbench*", "yauvi_platform.structural_workbench*", "yauvi_sources*", "structqc*", "memorient*",
   "state_atlas*", "site_context*", "actstate*", "assembly_context*", "sf_csa*",
-  "structprep*",
+  "structprep*", "bio_orient*",
 ]
 
 [tool.setuptools]

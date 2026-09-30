@@ -5,6 +5,25 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Added the experimental `bio_orient` workflow and standalone `yauvi-bio-orient`
+  package. Declared patches retain exact coordinate, model, assembly, chain-copy
+  and conformer identities, with contacts, solvent burial, compartment evidence
+  and recorded states. Structural, orientational and functional availability
+  remain separate.
+- StructQC now reports local CCD-reference chirality checks across represented
+  components. Missing chemistry remains unevaluated; discrepancies are review
+  flags and do not repair coordinates or automatically block calculations.
+- Added inner-membrane and organelle contexts with mapped compartment evidence.
+  Viewers and exports retain unsigned placements and explicit predictions or
+  conflicts. Patch, neighbor, component and atom selectors trace source records.
+- These additions do not change frozen qualification panels or authorize a release.
+- Updated the reviewer wheel allowlist, CLI reference generator and CI to include
+  Bio-Orient. The dependency preflight recognizes engines owned by the bundled
+  workbench, while still requiring external dependency metadata. Experimental
+  workflow records remain separate from frozen qualification panels.
+- The legacy showcase builder now explicitly projects its six recorded workflows;
+  experimental additions cannot inherit benchmark results or break that builder.
+
 - Added `structprep` as **infrastructure**, not a seventh analysis scope. It
   prepares coordinates for the existing workflows: drops solvent, cryoprotectant
   and buffer components by class, resolves alternate locations, flattens assembly

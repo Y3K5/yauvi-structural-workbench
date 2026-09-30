@@ -34,6 +34,14 @@ workflows:
     gates: [real_foldseek, real_diamond, database_checksums, separate_evidence_legs]
     historical_v1_case_state: passed
     qualification_v2_state: source_adoption_required
+experimental_workflows:
+  bio_orient:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/bio-orient/VERIFICATION.md
+    public_example_check: software/bio-orient/KNOWN_COMPLEX_CHECK.md
+    limitations: Static declared-patch graphs and reference-relative chemistry; annotation agreement does not establish biological qualification.
 release_rule: all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2
 release_rule_satisfied: false
 qualification_runner: qualification-v2/run_qualification.py

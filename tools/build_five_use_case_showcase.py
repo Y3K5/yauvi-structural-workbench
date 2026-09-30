@@ -414,7 +414,12 @@ def build_public_showcase(technical_output: Path, public_output: Path,
     sys.path.insert(0, str(ROOT / "software" / "platform" / "src"))
     try:
         from yauvi_platform.structural_workbench.store import analysis_definitions, tool_readiness
-        definitions = analysis_definitions()
+        # This showcase projects the six recorded qualification workflows.
+        # Experimental additions have separate software/example records and
+        # cannot inherit a qualification narrative or benchmark result here.
+        recorded_workflow_ids = {item["workflow"] for item in qualification["workflows"]}
+        definitions = [item for item in analysis_definitions()
+                       if item["analysis_type"] in recorded_workflow_ids]
         readiness = {item["analysis_type"]: item for item in tool_readiness(ROOT) if not item.get("labs")}
     finally:
         sys.path.pop(0)

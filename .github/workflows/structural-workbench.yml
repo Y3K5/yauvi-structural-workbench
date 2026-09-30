@@ -61,7 +61,7 @@ jobs:
           python -m pytest tools/test_review_candidate.py -q
           python -m pytest tools/test_content_screen.py -q
           python -m pytest software/platform/tests/test_decision_provider.py -q
-      - name: Seven module CLIs answer describe
+      - name: Module CLIs answer describe
         run: |
           structqc describe > /dev/null
           memorient describe > /dev/null
@@ -70,6 +70,12 @@ jobs:
           actstate describe > /dev/null
           assembly-context describe > /dev/null
           sf-csa describe > /dev/null
+          structprep describe > /dev/null
+          bio-orient describe > /dev/null
+      - name: Bundled dependency preflight
+        run: python -c "import runpy; runner=runpy.run_path('tools/run_structural_workbench_tests.py'); problems=runner['preflight'](); print(problems); assert not problems"
+      - name: Suite · Bio-Orient
+        run: python -m pytest software/bio-orient/tests tools/test_distribution_preflight.py -m "not network and not adapter" --tb=short
       # Each suite is its own step so a failure names the suite in the job UI
       # instead of collapsing into one opaque 'exit code 1'. `if: always()` keeps
       # the remaining suites running, so one run reports every failure rather
@@ -156,6 +162,7 @@ jobs:
           # vaccine-orchestration modules. The packaged controller uses only
           # the structural service.
           python -m pytest software/platform/tests/test_structural_workbench.py software/platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
+          python -m pytest software/platform/tests/test_biological_case.py -q
           python -m pytest software/sources/tests -m "not network and not adapter" --tb=short
       - name: Showcase bundle parses without a network build
         run: node --check evidence/public-showcase/app.js

@@ -24,6 +24,7 @@ EXPECTED = {
     "tm_receptor",
     "gram_positive_surface",
     "soluble_secreted",
+    "gram_negative_im", "er_membrane", "mitochondrial_outer", "mitochondrial_inner", "organelle_membrane",
 }
 
 

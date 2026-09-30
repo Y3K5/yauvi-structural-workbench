@@ -67,7 +67,7 @@ class BiologicalCase:
             raise ValueError("Invalid biological case manifest")
         self.document = json.loads(manifest.read_text())
         d = self.document
-        if d.get("schema_version") != "1.0":
+        if d.get("schema_version") not in {"1.0", "1.1"}:
             raise ValueError("Unsupported biological case schema")
         identifier(d.get("id"))
         _required_text(d.get("title"), "case title")
@@ -155,7 +155,8 @@ class BiologicalCase:
             raise ValueError("Duplicate engine evidence identity")
         for membrane in d.get("membranes", []):
             self._binding(membrane["binding"])
-            self._membrane(membrane["binding"])
+            b = membrane["binding"]
+            self.view(b["structure_id"], b["model_id"], b["assembly_id"])
 
     def _source(self, source_id):
         if source_id not in self.payloads:
@@ -219,7 +220,7 @@ class BiologicalCase:
         if not run.get("method") or not re.fullmatch(r"[0-9a-f]{64}", str(run.get("method_source_sha256", ""))):
             raise ValueError("Engine method provenance missing")
         engine = item["engine"]
-        if engine not in {"structqc", "assembly_context", "memorient", "site_context", "actstate", "state_atlas", "sf_csa"}:
+        if engine not in {"structqc", "assembly_context", "memorient", "site_context", "actstate", "state_atlas", "sf_csa", "bio_orient"}:
             raise ValueError("Unsupported biological evidence adapter")
         internal_hash = raw.get("input_sha256", {}).get("structure")
         if internal_hash and internal_hash != binding["coordinate_sha256"]:
@@ -233,16 +234,29 @@ class BiologicalCase:
                 raise ValueError("StructQC model identity mismatch")
             if binding["assembly_id"] != "asu":
                 raise ValueError("Deposited-coordinate StructQC cannot be relabeled as expanded assembly evidence")
-            summary = raw.get("completeness", {})
+            summary = {**raw.get("completeness", {}), "chirality": raw.get("chirality", {"state": "unevaluated"})}
         elif engine == "assembly_context":
             if raw.get("assembly_sha256") != binding["coordinate_sha256"]:
                 raise ValueError("AssemblyContext coordinate identity mismatch")
             if raw.get("reference", {}).get("assembly_id") != binding["assembly_id"]:
                 raise ValueError("AssemblyContext assembly identity mismatch")
             summary = raw.get("summary", raw.get("assembly", {}))
+        elif engine == "bio_orient":
+            expected = {"coordinate_sha256": binding["coordinate_sha256"], "model_id": binding["model_id"],
+                        "assembly_id": binding["assembly_id"], "frame": "deposited_coordinates",
+                        "conformer_policy": "highest_mean_occupancy_per_component; chemistry with alternates remains unevaluated"}
+            if raw.get("binding") != expected:
+                raise ValueError("Bio-Orient model/assembly/frame/conformer identity mismatch")
+            from structqc.coordinate_scope import load_scope
+            structure, _, _, _, models = self.structures[binding["structure_id"]]
+            scope = load_scope(self.directory / self.sources[structure["source_id"]]["path"], models.index(binding["model_id"]), binding["assembly_id"])
+            if scope["coordinate_sha256"] != binding["coordinate_sha256"] or raw.get("atoms") != scope["atoms"] or raw.get("components") != scope["components"] or raw.get("copies") != scope["copies"]:
+                raise ValueError("Bio-Orient atom/copy identities or coordinates differ from selected view")
+            summary = raw.get("sidedness_descriptors", {})
         else:
             summary = raw.get("summary", {})
         return {"id": item["id"], "engine": engine, "source_id": item["source_id"],
+                **({"graph": raw} if engine == "bio_orient" else {}),
                 "binding": binding, "state": "recorded_method_output", "summary": summary,
                 "native_accessibility": "unknown",
                 "interpretation_limit": "A recorded calculation is not evidence of native accessibility, biological activity, or qualification."}
@@ -294,6 +308,8 @@ class BiologicalCase:
         atoms, chains, warnings = [], [], []
         seen_copies = set()
         for label, operator, rotation, translation in copies:
+            from structqc.coordinate_scope import proper_rotation
+            proper_rotation(rotation, translation)
             chain_id = f"{label}:{operator}"
             if chain_id in seen_copies:
                 raise ValueError("Duplicate generated-chain identity")
@@ -359,11 +375,11 @@ class BiologicalCase:
         binding = {"structure_id": structure_id, "coordinate_sha256": self.sources[structure["source_id"]]["sha256"],
                    "sequence_sha256": self.protein["sequence_sha256"], "model_id": model_id, "assembly_id": assembly_id}
         evidence = [e for e in self.evidence if e["binding"] == binding]
-        membrane = self._membrane(binding)
+        membrane = self._membrane(binding, atoms, chains)
         return {"case_id": self.document["id"], **binding, "chains": chains, "atoms": atoms,
                 "membrane": membrane, "evidence": evidence, "warnings": warnings}
 
-    def _membrane(self, binding):
+    def _membrane(self, binding, atoms, chains):
         # A membrane overlay needs its own input-frame record. A legacy normal
         # alone cannot reconstruct the center or an assembly-wide bilayer.
         matches = [m for m in self.document.get("membranes", []) if m.get("binding") == binding]
@@ -384,10 +400,14 @@ class BiologicalCase:
             raise ValueError("Invalid membrane geometry")
         if not np.isclose(np.linalg.norm(normal), 1, atol=1e-6):
             raise ValueError("Membrane normal is not a unit vector")
-        if raw.get("sidedness") != "unknown":
-            raise ValueError("Signed membrane overlays require a supported sidedness adapter")
+        from memorient.sidedness import verify_placement_sidedness
+        authors = {c["id"]: c["auth_asym_id"] for c in chains}
+        marker_atoms = [{"atom": a["atom"], "chain_id": authors[a["chain"]], "chain_copy_id": a["chain"],
+                         "auth_seq_id": a["resi"], "insertion_code": a["icode"], "xyz": [a[k] for k in "xyz"]} for a in atoms]
+        assignment = verify_placement_sidedness(marker_atoms, raw)
         return {"state": "research_only", "normal": normal.tolist(), "center": center.tolist(),
-                "half_thickness": half, "sidedness": "unknown", "source_id": m["source_id"]}
+                "half_thickness": half, "sidedness": raw.get("sidedness", "unknown"),
+                "side_assignment": assignment, "source_id": m["source_id"]}
 
 
 class BiologicalCaseStore:

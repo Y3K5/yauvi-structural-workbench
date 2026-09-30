@@ -116,6 +116,7 @@ class MembraneContext:
     has_membrane_sides: bool = True
     # Whether an LPS shielding band applies to the proximal outer-leaflet surface.
     lps_shielding: bool = False
+    compartments: Tuple[str, str] = ("extracellular", "cytoplasm")
 
     def __post_init__(self) -> None:
         if self.membrane_model not in MembraneModel.ALL:
@@ -165,6 +166,7 @@ class MembraneContext:
             "metrics": list(self.metrics),
             "has_membrane_sides": self.has_membrane_sides,
             "lps_shielding": self.lps_shielding,
+            "compartments": list(self.compartments),
         }
 
 
@@ -175,6 +177,7 @@ class MembraneContext:
 _CONTEXTS = (
     MembraneContext(
         name="gram_negative_om",
+        compartments=("extracellular", "periplasm"),
         description=(
             "Gram-negative bacterial outer membrane. Beta-barrel OMPs sit in an asymmetric "
             "bilayer: an LPS outer leaflet that shields the proximal extracellular surface and "
@@ -262,6 +265,21 @@ _CONTEXTS = (
         lps_shielding=False,
     ),
 )
+
+EXTENDED_CONTEXTS = {
+    "gram_negative_im": ("periplasm", "cytoplasm"),
+    "er_membrane": ("er_lumen", "cytosol"),
+    "mitochondrial_outer": ("cytosol", "intermembrane_space"),
+    "mitochondrial_inner": ("intermembrane_space", "matrix"),
+    "organelle_membrane": ("declared_side_a", "declared_side_b"),
+}
+_CONTEXTS += tuple(MembraneContext(
+    name=name, description="Experimental alpha-helical membrane context; mapped spans and compartment evidence required.",
+    membrane_model=MembraneModel.SYMMETRIC_PHOSPHOLIPID,
+    orientation_method=OrientationMethod.TM_HELIX_BELT,
+    thickness_prior=ThicknessPrior(mean=15.0, sd=3.0),
+    metrics=(Metric.HYDROPHOBIC_BELT, Metric.ROTATION_INVARIANCE), compartments=sides,
+) for name, sides in EXTENDED_CONTEXTS.items())
 
 REGISTRY: Dict[str, MembraneContext] = {c.name: c for c in _CONTEXTS}
 

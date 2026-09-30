@@ -99,6 +99,14 @@ def main() -> int:
             problems.append(f"paper lacks {phrase}")
     benchmark = yaml.safe_load((root / "evidence" / "benchmarks" / "benchmark-manifest.yaml").read_text(encoding="utf-8"))
     benchmark_ids = set(benchmark.get("workflows", {}))
+    experimental = benchmark.get("experimental_workflows", {})
+    for name, scope in experimental.items():
+        if scope.get("release_blocking") is not False or scope.get("qualification_state") != "not_qualified" or scope.get("qualification_panel") is not None:
+            problems.append(f"experimental workflow {name} overstates qualification")
+        for field in ("software_checks", "public_example_check"):
+            if not (root / scope.get(field, "")).is_file():
+                problems.append(f"experimental workflow {name} lacks {field}")
+    benchmark_ids |= set(experimental)
     definitions = analysis_definitions()
     workflow_ids = {item["analysis_type"] for item in definitions}
     if benchmark_ids != workflow_ids:

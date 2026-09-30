@@ -144,6 +144,9 @@ class Handler(BaseHTTPRequestHandler):
         if len(p)==5 and p[:2]==['api','analyses'] and p[3]=='membrane-layer':
             path=store.artifact_path(p[2],p[4],'outputs/memorient/MEMBRANE_LAYER.json')
             return self._send(200,path.read_bytes(),'application/json',attachment='MEMBRANE_LAYER.json')
+        if len(p)==5 and p[:2]==['api','analyses'] and p[3]=='bio-orient':
+            path=store.artifact_path(p[2],p[4],'outputs/bio_orient/BIO_ORIENT.json')
+            return self._send(200,path.read_bytes(),'application/json')
         if p[:1]==['showcase']:
             name='/'.join(p[1:]) or 'index.html'
             if name not in self.server.showcase:return self._send(404,{'error':'not found'})

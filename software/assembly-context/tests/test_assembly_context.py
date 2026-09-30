@@ -89,7 +89,10 @@ def _operator_mmcif(path: Path) -> None:
     structure.name = "synthetic_operator_fixture"
     structure.cell = gemmi.UnitCell(100, 100, 100, 90, 90, 90)
     structure.spacegroup_hm = "P 1"
-    model = gemmi.Model(1)
+    try:
+        model = gemmi.Model(1)
+    except TypeError:  # Gemmi 0.6 accepts the deposited model name as text.
+        model = gemmi.Model("1")
     chain = gemmi.Chain("A")
     residue = gemmi.Residue()
     residue.name = "ALA"

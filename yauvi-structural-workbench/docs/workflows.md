@@ -1,10 +1,18 @@
-# Six structural workflows
+# Seven structural workflows
+
+Six existing workflows retain their recorded qualification scope. Bio-Orient
+adds an experimental interpretation workflow and does not extend the frozen
+Mark 1 qualification panels.
 
 ## Structure QC
 
 Inventories coordinate identity, models, chains, residue numbering, missing
 atoms, provenance, reference mapping, PAE, and imported validation. It does not
 establish native conformation or function.
+
+Local chemistry checks compare atom-mapped chiral volumes to checksum-locked
+CCD references. Missing references, atoms and ambiguous conformers remain
+unevaluated; discrepancies produce review flags without changing coordinates.
 
 ## Membrane orientation
 
@@ -57,3 +65,21 @@ frozen structural/sequence comparisons from independent experimental literature
 supporting a shared functional role. Same-fold counterexamples show why a fold
 assignment alone is insufficient. See the [guided onboarding examples](PILOT_PARTICIPANT_GUIDE.md#cross-species-comparison-two-guided-examples)
 and [case references](SF_CSA_SHOWCASE_CASES.json).
+
+## Bio-Orient (experimental)
+
+Connects declared residue patches to measured neighboring objects and compatible
+membrane, chemical, site and recorded-state evidence. Every finding is bound to
+exact coordinates, model, assembly, chain copy and conformer. Distances, contacts,
+sampled exposure and buried SASA are geometric observations. Structural,
+orientational and functional availability stay separate; missing biological
+evidence remains unknown. No dynamic probability is inferred from a static model.
+
+Both viewers show patch/component selection, normals, labeled membrane planes,
+compartments, chemistry flags and source records. Membrane assignments retain
+supported, predicted, conflicting or unsigned states.
+
+See [the input contract](../../software/bio-orient/README.md),
+[software checks](../../software/bio-orient/VERIFICATION.md) and
+[the public AQP1 example](../../software/bio-orient/KNOWN_COMPLEX_CHECK.md).
+These do not add a qualified scope to Mark 1.
