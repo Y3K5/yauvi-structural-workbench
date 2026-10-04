@@ -67,7 +67,7 @@ class BiologicalCase:
             raise ValueError("Invalid biological case manifest")
         self.document = json.loads(manifest.read_text())
         d = self.document
-        if d.get("schema_version") not in {"1.0", "1.1"}:
+        if d.get("schema_version") not in {"1.0", "1.1", "1.2"}:
             raise ValueError("Unsupported biological case schema")
         identifier(d.get("id"))
         _required_text(d.get("title"), "case title")
@@ -267,6 +267,9 @@ class BiologicalCase:
             descriptions = dict(zip(doc.get("_pdbx_struct_assembly.id", []), doc.get("_pdbx_struct_assembly.details", [])))
             structures.append({"id": sid, "entry_id": record["entry_id"],
                 "sha256": self.sources[record["source_id"]]["sha256"], "models": models,
+                "conformers_by_model": {model: sorted({_blank(alt) for alt, mid in zip(
+                    doc.get('_atom_site.label_alt_id',[]), doc.get('_atom_site.pdbx_PDB_model_num',[]))
+                    if mid == model and _blank(alt)}) for model in models},
                 "assemblies": [{"id": "asu", "label": "Deposited asymmetric unit"}] + [
                     {"id": a.name, "label": f"Assembly {a.name} · {descriptions.get(a.name, 'deposited recipe')}"}
                     for a in parsed.assemblies]})
@@ -275,7 +278,7 @@ class BiologicalCase:
                 "sources": [{k: v for k, v in source.items() if k != "path"} for source in self.sources.values()],
                 "limitations": self.document.get("limitations", [])}
 
-    def view(self, structure_id, model_id, assembly_id):
+    def view(self, structure_id, model_id, assembly_id, conformer="auto"):
         if structure_id not in self.structures:
             raise ValueError("Unknown structure selection")
         structure, doc, parsed, mapping, models = self.structures[structure_id]
@@ -285,6 +288,12 @@ class BiologicalCase:
                   "label_asym_id", "label_entity_id", "label_seq_id", "pdbx_PDB_ins_code", "Cartn_x", "Cartn_y", "Cartn_z",
                   "occupancy", "auth_seq_id", "auth_asym_id", "pdbx_PDB_model_num"]
         atoms_in = [r for r in _rows(doc, "_atom_site.", fields) if r["pdbx_PDB_model_num"] == model_id]
+        alternatives = {_blank(r['label_alt_id']) for r in atoms_in if _blank(r['label_alt_id'])}
+        if conformer not in {'auto','blank',*alternatives}:
+            raise ValueError('Select a represented conformer or blank-only scenario')
+        if len({a['id'] for a in atoms_in}) != len(atoms_in):
+            raise ValueError('Duplicate deposited atom identity')
+        target_entities={str(row['entity_id']) for row in structure.get('sequence_mappings',[])}
         asym_ids = sorted({r["label_asym_id"] for r in atoms_in})
         copies = []
         if assembly_id == "asu":
@@ -338,6 +347,8 @@ class BiologicalCase:
                     alt_scores.setdefault(residue_key, {}).setdefault(alt, []).append(float(a["occupancy"]))
             chosen = {key: sorted(scores, key=lambda alt: (-sum(scores[alt])/len(scores[alt]), alt))[0]
                       for key, scores in alt_scores.items()}
+            if conformer != 'auto':
+                chosen = {key: '' if conformer == 'blank' else conformer for key in alt_scores}
             for a in source_atoms:
                 key = a["label_seq_id"] if _blank(a["label_seq_id"]) else f"het:{a['auth_seq_id']}:{a['pdbx_PDB_ins_code']}:{a['label_comp_id']}"
                 alt = _blank(a["label_alt_id"])
@@ -357,13 +368,17 @@ class BiologicalCase:
                 residue["alternate_locations"] = sorted(alt_scores.get(key, {}))
                 residue["selected_altloc"] = chosen.get(key, "")
                 xyz = rotation @ np.array([float(a["Cartn_x"]), float(a["Cartn_y"]), float(a["Cartn_z"])]) + translation
-                if not np.isfinite(xyz).all():
+                occupancy=float(a['occupancy'])
+                if not np.isfinite(xyz).all() or not math.isfinite(occupancy) or occupancy < 0:
                     raise ValueError("Nonfinite atom coordinates")
                 index = len(atoms)
                 atoms.append({"serial": index, "index": index, "x": float(xyz[0]), "y": float(xyz[1]), "z": float(xyz[2]),
                     "chain": chain_id, "resi": int(a["auth_seq_id"]), "icode": residue["insertion_code"],
                     "resn": a["label_comp_id"], "atom": a["label_atom_id"], "elem": a["type_symbol"],
-                    "hetflag": a["group_PDB"] == "HETATM", "properties": {"residue_id": residue["id"]}})
+                    "hetflag": a["group_PDB"] == "HETATM", "properties": {"residue_id": residue["id"]},
+                    "source_atom_id":a['id'], "label_seq_id":residue['label_seq_id'],
+                    "label_alt_id":alt, "occupancy":occupancy,
+                    "target_protein":a['label_entity_id'] in target_entities, "bonds":[], "bondOrder":[]})
                 residue["atom_indices"].append(index)
             chains.append({"id": chain_id, "label": f"{author} · label {label} · operator {operator}",
                 "source_label_asym_id": label, "auth_asym_id": author, "operator_ids": [operator],
@@ -371,13 +386,17 @@ class BiologicalCase:
         if len(atoms) > MAX_ATOMS:
             raise ValueError("Selected assembly exceeds viewer capacity")
         if any(r["alternate_locations"] for c in chains for r in c["residues"]):
-            warnings.append("One conformer per residue is displayed, selected by mean occupancy; alternate-location IDs remain recorded.")
+            warnings.append("One conformer per residue is displayed, selected by mean occupancy; alternate-location IDs remain recorded." if conformer == 'auto'
+                            else "Only blank atoms and the explicitly selected alternate are displayed; alternate correlations remain unknown.")
         binding = {"structure_id": structure_id, "coordinate_sha256": self.sources[structure["source_id"]]["sha256"],
                    "sequence_sha256": self.protein["sequence_sha256"], "model_id": model_id, "assembly_id": assembly_id}
-        evidence = [e for e in self.evidence if e["binding"] == binding]
-        membrane = self._membrane(binding, atoms, chains)
-        return {"case_id": self.document["id"], **binding, "chains": chains, "atoms": atoms,
-                "membrane": membrane, "evidence": evidence, "warnings": warnings}
+        evidence = [e for e in self.evidence if e["binding"] == binding] if conformer == 'auto' else []
+        membrane = self._membrane(binding, atoms, chains) if conformer == 'auto' else None
+        if conformer != 'auto':
+            warnings.append('Legacy run outputs and membrane placements have no explicit conformer binding; they remain withheld in this selected-conformer view.')
+        from .regions import build_regions
+        return build_regions(self, {"case_id": self.document["id"], **binding, "chains": chains, "atoms": atoms,
+                "conformer_selection":conformer, "membrane": membrane, "evidence": evidence, "warnings": warnings}, doc)
 
     def _membrane(self, binding, atoms, chains):
         # A membrane overlay needs its own input-frame record. A legacy normal

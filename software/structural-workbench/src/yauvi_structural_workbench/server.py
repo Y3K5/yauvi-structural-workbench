@@ -9,7 +9,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from pathlib import Path
-from urllib.parse import urlsplit, unquote
+from urllib.parse import urlsplit, unquote, parse_qs
 from yauvi_platform.structural_workbench import (AnalysisError, StructuralAnalysisStore, StructuralSourceStore,
     StructuralSourceError, analysis_definitions, structural_source_descriptors, template_artifact)
 from .jobs import JobManager
@@ -104,7 +104,7 @@ class Handler(BaseHTTPRequestHandler):
             if len(p)==2:return self._send(200,cases.list())
             case=cases.load(p[2])
             if len(p)==3:return self._send(200,case.summary())
-            if len(p)==7 and p[3]=='view':return self._send(200,case.view(p[4],p[5],p[6]))
+            if len(p)==7 and p[3]=='view':return self._send(200,case.view(p[4],p[5],p[6],parse_qs(urlsplit(self.path).query).get('conformer',['auto'])[0]))
             if len(p)==5 and p[3]=='sources':
                 source=case.sources[p[4]]
                 return self._send(200,case.payloads[p[4]],'application/octet-stream',
@@ -127,6 +127,23 @@ class Handler(BaseHTTPRequestHandler):
             record=ProteinImportStore(store).export_record(p[2])
             return self._send(200,record,attachment=record['accession']+'-source-record.json')
         if p==['api','analyses']:return self._send(200,store.list())
+        if len(p)>=5 and p[:2]==['api','analyses'] and p[3] in {'region-case','region-view','region-sources'}:
+            from yauvi_platform.structural_workbench.biological_case import BiologicalCase
+            from yauvi_platform.structural_workbench import biological_case as case_adapter
+            store.snapshot(p[2],run_id=p[4])
+            case=BiologicalCase(store.artifact_path(p[2],p[4],'outputs/region_explorer/CASE/case.json').parent)
+            if p[3] in {'region-case','region-view'}:
+                from yauvi_platform.structural_workbench import regions
+                import hashlib
+                recorded=json.loads(store.artifact_path(p[2],p[4],'outputs/region_explorer/REGION_MANIFEST.json').read_bytes())['method']
+                current={'source_sha256':hashlib.sha256(Path(regions.__file__).read_bytes()).hexdigest(),
+                         'adapter_sha256':hashlib.sha256(Path(case_adapter.__file__).read_bytes()).hexdigest()}
+                if any(recorded.get(k)!=v for k,v in current.items()):
+                    raise ValueError('Recorded region methods differ from this installed build. Keep the original report and rerun to create a compatible view.')
+            if len(p)==5 and p[3]=='region-case':return self._send(200,case.summary())
+            if len(p)==8 and p[3]=='region-view':return self._send(200,case.view(p[5],p[6],p[7],parse_qs(urlsplit(self.path).query).get('conformer',['auto'])[0]))
+            if len(p)==6 and p[3]=='region-sources':return self._send(200,case.payloads[p[5]],'application/octet-stream',attachment=Path(case.sources[p[5]]['path']).name)
+            raise ValueError('Unknown region explorer route')
         if p==['api','jobs']:return self._send(200,self.server.jobs.list())
         if len(p)==3 and p[:2]==['api','templates']:
             name,kind,content=template_artifact(p[2]);return self._send(200,content,kind,attachment=name)
@@ -180,6 +197,9 @@ class Handler(BaseHTTPRequestHandler):
         if p==['api','examples','structure-qc']:
             from .example import create_example
             return self._send(201,create_example(store.workspace,'example-'+secrets.token_hex(6),without_validation=data.get('without_validation') is True))
+        if p==['api','examples','region-explorer']:
+            from .example import create_region_example
+            return self._send(201,create_region_example(store.workspace,'regions-'+secrets.token_hex(6)))
         if p==['api','analyses']:
             return self._send(201,store.create(data['analysis_id'],analysis_type=data['analysis_type'],question=data['question'],subject_id=data.get('subject_id','')))
         if len(p)==4 and p[:2]==['api','analyses']:

@@ -10,3 +10,11 @@ def create_example(workspace,analysis_id='qc-example',*,without_validation=False
         with as_file(files('yauvi_structural_workbench').joinpath('examples',name)) as path:
             store.add_file(analysis_id,role=role,path=path)
     return store.snapshot(analysis_id)
+
+def create_region_example(workspace,analysis_id='region-example'):
+    store=StructuralAnalysisStore(workspace)
+    store.create(analysis_id,analysis_type='region_explorer',question='Inspect synthetic regions, alternate conformers and missing coverage.',subject_id='synthetic-regions')
+    for role,name in [('structure','regions.cif'),('reference_record','regions-reference.json')]:
+        with as_file(files('yauvi_structural_workbench').joinpath('examples',name)) as path:
+            store.add_file(analysis_id,role=role,path=path)
+    return store.snapshot(analysis_id)

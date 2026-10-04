@@ -5,3 +5,5 @@
 .recorded-graph .panel:not(#bio-orient-panel),.recorded-graph .workspace{display:none}
 .bio-details dl{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:9px 18px;line-height:1.5}.bio-details dt{font-weight:650}.bio-details dd{margin:0;overflow-wrap:anywhere}@media(max-width:600px){.bio-details dl{grid-template-columns:1fr;gap:3px}.bio-details dd{margin-bottom:9px}}
 .bio-view-tools{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.bio-view-tools button{padding:8px 14px}
+
+#region-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;margin:18px 0;max-height:300px;overflow:auto}#region-cards button{text-align:left;line-height:1.5}#region-cards button[aria-pressed=true]{background:#e7f4ed;border-color:#23634f;border-left:4px solid #23634f}#region-detail{overflow-wrap:anywhere;line-height:1.6}#region-detail button{margin:4px;font-size:12px}#region-atom{margin:10px 0}#distance-result{overflow-wrap:anywhere;line-height:1.6}

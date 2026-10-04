@@ -1,7 +1,7 @@
 # YAUVI Structural Workbench
 
 Local, evidence-bounded structural protein analysis with deterministic reports
-and provenance. Eleven installable Python packages covering seven structural-analysis
+and provenance. Eleven installable Python packages covering eight structural-analysis
 workflows, taking protein coordinates to inspectable, checksum-bound evidence.
 
 **This is a pre-public scientific build in open development.** It is not a
@@ -11,7 +11,7 @@ the status section below before relying on any output.
 
 ## What this is
 
-Eleven installable Python packages covering seven structural-analysis workflows,
+Eleven installable Python packages covering eight structural-analysis workflows,
 plus the documentation, paper, community files, benchmarks, and evidence
 showcases that a JOSS reviewer would receive.
 
@@ -38,7 +38,12 @@ Bio-Orient is an additive local development workflow. Its chemistry checks, expa
 membrane contexts, and static graphs do not add a qualified scope to the frozen
 Mark 1 collection. See [its input contract and examples](software/bio-orient/README.md).
 
+Region explorer is an additional experimental workflow within the existing Workbench package. It maps exact source annotations, displays represented component contacts and supports separate review receipts and offline region replay. Try the bundled synthetic region example or read [the input, viewer and replay guide](yauvi-structural-workbench/docs/REGION_EXPLORER.md). The CCD reader now decodes quoted CIF identities without changing coordinates, reference chemistry or review flags.
+
 ## Current local verification
+
+The region/review/replay development build passed **902 tests, 15 skipped, 5 deselected**, with no failures or errors on macOS arm64 / Python 3.13.0. [The suite receipt](yauvi-structural-workbench/docs/REGION_EXPLORER_TESTS.json) records its exact environment and selected software-test scope. This does not establish scientific qualification or independent reproduction.
+
 
 The Bio-Orient upgrade passed **801 tests, 15 skipped, 5 deselected** with no
 failures/errors and dependency preflight enabled on macOS ARM64 / Python 3.11.15.

@@ -1085,3 +1085,7 @@ options:
   --out OUT
 ```
 
+
+## Region explorer and separate evidence review
+
+`analysis create --type region_explorer` accepts mmCIF coordinates, complete reference JSON and an optional checksum-bound region declaration. `example --regions` creates an offline synthetic demonstration. `evidence review`, `evidence bundle` and `evidence replay` preserve original findings and make replay scope explicit. See [Regions, review and replay](REGION_EXPLORER.md) for exact inputs, scope and commands.

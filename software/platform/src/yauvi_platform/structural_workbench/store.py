@@ -295,6 +295,8 @@ _WORKFLOW_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
 
 
 _ROLE_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
+    "reference_record": {"description": "Complete local UniProt JSON: accession, organism, sequence and features.", "why_needed": "Regions require an exact checksum-locked reference.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": ["uniprot_proteomes"], "format_guide": "Complete entry JSON; ambiguous feature positions stay unmapped.", "validator_id": "complete_reference_record", "sensitivity": "sensitive_by_default"},
+    "region_declaration": {"description": "Explicit sequence mappings and scoped source assertions.", "why_needed": "Records correspondence without guessing states from occupancy.", "absence_effect": "unique_exact_correspondence_only", "accepted_artifact_types": [], "source_ids": [], "format_guide": "Schema 1.0 with binding {coordinate_sha256, sequence_sha256}, sequence_mappings and assertions; see REGION_EXPLORER.md.", "validator_id": "bound_region_declaration", "sensitivity": "sensitive_by_default"},
     "patch_declaration": {"description": "The exact residues defining each surface side.", "why_needed": "A side must have an inspectable scope before attaching measurements or biology.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON schema 1.0 with an exact binding, side IDs, chain-copy/author-residue sets and cited declaration sources. Use bio-orient describe --structure to inspect coordinate identities.", "template_id": "bio_orient_patches", "validator_id": "bio_orient_binding", "sensitivity": "sensitive_by_default"},
     "supporting_evidence": {"description": "Membrane, site, assembly or recorded-state outputs with exact scope and method identities.", "why_needed": "Evidence cannot transfer silently between models, assemblies, conformers, frames or patches.", "absence_effect": "unevaluated", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON envelope with engine, binding, method id/source_sha256, output and canonical output_sha256. Side records require exact residue_set. See Bio-Orient README.", "validator_id": "bio_orient_evidence_binding", "sensitivity": "sensitive_by_default"},
     "chemical_reference": {"description": "A local manifest identifying checksum-locked chemical definitions.", "why_needed": "Chirality is compared to atom-mapped CCD reference geometry; chemical names alone cannot establish handedness.", "absence_effect": "chirality_unevaluated", "accepted_artifact_types": [], "source_ids": ["pdb_ccd"], "format_guide": "JSON schema 1.0: components with component_id, path and sha256. Attach each matching CCD file separately.", "template_id": "bio_orient_chemical_references", "validator_id": "ccd_reference_manifest", "sensitivity": "sensitive_by_default"},
@@ -325,6 +327,28 @@ def analysis_definitions() -> list[dict[str, Any]]:
     """Return human-readable, source-aware task definitions for CLI and UI."""
     definitions = _base_analysis_definitions()
     definitions.append({
+        "analysis_type": "region_explorer", "title": "Region explorer",
+        "question": "Which annotated regions and observed component contacts are represented in these exact coordinates?",
+        "module_ids": ["structure_quality", "region_explorer"], "readiness": "experimental",
+        "claim_ceiling": "Exact mapped annotations and static heavy-atom proximity; no affinity, reaction history or inferred state.",
+        "use_when": "Inspect annotated regions, represented components and static snapshots.",
+        "measures": "Mapping coverage and component-to-protein heavy-atom contacts within 5 Å.",
+        "receives": ["Interactive region viewer", "Exact atom selections", "Coverage and sources", "Replayable region records"],
+        "non_claim": "Proximity does not establish a hydrogen bond, affinity or biological importance.",
+        "inputs": [
+            {"role": "structure", "label": "Deposited mmCIF coordinates", "required": True, "multiple": False, "extensions": [".cif", ".mmcif"]},
+            {"role": "reference_record", "label": "Complete UniProt reference JSON", "required": True, "multiple": False, "extensions": [".json"]},
+            {"role": "region_declaration", "label": "Optional identity-bound mappings and source assertions", "required": False, "multiple": False, "extensions": [".json"]},
+            {"role": "provenance", "label": "Coordinate provenance", "required": False, "multiple": False, "extensions": [".json"]},
+            {"role": "validation_report", "label": "External validation", "required": False, "multiple": False, "extensions": [".xml", ".json"]},
+        ],
+        "parameters": [
+            {"name": "model", "label": "Model index (zero-based)", "type": "integer", "default": 0},
+            {"name": "assembly_id", "label": "Deposited assembly (asu for asymmetric unit)", "type": "text", "default": "asu"},
+            {"name": "conformer", "label": "Conformer: auto, blank or deposited alternate ID", "type": "text", "default": "auto"},
+        ],
+    })
+    definitions.append({
         "analysis_type": "bio_orient", "title": "Bio-Orient", "question": "What sides does this structure have, what surrounds them, and what evidence supports their availability?",
         "module_ids": ["structure_quality", "bio_orient"], "readiness": "experimental",
         "claim_ceiling": "Structural geometry and recorded evidence only; sidedness, dynamics and functional availability remain distinct.",
@@ -348,12 +372,14 @@ def analysis_definitions() -> list[dict[str, Any]]:
             {"role": "chemical_component", "label": "Locked CCD component files", "required": False, "multiple": True, "extensions": [".cif", ".mmcif"]},
         ])
     for definition in definitions:
-        definition.update(_WORKFLOW_GUIDANCE.get(definition["analysis_type"], {
+        guidance = _WORKFLOW_GUIDANCE.get(definition["analysis_type"], {
             "use_when": "Inspect declared protein surfaces in their exact structural surroundings.",
             "measures": "Patch geometry, contacts, burial, sidedness evidence and reference-relative chirality.",
             "receives": ["Side-neighbor graph", "Availability dimensions", "Chemical review flags", "Exact provenance"],
             "non_claim": "Geometry does not establish biological reachability, dynamics or function.",
-        }))
+        })
+        for key, value in guidance.items():
+            definition.setdefault(key, value)
         definition["scientific_readiness"] = {
             "software_state": definition["readiness"],
             "external_benchmark": "qualification_v2_incomplete",
@@ -505,6 +531,14 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
         }],
     }
     rows = []
+    packages["region_explorer"] = Path(__file__).resolve().parent
+    required["region_explorer"] = ["gemmi"]
+    optional["region_explorer"] = []
+    scopes["region_explorer"] = [{"scope_id": "coordinate_bound_regions", "scientific_state": "experimental",
+        "benchmark_collection": "none", "release_blocking": False,
+        "supported_subject_class": "exactly mapped reference sequences and deposited mmCIF coordinates",
+        "required_evidence": ["exact coordinates", "complete reference record"],
+        "known_limitations": ["Static proximity and annotations do not establish reaction history or affinity."]}]
     packages["bio_orient"] = source_root / "bio-orient" if source_root is not None else _installed_package_root("bio_orient")
     required["bio_orient"] = ["gemmi"]
     optional["bio_orient"] = []
@@ -1135,6 +1169,19 @@ class StructuralAnalysisStore:
             except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
                 reference_ok, reference_detail = False, str(exc)
             checks.append({"name": "evidence:chemical_reference", "category": "identity_mapping", "ok": reference_ok, "detail": reference_detail})
+        if manifest["analysis_type"] == "region_explorer" and inputs.get("structure") and inputs.get("reference_record"):
+            try:
+                import tempfile
+                from .region_workflow import build_case
+                with tempfile.TemporaryDirectory(prefix="yauvi-region-preflight-") as directory:
+                    build_case(self._one(inputs, "structure"), self._one(inputs, "reference_record"), Path(directory),
+                               declaration=self._one(inputs, "region_declaration", required=False),
+                               model=int(parameters.get("model", 0)), assembly=str(parameters.get("assembly_id", "asu")),
+                               conformer=str(parameters.get("conformer", "auto")))
+                ok, detail = True, "coordinate, reference and selected view identities verified; missing mapping stays unmapped"
+            except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
+                ok, detail = False, str(exc)
+            checks.append({"name": "evidence:region_mapping", "category": "identity_mapping", "ok": ok, "detail": detail})
         if manifest["analysis_type"] == "conformational_state":
             family_ok = str(parameters.get("subject_family", "")) == "ABL1"
             checks.append({"name": "scope:abl_family", "category": "scientific_evidence", "ok": family_ok,
@@ -1431,6 +1478,23 @@ class StructuralAnalysisStore:
                         cancel_event: Any | None = None, on_process: Any | None = None) -> tuple[list[dict[str, Any]], int]:
         inputs = self._materialize_inputs(self._inputs_by_role(manifest), run_dir); params = manifest.get("parameters", {})
         tool = manifest["analysis_type"]; steps: list[dict[str, Any]] = []; codes: list[int] = []
+        if tool == "region_explorer":
+            # Extract, record and checksum the exact sequence for StructQC;
+            # the full original annotation record remains a separate input.
+            reference = self._one(inputs, "reference_record")
+            document = json.loads(reference.read_bytes())
+            sequence, accession = document["sequence"]["value"], document["primaryAccession"]
+            if not re.fullmatch(r"[A-Za-z0-9_.-]+", accession) or not re.fullmatch(r"[A-Z]+", sequence):
+                raise AnalysisError("reference sequence/accession cannot form an exact single-record FASTA")
+            derived = run_dir / "generated" / "region_reference"
+            derived.mkdir(parents=True, exist_ok=True)
+            fasta = derived / "reference.fasta"
+            fasta.write_text(">" + accession + "\n" + sequence + "\n", encoding="ascii")
+            _write_json(derived / "REFERENCE_EXTRACTION.json", {
+                "schema_version": "1.0", "method": "exact_reference_json_sequence_extraction_v1",
+                "source_record_sha256": _sha_file(reference), "sequence_sha256": hashlib.sha256(sequence.encode("ascii")).hexdigest(),
+                "derived_fasta_sha256": _sha_file(fasta), "chemical_identity_policy": "Original coordinate component identities are unchanged."})
+            inputs["reference_fasta"] = [{"materialized_path": str(fasta)}]
         if tool == "sf_csa":
             qc_inputs = dict(inputs)
             qc_inputs["structure"] = inputs.get("query_structure", [])
@@ -1456,6 +1520,19 @@ class StructuralAnalysisStore:
         structure = self._one(inputs, "structure")
         if tool == "structure_qc":
             return steps, code
+        if tool == "region_explorer":
+            output = run_dir / "outputs" / "region_explorer"
+            command = [sys.executable, "-m", "yauvi_platform.structural_workbench.region_workflow",
+                       "--structure", str(structure), "--reference-record", str(self._one(inputs, "reference_record")),
+                       "--out", str(output), "--model", str(params.get("model", 0)),
+                       "--assembly", str(params.get("assembly_id", "asu")), "--conformer", str(params.get("conformer", "auto")),
+                       "--qc-manifest", str(struct_manifest)]
+            declaration = self._one(inputs, "region_declaration", required=False)
+            if declaration: command.extend(("--declaration", str(declaration)))
+            result = self._execute(command, cwd=self.source_root, log_path=run_dir / "logs" / "region-explorer.log",
+                                   cancel_event=cancel_event, on_process=on_process)
+            steps.append({"module_id": "region_explorer", "exit_code": result})
+            return steps, 2 if result == 2 else 1 if code == 1 else result
         if tool == "bio_orient":
             output = run_dir / "outputs" / "bio_orient"
             command = [sys.executable, "-m", "bio_orient.cli", "run", "--structure", str(structure),

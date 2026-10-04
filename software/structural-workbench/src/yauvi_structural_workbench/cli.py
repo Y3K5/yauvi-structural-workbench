@@ -70,6 +70,19 @@ def build_parser() -> argparse.ArgumentParser:
     example = groups.add_parser("example", help="Create a bundled synthetic StructQC analysis offline.")
     example.add_argument("--analysis", default="qc-example")
     example.add_argument("--without-validation", action="store_true")
+    example.add_argument("--regions", action="store_true", help="Create the bundled region/conformer demonstration instead.")
+
+    evidence = groups.add_parser("evidence", help="Local source-bound reviews and offline region replay.")
+    commands = evidence.add_subparsers(dest="action", required=True)
+    for action in ("bundle", "review"):
+        command = commands.add_parser(action)
+        command.add_argument("--case-dir", required=True, help="Self-contained biological case directory.")
+        command.add_argument("--selection", help="JSON file with structure_id, model_id, assembly_id and conformer.")
+        command.add_argument("--out", required=True)
+        if action == "review": command.add_argument("--record", required=True, help="Identity-bound adjudication JSON.")
+    command = commands.add_parser("replay")
+    command.add_argument("--bundle", required=True)
+    command.add_argument("--receipt", help="Write a new replay receipt; refuses overwriting.")
 
     workbench = groups.add_parser("workbench", help="Serve the loopback-only browser workbench.")
     actions = workbench.add_subparsers(dest="action", required=True)
@@ -86,7 +99,26 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     workspace = _workspace(args.workspace)
     try:
+        if args.group == "evidence":
+            from yauvi_platform.structural_workbench import evidence_tools as tools
+            from yauvi_platform.structural_workbench.biological_case import BiologicalCase
+            if args.action == "replay":
+                result = tools.replay(args.bundle)
+                if args.receipt:
+                    with Path(args.receipt).open('xb') as f: f.write(tools.canonical(result))
+                _print(result)
+                return 0 if result['state'] == 'passed' else 1
+            case = BiologicalCase(args.case_dir)
+            selection = json.loads(Path(args.selection).read_text()) if args.selection else tools.selectors(case)[0]
+            if args.action == "bundle": result = tools.bundle(case,args.out,[selection])
+            else: result = tools.review(case,selection,json.loads(Path(args.record).read_text()),args.out)
+            _print(result)
+            return 0
         if args.group == "example":
+            if args.regions:
+                from .example import create_region_example
+                _print(create_region_example(workspace,args.analysis))
+                return 0
             from .example import create_example
             _print(create_example(workspace, args.analysis, without_validation=args.without_validation))
             return 0

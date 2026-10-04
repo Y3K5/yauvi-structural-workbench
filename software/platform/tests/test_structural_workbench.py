@@ -38,11 +38,11 @@ def inputs(tmp_path: Path) -> tuple[Path, Path, Path]:
     return structure, provenance, validation
 
 
-def test_definitions_register_seven_tasks_and_display_metrics():
+def test_definitions_register_eight_tasks_and_display_metrics():
     definitions = analysis_definitions()
     assert [item["analysis_type"] for item in definitions] == [
         "structure_qc", "membrane_orientation", "conformational_state",
-        "functional_site_state", "assembly_interface", "sf_csa", "bio_orient",
+        "functional_site_state", "assembly_interface", "sf_csa", "region_explorer", "bio_orient",
     ]
     assert metric_definitions()["rmsd_A"]["decimals"] == 3
     assert all(item["claim_ceiling"] for item in definitions)
@@ -64,7 +64,8 @@ def test_definitions_register_seven_tasks_and_display_metrics():
         for artifact in source["artifacts"]
     }
     assert {"pdb.coordinates", "pdb.biological_assembly", "wwpdb.validation", "alphafold.pae", "uniprot.sequence"}.issubset(artifact_types)
-    assert definitions[-2]["module_ids"] == ["structure_quality", "sf_csa"]
+    assert definitions[-3]["module_ids"] == ["structure_quality", "sf_csa"]
+    assert definitions[-2]["module_ids"] == ["structure_quality", "region_explorer"]
     assert definitions[-1]["module_ids"] == ["structure_quality", "bio_orient"]
     by_type = {row["analysis_type"]: row for row in definitions}
     assert "topology_evidence" in {row["role"] for row in by_type["membrane_orientation"]["inputs"]}

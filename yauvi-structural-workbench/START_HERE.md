@@ -1,7 +1,8 @@
 # Start YAUVI Structural Workbench
 
-Mark 1 is the primary integrated experience for the six structural-analysis
-workflows in the YAUVI Structural Workbench. The platform name does not rename
+The local development Workbench registers eight analysis workflows, including
+experimental Bio-Orient and Region explorer. The frozen Mark 1 qualification
+collection retains its original six-workflow scope. The platform name does not rename
 the standalone scientific packages or their command-line interfaces.
 
 ## Fastest local start
@@ -64,3 +65,15 @@ not external scientific validation.
 
 Use `PLATFORM_IDENTITY.json` as the source of truth for display and share labels.
 Use `CITATION.cff` for software citation metadata.
+
+## Local candidate: prescribed actor geometry
+
+AssemblyContext now has `access validate` and `access run` for checksummed actor
+conformations, exact mappings, molecular scenes and prescribed straight paths.
+See [the contract](../software/assembly-context/ACCESS_SPEC.md). This CLI diagnostic
+keeps recognition/effect unknown and does not extend qualified scope. The new
+source remains a local candidate; no installation or public release was checked.
+
+## Regions and reproducible review
+
+Coordinates and a complete reference record produce exact region selections, source cards and represented heavy-atom contacts. Open Region explorer from Findings. Separate review receipts and a locked offline region replay kit work with other self-contained cases. See [the guide](docs/REGION_EXPLORER.md).
