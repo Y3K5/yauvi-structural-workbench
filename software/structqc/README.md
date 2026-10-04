@@ -25,3 +25,7 @@ Outputs are deterministic and contain no absolute paths:
 
 The module reports coordinate evidence. It does not establish native structure,
 function, biological assembly, or experimental validity.
+
+## CCD lexical identity checks
+
+Local CCD parsing decodes CIF quotation syntax using Gemmi, preserving atom primes, component identity and null markers. General synthetic tests cover quoted/bare identities across amino acids, ligands, sugars and lipids, matching/inverted centers, missing atoms, alternative conformers, ambiguity, reference checksums and proper transformations. This reader correction changes no coordinates or chemical assignments; existing findings require their own separate review.

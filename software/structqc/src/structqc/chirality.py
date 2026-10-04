@@ -9,13 +9,16 @@ from .coordinate_scope import load_scope
 
 
 def _rows(block, prefix, fields):
+    import gemmi
     columns = [list(block.find_values(prefix + field)) for field in fields]
     if not columns[0]:
         return []
     if any(c and len(c) != len(columns[0]) for c in columns):
         raise ValueError("Incomplete CCD category")
     columns = [c or ["?"] * len(columns[0]) for c in columns]
-    return [dict(zip(fields, values)) for values in zip(*columns)]
+    # Decode lexical quotes, keeping CIF missing-value tokens explicit.
+    return [dict(zip(fields, (v if v in {"?", "."} else gemmi.cif.as_string(v)
+                              for v in values))) for values in zip(*columns)]
 
 
 def read_references(manifest_path):
@@ -39,7 +42,7 @@ def read_references(manifest_path):
         if cid in references:
             raise ValueError("Duplicate chemical reference")
         document = gemmi.cif.read_string(raw.decode())
-        blocks = [b for b in document if b.find_value("_chem_comp.id") == cid]
+        blocks = [b for b in document if gemmi.cif.as_string(b.find_value("_chem_comp.id") or "?") == cid]
         if len(blocks) != 1:
             raise ValueError("CCD component identity mismatch")
         block = blocks[0]
@@ -49,8 +52,8 @@ def read_references(manifest_path):
         atom_map = {a["atom_id"]: a for a in atoms}
         if len(atom_map) != len(atoms):
             raise ValueError("Duplicate CCD atom identity")
-        references[cid] = {"atoms": atom_map, "bonds": bonds, "sha256": digest, "component_type": block.find_value("_chem_comp.type") or "unknown",
-                           "ambiguous": block.find_value("_chem_comp.pdbx_ambiguous_flag") == "Y"}
+        references[cid] = {"atoms": atom_map, "bonds": bonds, "sha256": digest, "component_type": gemmi.cif.as_string(block.find_value("_chem_comp.type") or "unknown"),
+                           "ambiguous": gemmi.cif.as_string(block.find_value("_chem_comp.pdbx_ambiguous_flag") or "?") == "Y"}
         hashes[cid] = digest
     return references, {"manifest_sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "component_sha256": hashes}
 
