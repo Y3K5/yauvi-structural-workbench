@@ -18,7 +18,7 @@ from pathlib import Path
 
 CLIS: list[tuple[str, str, list[str]]] = [
     ("yauvi", "Structural analysis case store: create, add inputs, validate, run, export.",
-     ["workbench open", "workbench serve", "example", "analysis types", "analysis inputs", "analysis create", "analysis add", "analysis parameters", "analysis validate", "analysis run", "analysis export"]),
+     ["workbench open", "workbench serve", "example", "analysis types", "analysis inputs", "analysis create", "analysis add", "analysis parameters", "analysis validate", "analysis run", "analysis export", "evidence review", "evidence bundle", "evidence replay"]),
     ("structqc", "Coordinate trust: completeness, provenance class, imported validation.",
      ["describe", "validate", "fetch", "run"]),
     ("memorient", "Membrane orientation and sidedness labelling.",
@@ -49,7 +49,7 @@ Regenerate with `python tools/build_cli_reference.py`.
 Common conventions across the scientific modules:
 
 - `yauvi --version` identifies the installed distribution.
-- `yauvi analysis types` lists the seven workflows and their interpretation limits.
+- `yauvi analysis types` lists the workflows and their interpretation limits.
 - `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.
@@ -59,6 +59,12 @@ Common conventions across the scientific modules:
   reference-fetch flag.
 - Exit codes: `0` completed, `1` scientifically incomplete, `2` invalid input or
   configuration. `1` is a real result, not a failure to be retried around.
+
+The Region explorer accepts mmCIF coordinates, complete reference JSON and an
+optional checksum-bound region declaration. `yauvi example --regions` creates an
+offline synthetic demonstration. The evidence commands below preserve original
+findings and state replay scope. See [Regions, review and replay](REGION_EXPLORER.md)
+for exact inputs and interpretation limits.
 """
 
 
@@ -103,7 +109,7 @@ def build() -> tuple[str, list[str]]:
                 out.append(f"```\n{body}\n```\n")
             else:
                 missing.append(f"{name} {sub}")
-    return "\n".join(out) + "\n", missing
+    return "\n".join(out).rstrip() + "\n", missing
 
 
 def main(argv: list[str] | None = None) -> int:

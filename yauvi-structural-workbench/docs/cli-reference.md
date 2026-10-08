@@ -6,7 +6,7 @@ Regenerate with `python tools/build_cli_reference.py`.
 Common conventions across the scientific modules:
 
 - `yauvi --version` identifies the installed distribution.
-- `yauvi analysis types` lists the seven workflows and their interpretation limits.
+- `yauvi analysis types` lists the workflows and their interpretation limits.
 - `yauvi analysis inputs --type TYPE` lists accepted input roles and formats.
 - `describe` prints the module contract as JSON: inputs, outputs, and the claim ceiling.
 - `validate` checks inputs without producing an evidence record.
@@ -16,6 +16,12 @@ Common conventions across the scientific modules:
   reference-fetch flag.
 - Exit codes: `0` completed, `1` scientifically incomplete, `2` invalid input or
   configuration. `1` is a real result, not a failure to be retried around.
+
+The Region explorer accepts mmCIF coordinates, complete reference JSON and an
+optional checksum-bound region declaration. `yauvi example --regions` creates an
+offline synthetic demonstration. The evidence commands below preserve original
+findings and state replay scope. See [Regions, review and replay](REGION_EXPLORER.md)
+for exact inputs and interpretation limits.
 
 
 | Command | Purpose |
@@ -41,14 +47,15 @@ Structural analysis case store: create, add inputs, validate, run, export.
 
 ```
 usage: yauvi [-h] [--version] [--workspace WORKSPACE]
-             {analysis,example,workbench} ...
+             {analysis,example,evidence,workbench} ...
 
 Local, evidence-bounded structural protein analysis.
 
 positional arguments:
-  {analysis,example,workbench}
+  {analysis,example,evidence,workbench}
     analysis            Create, validate, run, and export structural analyses.
     example             Create a bundled synthetic StructQC analysis offline.
+    evidence            Local source-bound reviews and offline region replay.
     workbench           Serve the loopback-only browser workbench.
 
 options:
@@ -90,11 +97,14 @@ options:
 
 ```
 usage: yauvi example [-h] [--analysis ANALYSIS] [--without-validation]
+                     [--regions]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS
   --without-validation
+  --regions             Create the bundled region/conformer demonstration
+                        instead.
 ```
 
 ### `yauvi analysis types`
@@ -110,11 +120,11 @@ options:
 
 ```
 usage: yauvi analysis inputs [-h] --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
 
 options:
   -h, --help            show this help message and exit
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
                         Analysis type from 'analysis types'.
 ```
 
@@ -122,13 +132,13 @@ options:
 
 ```
 usage: yauvi analysis create [-h] --analysis ANALYSIS --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS   Local case identifier.
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,bio_orient}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
                         Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
@@ -188,6 +198,48 @@ options:
   -h, --help           show this help message and exit
   --analysis ANALYSIS
   --out OUT
+```
+
+### `yauvi evidence review`
+
+```
+usage: yauvi evidence review [-h] --case-dir CASE_DIR [--selection SELECTION]
+                             --out OUT --record RECORD
+
+options:
+  -h, --help            show this help message and exit
+  --case-dir CASE_DIR   Self-contained biological case directory.
+  --selection SELECTION
+                        JSON file with structure_id, model_id, assembly_id and
+                        conformer.
+  --out OUT
+  --record RECORD       Identity-bound adjudication JSON.
+```
+
+### `yauvi evidence bundle`
+
+```
+usage: yauvi evidence bundle [-h] --case-dir CASE_DIR [--selection SELECTION]
+                             --out OUT
+
+options:
+  -h, --help            show this help message and exit
+  --case-dir CASE_DIR   Self-contained biological case directory.
+  --selection SELECTION
+                        JSON file with structure_id, model_id, assembly_id and
+                        conformer.
+  --out OUT
+```
+
+### `yauvi evidence replay`
+
+```
+usage: yauvi evidence replay [-h] --bundle BUNDLE [--receipt RECEIPT]
+
+options:
+  -h, --help         show this help message and exit
+  --bundle BUNDLE
+  --receipt RECEIPT  Write a new replay receipt; refuses overwriting.
 ```
 
 
@@ -1084,8 +1136,3 @@ options:
   --evidence EVIDENCE
   --out OUT
 ```
-
-
-## Region explorer and separate evidence review
-
-`analysis create --type region_explorer` accepts mmCIF coordinates, complete reference JSON and an optional checksum-bound region declaration. `example --regions` creates an offline synthetic demonstration. `evidence review`, `evidence bundle` and `evidence replay` preserve original findings and make replay scope explicit. See [Regions, review and replay](REGION_EXPLORER.md) for exact inputs, scope and commands.

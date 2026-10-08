@@ -35,6 +35,13 @@ workflows:
     historical_v1_case_state: passed
     qualification_v2_state: source_adoption_required
 experimental_workflows:
+  region_explorer:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/platform/tests/test_region_explorer.py
+    public_example_check: yauvi-structural-workbench/docs/REGION_EXPLORER_VERIFICATION.md
+    limitations: Exact source-bound mapping and represented static contacts only; software checks do not establish biological qualification or independent reproduction.
   bio_orient:
     qualification_state: not_qualified
     release_blocking: false
