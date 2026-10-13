@@ -1,0 +1,194 @@
+{
+  "assemblies": [
+    {
+      "assembly_id": "1",
+      "operator_expression": "1",
+      "pdb": "6SMQ",
+      "query_members": [
+        "Q1",
+        "Q2"
+      ]
+    },
+    {
+      "assembly_id": "1",
+      "operator_expression": "1",
+      "pdb": "6SLN",
+      "query_members": [
+        "Q3",
+        "Q4"
+      ]
+    },
+    {
+      "assembly_id": "1",
+      "operator_expression": "1",
+      "pdb": "6SLJ",
+      "query_members": [
+        "Q5",
+        "Q6"
+      ]
+    },
+    {
+      "assembly_id": "1",
+      "operator_expression": "1,2",
+      "pdb": "6SLI",
+      "query_members": [
+        "Q7",
+        "Q7"
+      ]
+    },
+    {
+      "assembly_id": "2",
+      "operator_expression": "1,3",
+      "pdb": "6SLI",
+      "query_members": [
+        "Q8",
+        "Q8"
+      ]
+    },
+    {
+      "assembly_id": "3",
+      "operator_expression": "1",
+      "pdb": "6SLI",
+      "query_members": [
+        "Q9",
+        "Q10"
+      ]
+    }
+  ],
+  "burial_numerical_tie_A2": 0.001,
+  "created_utc": "2026-09-06T19:57:42.154901+00:00",
+  "decision_rules": {
+    "max_rmsd_A": 2.5,
+    "min_margin_A": 0.25
+  },
+  "minimum_coverage_per_protein": 0.95,
+  "numerical_control_tolerance_A": 0.0001,
+  "protomers": {
+    "Q1": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "B",
+        "E"
+      ],
+      "pdb": "6SMQ",
+      "ragA_auth": "E",
+      "ragB_auth": "D"
+    },
+    "Q10": {
+      "assembly_id": "3",
+      "candidate_ragA_auth": [
+        "B",
+        "D",
+        "G",
+        "J"
+      ],
+      "pdb": "6SLI",
+      "ragA_auth": "J",
+      "ragB_auth": "I"
+    },
+    "Q2": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "B",
+        "E"
+      ],
+      "pdb": "6SMQ",
+      "ragA_auth": "B",
+      "ragB_auth": "A"
+    },
+    "Q3": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "A",
+        "B"
+      ],
+      "pdb": "6SLN",
+      "ragA_auth": "A",
+      "ragB_auth": "D"
+    },
+    "Q4": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "A",
+        "B"
+      ],
+      "pdb": "6SLN",
+      "ragA_auth": "B",
+      "ragB_auth": "C"
+    },
+    "Q5": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "A",
+        "B"
+      ],
+      "pdb": "6SLJ",
+      "ragA_auth": "A",
+      "ragB_auth": "C"
+    },
+    "Q6": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "A",
+        "B"
+      ],
+      "pdb": "6SLJ",
+      "ragA_auth": "B",
+      "ragB_auth": "D"
+    },
+    "Q7": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "B",
+        "D",
+        "G",
+        "J"
+      ],
+      "pdb": "6SLI",
+      "ragA_auth": "B",
+      "ragB_auth": "A"
+    },
+    "Q8": {
+      "assembly_id": "2",
+      "candidate_ragA_auth": [
+        "B",
+        "D",
+        "G",
+        "J"
+      ],
+      "pdb": "6SLI",
+      "ragA_auth": "D",
+      "ragB_auth": "C"
+    },
+    "Q9": {
+      "assembly_id": "3",
+      "candidate_ragA_auth": [
+        "B",
+        "D",
+        "G",
+        "J"
+      ],
+      "pdb": "6SLI",
+      "ragA_auth": "G",
+      "ragB_auth": "F"
+    },
+    "REF_CLOSED": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "B"
+      ],
+      "pdb": "6SM3",
+      "ragA_auth": "B",
+      "ragB_auth": "A"
+    },
+    "REF_OPEN": {
+      "assembly_id": "1",
+      "candidate_ragA_auth": [
+        "B"
+      ],
+      "pdb": "6SML",
+      "ragA_auth": "B",
+      "ragB_auth": "A"
+    }
+  }
+}

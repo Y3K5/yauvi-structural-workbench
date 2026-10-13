@@ -1,0 +1,1166 @@
+{
+  "acquired_on": "2026-09-06",
+  "collection_id": "case-study-ragab-conformational-states",
+  "complex": "RagAB SusC/SusD-like peptide importer",
+  "implementation_exposure": "The inherited chain counts and terminal spans for X-ray queries were read before execution; terminal-span checks are not blinded.",
+  "in_qualification_panel": false,
+  "note": "Source bytes are locked; a mismatch requires investigation. It is not automatically a re-release.",
+  "organism": "Porphyromonas gingivalis",
+  "schema_version": "1.1",
+  "sources": [
+    {
+      "artifact": "sources/6SML.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "6"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "hexameric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,D,E"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1,2"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1",
+          "2"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.0",
+          "-1.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.0",
+          "-1.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "0.0",
+          "0.0"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.0",
+          "1.0"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555",
+          "?"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "?",
+          "?"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation",
+          "point symmetry operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "0.0",
+          "230.74040"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.0",
+          "230.98060"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.0",
+          "0.0"
+        ]
+      },
+      "bytes": 2054268,
+      "chains": [
+        {
+          "chain": "A",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "B",
+          "modelled_residues": 911,
+          "polymer": "RagA",
+          "span": [
+            103,
+            1017
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 12,
+          "polymer": "peptide",
+          "span": [
+            0,
+            11
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SML"
+      },
+      "composition": {
+        "RagA": 1,
+        "RagB": 1,
+        "peptide": 1
+      },
+      "depositors_state_name": "open-open",
+      "latest_revision_date": "2025-10-01",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "ELECTRON MICROSCOPY",
+      "pdb_entry_id": "6SML",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 3.4,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-08-05",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2025-04-09",
+        "2025-04-09",
+        "2025-07-02",
+        "2025-07-02",
+        "2025-10-01",
+        "2025-10-01"
+      ],
+      "sha256": "2fcbbd182089917c7c18b171d0eb9bca3cd9776030d4e85755f0f8018ae16115",
+      "url": "https://files.rcsb.org/download/6SML.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6sml_validation.xml.gz",
+        "download_sha256": "11f78e305a1f753f133d041f43d85e42d4900eac52ed79ec80d35aef2e1ab8c3",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SML",
+        "report_revision_date": "2025-10-01",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sm/6sml/6sml_validation.xml.gz",
+        "xml_artifact": "sources/validation/6sml_validation.xml",
+        "xml_sha256": "c57afabf9f5850a14cdcc0b82499aa678eee15309c113d264c47a40022578f57"
+      }
+    },
+    {
+      "artifact": "sources/6SMQ.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "5"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "pentameric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,D,E,F,G,H,I,J,K,L,M,N"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "?"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.0000000000"
+        ]
+      },
+      "bytes": 4078445,
+      "chains": [
+        {
+          "chain": "A",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "B",
+          "modelled_residues": 903,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        },
+        {
+          "chain": "D",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "E",
+          "modelled_residues": 911,
+          "polymer": "RagA",
+          "span": [
+            103,
+            1017
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SMQ"
+      },
+      "composition": {
+        "RagA": 2,
+        "RagB": 2,
+        "peptide": 1
+      },
+      "depositors_state_name": "open-closed",
+      "latest_revision_date": "2025-07-02",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "ELECTRON MICROSCOPY",
+      "pdb_entry_id": "6SMQ",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 3.3,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-08-05",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2024-11-13",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2025-07-02",
+        "2025-07-02"
+      ],
+      "sha256": "609d6e5e784fb0afe3e903730ffdbd5c43eccf033b90d16ad9921b9cd86553e4",
+      "url": "https://files.rcsb.org/download/6SMQ.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6smq_validation.xml.gz",
+        "download_sha256": "01a3ff126c1d6438d7cc800e050da4028e914e8f8d34435140f201eb2ffd41b0",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SMQ",
+        "report_revision_date": "2025-07-02",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sm/6smq/6smq_validation.xml.gz",
+        "xml_artifact": "sources/validation/6smq_validation.xml",
+        "xml_sha256": "eed622cac6efbe4fa2922909da0f6b97c39276795a07f01a43cd84893495960a"
+      }
+    },
+    {
+      "artifact": "sources/6SM3.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "3"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "trimeric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,D,E"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1,2"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1",
+          "2"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.000000",
+          "-1.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.000000",
+          "-0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.000000",
+          "0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.000000",
+          "-0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.000000",
+          "-1.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "-0.000000",
+          "-0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.000000",
+          "0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "-0.000000",
+          "-0.000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.000000",
+          "1.000000"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555",
+          "?"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "x,y,z",
+          "?"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation",
+          "point symmetry operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "-0.00000",
+          "231.35560"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.00000",
+          "231.00900"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.00000",
+          "0.00000"
+        ]
+      },
+      "bytes": 2073583,
+      "chains": [
+        {
+          "chain": "A",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "B",
+          "modelled_residues": 903,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SM3"
+      },
+      "composition": {
+        "RagA": 1,
+        "RagB": 1,
+        "peptide": 1
+      },
+      "depositors_state_name": "closed-closed",
+      "latest_revision_date": "2025-10-01",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "ELECTRON MICROSCOPY",
+      "pdb_entry_id": "6SM3",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 3.3,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-08-05",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2020-05-20",
+        "2025-04-09",
+        "2025-04-09",
+        "2025-07-02",
+        "2025-07-02",
+        "2025-10-01",
+        "2025-10-01"
+      ],
+      "sha256": "85baf763ebaf90fa540b8a53e7afa940a5269d2c7b4c152953a564d4236a9b0f",
+      "url": "https://files.rcsb.org/download/6SM3.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6sm3_validation.xml.gz",
+        "download_sha256": "17c80bce97cb6b676b7404eb06079a9e1a88d082cc4499427fc68f2ceab73401",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SM3",
+        "report_revision_date": "2025-10-01",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sm/6sm3/6sm3_validation.xml.gz",
+        "xml_artifact": "sources/validation/6sm3_validation.xml",
+        "xml_sha256": "a3eb8bcc1c8948ea26d9878b232d774054122f3bc7b685d39b974edc823b4f38"
+      }
+    },
+    {
+      "artifact": "sources/6SLN.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "6"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "hexameric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "x,y,z"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.0000000000"
+        ]
+      },
+      "bytes": 4739747,
+      "chains": [
+        {
+          "chain": "A",
+          "modelled_residues": 903,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "B",
+          "modelled_residues": 902,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 481,
+          "polymer": "RagB",
+          "span": [
+            20,
+            500
+          ]
+        },
+        {
+          "chain": "D",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "P",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            2,
+            14
+          ]
+        },
+        {
+          "chain": "Q",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            2,
+            14
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SLN"
+      },
+      "composition": {
+        "RagA": 2,
+        "RagB": 2,
+        "peptide": 2
+      },
+      "depositors_state_name": null,
+      "latest_revision_date": "2025-10-01",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "X-RAY DIFFRACTION",
+      "pdb_entry_id": "6SLN",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 2.61,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-08-05",
+        "2024-01-24",
+        "2025-10-01"
+      ],
+      "sha256": "52c8cde26c625d4333a0cdf6405954ff36725c0240ad3b1c06f86efb85d181af",
+      "url": "https://files.rcsb.org/download/6SLN.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6sln_validation.xml.gz",
+        "download_sha256": "98e64401e316b6ed9b1edcfa1aa785821b8037fd55d2a4a4de480917fc5bd5e0",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SLN",
+        "report_revision_date": "2025-10-01",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sl/6sln/6sln_validation.xml.gz",
+        "xml_artifact": "sources/validation/6sln_validation.xml",
+        "xml_sha256": "ac82c7d504d95500662854f0df2c030c52c579e21d188bac9e73900c6606103b"
+      }
+    },
+    {
+      "artifact": "sources/6SLJ.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "6"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "hexameric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "x,y,z"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.0000000000"
+        ]
+      },
+      "bytes": 4654725,
+      "chains": [
+        {
+          "chain": "B",
+          "modelled_residues": 900,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "A",
+          "modelled_residues": 898,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "D",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "P",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        },
+        {
+          "chain": "Q",
+          "modelled_residues": 10,
+          "polymer": "peptide",
+          "span": [
+            1,
+            10
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SLJ"
+      },
+      "composition": {
+        "RagA": 2,
+        "RagB": 2,
+        "peptide": 2
+      },
+      "depositors_state_name": null,
+      "latest_revision_date": "2025-10-01",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "X-RAY DIFFRACTION",
+      "pdb_entry_id": "6SLJ",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 3.04,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-08-05",
+        "2024-01-24",
+        "2025-10-01"
+      ],
+      "sha256": "d9d54a1dff23e1f1e45714136169a750753f1855c1a70f1930f277276f2693ff",
+      "url": "https://files.rcsb.org/download/6SLJ.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6slj_validation.xml.gz",
+        "download_sha256": "cdd069a1a1b0546ab8a7a3b5de57c9f5fb771aed3448f57cc484a16f9da67550",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SLJ",
+        "report_revision_date": "2025-10-01",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sl/6slj/6slj_validation.xml.gz",
+        "xml_artifact": "sources/validation/6slj_validation.xml",
+        "xml_sha256": "a3cda245d7cd7adcded0d831df8b20359f007ddb8c07c986fed23db70b733662"
+      }
+    },
+    {
+      "artifact": "sources/6SLI.cif",
+      "assembly_metadata": {
+        "_pdbx_struct_assembly.details": [
+          "author_and_software_defined_assembly",
+          "author_and_software_defined_assembly",
+          "author_and_software_defined_assembly"
+        ],
+        "_pdbx_struct_assembly.id": [
+          "1",
+          "2",
+          "3"
+        ],
+        "_pdbx_struct_assembly.method_details": [
+          "PISA",
+          "PISA",
+          "PISA"
+        ],
+        "_pdbx_struct_assembly.oligomeric_count": [
+          "6",
+          "6",
+          "6"
+        ],
+        "_pdbx_struct_assembly.oligomeric_details": [
+          "hexameric",
+          "hexameric",
+          "hexameric"
+        ],
+        "_pdbx_struct_assembly_gen.assembly_id": [
+          "1",
+          "2",
+          "3"
+        ],
+        "_pdbx_struct_assembly_gen.asym_id_list": [
+          "A,B,C,M,N,O",
+          "D,E,F",
+          "G,H,I,J,K,L"
+        ],
+        "_pdbx_struct_assembly_gen.oper_expression": [
+          "1,2",
+          "1,3",
+          "1"
+        ],
+        "_pdbx_struct_oper_list.id": [
+          "1",
+          "2",
+          "3"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][1]": [
+          "1.0000000000",
+          "-1.0000000000",
+          "-1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][2]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[1][3]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][1]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][2]": [
+          "1.0000000000",
+          "1.0000000000",
+          "1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[2][3]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][1]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][2]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.matrix[3][3]": [
+          "1.0000000000",
+          "-1.0000000000",
+          "-1.0000000000"
+        ],
+        "_pdbx_struct_oper_list.name": [
+          "1_555",
+          "3_755",
+          "3_655"
+        ],
+        "_pdbx_struct_oper_list.symmetry_operation": [
+          "x,y,z",
+          "-x+2,y,-z+1/2",
+          "-x+1,y,-z+1/2"
+        ],
+        "_pdbx_struct_oper_list.type": [
+          "identity operation",
+          "crystal symmetry operation",
+          "crystal symmetry operation"
+        ],
+        "_pdbx_struct_oper_list.vector[1]": [
+          "0.0000000000",
+          "381.1200000000",
+          "190.5600000000"
+        ],
+        "_pdbx_struct_oper_list.vector[2]": [
+          "0.0000000000",
+          "0.0000000000",
+          "0.0000000000"
+        ],
+        "_pdbx_struct_oper_list.vector[3]": [
+          "0.0000000000",
+          "184.6200000000",
+          "184.6200000000"
+        ]
+      },
+      "bytes": 8962961,
+      "chains": [
+        {
+          "chain": "A",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "B",
+          "modelled_residues": 900,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "P",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        },
+        {
+          "chain": "C",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "D",
+          "modelled_residues": 900,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "E",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        },
+        {
+          "chain": "F",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "G",
+          "modelled_residues": 900,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "H",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        },
+        {
+          "chain": "I",
+          "modelled_residues": 482,
+          "polymer": "RagB",
+          "span": [
+            20,
+            501
+          ]
+        },
+        {
+          "chain": "J",
+          "modelled_residues": 900,
+          "polymer": "RagA",
+          "span": [
+            115,
+            1017
+          ]
+        },
+        {
+          "chain": "K",
+          "modelled_residues": 13,
+          "polymer": "peptide",
+          "span": [
+            1,
+            13
+          ]
+        }
+      ],
+      "citation": {
+        "entry": "PDB:6SLI"
+      },
+      "composition": {
+        "RagA": 4,
+        "RagB": 4,
+        "peptide": 4
+      },
+      "depositors_state_name": null,
+      "latest_revision_date": "2024-11-20",
+      "license": "CC0 1.0 Universal (wwPDB)",
+      "method": "X-RAY DIFFRACTION",
+      "pdb_entry_id": "6SLI",
+      "provider": "wwPDB/RCSB PDB",
+      "resolution_A": 3.38,
+      "revision_dates": [
+        "2020-05-20",
+        "2020-08-05",
+        "2024-01-24",
+        "2024-11-20"
+      ],
+      "sha256": "c2d4b93186ff62b298217e92f2decc51b2c94948ae31ad80f6a3a216b029c586",
+      "url": "https://files.rcsb.org/download/6SLI.cif",
+      "validation": {
+        "download_artifact": "sources/validation/6sli_validation.xml.gz",
+        "download_sha256": "cc6e13a9eaa0c03bfab65d0ac00b0e4f6f6775b3747cb8e3dada2b36a6dc2b67",
+        "identity_revision_match": true,
+        "limitation": "Entry ID and revision matched; report does not independently authenticate coordinate bytes.",
+        "report_pdbid": "6SLI",
+        "report_revision_date": "2024-11-20",
+        "retrieved_utc": "2026-09-06T19:57:42.154901+00:00",
+        "url": "https://files.wwpdb.org/pub/pdb/validation_reports/sl/6sli/6sli_validation.xml.gz",
+        "xml_artifact": "sources/validation/6sli_validation.xml",
+        "xml_sha256": "f76a74b9e5d26635b358fffcb3352a6b227a854a760e48a508267b9cc3d1b568"
+      }
+    }
+  ],
+  "uniprot": {
+    "RagA": "Q7MXJ7",
+    "RagB": "F5H948"
+  }
+}

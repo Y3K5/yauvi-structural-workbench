@@ -1,0 +1,15 @@
+schema_version: "1.0"
+module_id: conformational_state
+requires:
+  - source_id: pdb
+    role: "experimental active/inactive reference structures with declared state evidence"
+    required: false
+  - source_id: alphafold_db
+    role: "predicted query coordinates; never accepted as known-state references"
+    required: false
+  - source_id: uniprot_proteomes
+    role: "sequence identity used for reference-to-query residue mapping"
+    required: false
+  - source_id: sifts
+    role: "PDB-to-UniProt residue mapping retained with ambiguity and release provenance"
+    required: false
