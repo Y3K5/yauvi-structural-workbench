@@ -30,12 +30,27 @@ The case study's author must record:
   making that judgment.
 
 The exact built wheel was also installed in an isolated environment on macOS
-arm64 / Python 3.12.0. The installed distribution ran the public case twice;
-12 compared output files were byte-identical. A separate installed-wheel browser
-check completed the synthetic StructQC example flow with zero console errors.
-These checks support reproducibility and software behavior only. They do not
-establish scientific qualification or resolve whether the case constitutes
-research use. The recorded state and wheel identity are in
+arm64 / Python 3.12.0. That hand-run — the installed distribution ran the
+public case twice, and 12 compared output files were byte-identical — is not
+the evidence of determinism. The evidence is the determinism job in
+[`.github/workflows/structural-workbench.yml`](../../.github/workflows/structural-workbench.yml).
+It runs this public case through `StructuralAnalysisStore` twice on
+`ubuntu-latest` and on `macos-latest` (arm64), for Python 3.10–3.13,
+byte-compares every emitted file, and diffs those artifacts across the
+runners. The files compared, the empty within-run exclusion list, and the
+only cross-runner fields that may differ are stated in
+[`tools/check_determinism.py`](../../tools/check_determinism.py) and
+[Reproducibility](reproducibility.md). The run id is a hash of an identity
+that includes the interpreter, OS, and library versions, so `latest_run_id`,
+run paths, `revision_sha256`, and the final revision filename differ across
+the matrix. That difference is printed with the observed values. Coordinate
+text, B-factors, and source hashes are not in that list. No step of the case
+uses a random number generator, so no seed is needed and none is recorded. A separate
+installed-wheel browser check completed the synthetic StructQC example flow
+with zero console errors. These checks support reproducibility and software
+behavior only. They do not establish scientific qualification or resolve
+whether the case constitutes research use. The recorded state and wheel
+identity are in
 [`CANDIDATE_VERIFICATION.json`](../../evidence/preparation-2026-09-20/CANDIDATE_VERIFICATION.json),
 with case-specific environment and outputs in
 [`PUBLIC_CASE_RUN_ENVIRONMENT.json`](../../evidence/preparation-2026-09-20/PUBLIC_CASE_RUN_ENVIRONMENT.json)
