@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-pose-evidence"
+version = "0.1.0"
+description = "Method-aware docking pose clustering and geometry evidence."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "Yuvraj Patel"}]
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+sasa = ["biopython>=1.81"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+pose-evidence = "pose_evidence.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pose_evidence = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

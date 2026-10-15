@@ -1,0 +1,12 @@
+schema_version: "1.0"
+module_id: pose_evidence
+requires:
+  - source_id: autodock_vina
+    role: imported local Vina poses and engine scores
+    required: false
+  - source_id: haddock3
+    role: imported local HADDOCK3 poses and engine scores
+    required: false
+  - source_id: cluspro
+    role: explicitly imported read-only ClusPro results
+    required: false

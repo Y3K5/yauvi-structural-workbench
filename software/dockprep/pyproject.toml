@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-dockprep"
+version = "0.1.0"
+description = "Fail-closed docking preparation and local execution adapters."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "Yuvraj Patel"}]
+dependencies = []
+
+[project.optional-dependencies]
+small-molecule = ["meeko>=0.6"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+dockprep = "dockprep.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dockprep = ["sources.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
