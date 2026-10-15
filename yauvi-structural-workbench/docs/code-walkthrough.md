@@ -29,7 +29,7 @@ that produced it.
 | Analysis store | `software/platform/src/yauvi_platform/structural_workbench/store.py` | Content-addressed inputs, preflight, registered execution, immutable runs, deterministic reports |
 | Source assistance | `software/platform/src/yauvi_platform/structural_workbench/sources.py` and `software/sources/src/yauvi_sources/` | Registered public artifacts, acquisition policy, checksum cache, explicit adoption |
 | Coordinate QC | `software/structqc/src/structqc/` | Coordinate identity, residue mapping, provenance declaration, PAE and imported validation |
-| Membrane frame | `software/Membrane Orientor/memorient/src/memorient/` | Context-declared orientation geometry and residue zones |
+| Membrane frame | `software/membrane-orientor/memorient/src/memorient/` | Context-declared orientation geometry and residue zones |
 | State comparison | `software/state-atlas/src/state_atlas/` | Sequence-mapped Kabsch comparisons, RMSD/RMSF, clustering, and bounded state resemblance |
 | Site context | `software/site-context/src/site_context/` | Exact annotation-to-coordinate mapping, ligand/cofactor context, and separate pocket evidence |
 | Activity-state screen | `software/activity-state/src/actstate/` | Separate completeness, geometry, occupancy, conformation, and assembly signals; `active_site_disrupted` requires a position-specific expected residue |

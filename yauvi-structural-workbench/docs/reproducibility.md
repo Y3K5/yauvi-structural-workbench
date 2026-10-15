@@ -21,6 +21,18 @@ python tools/run_structural_workbench_tests.py
 structqc describe
 ```
 
+That install follows the lower bounds in `pyproject.toml`, so it is not pinned.
+To repeat one recorded resolution, pass the constraint file for the machine as
+documented in [Installation](install.md#pinned-dependencies). From the
+repository root:
+
+```bash
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]"
+```
+
+CI still installs from the open bounds and uploads the versions that install
+actually resolved.
+
 Network tests and live public-source smoke tests are opt-in. A genuine offline
 demonstration must use bundled synthetic fixtures; cached or remote retrieval is
 not treated as offline.

@@ -13,7 +13,7 @@ SOURCE = ROOT / 'source'
 def environment():
     env = os.environ.copy()
     roots = sorted((SOURCE / 'software').glob('*/src'))
-    roots += [SOURCE / 'software/Membrane Orientor/memorient/src']
+    roots += [SOURCE / 'software/membrane-orientor/memorient/src']
     env['PYTHONPATH'] = os.pathsep.join(str(p) for p in roots)
     env['PATH'] = str(Path(sys.executable).parent) + os.pathsep + env.get('PATH', '')
     env['YAUVI_SHOWCASE_DIR'] = str(ROOT / 'preview/showcase/workbench')

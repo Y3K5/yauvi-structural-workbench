@@ -131,7 +131,7 @@ KNOWN_MODULE_PACKAGES: Mapping[str, str] = {
 # Where each module's manifest lives relative to the workspace root, for the
 # common case of running inside a checkout before anything is pip-installed.
 WORKSPACE_MANIFEST_PATHS: Mapping[str, str] = {
-    "memorient": "software/Membrane Orientor/memorient/src/memorient/sources.yaml",
+    "memorient": "software/membrane-orientor/memorient/src/memorient/sources.yaml",
     "sf_csa": "software/sf-csa/src/sf_csa/sources.yaml",
     "sf-csa": "software/sf-csa/src/sf_csa/sources.yaml",
     "actstate": "software/activity-state/src/actstate/sources.yaml",

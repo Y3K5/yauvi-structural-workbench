@@ -1,6 +1,6 @@
 # Cross-platform testing and safe file sharing
 
-The test bundle is designed for macOS and Linux with Python 3.10-3.12. It
+The test bundle is designed for macOS and Linux with Python 3.10-3.13. It
 contains synthetic examples and code; private campaign data and unpublished
 sequences are not part of the bundle.
 
@@ -17,6 +17,15 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install ".[dev]"
 python tools/run_structural_workbench_tests.py --core-only --json-out TEST_RESULT.json
+```
+
+To repeat a recorded dependency set instead of resolving the lower bounds again,
+add `--constraint` and the file for this machine. The names and the date of
+each resolution are in [Installation](install.md#pinned-dependencies). From the
+repository root:
+
+```bash
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt ".[dev]"
 ```
 
 Open `evidence/public-showcase/index.html` directly for the

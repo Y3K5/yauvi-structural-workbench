@@ -79,8 +79,12 @@ python -m pip install -e ".[dev]"
 python tools/run_structural_workbench_tests.py
 ```
 
+That install follows open lower bounds. To repeat a recorded resolution, pass
+the constraint file for this machine as described in
+[Installation](yauvi-structural-workbench/docs/install.md#pinned-dependencies).
+
 **Use an interpreter whose architecture matches the machine.** On Apple Silicon
-that means an arm64 Python 3.10–3.12:
+that means an arm64 Python 3.10–3.13:
 
 ```bash
 python -c "import platform; print(platform.machine())"   # expect arm64, not x86_64

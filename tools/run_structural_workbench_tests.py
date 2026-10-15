@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("structqc", ("software/structqc/tests",)),
     ("bio-orient", ("software/bio-orient/tests",)),
-    ("memorient", ("software/Membrane Orientor/memorient/tests",)),
+    ("memorient", ("software/membrane-orientor/memorient/tests",)),
     ("state-atlas", ("software/state-atlas/tests",)),
     ("site-context", ("software/site-context/tests",)),
     ("activity-state", ("software/activity-state/tests",)),
@@ -55,7 +55,7 @@ COUNT = re.compile(r"(?P<count>\d+) (?P<kind>passed|failed|skipped|deselected|er
 # Every pyproject in the distribution, so a floor is read from the package that
 # declares it rather than from a list here that can drift away from them.
 PYPROJECTS: tuple[str, ...] = (
-    "pyproject.toml", "software/structqc/pyproject.toml", "software/Membrane Orientor/memorient/pyproject.toml",
+    "pyproject.toml", "software/structqc/pyproject.toml", "software/membrane-orientor/memorient/pyproject.toml",
     "software/state-atlas/pyproject.toml", "software/site-context/pyproject.toml", "software/activity-state/pyproject.toml",
     "software/assembly-context/pyproject.toml", "software/sf-csa/pyproject.toml",
     "software/structprep/pyproject.toml",

@@ -6,12 +6,19 @@ software tests and passing scientific qualification cases are separate claims.
 
 ## Install
 
-From a clean checkout and Python 3.10-3.12 environment:
+From a clean checkout and Python 3.10-3.13 environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
+```
+
+For a pinned dependency set, pass the constraint file for this machine. See
+[Installation](install.md#pinned-dependencies).
+
+```bash
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]"
 ```
 
 Run the release-scoped offline tests:

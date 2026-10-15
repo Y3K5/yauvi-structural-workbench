@@ -38,7 +38,7 @@ PYTHONPATHS = [
     REPO / "software" / "site-context" / "src",
     REPO / "software" / "assembly-context" / "src",
     REPO / "software" / "sf-csa" / "src",
-    REPO / "software" / "Membrane Orientor" / "memorient" / "src",
+    REPO / "software" / "membrane-orientor" / "memorient" / "src",
 ]
 for source_root in reversed(PYTHONPATHS):
     sys.path.insert(0, str(source_root))

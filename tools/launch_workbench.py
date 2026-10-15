@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    if not (3, 10) <= sys.version_info[:2] <= (3, 12):
-        raise SystemExit('Use a Python 3.10–3.12 environment with the workbench dependencies installed.')
+    if not (3, 10) <= sys.version_info[:2] <= (3, 13):
+        raise SystemExit('Use a Python 3.10–3.13 environment with the workbench dependencies installed.')
     try:
         import tomllib
     except ModuleNotFoundError:
