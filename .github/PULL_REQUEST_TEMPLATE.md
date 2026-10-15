@@ -23,7 +23,7 @@ Contributions must preserve these. Confirm each that applies:
 python tools/run_structural_workbench_tests.py
 ```
 
-Result: <!-- e.g. 881 passed, 5 deselected, 13 skipped -->
+Result: <!-- e.g. 947 passed, 5 deselected, 13 skipped -->
 
 - [ ] If a CLI's arguments changed, I regenerated `docs/cli-reference.md`
       with `python tools/build_cli_reference.py`.

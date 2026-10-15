@@ -27,7 +27,7 @@ Use that runner, not bare `pytest`. Suites are invoked in separate processes
 because several contain duplicate test-module and `conftest` basenames, and a
 plain `pytest` invocation fails on the collision.
 
-Expect 881 passed, 5 network/adapter deselected, 13 skipped, on an interpreter
+Expect 947 passed, 5 network/adapter deselected, 13 skipped, on an interpreter
 whose architecture matches the machine — see "Running the tests" in `README.md`.
 That count is from `python tools/run_structural_workbench_tests.py` on Linux
 x86_64 / Python 3.12.3.

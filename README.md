@@ -42,7 +42,7 @@ Region explorer is an additional experimental workflow within the existing Workb
 
 ## Current local verification
 
-`python tools/run_structural_workbench_tests.py` passed **881 tests, 13 skipped, 5 deselected**, with no failures or errors, on Linux x86_64 / Python 3.12.3. That is the current reviewer-suite count. It does not establish scientific qualification or independent reproduction.
+`python tools/run_structural_workbench_tests.py` passed **947 tests, 13 skipped, 5 deselected**, with no failures or errors, on Linux x86_64 / Python 3.12.3. That is the current reviewer-suite count. It does not establish scientific qualification or independent reproduction.
 
 Archived receipts from earlier builds remain in the tree. They describe those builds, and they are not the current suite count:
 
