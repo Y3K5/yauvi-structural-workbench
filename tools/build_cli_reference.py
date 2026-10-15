@@ -39,6 +39,10 @@ CLIS: list[tuple[str, str, list[str]]] = [
      ["describe", "classes", "validate", "run"]),
     ("bio-orient", "Declared sides, neighbors and scoped availability (experimental).",
      ["describe", "validate", "run"]),
+    ("dockprep", "Checksum-bound docking preparation and local execution.",
+     ["describe", "validate", "fetch", "run", "execute"]),
+    ("pose-evidence", "Imported docking poses, clusters, and geometry proxies.",
+     ["describe", "validate", "fetch", "run"]),
 ]
 
 PREAMBLE = """# CLI reference

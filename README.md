@@ -42,31 +42,15 @@ Region explorer is an additional experimental workflow within the existing Workb
 
 ## Current local verification
 
-The region/review/replay development build passed **902 tests, 15 skipped, 5 deselected**, with no failures or errors on macOS arm64 / Python 3.13.0. [The suite receipt](yauvi-structural-workbench/docs/REGION_EXPLORER_TESTS.json) records its exact environment and selected software-test scope. This does not establish scientific qualification or independent reproduction.
+`python tools/run_structural_workbench_tests.py` passed **881 tests, 13 skipped, 5 deselected**, with no failures or errors, on Linux x86_64 / Python 3.12.3. That is the current reviewer-suite count. It does not establish scientific qualification or independent reproduction.
 
+Archived receipts from earlier builds remain in the tree. They describe those builds, and they are not the current suite count:
 
-The Bio-Orient upgrade passed **801 tests, 15 skipped, 5 deselected** with no
-failures/errors and dependency preflight enabled on macOS ARM64 / Python 3.11.15.
-See [its checks and limitations](software/bio-orient/VERIFICATION.md).
-The earlier records below keep their original scope.
-
-These records describe separate checks on the local candidate; their totals and
-interpretations are not combined:
-
-- The offline suite reports **684 passed, 15 skipped, 5 deselected, 0 failed,
-  and 0 errors** on macOS arm64 / Python 3.12.0. See
-  [`OFFLINE_TESTS.json`](evidence/preparation-2026-09-20/OFFLINE_TESTS.json).
-- A separate public-case safety and input-validation run reports **5 passed**;
-  it is not added to the full offline-suite count. See
-  [`PUBLIC_CASE_SAFETY_TESTS.json`](evidence/preparation-2026-09-20/PUBLIC_CASE_SAFETY_TESTS.json).
-- The fresh wheel was installed in an isolated environment. The installed
-  distribution reproduced the public-data case twice with 12 compared files
-  byte-identical. A browser check completed the synthetic StructQC flow with
-  zero console errors. See
-  [`CANDIDATE_VERIFICATION.json`](evidence/preparation-2026-09-20/CANDIDATE_VERIFICATION.json).
-- An earlier README snapshot reported 590 passing tests and referred to a
-  different build. That count is historical and superseded by the dated suite
-  record above; it is not evidence about the present candidate.
+- [Region/review/replay receipt](yauvi-structural-workbench/docs/REGION_EXPLORER_TESTS.json)
+- [Bio-Orient checks and limitations](software/bio-orient/VERIFICATION.md)
+- [`OFFLINE_TESTS.json`](evidence/preparation-2026-09-20/OFFLINE_TESTS.json)
+- [`PUBLIC_CASE_SAFETY_TESTS.json`](evidence/preparation-2026-09-20/PUBLIC_CASE_SAFETY_TESTS.json), a separate safety run that is not added to the suite count
+- [`CANDIDATE_VERIFICATION.json`](evidence/preparation-2026-09-20/CANDIDATE_VERIFICATION.json)
 
 Start with [`yauvi-structural-workbench/START_HERE.md`](yauvi-structural-workbench/START_HERE.md),
 then [`docs/quickstart.md`](yauvi-structural-workbench/docs/quickstart.md) and

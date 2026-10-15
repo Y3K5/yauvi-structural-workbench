@@ -52,7 +52,7 @@ structqc run \
 ```
 
 Every scientific capability is reachable this way. See
-[docs/cli-reference.md](docs/cli-reference.md) for all ten commands and
+[docs/cli-reference.md](docs/cli-reference.md) for all thirteen commands and
 [docs/quickstart.md](docs/quickstart.md) for a guided run.
 
 Public-accession retrieval stays disabled unless a command is given

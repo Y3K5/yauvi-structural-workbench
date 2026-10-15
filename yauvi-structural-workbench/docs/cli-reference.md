@@ -37,6 +37,8 @@ for exact inputs and interpretation limits.
 | [`yauvi-fetch`](#yauvi-fetch) | Registered public-source acquisition and staging. |
 | [`structprep`](#structprep) | Coordinate preparation with explicit chain and sequence handling. |
 | [`bio-orient`](#bio-orient) | Declared sides, neighbors and scoped availability (experimental). |
+| [`dockprep`](#dockprep) | Checksum-bound docking preparation and local execution. |
+| [`pose-evidence`](#pose-evidence) | Imported docking poses, clusters, and geometry proxies. |
 
 
 ---
@@ -120,11 +122,11 @@ options:
 
 ```
 usage: yauvi analysis inputs [-h] --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
 
 options:
   -h, --help            show this help message and exit
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
                         Analysis type from 'analysis types'.
 ```
 
@@ -132,13 +134,13 @@ options:
 
 ```
 usage: yauvi analysis create [-h] --analysis ANALYSIS --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS   Local case identifier.
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
                         Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
@@ -1134,5 +1136,130 @@ options:
   --chemical-reference CHEMICAL_REFERENCE
   --topology-evidence TOPOLOGY_EVIDENCE
   --evidence EVIDENCE
+  --out OUT
+```
+
+
+---
+
+## dockprep
+
+Checksum-bound docking preparation and local execution.
+
+```
+usage: dockprep [-h] {describe,fetch,validate,run,execute} ...
+
+positional arguments:
+  {describe,fetch,validate,run,execute}
+
+options:
+  -h, --help            show this help message and exit
+```
+
+### `dockprep describe`
+
+```
+usage: dockprep describe [-h]
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### `dockprep validate`
+
+```
+usage: dockprep validate [-h] --config CONFIG
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG
+```
+
+### `dockprep fetch`
+
+```
+usage: dockprep fetch [-h] --plan
+
+options:
+  -h, --help  show this help message and exit
+  --plan
+```
+
+### `dockprep run`
+
+```
+usage: dockprep run [-h] --config CONFIG --out OUT
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG
+  --out OUT
+```
+
+### `dockprep execute`
+
+```
+usage: dockprep execute [-h] --job JOB --out OUT
+
+options:
+  -h, --help  show this help message and exit
+  --job JOB
+  --out OUT
+```
+
+
+---
+
+## pose-evidence
+
+Imported docking poses, clusters, and geometry proxies.
+
+```
+usage: pose-evidence [-h] {describe,fetch,validate,run} ...
+
+positional arguments:
+  {describe,fetch,validate,run}
+
+options:
+  -h, --help            show this help message and exit
+```
+
+### `pose-evidence describe`
+
+```
+usage: pose-evidence describe [-h]
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### `pose-evidence validate`
+
+```
+usage: pose-evidence validate [-h] --config CONFIG
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG
+```
+
+### `pose-evidence fetch`
+
+```
+usage: pose-evidence fetch [-h] --plan
+
+options:
+  -h, --help  show this help message and exit
+  --plan
+```
+
+### `pose-evidence run`
+
+```
+usage: pose-evidence run [-h] --config CONFIG --out OUT
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG
   --out OUT
 ```
