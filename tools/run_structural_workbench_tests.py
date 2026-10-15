@@ -48,6 +48,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("structprep", ("software/structprep/tests",)),
     ("dockprep", ("software/dockprep/tests",)),
     ("pose-evidence", ("software/pose-evidence/tests",)),
+    ("workbench application", ("software/structural-workbench/tests",)),
     ("review export", ("tools/test_review_candidate.py",)),
     ("distribution preflight", ("tools/test_distribution_preflight.py",)),
     ("public research case", ("examples/structural-portfolio/test_public_research_case.py",)),

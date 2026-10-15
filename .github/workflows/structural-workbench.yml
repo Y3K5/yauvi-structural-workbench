@@ -167,6 +167,12 @@ jobs:
       - name: Suite · SF-CSA fixture
         if: always()
         run: python -m pytest tools/fixtures/sfcsa -m "not network and not adapter" --tb=short
+      # The local application itself: one owner per workspace, honest job states,
+      # the localhost request guard, and the build identities the launcher
+      # compares. No engine and no case data is involved.
+      - name: Suite · Workbench application
+        if: always()
+        run: python -m pytest software/structural-workbench/tests -m "not network and not adapter" --tb=short
 
   workbench:
     name: Workbench contracts, security, and pre-public materials
