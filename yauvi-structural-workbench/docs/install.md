@@ -46,9 +46,20 @@ through these files. It installs from the open bounds and records `pip freeze`
 in the job log and a `resolved-deps-*` artifact.
 
 Install `.[md]` for trajectory analysis and `.[source-fetch]` for explicitly
-enabled public-reference acquisition. FreeSASA, Foldseek, DIAMOND, MolProbity,
-Phenix, and mkdssp are external runtimes; the workbench reports their absence
-instead of silently substituting another method.
+enabled public-reference acquisition. Install `.[small-molecule]` for Meeko.
+FreeSASA, Foldseek, DIAMOND, MolProbity, Phenix, mkdssp, AutoDock Vina, Meeko
+(`mk_prepare_receptor` / `mk_prepare_ligand`), and HADDOCK3 are external
+runtimes; the workbench reports their absence instead of silently substituting
+another method.
+
+The small-molecule Vina path is self-contained once `vina` and Meeko's
+preparation commands are installed. The macromolecular HADDOCK3 leg is not.
+It is pinned to the container image `protein-platform-haddock3:2026.7.0`
+(digest `sha256:c3a49243bb3c2cdf5be489096b75501ccb83dcc8cc2442532fa82afdb785c6b7`)
+and shells out to `refinement_workflow/run_haddock_matrix.py`, located through
+`YAUVI_HADDOCK_MATRIX_RUNNER`. Neither that image nor that runner is distributed
+with this repository. When the runner is absent, `dockprep` reports
+`canonical_haddock3_matrix_runner` as missing evidence.
 
 Run the packaged local server with an explicit analysis workspace:
 

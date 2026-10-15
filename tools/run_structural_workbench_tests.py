@@ -46,6 +46,8 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("reference context", ("software/platform/tests/test_reference_context.py",)),
     ("source registry", ("software/sources/tests",)),
     ("structprep", ("software/structprep/tests",)),
+    ("dockprep", ("software/dockprep/tests",)),
+    ("pose-evidence", ("software/pose-evidence/tests",)),
     ("review export", ("tools/test_review_candidate.py",)),
     ("distribution preflight", ("tools/test_distribution_preflight.py",)),
     ("public research case", ("examples/structural-portfolio/test_public_research_case.py",)),
@@ -60,6 +62,8 @@ PYPROJECTS: tuple[str, ...] = (
     "software/assembly-context/pyproject.toml", "software/sf-csa/pyproject.toml",
     "software/structprep/pyproject.toml",
     "software/bio-orient/pyproject.toml",
+    "software/dockprep/pyproject.toml",
+    "software/pose-evidence/pyproject.toml",
 )
 REQUIREMENT = re.compile(r"^\s*([A-Za-z0-9._-]+)\s*>=\s*([0-9][0-9A-Za-z.\-]*)")
 

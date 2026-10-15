@@ -35,6 +35,7 @@ dependencies = [
 md = ["MDAnalysis>=2.6"]
 source-fetch = ["requests>=2.28"]
 dev = ["pytest>=7", "hypothesis>=6.100", "build>=1.2"]
+small-molecule = ["meeko>=0.6"]
 
 [project.scripts]
 yauvi = "yauvi_structural_workbench.cli:main"
@@ -48,6 +49,8 @@ assembly-context = "assembly_context.cli:main"
 sf-csa = "sf_csa.cli:main"
 structprep = "structprep.cli:main"
 bio-orient = "bio_orient.cli:main"
+dockprep = "dockprep.cli:main"
+pose-evidence = "pose_evidence.cli:main"
 
 [tool.setuptools.packages.find]
 where = [
@@ -63,11 +66,13 @@ where = [
   "software/sf-csa/src",
   "software/structprep/src",
   "software/bio-orient/src",
+  "software/dockprep/src",
+  "software/pose-evidence/src",
 ]
 include = [
   "yauvi_structural_workbench*", "yauvi_platform.structural_workbench*", "yauvi_sources*", "structqc*", "memorient*",
   "state_atlas*", "site_context*", "actstate*", "assembly_context*", "sf_csa*",
-  "structprep*", "bio_orient*",
+  "structprep*", "bio_orient*", "dockprep*", "pose_evidence*",
 ]
 
 [tool.setuptools]
@@ -81,6 +86,8 @@ site_context = ["sources.yaml", "py.typed"]
 actstate = ["sources.yaml", "py.typed"]
 assembly_context = ["sources.yaml", "py.typed"]
 sf_csa = ["sources.yaml", "py.typed"]
+dockprep = ["sources.yaml", "py.typed"]
+pose_evidence = ["sources.yaml", "py.typed"]
 yauvi_sources = ["py.typed", "structural_sources.yaml"]
 yauvi_structural_workbench = ["ui/*", "ui/vendor/*", "examples/*"]
 

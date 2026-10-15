@@ -1,0 +1,12 @@
+schema_version: "1.0"
+module_id: docking_preparation
+requires:
+  - source_id: autodock_vina
+    role: local small-molecule docking runtime
+    required: false
+  - source_id: meeko
+    role: local receptor and ligand PDBQT preparation
+    required: false
+  - source_id: haddock3
+    role: pinned local macromolecular docking runtime
+    required: false

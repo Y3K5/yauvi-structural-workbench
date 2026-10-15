@@ -1,8 +1,8 @@
-# Seven structural workflows
+# Structural workflows
 
-Six existing workflows retain their recorded qualification scope. Bio-Orient
-adds an experimental interpretation workflow and does not extend the frozen
-Mark 1 qualification panels.
+Six workflows retain their recorded Mark 1 qualification scope. Bio-Orient,
+DockPrep, and PoseEvidence are experimental additions. They do not extend the
+frozen Mark 1 qualification panels.
 
 ## Structure QC
 
@@ -83,3 +83,38 @@ See [the input contract](../../software/bio-orient/README.md),
 [software checks](../../software/bio-orient/VERIFICATION.md) and
 [the public AQP1 example](../../software/bio-orient/KNOWN_COMPLEX_CHECK.md).
 These do not add a qualified scope to Mark 1.
+
+## Docking preparation (experimental)
+
+`dockprep` builds checksum-bound local docking jobs for small molecules,
+protein-protein pairs, and protein-peptide pairs. It validates exact residue
+mapping, chemistry, source terms, conformational state, and human approval
+before execution. AutoDock Vina, Meeko, and HADDOCK3 are external runtimes.
+Runtime absence creates a named blocked evidence leg. It does not substitute
+another engine.
+
+Vina scores and HADDOCK scores retain their engine meaning and are never called
+affinity or biological activity. A docking score is not affinity, engagement,
+activity, efficacy, or mechanism.
+
+The small-molecule Vina path runs from the installed `vina` binary and Meeko's
+`mk_prepare_receptor` / `mk_prepare_ligand` commands. The macromolecular
+HADDOCK3 leg requires a local runtime and the canonical runner
+`refinement_workflow/run_haddock_matrix.py` (`YAUVI_HADDOCK_MATRIX_RUNNER`).
+That runner and the pinned container image `protein-platform-haddock3:2026.7.0`
+are not distributed with this repository. Anyone without them gets
+`canonical_haddock3_matrix_runner` reported as missing evidence.
+
+## Pose evidence (experimental)
+
+`pose-evidence` imports local Vina, HADDOCK3, or read-only ClusPro poses and
+reports method-appropriate clusters, contacts, clashes, geometry proxies,
+restraint satisfaction, native-site overlap, state sensitivity, and repeated
+seed consistency. Engine scores and units remain separate.
+
+Docking scores remain engine-specific and are not affinities. Pose evidence is
+not affinity, engagement, activity, or mechanism. Hydrogen bonds, salt bridges,
+clashes, and metal coordination are geometry proxies. Imported ClusPro results
+are read-only and are never uploaded by this module. Buried solvent-accessible
+surface is left unevaluated unless an explicit SASA adapter is invoked; its
+absence is reported and is not filled in.

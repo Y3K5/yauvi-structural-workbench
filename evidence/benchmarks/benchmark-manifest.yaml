@@ -49,6 +49,20 @@ experimental_workflows:
     software_checks: software/bio-orient/VERIFICATION.md
     public_example_check: software/bio-orient/KNOWN_COMPLEX_CHECK.md
     limitations: Static declared-patch graphs and reference-relative chemistry; annotation agreement does not establish biological qualification.
+  dockprep:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/dockprep/tests/test_dockprep.py
+    public_example_check: software/dockprep/README.md
+    limitations: A docking score is not affinity, engagement, activity, efficacy, or mechanism. Software checks do not establish affinity or a qualified docking scope.
+  pose_evidence:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/pose-evidence/tests/test_pose_evidence.py
+    public_example_check: software/pose-evidence/README.md
+    limitations: Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies. Imported ClusPro results are read-only and are never uploaded. Software checks do not establish affinity or a qualified pose scope.
 release_rule: all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2
 release_rule_satisfied: false
 qualification_runner: qualification-v2/run_qualification.py

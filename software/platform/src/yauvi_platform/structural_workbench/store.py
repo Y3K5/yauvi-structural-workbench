@@ -291,6 +291,18 @@ _WORKFLOW_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
         "receives": ["StructQC evidence", "Separate structural and sequence result legs", "Comparison matrices", "Checksums and run manifest"],
         "non_claim": "Similarity, homology, or a shared fold never becomes exact identity or automatic functional transfer.",
     },
+    "dockprep": {
+        "use_when": "Prepare a checksum-approved receptor and ligand, then run a local docking engine when that runtime is present.",
+        "measures": "Exact residue mapping, declared chemistry, source terms, conformational state, and human approval before an engine is invoked.",
+        "receives": ["Checksum-bound docking job", "Execution manifest", "Named missing-runtime evidence"],
+        "non_claim": "A docking score is not affinity, engagement, activity, efficacy, or mechanism.",
+    },
+    "pose_evidence": {
+        "use_when": "Import local Vina, HADDOCK3, or read-only ClusPro poses and compare their geometry.",
+        "measures": "Method-appropriate clusters, contacts, clashes, geometry proxies, restraint satisfaction, native-site overlap, state sensitivity, and repeated seed consistency.",
+        "receives": ["Pose evidence summary", "Cluster table", "Contact table", "Coordinate-bound contact layer"],
+        "non_claim": "Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies. Imported ClusPro results are read-only and are never uploaded by this module.",
+    },
 }
 
 
@@ -320,6 +332,10 @@ _ROLE_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
     "component_map": {"description": "Exact mappings between observed residue/component IDs and CCD or ChEBI identifiers.", "why_needed": "Unknown ligand synonyms remain unresolved rather than being accepted by name similarity.", "absence_effect": "cofactor_identity_unresolved", "accepted_artifact_types": [], "source_ids": ["pdb_ccd", "chebi"], "format_guide": "Use the JSON template; consult CCD and ChEBI records, but do not upload raw CIF, OBO, or bulk mapping files into this normalized role.", "template_id": "component_identifier_map", "validator_id": "component_identifier_map", "sensitivity": "non_sensitive_metadata"},
     "pocket_result": {"description": "An optional result exported by one named pocket tool.", "why_needed": "It adds method-specific pocket predictions without merging scores across tools.", "absence_effect": "pocket_evidence_not_run", "accepted_artifact_types": [], "source_ids": [], "format_guide": "Normalized JSON naming fpocket or P2Rank, runtime version, parameters, and unmodified method score.", "validator_id": "pocket_tool_result", "sensitivity": "sensitive_by_default"},
     "interpretation_tables": {"description": "Organism-appropriate, closed-vocabulary mechanism and divergence tables.", "why_needed": "Campaign-specific defaults must never leak into an unrelated comparative analysis.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": ["mcsa"], "format_guide": "JSON containing mechanism_families, contested_groups, divergence_sets, and classification_vocabulary arrays.", "template_id": "sf_csa_interpretation_tables", "validator_id": "sf_csa_interpretation_tables", "sensitivity": "non_sensitive_metadata"},
+    "job_spec": {"description": "A docking job specification whose relative paths name files attached to the same case.", "why_needed": "DockPrep refuses to infer chemistry, mapping, source terms, or approval.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON job spec consumed by dockprep run --config. Paths are relative to the spec file and must match attached file names.", "validator_id": "docking_job_spec", "sensitivity": "sensitive_by_default"},
+    "docking_input": {"description": "A receptor, ligand, approval record, or HADDOCK manifest named by the job spec.", "why_needed": "The store stages the checksummed bytes beside the spec so DockPrep never reads a path outside the case.", "absence_effect": "unevaluated", "accepted_artifact_types": [], "source_ids": [], "format_guide": "Use the original file name referenced by the job spec. PDBQT, PDB, mmCIF, SDF, and JSON are accepted.", "validator_id": "docking_input_file", "sensitivity": "sensitive_by_default"},
+    "pose_config": {"description": "A pose-evidence configuration naming a receptor and imported poses.", "why_needed": "Pose evidence is computed only for the declared engines, chains, and scores.", "absence_effect": "blocked", "accepted_artifact_types": [], "source_ids": [], "format_guide": "JSON consumed by pose-evidence run --config. Pose paths are relative to the config and must match attached file names.", "validator_id": "pose_evidence_config", "sensitivity": "sensitive_by_default"},
+    "pose_file": {"description": "A receptor or imported pose coordinate file named by the pose configuration.", "why_needed": "Contacts and clusters bind to the checksummed coordinates, not to a later copy.", "absence_effect": "unevaluated", "accepted_artifact_types": [], "source_ids": [], "format_guide": "PDB or PDBQT heavy-atom coordinates. ClusPro files are read locally and are not uploaded.", "validator_id": "pose_coordinate_file", "sensitivity": "sensitive_by_default"},
 }
 
 
@@ -362,6 +378,30 @@ def analysis_definitions() -> list[dict[str, Any]]:
         ],
         "parameters": [{"name": "model", "label": "Model index", "type": "integer", "default": 0},
                        {"name": "assembly_id", "label": "Deposited assembly (asu for asymmetric unit)", "type": "text", "default": "asu"}],
+    })
+    definitions.append({
+        "analysis_type": "dockprep", "title": "Docking preparation",
+        "question": "Can a checksum-approved receptor and ligand be prepared and run locally without exceeding the evidence?",
+        "module_ids": ["dockprep"], "readiness": "experimental",
+        "claim_ceiling": "A docking score is not affinity, engagement, activity, efficacy, or mechanism.",
+        "inputs": [
+            {"role": "job_spec", "label": "Docking job specification", "required": True, "multiple": False, "extensions": [".json"]},
+            {"role": "docking_input", "label": "Files named by the job specification", "required": False, "multiple": True, "extensions": [".pdb", ".pdbqt", ".cif", ".mmcif", ".sdf", ".mol2", ".json"]},
+            {"role": "validation_report", "label": "External structure validation", "required": False, "multiple": False, "extensions": [".xml", ".json"]},
+        ],
+        "parameters": [],
+    })
+    definitions.append({
+        "analysis_type": "pose_evidence", "title": "Pose evidence",
+        "question": "What geometry, clustering, consistency, and unresolved evidence is present across imported poses?",
+        "module_ids": ["pose_evidence"], "readiness": "experimental",
+        "claim_ceiling": "Docking scores remain engine-specific and are not affinities. Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies. Imported ClusPro results are read-only and are never uploaded by this module.",
+        "inputs": [
+            {"role": "pose_config", "label": "Pose evidence configuration", "required": True, "multiple": False, "extensions": [".json"]},
+            {"role": "pose_file", "label": "Receptor and imported pose coordinates", "required": False, "multiple": True, "extensions": [".pdb", ".pdbqt"]},
+            {"role": "validation_report", "label": "External structure validation", "required": False, "multiple": False, "extensions": [".xml", ".json"]},
+        ],
+        "parameters": [],
     })
     for definition in definitions:
         if definition["analysis_type"] == "membrane_orientation":
@@ -412,6 +452,15 @@ def _runtime_version(binary: str) -> str | None:
     return "available_unknown_version"
 
 
+def _first_runtime(*binaries: str) -> str:
+    """Report the first binary that exists. Absence stays 'missing'."""
+    for binary in binaries:
+        found = _runtime_version(binary)
+        if found:
+            return found
+    return "missing"
+
+
 def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
     root = Path(workspace).resolve()
     source_root = _checkout_source_root(root)
@@ -424,7 +473,8 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
         "diamond": _runtime_version("diamond") or "missing",
         "molprobity_or_phenix": "available" if shutil.which("phenix.molprobity") or shutil.which("clashscore") else "missing",
         "vina": _runtime_version("vina") or "missing",
-        "meeko": "available" if importlib.util.find_spec("meeko") else "missing",
+        "mk_prepare_receptor": _first_runtime("mk_prepare_receptor", "mk_prepare_receptor.py"),
+        "mk_prepare_ligand": _first_runtime("mk_prepare_ligand", "mk_prepare_ligand.py"),
         "haddock3": _runtime_version("haddock3") or "missing",
     }
     packages = ({
@@ -542,11 +592,28 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
     packages["bio_orient"] = source_root / "bio-orient" if source_root is not None else _installed_package_root("bio_orient")
     required["bio_orient"] = ["gemmi"]
     optional["bio_orient"] = []
+    packages["dockprep"] = source_root / "dockprep" if source_root is not None else _installed_package_root("dockprep")
+    required["dockprep"] = []
+    optional["dockprep"] = ["vina", "mk_prepare_receptor", "mk_prepare_ligand", "haddock3"]
+    packages["pose_evidence"] = source_root / "pose-evidence" if source_root is not None else _installed_package_root("pose_evidence")
+    required["pose_evidence"] = []
+    optional["pose_evidence"] = ["freesasa"]
     scopes["bio_orient"] = [{"scope_id": "static_side_neighbor_graph", "scientific_state": "experimental",
                             "benchmark_collection": "none", "release_blocking": False,
                             "supported_subject_class": "declared patches in exact coordinate scopes",
                             "required_evidence": ["exact coordinates", "identity-bound patch declarations"],
                             "known_limitations": ["No biological or dynamic probability qualification."]}]
+    scopes["dockprep"] = [{"scope_id": "local_docking_preparation", "scientific_state": "experimental",
+                           "benchmark_collection": "none", "release_blocking": False,
+                           "supported_subject_class": "checksum-approved small-molecule, protein-protein, and protein-peptide jobs",
+                           "required_evidence": ["exact residue mapping", "declared chemistry or macromolecular manifests", "human docking approval"],
+                           "known_limitations": ["A docking score is not affinity, engagement, activity, efficacy, or mechanism."]}]
+    scopes["pose_evidence"] = [{"scope_id": "imported_pose_geometry", "scientific_state": "experimental",
+                                "benchmark_collection": "none", "release_blocking": False,
+                                "supported_subject_class": "imported Vina, HADDOCK3, and read-only ClusPro poses",
+                                "required_evidence": ["checksum-bound receptor", "imported pose coordinates", "engine-specific scores kept separate"],
+                                "known_limitations": ["Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies.",
+                                                      "Imported ClusPro results are read-only and are never uploaded by this module."]}]
     for definition in analysis_definitions():
         tool = definition["analysis_type"]
         missing = [name for name in required[tool] if runtimes[name] == "missing"]
@@ -566,7 +633,7 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
     rows.extend([
         {"contract_id": "tool_readiness_record", "analysis_type": "structural_conservation", "title": "Structural conservation", "state": "prototype", "labs": True, "limitations": ["Mapping utility; no alignment generation or public benchmark pack."]},
         {"contract_id": "tool_readiness_record", "analysis_type": "structural_relationships", "title": "Structural relationships", "state": "adapter_only", "labs": True, "limitations": ["Consumes supplied Foldseek/SIFTS evidence; it is not a structural search engine."]},
-        {"contract_id": "tool_readiness_record", "analysis_type": "docking", "title": "Docking", "state": "blocked_missing_runtime", "labs": True, "required_runtimes": {"vina": runtimes["vina"], "meeko": runtimes["meeko"], "haddock3": runtimes["haddock3"]}, "limitations": ["Readiness only. Docking score is not affinity or activity."]},
+        {"contract_id": "tool_readiness_record", "analysis_type": "docking", "title": "Docking", "state": "blocked_missing_runtime" if any(runtimes[name] == "missing" for name in ("vina", "mk_prepare_receptor", "mk_prepare_ligand", "haddock3")) else "prototype", "labs": True, "required_runtimes": {name: runtimes[name] for name in ("vina", "mk_prepare_receptor", "mk_prepare_ligand", "haddock3")}, "limitations": ["Readiness only. Docking score is not affinity or activity."]},
         {"contract_id": "tool_readiness_record", "analysis_type": "design", "title": "Structural design", "state": "adapter_only", "labs": True, "limitations": ["Readiness only. Generated candidates are hypotheses and are never released automatically."]},
     ])
     return rows
@@ -1252,6 +1319,8 @@ class StructuralAnalysisStore:
             self.source_root / "activity-state" / "src", self.source_root / "sf-csa" / "src",
             self.source_root / "membrane-orientor" / "memorient" / "src",
             self.source_root / "bio-orient" / "src",
+            self.source_root / "dockprep" / "src",
+            self.source_root / "pose-evidence" / "src",
         ]
         env = os.environ.copy()
         existing = env.get("PYTHONPATH", "")
@@ -1474,10 +1543,61 @@ class StructuralAnalysisStore:
         _write_json(query_path, query_manifest); _write_json(database_path, database_manifest)
         return query_path, database_path
 
+    def _stage_named_inputs(self, inputs: Mapping[str, list[dict[str, Any]]], run_dir: Path, spec_role: str) -> Path:
+        """Place checksummed case files beside a config under their original names.
+
+        DockPrep and pose-evidence resolve relative paths from the config file.
+        Staging the content-addressed copies under those names keeps the CLI
+        contract and stops the config from pointing outside the case.
+        """
+        stage = run_dir / "generated" / "staged"
+        stage.mkdir(parents=True, exist_ok=True)
+        spec: Path | None = None
+        for role, items in inputs.items():
+            for item in items:
+                name = Path(str(item.get("file_name", ""))).name
+                if not name or name in {".", ".."}:
+                    raise AnalysisError("input file name is not a single path segment")
+                source = Path(item["materialized_path"]) if item.get("materialized_path") else self.object_path(item["sha256"])
+                target = stage / name
+                if target.exists() and _sha_file(target) != _sha_file(source):
+                    raise AnalysisError(f"staged file name collision: {name}")
+                if not target.exists():
+                    shutil.copyfile(source, target)
+                if role == spec_role:
+                    if spec is not None:
+                        raise AnalysisError(f"{spec_role} must be a single file")
+                    spec = target
+        if spec is None:
+            raise AnalysisError(f"required input is missing: {spec_role}")
+        return spec
+
     def _run_registered(self, manifest: Mapping[str, Any], run_dir: Path,
                         cancel_event: Any | None = None, on_process: Any | None = None) -> tuple[list[dict[str, Any]], int]:
         inputs = self._materialize_inputs(self._inputs_by_role(manifest), run_dir); params = manifest.get("parameters", {})
         tool = manifest["analysis_type"]; steps: list[dict[str, Any]] = []; codes: list[int] = []
+        if tool in {"dockprep", "pose_evidence"}:
+            # These engines take a config, not a StructQC coordinate prelude.
+            # `run` is the store's dispatch contract. DockPrep's `execute`
+            # consumes the job that `run` just wrote; it is a second step of
+            # the same case, recorded on its own, and is skipped when no job
+            # bundle exists.
+            output = run_dir / "outputs" / tool
+            spec_role = "job_spec" if tool == "dockprep" else "pose_config"
+            module = "dockprep.cli" if tool == "dockprep" else "pose_evidence.cli"
+            spec = self._stage_named_inputs(inputs, run_dir, spec_role)
+            command = [sys.executable, "-m", module, "run", "--config", str(spec), "--out", str(output)]
+            code = self._execute(command, cwd=self.source_root, log_path=run_dir / "logs" / f"{tool}.log",
+                                 cancel_event=cancel_event, on_process=on_process)
+            steps.append({"module_id": tool, "exit_code": code}); codes.append(code)
+            job = output / "DOCKING_JOB.json"
+            if tool == "dockprep" and job.is_file() and code != 2:
+                exec_out = output / "execution"
+                exec_command = [sys.executable, "-m", "dockprep.cli", "execute", "--job", str(job), "--out", str(exec_out)]
+                exec_code = self._execute(exec_command, cwd=self.source_root, log_path=run_dir / "logs" / "dockprep-execute.log",
+                                           cancel_event=cancel_event, on_process=on_process)
+                steps.append({"module_id": "dockprep_execute", "exit_code": exec_code}); codes.append(exec_code)
+            return steps, 2 if 2 in codes else 1 if 1 in codes else 0
         if tool == "region_explorer":
             # Extract, record and checksum the exact sequence for StructQC;
             # the full original annotation record remains a separate input.
