@@ -4,7 +4,7 @@ name: Qualification v2 execution
 #
 # The point is cross-environment reproduction. A stratum that passes only on the
 # machine that recorded its expectations is not evidence, so the same locked
-# artifacts are acquired and executed on Linux and macOS across three Pythons.
+# artifacts are acquired and executed on Linux and macOS across four Pythons.
 #
 # Acquisition uses the network; execution does not. That split is required by
 # `execution_policy.network_access: forbidden` in PANEL_MANIFEST.json -- the
@@ -35,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.10", "3.11", "3.12"]
+        python: ["3.10", "3.11", "3.12", "3.13"]
         include:
           # A third environment, and the second CPU architecture on Linux.
           #

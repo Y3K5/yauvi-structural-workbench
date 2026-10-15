@@ -6,7 +6,7 @@ software tests and passing scientific qualification cases are separate claims.
 
 ## Install
 
-From a clean checkout and Python 3.10-3.12 environment:
+From a clean checkout and Python 3.10-3.13 environment:
 
 ```bash
 python -m venv .venv

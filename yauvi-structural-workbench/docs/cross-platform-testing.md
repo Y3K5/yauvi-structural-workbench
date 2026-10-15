@@ -1,6 +1,6 @@
 # Cross-platform testing and safe file sharing
 
-The test bundle is designed for macOS and Linux with Python 3.10-3.12. It
+The test bundle is designed for macOS and Linux with Python 3.10-3.13. It
 contains synthetic examples and code; private campaign data and unpublished
 sequences are not part of the bundle.
 

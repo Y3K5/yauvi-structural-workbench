@@ -3,7 +3,7 @@
 ## Supported environment
 
 - macOS or Linux
-- Python 3.10–3.12
+- Python 3.10–3.13
 - An installed wheel, or a local checkout for development
 
 ```bash

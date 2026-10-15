@@ -80,7 +80,7 @@ python tools/run_structural_workbench_tests.py
 ```
 
 **Use an interpreter whose architecture matches the machine.** On Apple Silicon
-that means an arm64 Python 3.10–3.12:
+that means an arm64 Python 3.10–3.13:
 
 ```bash
 python -c "import platform; print(platform.machine())"   # expect arm64, not x86_64

@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.10", "3.11", "3.12"]
+        python: ["3.10", "3.11", "3.12", "3.13"]
         include:
           # Linux on arm64. macos-latest has been arm64 since macos-14, so a
           # fresh install has been proven on that architecture for as long as
