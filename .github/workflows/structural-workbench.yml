@@ -282,6 +282,9 @@ jobs:
       # stops the job. The upload is the first workspace plus the file hashes.
       - name: Public case twice through the store
         run: python tools/check_determinism.py --out "${RUNNER_TEMP}/determinism-record"
+      # upload-artifact skips dotfiles unless asked. The store writes an empty
+      # structural_analyses/.operation.lock, and the cross job checks every
+      # manifest hash against the uploaded workspace.
       - name: Upload determinism record
         uses: actions/upload-artifact@v5
         with:
@@ -289,6 +292,7 @@ jobs:
           path: ${{ runner.temp }}/determinism-record
           retention-days: 14
           if-no-files-found: error
+          include-hidden-files: true
 
   determinism-cross:
     name: Determinism · cross-OS and cross-Python

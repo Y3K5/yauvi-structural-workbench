@@ -9,10 +9,13 @@ file is byte-compared. Nothing is dropped for being a timestamp or a path.
 
 A second mode, ``--compare``, reads one workspace from each CI runner and
 reports cross-machine differences. A difference is accepted only when every
-changed JSON value sits under a field listed in ``CROSS_ENVIRONMENT_FIELDS``.
-Any other difference is a failure. Checksums and ``RAW_EVIDENCE.zip`` are
-accepted only when the files they bind are themselves identical or explained
-by that list.
+changed JSON value sits under a field listed in ``CROSS_ENVIRONMENT_FIELDS``,
+or the values are strings that differ only by a ``run-<16 hex>`` token.
+``revision_sha256`` is accepted only when every other difference in that
+document is already accepted: it is the hash of the case manifest, and the
+content-addressed revision filename is that hash. Any other difference is a
+failure. Checksums and ``RAW_EVIDENCE.zip`` are accepted only when the files
+they bind are themselves identical or explained by that list.
 
 Exit 0 when the two local runs match and, in ``--compare``, when every
 cross-runner difference is explained. Exit 1 when bytes differ for a reason
@@ -32,6 +35,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
@@ -55,8 +59,10 @@ QUESTION = (
 WITHIN_RUN_EXCLUSIONS: dict[str, str] = {}
 
 # A cross-runner JSON difference is explained only when the path contains one
-# of these markers. The compare prints the observed values; it does not delete
-# them from the stored artifact.
+# of these markers, or the values are strings that differ only by a run id.
+# revision_sha256 is explained only when every other difference in that
+# document is already explained. The compare prints the observed values; it
+# does not delete them from the stored artifact.
 CROSS_ENVIRONMENT_FIELDS: dict[str, str] = {
     "runtime_versions": (
         "Records the interpreter, operating system, CPU, and the numpy, scipy, "
@@ -67,7 +73,21 @@ CROSS_ENVIRONMENT_FIELDS: dict[str, str] = {
     "run_id": (
         "First 16 hex digits of the SHA-256 of the case identity. The identity "
         "includes runtime_versions, so the directory name runs/run-<id> changes "
-        "across the matrix. It is not a wall-clock timestamp."
+        "across the matrix. It is not a wall-clock timestamp. A string that "
+        "differs only by this token, such as runs[].path, is the same field."
+    ),
+    "latest_run_id": (
+        "The case manifest's copy of run_id. It changes when runtime_versions "
+        "changes the identity hash. It is not a wall-clock timestamp."
+    ),
+    "revision_sha256": (
+        "SHA-256 of the case manifest with this field removed. It changes when "
+        "that manifest embeds a different run id, and the archived revision is "
+        "named revisions/<revision_sha256>.json, so that filename changes with "
+        "it. Accepted only when every other difference in the document is a "
+        "stated environment field. A hash that changes while the rest of the "
+        "document is identical is a failure, and so is a scientific field that "
+        "differs beside it."
     ),
     "gemmi_version": (
         "Parser build string stored beside the coordinate parse. Residue numbers "
@@ -86,6 +106,9 @@ CROSS_ENVIRONMENT_FIELDS: dict[str, str] = {
 }
 
 RUN_ID_RE = re.compile(r"run-[0-9a-f]{16}")
+REVISION_FILE_RE = re.compile(
+    r"^structural_analyses/cases/([^/]+)/revisions/([0-9a-f]{64})\.json$"
+)
 GENERATOR_RE = re.compile(
     r"np\.random|numpy\.random|default_rng\(|os\.urandom\(|"
     r"secrets\.token_|secrets\.randbits\("
@@ -251,6 +274,25 @@ def _covered(path: tuple[Any, ...]) -> str | None:
     return None
 
 
+def _strings_differ_only_by_run_id(values: list[Any]) -> bool:
+    """True when every value is a string and they match once run ids are folded."""
+    if not values or not all(isinstance(value, str) for value in values):
+        return False
+    folded = {RUN_ID_RE.sub("run-ID", value) for value in values}
+    return len(folded) == 1 and any(RUN_ID_RE.search(value) for value in values)
+
+
+def _marker_for(path: tuple[Any, ...], values: list[Any]) -> str | None:
+    if path and path[-1] == "latest_run_id" and _strings_differ_only_by_run_id(values):
+        return "latest_run_id"
+    marker = _covered(path)
+    if marker:
+        return marker
+    if _strings_differ_only_by_run_id(values):
+        return "run_id"
+    return None
+
+
 def _walk_diff(values: list[Any], path: tuple[Any, ...]) -> Iterable[tuple[tuple[Any, ...], list[Any]]]:
     if any(isinstance(value, dict) != isinstance(values[0], dict) for value in values) or any(
         isinstance(value, list) != isinstance(values[0], list) for value in values
@@ -307,21 +349,32 @@ def classify_json(labels: list[str], blobs: list[bytes]) -> Verdict:
         )
     rows: list[str] = []
     uncovered: list[str] = []
+    hash_rows: list[str] = []
+    used: list[str] = []
     for path, observed in diffs:
-        marker = _covered(path)
         line = f"{_pointer(path)}: {_grouped(labels, observed)}"
         rows.append(line)
+        if path and path[-1] == "revision_sha256":
+            hash_rows.append(line)
+            continue
+        marker = _marker_for(path, observed)
         if marker is None:
             uncovered.append(line)
+            continue
+        if marker not in used:
+            used.append(marker)
     if uncovered:
         return Verdict("bug", "JSON values differ outside the stated environment fields.", uncovered)
-    reasons = []
-    used: set[str] = set()
-    for path, _observed in diffs:
-        marker = _covered(path)
-        if marker and marker not in used:
-            used.add(marker)
-            reasons.append(f"{marker}: {CROSS_ENVIRONMENT_FIELDS[marker]}")
+    if hash_rows and not used:
+        return Verdict(
+            "bug",
+            "revision_sha256 changed while every other field is identical. "
+            "The hash is the digest of the case manifest, not an independent environment field.",
+            hash_rows,
+        )
+    reasons = [f"{marker}: {CROSS_ENVIRONMENT_FIELDS[marker]}" for marker in used]
+    if hash_rows:
+        reasons.append(f"revision_sha256: {CROSS_ENVIRONMENT_FIELDS['revision_sha256']}")
     return Verdict("explained", " ".join(reasons), rows)
 
 
@@ -496,11 +549,150 @@ def _run_prefix(files: dict[str, bytes], case_id: str) -> str | None:
     return None
 
 
+def _normalize_revision(value: Any) -> Any:
+    """Drop the manifest hash and fold run ids, so revision identity can be paired."""
+    if isinstance(value, str):
+        return RUN_ID_RE.sub("run-ID", value)
+    if isinstance(value, dict):
+        return {
+            key: _normalize_revision(item)
+            for key, item in value.items()
+            if key != "revision_sha256"
+        }
+    if isinstance(value, list):
+        return [_normalize_revision(item) for item in value]
+    return value
+
+
+def _revision_key(doc: Any) -> str:
+    return json.dumps(_normalize_revision(doc), sort_keys=True, separators=(",", ":"))
+
+
+def _revision_identity(path: str, doc: Any) -> str:
+    if not isinstance(doc, dict):
+        return path
+    return (
+        f"{path} state={doc.get('state')!r} revision={doc.get('revision')!r} "
+        f"latest_run_id={doc.get('latest_run_id')!r}"
+    )
+
+
+def classify_revision_sets(labels: list[str], files_per_sample: list[dict[str, bytes]]) -> list[tuple[str, Verdict]]:
+    """Pair content-addressed case revisions.
+
+    The filename is the revision hash. It differs across runners when the
+    manifest embeds a different run id. That is explained only when the
+    multiset of manifests, with run ids folded and revision_sha256 removed,
+    is the same on every runner, and the remaining JSON differences are
+    stated environment fields. A manifest present on only some runners is a bug.
+    """
+    cases: set[str] = set()
+    parsed: list[dict[str, list[tuple[str, bytes, str, Any]]]] = []
+    findings: list[tuple[str, Verdict]] = []
+    for files in files_per_sample:
+        grouped: dict[str, list[tuple[str, bytes, str, Any]]] = {}
+        for path, blob in files.items():
+            match = REVISION_FILE_RE.match(path)
+            if match is None:
+                continue
+            case = match.group(1)
+            cases.add(case)
+            try:
+                doc = json.loads(blob)
+            except json.JSONDecodeError as exc:
+                findings.append((path, Verdict("bug", f"revision JSON does not parse: {exc}")))
+                continue
+            grouped.setdefault(case, []).append((path, blob, _revision_key(doc), doc))
+        parsed.append(grouped)
+    if any(verdict.kind == "bug" for _path, verdict in findings):
+        return findings
+    for case in sorted(cases):
+        bundles = [item.get(case, []) for item in parsed]
+        counts = [Counter(entry[2] for entry in bundle) for bundle in bundles]
+        if any(count != counts[0] for count in counts):
+            rows: list[str] = []
+            reference = bundles[0]
+            for label, bundle, count in zip(labels, bundles, counts):
+                if count == counts[0]:
+                    continue
+                missing = counts[0] - count
+                extra = count - counts[0]
+                missing_desc = [
+                    _revision_identity(entry[0], entry[3])
+                    for key in missing
+                    for entry in reference
+                    if entry[2] == key
+                ]
+                extra_desc = [
+                    _revision_identity(entry[0], entry[3])
+                    for key in extra
+                    for entry in bundle
+                    if entry[2] == key
+                ]
+                rows.append(f"{label} missing normalized revisions: {missing_desc or '[]'}")
+                rows.append(f"{label} extra normalized revisions: {extra_desc or '[]'}")
+            findings.append((
+                f"structural_analyses/cases/{case}/revisions",
+                Verdict(
+                    "bug",
+                    "Content-addressed revision files do not match once run ids and revision_sha256 "
+                    "are set aside. A filename change is explained only when the manifest differs "
+                    "solely by the environment-bound run id.",
+                    rows,
+                ),
+            ))
+            continue
+        for key in counts[0]:
+            groups = [
+                sorted(
+                    (entry for entry in bundle if entry[2] == key),
+                    key=lambda entry: (
+                        entry[3].get("revision") if isinstance(entry[3], dict) and isinstance(entry[3].get("revision"), int) else -1,
+                        entry[0],
+                    ),
+                )
+                for bundle in bundles
+            ]
+            for index in range(len(groups[0])):
+                paths = [group[index][0] for group in groups]
+                blobs = [group[index][1] for group in groups]
+                verdict = classify_json(labels, blobs)
+                same_name = len(set(paths)) == 1
+                display = paths[0] if same_name else f"structural_analyses/cases/{case}/revisions/<revision_sha256>.json"
+                if verdict.kind == "bug":
+                    findings.append((display, verdict))
+                    continue
+                if same_name:
+                    findings.append((display, verdict))
+                    continue
+                name_rows = [f"{label}: {path}" for label, path in zip(labels, paths)]
+                if verdict.kind == "identical":
+                    findings.append((display, Verdict(
+                        "bug",
+                        "Revision bytes match but the content-addressed filenames differ.",
+                        name_rows,
+                    )))
+                    continue
+                findings.append((display, Verdict(
+                    "explained",
+                    "The revision filename is the revision_sha256 of this manifest. "
+                    "The manifests differ only by the environment-bound run id, so the names differ. "
+                    + verdict.summary,
+                    verdict.rows + name_rows,
+                )))
+    return findings
+
+
 def compare_samples(samples: list[Sample]) -> tuple[list[tuple[str, Verdict]], int]:
     if len(samples) < 2:
         raise RuntimeError("at least two samples are required")
     labels = [sample.label for sample in samples]
-    logical = [logical_snapshot(sample.files) for sample in samples]
+    logical_full = [logical_snapshot(sample.files) for sample in samples]
+    revision_findings = classify_revision_sets(labels, logical_full)
+    logical = [
+        {path: data for path, data in files.items() if REVISION_FILE_RE.match(path) is None}
+        for files in logical_full
+    ]
     names = [set(files) for files in logical]
     findings: list[tuple[str, Verdict]] = []
     if any(name != names[0] for name in names):
@@ -549,6 +741,7 @@ def compare_samples(samples: list[Sample]) -> tuple[list[tuple[str, Verdict]], i
                 bound["RAW_EVIDENCE.zip"] = next(item for item_path, item in findings if item_path == export_zip)
         verdict = classify_checksum(labels, [files[path] for files in logical], bound)
         findings.append((path, verdict))
+    findings.extend(revision_findings)
     bugs = [item for item in findings if item[1].kind == "bug"]
     return findings, (1 if bugs else 0)
 
@@ -773,8 +966,21 @@ def load_samples(directory: Path) -> list[Sample]:
         files = snapshot(workspace)
         recorded = manifest.get("file_sha256", {})
         logical = logical_snapshot(files)
-        if recorded and recorded != {path: sha256(data) for path, data in logical.items()}:
-            raise RuntimeError(f"{child.name}: manifest hashes do not match the uploaded workspace")
+        actual = {path: sha256(data) for path, data in logical.items()}
+        if recorded and recorded != actual:
+            missing = sorted(set(recorded) - set(actual))
+            extra = sorted(set(actual) - set(recorded))
+            changed = sorted(path for path in set(recorded) & set(actual) if recorded[path] != actual[path])
+            detail: list[str] = []
+            if missing:
+                detail.append("in the manifest but not the workspace: " + ", ".join(missing))
+            if extra:
+                detail.append("in the workspace but not the manifest: " + ", ".join(extra))
+            if changed:
+                detail.append("hash differs: " + ", ".join(changed))
+            raise RuntimeError(
+                f"{child.name}: manifest hashes do not match the uploaded workspace; " + "; ".join(detail)
+            )
         samples.append(Sample(label=label, files=files, environment={str(k): str(v) for k, v in env.items()}))
     if len(samples) < 2:
         raise RuntimeError(f"need at least two determinism records in {directory}")
@@ -789,6 +995,11 @@ def cross_compare(directory: Path) -> int:
     print("Fields that may differ, and why:")
     for name, reason in CROSS_ENVIRONMENT_FIELDS.items():
         print(f"  {name}: {reason}")
+    print(
+        "Revision filenames revisions/<revision_sha256>.json are that hash. A filename "
+        "differs across runners only when the manifest differs by the environment-bound "
+        "run id. A revision whose other fields differ is a bug."
+    )
     findings, code = compare_samples(samples)
     print_findings(findings)
     return code
@@ -809,7 +1020,32 @@ def _fixture_zip(members: list[tuple[str, bytes]]) -> bytes:
     return buffer.getvalue()
 
 
-def _self_test_tree(run_id: str, python: str, mkdssp: str, residue: str) -> dict[str, bytes]:
+def _case_manifest(run_id: str, digest: str, question: str = "coverage") -> dict[str, Any]:
+    return {
+        "analysis_id": "2pow",
+        "latest_run_id": run_id,
+        "question": question,
+        "revision": 6,
+        "revision_sha256": digest,
+        "runs": [{
+            "path": f"runs/{run_id}/ANALYSIS_RUN.json",
+            "run_id": run_id,
+            "status": "scientifically_incomplete",
+        }],
+        "state": "scientifically_incomplete",
+    }
+
+
+def _self_test_tree(
+    run_id: str,
+    python: str,
+    mkdssp: str,
+    residue: str,
+    digest: str | None = None,
+    question: str = "coverage",
+) -> dict[str, bytes]:
+    if digest is None:
+        digest = "a" * 64
     prefix = f"structural_analyses/cases/2pow/runs/{run_id}/"
     analysis = {
         "run_id": run_id,
@@ -836,6 +1072,19 @@ def _self_test_tree(run_id: str, python: str, mkdssp: str, residue: str) -> dict
             "valid": True,
         }),
     }
+    manifest = _case_manifest(run_id, digest, question)
+    files["structural_analyses/cases/2pow/ANALYSIS_CASE.json"] = _canonical(manifest)
+    files[f"structural_analyses/cases/2pow/revisions/{digest}.json"] = _canonical(manifest)
+    prior_digest = "b" * 64
+    files[f"structural_analyses/cases/2pow/revisions/{prior_digest}.json"] = _canonical({
+        "analysis_id": "2pow",
+        "latest_run_id": None,
+        "question": "coverage",
+        "revision": 1,
+        "revision_sha256": prior_digest,
+        "runs": [],
+        "state": "draft",
+    })
     members = [(path[len(prefix):], data) for path, data in files.items() if path.startswith(prefix)]
     digest_map = {name: sha256(data) for name, data in members}
     checksum = _canonical({"files": digest_map, "schema_version": "1.0"})
@@ -859,7 +1108,9 @@ def self_test() -> int:
     if code != 0:
         print("self-test failed: identical fixtures were reported as different")
         return 1
-    shifted = _self_test_tree("run-bbbbbbbbbbbbbbbb", "3.10.16", "available_not_invoked", "1.25")
+    shifted = _self_test_tree(
+        "run-bbbbbbbbbbbbbbbb", "3.10.16", "available_not_invoked", "1.25", digest="c" * 64,
+    )
     # Rebuild is independent; mkdssp and python and run id change. Residue does not.
     # PREFLIGHT mkdssp stays "missing" in the fixture, so patch it.
     shifted["structural_analyses/cases/2pow/PREFLIGHT.json"] = _canonical({
@@ -894,6 +1145,52 @@ def self_test() -> int:
     _findings, code = compare_samples([Sample("a", base), Sample("b", changed)])
     if code == 0:
         print("self-test failed: a gemmi-availability change was treated as ignorable")
+        return 1
+    case_path = "structural_analyses/cases/2pow/ANALYSIS_CASE.json"
+    lone = dict(base)
+    lone_doc = json.loads(base[case_path])
+    lone_doc["revision_sha256"] = "d" * 64
+    lone[case_path] = _canonical(lone_doc)
+    _findings, code = compare_samples([Sample("a", base), Sample("b", lone)])
+    if code == 0:
+        print("self-test failed: a lone revision_sha256 change was accepted")
+        return 1
+    scientific = _self_test_tree(
+        "run-bbbbbbbbbbbbbbbb", "3.12.3", "not_available", "1.25",
+        digest="e" * 64, question="different question",
+    )
+    findings, code = compare_samples([Sample("a", base), Sample("b", scientific)])
+    question_bugs = [
+        verdict for _path, verdict in findings
+        if verdict.kind == "bug" and any("question" in row for row in verdict.rows)
+    ]
+    if code == 0 or not question_bugs:
+        print("self-test failed: a question change was accepted alongside the run id")
+        print_findings(findings)
+        return 1
+    orphan = dict(base)
+    orphan_doc = _case_manifest("run-aaaaaaaaaaaaaaaa", "f" * 64, question="not the same case")
+    orphan[f"structural_analyses/cases/2pow/revisions/{'f' * 64}.json"] = _canonical(orphan_doc)
+    _findings, code = compare_samples([Sample("a", base), Sample("b", orphan)])
+    if code == 0:
+        print("self-test failed: a revision present on only one runner was accepted")
+        print_findings(_findings)
+        return 1
+    drifted = _self_test_tree(
+        "run-bbbbbbbbbbbbbbbb", "3.12.3", "not_available", "1.25", digest="c" * 64,
+    )
+    evidence_key = next(key for key in drifted if key.endswith("STRUCTURE_EVIDENCE.json"))
+    evidence = json.loads(drifted[evidence_key])
+    evidence["residues"][0]["mean_b_factor"] = 9.5
+    drifted[evidence_key] = _canonical(evidence)
+    findings, code = compare_samples([Sample("a", base), Sample("b", drifted)])
+    factor_bugs = [
+        verdict for _path, verdict in findings
+        if verdict.kind == "bug" and any("mean_b_factor" in row for row in verdict.rows)
+    ]
+    if code == 0 or not factor_bugs:
+        print("self-test failed: a B-factor change was accepted alongside the run id")
+        print_findings(findings)
         return 1
     unexpected = audit_generators()
     if unexpected:

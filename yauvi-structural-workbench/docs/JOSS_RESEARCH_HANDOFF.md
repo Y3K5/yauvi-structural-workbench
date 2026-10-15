@@ -40,8 +40,12 @@ byte-compares every emitted file, and diffs those artifacts across the
 runners. The files compared, the empty within-run exclusion list, and the
 only cross-runner fields that may differ are stated in
 [`tools/check_determinism.py`](../../tools/check_determinism.py) and
-[Reproducibility](reproducibility.md). No step of the case uses a random
-number generator, so no seed is needed and none is recorded. A separate
+[Reproducibility](reproducibility.md). The run id is a hash of an identity
+that includes the interpreter, OS, and library versions, so `latest_run_id`,
+run paths, `revision_sha256`, and the final revision filename differ across
+the matrix. That difference is printed with the observed values. Coordinate
+text, B-factors, and source hashes are not in that list. No step of the case
+uses a random number generator, so no seed is needed and none is recorded. A separate
 installed-wheel browser check completed the synthetic StructQC example flow
 with zero console errors. These checks support reproducibility and software
 behavior only. They do not establish scientific qualification or resolve

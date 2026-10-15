@@ -56,11 +56,21 @@ these fields, which the log prints with the values that were observed:
   gemmi, biopython, freesasa, foldseek, and diamond versions. The run id is a
   hash of an identity that includes this object.
 - `run_id` — that hash, also used as the run directory name. Not a timestamp.
+  A string whose only difference is the `run-<16 hex>` token is the same
+  field. `runs[].path` (`runs/run-<id>/ANALYSIS_RUN.json`) is one of those.
+- `latest_run_id` — the case manifest's copy of `run_id`.
+- `revision_sha256` — SHA-256 of the case manifest with this field removed.
+  Accepted only when every other difference in that document is one of the
+  fields above. The content-addressed file
+  `revisions/<revision_sha256>.json` is that hash, so the final revision's
+  filename differs for the same reason. A hash that changes while the rest of
+  the document is identical fails. A scientific field that also differs fails.
+  Revisions written before the run id exists stay byte-identical.
 - `gemmi_version` — the parser build string. Coordinate numbers stay rounded
   to 6 decimal places; a coordinate or B-factor change is not this field.
 - `optional_runtimes.mkdssp` and `optional_runtimes.molprobity_or_phenix` —
   whether those optional executables are on `PATH`. This case does not invoke
-  them.
+  them. `optional_runtimes.gemmi` is not in this list.
 
 `CHECKSUMS.json` and `RAW_EVIDENCE.zip` may differ only because they bind
 files that differ in the fields above. Any other difference, including float
