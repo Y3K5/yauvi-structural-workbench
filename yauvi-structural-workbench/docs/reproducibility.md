@@ -13,6 +13,62 @@ JSON/TSV/HTML excludes absolute workspace paths. Logs scrub the workspace and
 source-tree roots. External runtime versions, reference pack checksums,
 parameters, missing evidence, and non-claims remain visible.
 
+## Determinism
+
+No step of the public case uses a random number generator, so no seed is
+needed and none is recorded. Do not add a seed field to the case.
+
+The case is `public-ca2-structure-coverage-v1` (PDB 2POW and 4RN4, chain A,
+against UniProt P00918). `tools/check_determinism.py` runs it through
+`StructuralAnalysisStore` twice, into two workspaces, and byte-compares every
+emitted file. That includes `REPORT_DATA.json`, `CHECKSUMS.json`,
+`RAW_EVIDENCE.zip`, `REPORT.html`, `RUN_MANIFEST.json`, and the StructQC
+evidence written beside them. No file is left out of the compare. The script's
+within-run exclusion list is empty: a wall-clock timestamp or an absolute path
+that actually varied would have to be named there, with a reason, and a
+difference that is not named fails the run.
+
+The same command searches `software/**/src` and `software/**/examples` for
+`random`, `np.random`, `default_rng`, `os.urandom`, and `secrets` token draws.
+An unlisted hit fails the job. The public-case path has no generator. The hits
+that do exist, and why they are not a seed for this case:
+
+- MembraneOrient's rotation-invariance check calls `numpy.random.default_rng(0)`.
+  The `0` is a constant written in that function, not an input. This case does
+  not run MembraneOrient.
+- `software/membrane-orientor/memorient/examples/p4_benchmark.py` is an example
+  script with a local seed argument. It is not a store step.
+- Ingest upload ids use `os.urandom`. `finalize_ingest` deletes the ingest
+  directory and does not store the id. Repeated case runs are byte-identical.
+- Browser tokens, job ids, import ids, and source-acquisition ids use
+  `secrets`. This case does not read them.
+
+Uses of the word "seed" in the barrel search and the assembly frame are
+geometric starting vectors, not random draws. Test and fixture builders are
+outside this search; they are not case steps.
+
+CI runs that command on `ubuntu-latest` and `macos-latest` (arm64) for Python
+3.10–3.13, uploads each workspace, and diffs them in a final job. A
+cross-runner difference is accepted only when every changed value is one of
+these fields, which the log prints with the values that were observed:
+
+- `runtime_versions` — interpreter, OS, CPU, and the resolved numpy, scipy,
+  gemmi, biopython, freesasa, foldseek, and diamond versions. The run id is a
+  hash of an identity that includes this object.
+- `run_id` — that hash, also used as the run directory name. Not a timestamp.
+- `gemmi_version` — the parser build string. Coordinate numbers stay rounded
+  to 6 decimal places; a coordinate or B-factor change is not this field.
+- `optional_runtimes.mkdssp` and `optional_runtimes.molprobity_or_phenix` —
+  whether those optional executables are on `PATH`. This case does not invoke
+  them.
+
+`CHECKSUMS.json` and `RAW_EVIDENCE.zip` may differ only because they bind
+files that differ in the fields above. Any other difference, including float
+text that is not one of those fields, fails the job and names the file. The
+store's structure QC adapter passes `--require-external-validation`. This case
+does not supply a validation report, so both runs are scientifically
+incomplete and must record the same status.
+
 For a reviewer reproduction:
 
 ```bash
