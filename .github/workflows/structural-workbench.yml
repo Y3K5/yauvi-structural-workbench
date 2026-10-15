@@ -249,10 +249,6 @@ jobs:
           diff -qr "$showcase_tmp/public-a" "$showcase_tmp/public-b"
       - name: CLI reference matches the installed parsers
         run: python tools/build_cli_reference.py --check
-      - name: Paper figures regenerate from recorded runs
-        run: |
-          python -m pip install "matplotlib==3.11.2"
-          python tools/build_scientific_figures.py --check
 
       - name: Wheel contains only canonical package namespaces
         run: |
@@ -260,6 +256,27 @@ jobs:
           python tools/verify_structural_workbench_wheel.py dist/*.whl
       - name: Pre-public JOSS material is internally honest
         run: python tools/verify_structural_joss_staging.py
+
+  paper-figures:
+    name: Paper figures · Linux x86_64 · py3.12.3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.3"
+          cache: pip
+      # Run ids hash CPython 3.12.3, Linux x86_64, and the numpy, scipy, gemmi,
+      # and biopython versions in the constraint file. The open workbench job
+      # above installs whatever "3.12" resolves, so this check is separate.
+      # freesasa, foldseek, and diamond stay off PATH; the pins record them as
+      # unavailable. CA2 acquisition needs network access to RCSB and UniProt.
+      - name: Install the pinned figure environment
+        run: |
+          python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]" "matplotlib==3.11.2"
+          python -c "import platform; print(f'{platform.system()}/{platform.machine()} CPython {platform.python_version()}')"
+      - name: Regenerate public runs and check the paper figures
+        run: python tools/build_scientific_figures.py --check
 
   determinism:
     name: Determinism · py${{ matrix.python }} · ${{ matrix.os }}

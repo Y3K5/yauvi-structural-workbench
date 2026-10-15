@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
-"""Rebuild the JOSS paper figures from recorded store runs.
+"""Rebuild the JOSS paper figures from regenerated store runs.
 
-The figure-inputs manifest lists, for each figure, either a
-StructuralAnalysisStore run id and the artifacts inside that run, or an
-explicit statement that the figure is a schematic or a historical receipt.
-Historical receipts are not given a run id.
+``--check`` first reruns the shipped synthetic StructQC example and the public
+CA2 case (PDB 2POW and 4RN4) through StructuralAnalysisStore. It then requires
+each run id and artifact SHA-256 to match the pins in FIGURE_INPUTS.json.
+The run directories are not committed. Schematic figures and the qualification
+history receipt have no store run id.
 
     python tools/build_scientific_figures.py
     python tools/build_scientific_figures.py --check
-    python tools/build_scientific_figures.py --store /path/to/workspace --run 2pow=run-0123abcd0123abcd --run 4rn4=run-0123abcd0123abcd
 
-``--store`` with ``--run`` reads those analyses from the workspace. Figures
-whose analyses were not named keep the recorded runs in the manifest.
+The pins were recorded on Linux x86_64, CPython 3.12.3, with
+``yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt``.
+A run id hashes that runtime, so another interpreter or library set fails
+the pin check. CA2 acquisition needs network access to RCSB and UniProt.
+The downloaded coordinates are not written into the repository.
 
-``--check`` rebuilds into a temporary directory and byte-compares the result
-with the committed figures, the same way ``tools/build_cli_reference.py
---check`` compares the CLI reference. PNG bytes can still differ across
-FreeType or libpng builds. When they do, the check compares the SVG and the
-extracted plotted data and says why. A change in the plotted data fails.
+``--check`` then rebuilds the figures and byte-compares them with the
+committed copies, the same way ``tools/build_cli_reference.py --check``
+compares the CLI reference. PNG bytes can still differ across FreeType or
+libpng builds. When they do, the check compares the SVG and the extracted
+plotted data and says why. A change in the plotted data fails.
 
 Matplotlib is not part of the scientific install. The figure command needs
 ``matplotlib==3.11.2``.
@@ -29,6 +32,7 @@ import csv
 import hashlib
 import json
 import os
+import platform
 import re
 import shutil
 import statistics
@@ -133,22 +137,217 @@ def cited_in_paper(name: str) -> bool:
     return f"figures/{name}.png" in PAPER_MD.read_text(encoding="utf-8")
 
 
-def parse_run_overrides(values: list[str]) -> dict[str, str]:
-    overrides: dict[str, str] = {}
-    for value in values:
-        if "=" not in value:
-            raise SystemExit(f"--run must be analysis_id=run_id, not {value!r}")
-        analysis_id, run_id = value.split("=", 1)
-        if not analysis_id or not RUN_ID_RE.fullmatch(run_id):
-            raise SystemExit(f"invalid --run {value!r}")
-        overrides[analysis_id] = run_id
-    return overrides
+SYNTHETIC_ANALYSIS = "synthetic-structqc"
+SYNTHETIC_QUESTION = "What does this two-residue fixture measure?"
+SYNTHETIC_SUBJECT = "SYNTHETIC"
+SYNTHETIC_EXAMPLES = REPO / "software" / "structqc" / "examples"
+PINNED_LIBRARIES = ("numpy", "scipy", "gemmi", "biopython")
+ABSENT_FROM_PIN = ("freesasa", "foldseek", "diamond")
 
 
-def run_directory(repo: Path, recorded_root: str, store: Path | None, analysis_id: str, run_id: str) -> Path:
-    if store is not None:
-        return store / "structural_analyses" / "cases" / analysis_id / "runs" / run_id
-    return repo / recorded_root / analysis_id / "runs" / run_id
+def constraint_versions(path: Path) -> dict[str, str]:
+    versions: dict[str, str] = {}
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if "==" not in line:
+            continue
+        name, version = line.split("==", 1)
+        versions[name.strip().lower()] = version.strip()
+    return versions
+
+
+def assert_pin_environment(manifest: dict[str, Any]) -> None:
+    pin = manifest.get("pin_environment")
+    if not isinstance(pin, dict):
+        raise SystemExit("FIGURE_INPUTS.json has no pin_environment")
+    problems: list[str] = []
+    for key, actual in (
+        ("system", platform.system()),
+        ("machine", platform.machine()),
+        ("python", platform.python_version()),
+    ):
+        if actual != pin.get(key):
+            problems.append(f"{key}: pin {pin.get(key)!r}, this process {actual!r}")
+    constraint_rel = pin.get("constraint")
+    constraint = REPO / str(constraint_rel) if constraint_rel else None
+    if constraint is None or not constraint.is_file():
+        problems.append(f"missing constraint file {constraint_rel}")
+    else:
+        pinned = constraint_versions(constraint)
+        import importlib.metadata as metadata
+
+        for name in PINNED_LIBRARIES:
+            expected = pinned.get(name)
+            try:
+                actual = metadata.version(name)
+            except metadata.PackageNotFoundError:
+                actual = "unavailable"
+            if expected is None:
+                problems.append(f"{name} is not pinned in {constraint_rel}")
+            elif actual != expected:
+                problems.append(f"{name}: constraint {expected}, installed {actual}")
+    for binary in ABSENT_FROM_PIN:
+        found = shutil.which(binary)
+        if found:
+            problems.append(f"{binary} is on PATH ({found}); the pins recorded it as unavailable")
+    if problems:
+        raise SystemExit(
+            "Figure run-id pins were recorded on "
+            f"{pin.get('system')} {pin.get('machine')}, CPython {pin.get('python')}, "
+            f"with {pin.get('constraint')}.\n" + "\n".join(problems)
+        )
+
+
+def _run_dir(workspace: Path, analysis_id: str, run_id: str) -> Path:
+    return workspace / "structural_analyses" / "cases" / analysis_id / "runs" / run_id
+
+
+def _load_determinism():
+    tools = str(REPO / "tools")
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    import check_determinism
+
+    return check_determinism
+
+
+def execute_public_runs(scratch: Path) -> dict[str, Path]:
+    """Rerun the synthetic fixture and the public CA2 case into one temporary store."""
+    from yauvi_platform.structural_workbench import StructuralAnalysisStore
+
+    determinism = _load_determinism()
+    workspace = scratch / "workspace"
+    workspace.mkdir()
+    store = StructuralAnalysisStore(workspace)
+    print("Regenerating the synthetic StructQC run from software/structqc/examples", flush=True)
+    store.create(
+        SYNTHETIC_ANALYSIS,
+        analysis_type="structure_qc",
+        question=SYNTHETIC_QUESTION,
+        subject_id=SYNTHETIC_SUBJECT,
+    )
+    for role, name in (
+        ("structure", "model.pdb"),
+        ("reference_fasta", "reference.fasta"),
+        ("provenance", "provenance.json"),
+        ("validation_report", "validation.json"),
+    ):
+        store.add_file(SYNTHETIC_ANALYSIS, role=role, path=SYNTHETIC_EXAMPLES / name)
+    store.update_parameters(SYNTHETIC_ANALYSIS, {"model": 0, "chain": "A"})
+    record = store.run(SYNTHETIC_ANALYSIS)
+    print(f"  {SYNTHETIC_ANALYSIS}: status={record['status']} run_id={record['run_id']}", flush=True)
+    if record["status"] != "completed":
+        raise SystemExit(f"{SYNTHETIC_ANALYSIS} status {record['status']}: {record.get('error', '')}")
+    runs = {SYNTHETIC_ANALYSIS: _run_dir(workspace, SYNTHETIC_ANALYSIS, record["run_id"])}
+
+    lock = load_json(determinism.LOCK_PATH)
+    if lock.get("case_id") != "public-ca2-structure-coverage-v1":
+        raise SystemExit(f"unexpected public case lock: {lock.get('case_id')}")
+    inputs = scratch / "inputs"
+    provenance_dir = scratch / "provenance"
+    provenance_dir.mkdir()
+    print(f"Acquiring locked public CA2 inputs into {inputs}", flush=True)
+    try:
+        determinism.acquire_inputs(inputs)
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+    try:
+        fasta = inputs / lock["reference"]["path"]
+        for source in lock["structures"]:
+            analysis_id = str(source["entry_id"]).lower()
+            store.create(
+                analysis_id,
+                analysis_type="structure_qc",
+                question=determinism.QUESTION,
+                subject_id=str(source["uniprot_accession"]),
+            )
+            provenance = provenance_dir / f"{source['entry_id']}-provenance.json"
+            provenance.write_text(
+                json.dumps(determinism._provenance(source), sort_keys=True, separators=(",", ":")) + "\n",
+                encoding="utf-8",
+            )
+            store.add_file(analysis_id, role="structure", path=inputs / source["path"])
+            store.add_file(analysis_id, role="reference_fasta", path=fasta)
+            store.add_file(analysis_id, role="provenance", path=provenance)
+            store.update_parameters(analysis_id, {"model": int(source["model"]), "chain": str(source["chain"])})
+            preflight = store.preflight(analysis_id)
+            if not preflight["valid"]:
+                raise SystemExit(f"preflight blocked {analysis_id}: {preflight}")
+            record = store.run(analysis_id)
+            print(
+                f"  {source['entry_id']}: status={record['status']} "
+                f"exit={record['exit_code']} run_id={record['run_id']}",
+                flush=True,
+            )
+            if record["status"] not in {"completed", "scientifically_incomplete"}:
+                raise SystemExit(
+                    f"{analysis_id} did not produce a report bundle: "
+                    f"{record['status']} {record.get('error', '')}"
+                )
+            runs[analysis_id] = _run_dir(workspace, analysis_id, record["run_id"])
+    finally:
+        shutil.rmtree(inputs, ignore_errors=True)
+        shutil.rmtree(provenance_dir, ignore_errors=True)
+    return runs
+
+
+def verify_pins(manifest: dict[str, Any], runs: dict[str, Path]) -> None:
+    problems: list[str] = []
+    seen: set[str] = set()
+    for name in FIGURE_ORDER:
+        spec = manifest["figures"][name]
+        if spec["input_class"] != "store_run":
+            continue
+        for run_spec in spec["runs"]:
+            analysis_id = run_spec["analysis_id"]
+            seen.add(analysis_id)
+            pinned_id = run_spec["run_id"]
+            if not RUN_ID_RE.fullmatch(pinned_id):
+                problems.append(f"{analysis_id} pin is not a run id: {pinned_id}")
+                continue
+            root = runs.get(analysis_id)
+            if root is None:
+                problems.append(f"no regenerated run for {analysis_id}")
+                continue
+            record_path = root / "ANALYSIS_RUN.json"
+            if not record_path.is_file():
+                problems.append(f"no ANALYSIS_RUN.json for {analysis_id} at {root}")
+                continue
+            record = load_json(record_path)
+            actual_id = record.get("run_id")
+            if actual_id != pinned_id or root.name != pinned_id:
+                problems.append(
+                    f"{analysis_id} regenerated {actual_id} does not match pin {pinned_id}; "
+                    f"runtime_versions={json.dumps(record.get('runtime_versions'), sort_keys=True)}"
+                )
+            for artifact in run_spec["artifacts"]:
+                path = root / artifact["path"]
+                if not path.is_file():
+                    problems.append(f"missing {analysis_id} {artifact['role']}: {artifact['path']}")
+                    continue
+                digest = sha256(path)
+                if digest != artifact.get("sha256"):
+                    problems.append(
+                        f"{analysis_id} {artifact['role']} sha256 {digest} does not match pin {artifact.get('sha256')}"
+                    )
+    extra = set(runs) - seen
+    if extra:
+        problems.append("regenerated analyses are not pinned: " + ", ".join(sorted(extra)))
+    if problems:
+        raise SystemExit("Regenerated runs do not match the pins in FIGURE_INPUTS.json:\n" + "\n".join(problems))
+    print("Regenerated run ids and artifact SHA-256s match FIGURE_INPUTS.json.", flush=True)
+
+
+def prepare_runs(manifest: dict[str, Any]) -> tuple[Path, dict[str, Path]]:
+    assert_pin_environment(manifest)
+    scratch = Path(tempfile.mkdtemp(prefix="yauvi-figure-runs-"))
+    try:
+        runs = execute_public_runs(scratch)
+        verify_pins(manifest, runs)
+    except BaseException:
+        shutil.rmtree(scratch, ignore_errors=True)
+        raise
+    return scratch, runs
 
 
 def require_hash(path: Path, expected: str | None, role: str) -> str:
@@ -166,26 +365,17 @@ def resolve_repo_artifact(spec: dict[str, str]) -> dict[str, str]:
     return {"role": spec["role"], "path": spec["path"], "sha256": digest}
 
 
-def resolve_run(spec: dict[str, Any], recorded_root: str, store: Path | None, overrides: dict[str, str]) -> dict[str, Any]:
+def resolve_run(spec: dict[str, Any], runs: dict[str, Path]) -> dict[str, Any]:
     analysis_id = spec["analysis_id"]
-    run_id = overrides.get(analysis_id, spec["run_id"])
-    if not RUN_ID_RE.fullmatch(run_id):
-        raise SystemExit(f"invalid run id {run_id!r} for {analysis_id}")
-    # A store plus a partial --run list resolves only the named analyses there.
-    # The other figures keep the recorded runs in the manifest.
-    use_store = store if store is not None and (not overrides or analysis_id in overrides) else None
-    root = run_directory(REPO, recorded_root, use_store, analysis_id, run_id)
-    record_path = root / "ANALYSIS_RUN.json"
-    if not record_path.is_file():
-        raise SystemExit(f"no ANALYSIS_RUN.json for {analysis_id} at {root}")
-    record = load_json(record_path)
-    if record.get("run_id") != run_id:
-        raise SystemExit(f"{record_path} records run_id {record.get('run_id')!r}, directory says {run_id}")
+    root = runs[analysis_id]
+    record = load_json(root / "ANALYSIS_RUN.json")
+    run_id = record["run_id"]
+    if run_id != spec["run_id"]:
+        raise SystemExit(f"{analysis_id} run id {run_id} does not match pin {spec['run_id']}")
     artifacts = []
     for artifact in spec["artifacts"]:
         path = root / artifact["path"]
-        expected = None if run_id != spec["run_id"] else artifact.get("sha256")
-        digest = require_hash(path, expected, f"{analysis_id} {artifact['role']}")
+        digest = require_hash(path, artifact.get("sha256"), f"{analysis_id} {artifact['role']}")
         artifacts.append({
             "role": artifact["role"],
             "run_id": run_id,
@@ -634,17 +824,16 @@ def public_artifact(artifact: dict[str, Any]) -> dict[str, str]:
     )
 
 
-def render(dest: Path, manifest: dict[str, Any], store: Path | None, overrides: dict[str, str], inputs_path: Path) -> dict[str, Any]:
+def render(dest: Path, manifest: dict[str, Any], runs: dict[str, Path], inputs_path: Path) -> dict[str, Any]:
     plt, FancyBboxPatch = configure_matplotlib()
     plt.close("all")
-    recorded_root = manifest["recorded_root"]
     specs = manifest["figures"]
     resolved_runs: dict[str, list[dict[str, Any]]] = {}
     resolved_files: dict[str, list[dict[str, str]]] = {}
     for name in FIGURE_ORDER:
         spec = specs[name]
         if spec["input_class"] == "store_run":
-            resolved_runs[name] = [resolve_run(run, recorded_root, store, overrides) for run in spec["runs"]]
+            resolved_runs[name] = [resolve_run(run, runs) for run in spec["runs"]]
         elif spec["input_class"] == "historical_receipt":
             resolved_files[name] = [resolve_repo_artifact(artifact) for artifact in spec["artifacts"]]
         elif spec["input_class"] != "schematic":
@@ -656,10 +845,6 @@ def render(dest: Path, manifest: dict[str, Any], store: Path | None, overrides: 
         }
         for key, value in manifest["historical_receipts"].items()
     }
-    if store is None and overrides:
-        unknown = set(overrides) - {run["analysis_id"] for runs in resolved_runs.values() for run in runs}
-        if unknown:
-            raise SystemExit("no figure uses analysis id " + ", ".join(sorted(unknown)))
 
     plotted = {
         "architecture": draw_architecture(plt, FancyBboxPatch, dest),
@@ -729,14 +914,17 @@ def render(dest: Path, manifest: dict[str, Any], store: Path | None, overrides: 
         "historical_receipts": historical,
         "figures": figures,
         "limits": (
-            "Worked example is the shipped two-residue synthetic fixture, drawn from its recorded store run. "
-            "The 2026-09-06 evidence files are retained as the historical receipt and are not a run id. "
-            "CA2 coverage is the public case public-ca2-structure-coverage-v1; both runs are scientifically "
-            "incomplete because no external validation report was supplied. Qualification history presents "
-            "three non-combinable records: adopted v2.11 panel counts, the retained single-machine summary, "
-            "and public CI job metadata. That metadata is an actions run id, not a store run id, and it is "
-            "not per-case evidence. Membrane orientation stays beta-barrel-only, research-only, and "
-            "nonblocking. No unified accuracy score or changed-candidate qualification is claimed."
+            "Worked example is the shipped two-residue synthetic fixture. The builder regenerates that "
+            "store run and the public CA2 runs, then requires the run ids and artifact SHA-256s in "
+            "FIGURE_INPUTS.json. Those run directories are not committed. The 2026-09-06 evidence files "
+            "are retained as the historical receipt and are not a run id. CA2 coverage is the public case "
+            "public-ca2-structure-coverage-v1; both runs are scientifically incomplete because no external "
+            "validation report was supplied. The coordinate files are acquired at build time and are not "
+            "committed. Qualification history presents three non-combinable records: adopted v2.11 panel "
+            "counts, the retained single-machine summary, and public CI job metadata. That metadata is an "
+            "actions run id, not a store run id, and it is not per-case evidence. Membrane orientation stays "
+            "beta-barrel-only, research-only, and nonblocking. No unified accuracy score or "
+            "changed-candidate qualification is claimed."
         ),
     }
     dump_json(dest / PROVENANCE_NAME, provenance)
@@ -817,12 +1005,12 @@ def compare_files(rebuilt_dir: Path, committed_dir: Path, rebuilt: dict[str, Any
     return failures, notes
 
 
-def check(manifest: dict[str, Any], store: Path | None, overrides: dict[str, str]) -> int:
+def check(manifest: dict[str, Any], runs: dict[str, Path]) -> int:
     first = Path(tempfile.mkdtemp(prefix="yauvi-figures-"))
     second = Path(tempfile.mkdtemp(prefix="yauvi-figures-"))
     try:
-        rebuilt = render(first, manifest, store, overrides, DEFAULT_INPUTS)
-        render(second, manifest, store, overrides, DEFAULT_INPUTS)
+        rebuilt = render(first, manifest, runs, DEFAULT_INPUTS)
+        render(second, manifest, runs, DEFAULT_INPUTS)
         drifted = []
         for path in sorted(first.rglob("*")):
             if not path.is_file():
@@ -856,9 +1044,7 @@ def check(manifest: dict[str, Any], store: Path | None, overrides: dict[str, str
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--inputs", type=Path, default=DEFAULT_INPUTS, help="Figure-inputs manifest. Default: paper/figures/FIGURE_INPUTS.json")
-    parser.add_argument("--store", type=Path, help="StructuralAnalysisStore workspace. Run directories are resolved inside it instead of paper/figures/recorded-runs.")
-    parser.add_argument("--run", action="append", default=[], metavar="ANALYSIS=RUN_ID", help="Use this store run for the named analysis. Repeat for each analysis.")
-    parser.add_argument("--check", action="store_true", help="Rebuild and compare with the committed figures. Exit 1 if the plotted data differs.")
+    parser.add_argument("--check", action="store_true", help="Regenerate the pinned runs, rebuild, and compare with the committed figures. Exit 1 if the plotted data differs.")
     args = parser.parse_args(argv)
     inputs = args.inputs if args.inputs.is_absolute() else REPO / args.inputs
     if not inputs.is_file():
@@ -868,21 +1054,21 @@ def main(argv: list[str] | None = None) -> int:
     if manifest.get("schema_version") != "1":
         print(f"unsupported figure-inputs schema {manifest.get('schema_version')!r}", file=sys.stderr)
         return 2
-    store = args.store.resolve() if args.store else None
-    overrides = parse_run_overrides(args.run)
-    if args.check:
-        if inputs.resolve() != DEFAULT_INPUTS.resolve():
-            print("--check compares the committed provenance, so it uses paper/figures/FIGURE_INPUTS.json.", file=sys.stderr)
-            return 2
-        return check(manifest, store, overrides)
-    provenance = render(FIGURES_DIR, manifest, store, overrides, inputs.resolve())
+    if args.check and inputs.resolve() != DEFAULT_INPUTS.resolve():
+        print("--check compares the committed provenance, so it uses paper/figures/FIGURE_INPUTS.json.", file=sys.stderr)
+        return 2
+    scratch, runs = prepare_runs(manifest)
+    try:
+        if args.check:
+            return check(manifest, runs)
+        provenance = render(FIGURES_DIR, manifest, runs, inputs.resolve())
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
     print(f"Wrote {FIGURES_DIR / PROVENANCE_NAME}")
-    if overrides or store:
-        print("FIGURE_INPUTS.json was not modified. --check without --store/--run uses that manifest.")
     for name, figure in provenance["figures"].items():
         kind = figure["input_class"]
-        runs = ", ".join(figure["run_ids"]) if figure["run_ids"] else "no store run id"
-        print(f"  {name}: {kind}; {runs}")
+        cited = ", ".join(figure["run_ids"]) if figure["run_ids"] else "no store run id"
+        print(f"  {name}: {kind}; {cited}")
     return 0
 
 

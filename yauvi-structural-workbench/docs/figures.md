@@ -1,18 +1,29 @@
 # Paper figures
 
-The JOSS figures are rebuilt from a manifest of store run ids and historical
-receipts. They are not read out of a frozen evidence folder.
+The JOSS figures are rebuilt from public repository inputs and a small pin
+file. The synthetic StructQC run and the public CA2 runs are regenerated into
+a temporary store, then checked against the run ids and artifact SHA-256s in
+the pin file. Those run directories are not committed.
 
 ```bash
-python -m pip install "matplotlib==3.11.2"
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]" "matplotlib==3.11.2"
 python tools/build_scientific_figures.py
 python tools/build_scientific_figures.py --check
 ```
 
+The pins were recorded on Linux x86_64, CPython 3.12.3, with
+`yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt`. A run id
+hashes that interpreter, the CPU, and the numpy, scipy, gemmi, and biopython
+versions, so another environment fails the pin check. `freesasa`, `foldseek`,
+and `diamond` stay off `PATH`; the pins record them as unavailable.
+
 Matplotlib is not part of the scientific install. `3.11.2` is the version the
-committed figures were drawn with. `--check` is the CI gate. It rebuilds into
-a temporary directory and byte-compares the PNG and SVG files with the
-committed copies, then checks `paper/figures/FIGURE_PROVENANCE.json`.
+committed figures were drawn with. `--check` is the CI gate. It regenerates
+the runs, rebuilds into a temporary directory, and byte-compares the PNG and
+SVG files with the committed copies, then checks
+`paper/figures/FIGURE_PROVENANCE.json`. CA2 acquisition needs network access
+to RCSB and UniProt. The downloaded coordinates are not written into the
+repository.
 
 ## What each figure is built from
 
@@ -20,28 +31,35 @@ committed copies, then checks `paper/figures/FIGURE_PROVENANCE.json`.
 |---|---|---|
 | `architecture` | Schematic. No store run. | none |
 | `six-evidence-questions` | Schematic. No store run. | none |
-| `worked-example` | Recorded StructQC run of `software/structqc/examples` | `run-963b421095bb0b15` |
-| `ca2-coverage` | Recorded runs of `public-ca2-structure-coverage-v1` (PDB 2POW and 4RN4, chain A, UniProt P00918) | `run-34f976fe741681be`, `run-cf802634e64a2e94` |
+| `worked-example` | Regenerated StructQC run of `software/structqc/examples` | `run-963b421095bb0b15` |
+| `ca2-coverage` | Regenerated runs of `public-ca2-structure-coverage-v1` (PDB 2POW and 4RN4, chain A, UniProt P00918) | `run-34f976fe741681be`, `run-cf802634e64a2e94` |
 | `qualification-history` | Historical receipt. Not a store run. | none |
 
 `paper/paper.md` cites `architecture`, `six-evidence-questions`, and
 `qualification-history`. It does not cite `worked-example` or `ca2-coverage`.
 The generator does not add or remove those references.
 
-The manifest is
+The pin file is
 [`paper/figures/FIGURE_INPUTS.json`](../paper/figures/FIGURE_INPUTS.json).
 Each store-run entry names the analysis id, the run id, and the SHA-256 of
-every artifact the figure reads. Those artifacts are copied under
-`yauvi-structural-workbench/paper/figures/recorded-runs/<analysis_id>/runs/<run_id>/`. The copy is the
-StructQC evidence, the residue table, and `ANALYSIS_RUN.json`. It is not the
-RCSB mmCIF. The public case still checks those outputs against
+`ANALYSIS_RUN.json`, `outputs/structqc/STRUCTURE_EVIDENCE.json`, and
+`outputs/structqc/RESIDUE_QUALITY.tsv`. The builder reruns the case and
+requires those digests. It does not keep the RCSB mmCIF or the evidence JSON
+in the repository. The public case still checks the downloaded coordinates
+against
 [`public_research_sources.json`](../../examples/structural-portfolio/public_research_sources.json).
+
+The synthetic case is analysis `synthetic-structqc`, question "What does this
+two-residue fixture measure?", subject `SYNTHETIC`, parameters model `0` and
+chain `A`, and the four files in `software/structqc/examples/`. The CA2 cases
+use the same question, provenance document, and parameter rules as
+`tools/check_determinism.py`.
 
 ## Historical receipt
 
 `evidence/implementation-evidence/2026-09-06/` is the original worked-example
 input. It is retained and it is not a run id. The residue table in that folder
-matches the recorded synthetic run byte for byte. The evidence JSON there is
+matches the pinned synthetic run byte for byte. The evidence JSON there is
 the earlier schema 1.1 export. Qualification history is a separate receipt:
 the v2.11 panel manifest, the retained single-machine
 `EXECUTION_SUMMARY.json`, the 2026-09-20 reconciliation, and
@@ -54,25 +72,12 @@ structural-workbench run id.
 class, the run ids (empty when there is no store run), the artifact SHA-256s,
 the plotted data, and the generator script hash.
 
-## A fresh store run
+## Changing a pin
 
-Run ids include the interpreter, OS, and library versions, so a new execution
-of the same case gets a new run id. Point the builder at that workspace:
-
-```bash
-python tools/build_scientific_figures.py \
-  --store /path/to/workspace \
-  --run 2pow=run-0123abcd0123abcd \
-  --run 4rn4=run-0123abcd0123abcd
-```
-
-Named analyses are read from the workspace
-(`structural_analyses/cases/<analysis_id>/runs/<run_id>/`). Figures you do not
-name keep the recorded runs. This command does not rewrite
-`FIGURE_INPUTS.json`. `--check` without `--store` or `--run` uses the
-manifest. To change the committed receipt, copy the cited artifacts into
-`yauvi-structural-workbench/paper/figures/recorded-runs/`, put the new run ids and SHA-256s in the manifest, and rerun
-the builder.
+A new interpreter or library set produces a new run id. Record the new id and
+the three artifact SHA-256s in `FIGURE_INPUTS.json` only after the regenerated
+run is the one you intend to keep, then rerun the builder and commit the
+figures and the pin file. Do not commit the run directory.
 
 ## Why PNG bytes can differ
 

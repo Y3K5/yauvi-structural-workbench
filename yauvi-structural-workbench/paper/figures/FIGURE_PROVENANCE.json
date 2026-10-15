@@ -2,11 +2,11 @@
   "schema_version": "2.0",
   "figure_generator": {
     "path": "tools/build_scientific_figures.py",
-    "sha256": "01a1ab0a18edd1b5217946e57d93524a8f8d20ecba6b4cc9f35f2cf615b764a6"
+    "sha256": "41f98a18b0dbf53a527e9f5858f7f860bc7bf088f9869ed15ee5bf0a1bd21da2"
   },
   "figure_inputs": {
     "path": "yauvi-structural-workbench/paper/figures/FIGURE_INPUTS.json",
-    "sha256": "b7eb14946ad0f8d272643e21e18e119f809eea19f4ad8008b360ffb320968037"
+    "sha256": "f2746688534e3c5f0c90aefa8733d14d1f9870845606cafaf27a6d75562ab4b4"
   },
   "matplotlib_determinism": {
     "backend": "Agg",
@@ -20,7 +20,7 @@
     "implementation_evidence_2026-09-06": {
       "retained": true,
       "path": "evidence/implementation-evidence/2026-09-06",
-      "note": "Original inputs for the worked-example figure. Retained. They are not a StructuralAnalysisStore run and are not deleted. The residue table bytes match the recorded synthetic run; the evidence JSON is the earlier schema 1.1 export.",
+      "note": "Original inputs for the worked-example figure. Retained. They are not a StructuralAnalysisStore run and are not deleted. The residue table bytes match the pinned synthetic run; the evidence JSON is the earlier schema 1.1 export.",
       "artifacts": [
         {
           "role": "installed_example",
@@ -79,7 +79,7 @@
         "run-963b421095bb0b15"
       ],
       "cited_in_paper_md": false,
-      "note": "C\u03b1 trace and completeness lines for the shipped two-residue StructQC fixture. Drawn from a recorded StructuralAnalysisStore run of software/structqc/examples, not from the frozen 2026-09-06 folder. paper/paper.md does not reference this figure. This generator does not add or remove that reference.",
+      "note": "C\u03b1 trace and completeness lines for the shipped two-residue StructQC fixture. Regenerated from software/structqc/examples through StructuralAnalysisStore and verified against the pinned run id and artifact SHA-256s. The frozen 2026-09-06 folder is the historical receipt, not the input. paper/paper.md does not reference this figure. This generator does not add or remove that reference.",
       "artifacts": [
         {
           "role": "analysis_run",
@@ -293,7 +293,7 @@
         "run-cf802634e64a2e94"
       ],
       "cited_in_paper_md": false,
-      "note": "Sequence coverage for chain A of PDB 2POW and 4RN4 against UniProt P00918, drawn from recorded StructuralAnalysisStore runs of the public case. paper/paper.md does not reference this figure. This generator does not add or remove that reference.",
+      "note": "Sequence coverage for chain A of PDB 2POW and 4RN4 against UniProt P00918. Regenerated from the public source lock through StructuralAnalysisStore and verified against the pinned run ids and artifact SHA-256s. The coordinate files are acquired at check time and are not committed. paper/paper.md does not reference this figure. This generator does not add or remove that reference.",
       "artifacts": [
         {
           "role": "analysis_run",
@@ -405,5 +405,5 @@
       }
     }
   },
-  "limits": "Worked example is the shipped two-residue synthetic fixture, drawn from its recorded store run. The 2026-09-06 evidence files are retained as the historical receipt and are not a run id. CA2 coverage is the public case public-ca2-structure-coverage-v1; both runs are scientifically incomplete because no external validation report was supplied. Qualification history presents three non-combinable records: adopted v2.11 panel counts, the retained single-machine summary, and public CI job metadata. That metadata is an actions run id, not a store run id, and it is not per-case evidence. Membrane orientation stays beta-barrel-only, research-only, and nonblocking. No unified accuracy score or changed-candidate qualification is claimed."
+  "limits": "Worked example is the shipped two-residue synthetic fixture. The builder regenerates that store run and the public CA2 runs, then requires the run ids and artifact SHA-256s in FIGURE_INPUTS.json. Those run directories are not committed. The 2026-09-06 evidence files are retained as the historical receipt and are not a run id. CA2 coverage is the public case public-ca2-structure-coverage-v1; both runs are scientifically incomplete because no external validation report was supplied. The coordinate files are acquired at build time and are not committed. Qualification history presents three non-combinable records: adopted v2.11 panel counts, the retained single-machine summary, and public CI job metadata. That metadata is an actions run id, not a store run id, and it is not per-case evidence. Membrane orientation stays beta-barrel-only, research-only, and nonblocking. No unified accuracy score or changed-candidate qualification is claimed."
 }

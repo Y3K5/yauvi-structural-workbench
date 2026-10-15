@@ -96,6 +96,6 @@ favorable value.
 ## Next
 
 - [`cli-reference.md`](cli-reference.md) — every command in all thirteen CLIs
-- [`figures.md`](figures.md) — regenerate the JOSS figures from recorded run ids
+- [`figures.md`](figures.md) — regenerate the JOSS figures and check them against pinned run ids
 - [`workflows.md`](workflows.md) — the workflows and their claim ceilings
 - [`methods-and-limitations.md`](methods-and-limitations.md) — what each result may and may not be taken to mean

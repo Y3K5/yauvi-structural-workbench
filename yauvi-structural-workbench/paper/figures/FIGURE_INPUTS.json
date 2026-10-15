@@ -1,7 +1,12 @@
 {
   "schema_version": "1",
-  "recorded_root": "yauvi-structural-workbench/paper/figures/recorded-runs",
-  "store_case_layout": "structural_analyses/cases/<analysis_id>/runs/<run_id>",
+  "pin_environment": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "python": "3.12.3",
+    "constraint": "yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt",
+    "note": "Run ids hash the interpreter, OS, CPU, and the numpy, scipy, gemmi, and biopython versions. --check regenerates the synthetic StructQC run and the public CA2 runs, then requires these run ids and artifact SHA-256s. The run directories are not committed."
+  },
   "figures": {
     "architecture": {
       "input_class": "schematic",
@@ -42,7 +47,7 @@
     },
     "worked-example": {
       "input_class": "store_run",
-      "reason": "Cα trace and completeness lines for the shipped two-residue StructQC fixture. Drawn from a recorded StructuralAnalysisStore run of software/structqc/examples, not from the frozen 2026-09-06 folder.",
+      "reason": "Cα trace and completeness lines for the shipped two-residue StructQC fixture. Regenerated from software/structqc/examples through StructuralAnalysisStore and verified against the pinned run id and artifact SHA-256s. The frozen 2026-09-06 folder is the historical receipt, not the input.",
       "runs": [
         {
           "analysis_id": "synthetic-structqc",
@@ -70,7 +75,7 @@
     "ca2-coverage": {
       "input_class": "store_run",
       "case_id": "public-ca2-structure-coverage-v1",
-      "reason": "Sequence coverage for chain A of PDB 2POW and 4RN4 against UniProt P00918, drawn from recorded StructuralAnalysisStore runs of the public case.",
+      "reason": "Sequence coverage for chain A of PDB 2POW and 4RN4 against UniProt P00918. Regenerated from the public source lock through StructuralAnalysisStore and verified against the pinned run ids and artifact SHA-256s. The coordinate files are acquired at check time and are not committed.",
       "source_lock": {
         "role": "source_lock",
         "path": "examples/structural-portfolio/public_research_sources.json",
@@ -128,7 +133,7 @@
     "implementation_evidence_2026-09-06": {
       "retained": true,
       "path": "evidence/implementation-evidence/2026-09-06",
-      "note": "Original inputs for the worked-example figure. Retained. They are not a StructuralAnalysisStore run and are not deleted. The residue table bytes match the recorded synthetic run; the evidence JSON is the earlier schema 1.1 export.",
+      "note": "Original inputs for the worked-example figure. Retained. They are not a StructuralAnalysisStore run and are not deleted. The residue table bytes match the pinned synthetic run; the evidence JSON is the earlier schema 1.1 export.",
       "artifacts": [
         {
           "role": "installed_example",

@@ -6,15 +6,18 @@ development tree, recorded so the provenance of the published state is explicit.
 ## Unreleased
 
 - Paper figures are rebuilt from `yauvi-structural-workbench/paper/figures/FIGURE_INPUTS.json`.
-  `worked-example` and `ca2-coverage` cite recorded structural-workbench run
-  ids and the SHA-256 of the artifacts they plot. `architecture` and
-  `six-evidence-questions` are schematics and have no run id.
-  `qualification-history` stays a historical receipt: the v2.11 manifest, the
-  retained execution summary, and the public CI observation are not a store
+  `worked-example` and `ca2-coverage` cite structural-workbench run ids and the
+  SHA-256 of the artifacts they plot. `--check` regenerates the synthetic
+  StructQC run and the public CA2 runs (PDB 2POW and 4RN4) from repository
+  inputs, then requires those pins. The run directories are not committed.
+  `architecture` and `six-evidence-questions` are schematics and have no run
+  id. `qualification-history` stays a historical receipt: the v2.11 manifest,
+  the retained execution summary, and the public CI observation are not a store
   run. `evidence/implementation-evidence/2026-09-06/` is kept as the original
-  worked-example receipt. `python tools/build_scientific_figures.py --check`
-  rebuilds the figures; PNG bytes may differ across FreeType builds, and the
-  check then compares SVG and the extracted plotted data. See
+  worked-example receipt. PNG bytes may differ across FreeType builds, and the
+  check then compares SVG and the extracted plotted data. The pins match Linux
+  x86_64, CPython 3.12.3, and
+  `yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt`. See
   `yauvi-structural-workbench/docs/figures.md`.
 
 - Added the experimental `bio_orient` workflow and standalone `yauvi-bio-orient`
