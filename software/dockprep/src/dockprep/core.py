@@ -129,6 +129,8 @@ def _search(spec: Mapping[str, Any], job_type: str) -> dict[str, Any]:
 
 
 def prepare_job(spec: Mapping[str, Any], *, base_dir: str | Path, out_dir: str | Path) -> dict[str, Any]:
+    if not isinstance(spec, Mapping):
+        raise InputError("job spec must be a JSON object")
     base = Path(base_dir).resolve()
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -220,10 +222,18 @@ def _runtime_version(binary: str) -> str:
 def execute_job(job_path: str | Path, out_dir: str | Path) -> tuple[dict[str, Any], int]:
     job_file = Path(job_path).resolve()
     job = read_json(job_file)
-    if job.get("module_id") != "docking_preparation" or job.get("execution", {}).get("status") != "ready":
+    if not isinstance(job, Mapping):
+        raise InputError("job bundle must be a JSON object")
+    execution = job.get("execution", {})
+    if not isinstance(execution, Mapping):
         raise InputError("job bundle is not a ready dockprep job")
+    if job.get("module_id") != "docking_preparation" or execution.get("status") != "ready":
+        raise InputError("job bundle is not a ready dockprep job")
+    receptor_record = job.get("receptor")
+    if not isinstance(receptor_record, Mapping) or not isinstance(receptor_record.get("path"), str) or not isinstance(receptor_record.get("sha256"), str):
+        raise InputError("job bundle is missing receptor")
     base = job_file.parent
-    receptor = (base / job["receptor"]["path"]).resolve()
+    receptor = (base / receptor_record["path"]).resolve()
     ligand = (base / job["ligand"]["path"]).resolve()
     if not receptor.is_relative_to(base) or not ligand.is_relative_to(base):
         raise InputError("job input path escapes the job bundle")

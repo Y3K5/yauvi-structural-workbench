@@ -319,3 +319,17 @@ def test_invalid_pose_inputs_exit_two(tmp_path, capsys, kind):
     assert code == 2
     assert fragment in err
     assert not (out / "POSE_EVIDENCE.json").exists()
+
+
+@pytest.mark.parametrize("payload", ["[]", "null", "\"config\""])
+@pytest.mark.parametrize("command", ["validate", "run"])
+def test_non_object_pose_config_is_invalid_input(tmp_path, capsys, command, payload):
+    config = tmp_path / "config.json"
+    config.write_text(payload + "\n", encoding="utf-8")
+    out = tmp_path / "out"
+    argv = ["validate", "--config", str(config)] if command == "validate" else ["run", "--config", str(config), "--out", str(out)]
+    code, _stdout, err = _cli(capsys, argv)
+    assert code == 2
+    assert err.strip() == "pose-evidence: pose config must be a JSON object"
+    assert "Traceback" not in err
+    assert not (out / "POSE_EVIDENCE.json").exists()
