@@ -57,7 +57,7 @@ def _copy_input(source: Path, out: Path, role: str) -> dict[str, Any]:
     return {"path": destination.relative_to(out).as_posix(), "sha256": sha256(destination), "format": source.suffix.lower().lstrip(".")}
 
 
-def _approval(spec: Mapping[str, Any], receptor_sha: str, ligand_sha: str, base: Path, out: Path) -> dict[str, Any]:
+def _approval(spec: Mapping[str, Any], receptor_sha: str, ligand_sha: str, base: Path) -> tuple[Path, dict[str, Any]]:
     approval_path = _resolve(base, spec.get("path"), "approval")
     record = read_json(approval_path)
     if not isinstance(record, Mapping):
@@ -70,9 +70,8 @@ def _approval(spec: Mapping[str, Any], receptor_sha: str, ligand_sha: str, base:
     mismatches = [field for field, value in expected.items() if str(record.get(field, "")) != value]
     if mismatches:
         raise ScientificBlock("checksum-bound docking approval does not match: " + ", ".join(mismatches))
-    copied = _copy_input(approval_path, out, "approval")
-    return {"approval_id": str(record.get("approval_id", "")), "status": expected["status"],
-            "record": copied, "approved_job_type": str(record.get("job_type", ""))}
+    return approval_path, {"approval_id": str(record.get("approval_id", "")), "status": expected["status"],
+                           "approved_job_type": str(record.get("job_type", ""))}
 
 
 def _exact_sites(spec: Mapping[str, Any]) -> list[dict[str, Any]]:
@@ -129,9 +128,10 @@ def _search(spec: Mapping[str, Any], job_type: str) -> dict[str, Any]:
 
 
 def prepare_job(spec: Mapping[str, Any], *, base_dir: str | Path, out_dir: str | Path) -> dict[str, Any]:
+    if not isinstance(spec, Mapping):
+        raise InputError("job spec must be a JSON object")
     base = Path(base_dir).resolve()
     out = Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
     job_type = str(spec.get("job_type", ""))
     if job_type not in JOB_TYPES:
         raise InputError(f"job_type must be one of {sorted(JOB_TYPES)}")
@@ -141,49 +141,57 @@ def prepare_job(spec: Mapping[str, Any], *, base_dir: str | Path, out_dir: str |
         raise InputError("receptor and ligand objects are required")
     receptor_path = _resolve(base, receptor_spec.get("path"), "receptor")
     ligand_path = _resolve(base, ligand_spec.get("path"), "ligand")
-    receptor = _copy_input(receptor_path, out, "receptor")
-    ligand = _copy_input(ligand_path, out, "ligand")
-    receptor.update({"assembly_id": str(receptor_spec.get("assembly_id", "")),
-                     "conformational_state": str(receptor_spec.get("conformational_state", "")),
-                     "selected_site_residues": _exact_sites(receptor_spec)})
-    if not receptor["assembly_id"] or not receptor["conformational_state"]:
+    # Every gate runs before the first copy, so a block cannot leave inputs/.
+    sites = _exact_sites(receptor_spec)
+    assembly_id = str(receptor_spec.get("assembly_id", ""))
+    conformational_state = str(receptor_spec.get("conformational_state", ""))
+    if not assembly_id or not conformational_state:
         raise ScientificBlock("an exact assembly and explicit conformational state are required")
-    ligand["identifier"] = str(ligand_spec.get("identifier", ""))
-    if not ligand["identifier"]:
+    identifier = str(ligand_spec.get("identifier", ""))
+    if not identifier:
         raise InputError("ligand.identifier is required")
     if not bool(spec.get("source_terms", {}).get("derivatives_allowed", False)) or not bool(spec.get("source_terms", {}).get("docking_allowed", False)):
         raise ScientificBlock("source terms do not explicitly permit derivative preparation and docking")
-    chemistry = _chemistry(ligand_spec, ligand_path) if job_type == "small_molecule" else {"kind": job_type, "sequence_or_structure_checksum": ligand["sha256"]}
-    canonical_haddock = None
+    chemistry = _chemistry(ligand_spec, ligand_path) if job_type == "small_molecule" else None
+    haddock_paths = None
     if job_type != "small_molecule":
         haddock = spec.get("haddock")
         if not isinstance(haddock, Mapping):
             raise ScientificBlock("macromolecular docking requires canonical HADDOCK3 workspace, receptor, and ligand manifests")
         if str(haddock.get("container_image", "")) != HADDOCK_CONTAINER_IMAGE or str(haddock.get("container_image_digest", "")) != HADDOCK_CONTAINER_DIGEST:
             raise ScientificBlock("HADDOCK3 container identity does not match the pinned canonical runtime")
-        copied = {}
-        for key in ("workspace_manifest", "receptor_manifest", "ligand_manifest"):
-            path = _resolve(base, haddock.get(key), f"haddock.{key}")
-            copied[key] = _copy_input(path, out, f"haddock_{key}")
-        canonical_haddock = {"adapter": "canonical_haddock3_matrix_runner", "container_image": HADDOCK_CONTAINER_IMAGE,
-                             "container_image_digest": HADDOCK_CONTAINER_DIGEST, "manifests": copied}
-    approval = _approval(spec.get("approval", {}), receptor["sha256"], ligand["sha256"], base, out)
+        haddock_paths = {key: _resolve(base, haddock.get(key), f"haddock.{key}") for key in ("workspace_manifest", "receptor_manifest", "ligand_manifest")}
+    approval_path, approval = _approval(spec.get("approval", {}), sha256(receptor_path), sha256(ligand_path), base)
     if approval["approved_job_type"] and approval["approved_job_type"] != job_type:
         raise ScientificBlock("approval job_type does not match the requested job")
     preparation = dict(spec.get("preparation", {}))
     for key in ("protonation_assumptions", "retained_waters", "metals", "cofactors", "repaired_atoms", "flexible_residues"):
         preparation.setdefault(key, [] if key != "protonation_assumptions" else "unresolved")
+    search = _search(spec, job_type)
+    restraints = list(spec.get("restraints", []))
+    receptor = _copy_input(receptor_path, out, "receptor")
+    ligand = _copy_input(ligand_path, out, "ligand")
+    receptor.update({"assembly_id": assembly_id, "conformational_state": conformational_state, "selected_site_residues": sites})
+    ligand["identifier"] = identifier
+    if chemistry is None:
+        chemistry = {"kind": job_type, "sequence_or_structure_checksum": ligand["sha256"]}
+    canonical_haddock = None
+    if haddock_paths is not None:
+        copied = {key: _copy_input(path, out, f"haddock_{key}") for key, path in haddock_paths.items()}
+        canonical_haddock = {"adapter": "canonical_haddock3_matrix_runner", "container_image": HADDOCK_CONTAINER_IMAGE,
+                             "container_image_digest": HADDOCK_CONTAINER_DIGEST, "manifests": copied}
+    approval = {**approval, "record": _copy_input(approval_path, out, "approval")}
     engine = "autodock_vina" if job_type == "small_molecule" else "haddock3"
     runtime_available = bool(shutil.which("vina")) if engine == "autodock_vina" else bool(shutil.which("haddock3") or shutil.which("docker"))
     content = {
         "job_type": job_type, "receptor_sha256": receptor["sha256"], "ligand_sha256": ligand["sha256"],
-        "assembly_id": receptor["assembly_id"], "state": receptor["conformational_state"], "search": _search(spec, job_type),
+        "assembly_id": receptor["assembly_id"], "state": receptor["conformational_state"], "search": search,
         "approval_sha256": approval["record"]["sha256"],
     }
     return {
         "schema_version": SCHEMA_VERSION, "module_id": "docking_preparation", "job_id": "dock_" + _json_sha256(content)[:16],
         "job_type": job_type, "receptor": receptor, "ligand": ligand | {"chemistry": chemistry},
-        "preparation": preparation, "search": content["search"], "restraints": list(spec.get("restraints", [])),
+        "preparation": preparation, "search": search, "restraints": restraints,
         "approval": approval, "source_terms": {"derivatives_allowed": True, "docking_allowed": True},
         "execution": {"engine": engine, "status": "ready", "runtime_available_at_preparation": runtime_available,
                       "canonical_adapter": "refinement_workflow/run_haddock_matrix.py" if engine == "haddock3" else "meeko_vina",
@@ -220,10 +228,18 @@ def _runtime_version(binary: str) -> str:
 def execute_job(job_path: str | Path, out_dir: str | Path) -> tuple[dict[str, Any], int]:
     job_file = Path(job_path).resolve()
     job = read_json(job_file)
-    if job.get("module_id") != "docking_preparation" or job.get("execution", {}).get("status") != "ready":
+    if not isinstance(job, Mapping):
+        raise InputError("job bundle must be a JSON object")
+    execution = job.get("execution", {})
+    if not isinstance(execution, Mapping):
         raise InputError("job bundle is not a ready dockprep job")
+    if job.get("module_id") != "docking_preparation" or execution.get("status") != "ready":
+        raise InputError("job bundle is not a ready dockprep job")
+    receptor_record = job.get("receptor")
+    if not isinstance(receptor_record, Mapping) or not isinstance(receptor_record.get("path"), str) or not isinstance(receptor_record.get("sha256"), str):
+        raise InputError("job bundle is missing receptor")
     base = job_file.parent
-    receptor = (base / job["receptor"]["path"]).resolve()
+    receptor = (base / receptor_record["path"]).resolve()
     ligand = (base / job["ligand"]["path"]).resolve()
     if not receptor.is_relative_to(base) or not ligand.is_relative_to(base):
         raise InputError("job input path escapes the job bundle")

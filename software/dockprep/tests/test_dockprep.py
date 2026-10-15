@@ -241,6 +241,7 @@ def test_invalid_job_specs_exit_two(tmp_path, capsys, kind, fragment):
     ("mapping", "exact residue mapping"),
     ("digest", "pinned canonical runtime"),
     ("no_haddock", "canonical HADDOCK3"),
+    ("approval_job_type", "approval job_type"),
 ])
 def test_scientific_blocks_exit_one_without_writing_a_job(tmp_path, capsys, kind, fragment):
     if kind in {"digest", "no_haddock"}:
@@ -251,9 +252,12 @@ def test_scientific_blocks_exit_one_without_writing_a_job(tmp_path, capsys, kind
             del spec["haddock"]
     else:
         spec = _inputs(tmp_path)
-        if kind == "checksum":
+        if kind in {"checksum", "approval_job_type"}:
             approval = json.loads((tmp_path / "approval.json").read_text(encoding="utf-8"))
-            approval["ligand_sha256"] = "f" * 64
+            if kind == "checksum":
+                approval["ligand_sha256"] = "f" * 64
+            else:
+                approval["job_type"] = "protein_protein"
             (tmp_path / "approval.json").write_text(json.dumps(approval), encoding="utf-8")
         elif kind == "source_terms":
             spec["source_terms"] = {"derivatives_allowed": False, "docking_allowed": False}
@@ -266,6 +270,8 @@ def test_scientific_blocks_exit_one_without_writing_a_job(tmp_path, capsys, kind
     assert "scientifically blocked" in err
     assert fragment in err
     assert not (out / "DOCKING_JOB.json").exists()
+    assert not (out / "inputs").exists()
+    assert not any(out.rglob("*")) if out.exists() else True
 
 
 def test_execute_refuses_before_the_job_bundle_exists(tmp_path, capsys):
@@ -284,6 +290,43 @@ def test_execute_refuses_a_bundle_that_is_not_ready(tmp_path, capsys):
     code, _stdout, err = _cli(capsys, ["execute", "--job", str(job), "--out", str(out)])
     assert code == 2
     assert "not a ready dockprep job" in err
+    assert not (out / "DOCKING_EXECUTION.json").exists()
+
+
+@pytest.mark.parametrize("payload", ["[]", "null", "\"spec\""])
+@pytest.mark.parametrize("command", ["validate", "run"])
+def test_non_object_job_spec_is_invalid_input(tmp_path, capsys, command, payload):
+    config = tmp_path / "job.json"
+    config.write_text(payload + "\n", encoding="utf-8")
+    out = tmp_path / "out"
+    argv = ["validate", "--config", str(config)] if command == "validate" else ["run", "--config", str(config), "--out", str(out)]
+    code, _stdout, err = _cli(capsys, argv)
+    assert code == 2
+    assert err.strip() == "dockprep: job spec must be a JSON object"
+    assert "Traceback" not in err
+    assert not (out / "DOCKING_JOB.json").exists()
+
+
+@pytest.mark.parametrize("payload", ["[]", "null"])
+def test_execute_rejects_a_non_object_bundle(tmp_path, capsys, payload):
+    job = tmp_path / "DOCKING_JOB.json"
+    job.write_text(payload + "\n", encoding="utf-8")
+    out = tmp_path / "execution"
+    code, _stdout, err = _cli(capsys, ["execute", "--job", str(job), "--out", str(out)])
+    assert code == 2
+    assert err.strip() == "dockprep: job bundle must be a JSON object"
+    assert "Traceback" not in err
+    assert not (out / "DOCKING_EXECUTION.json").exists()
+
+
+def test_execute_rejects_a_ready_job_missing_receptor(tmp_path, capsys):
+    job = tmp_path / "DOCKING_JOB.json"
+    job.write_text(json.dumps({"module_id": "docking_preparation", "execution": {"status": "ready", "engine": "autodock_vina"}}), encoding="utf-8")
+    out = tmp_path / "execution"
+    code, _stdout, err = _cli(capsys, ["execute", "--job", str(job), "--out", str(out)])
+    assert code == 2
+    assert err.strip() == "dockprep: job bundle is missing receptor"
+    assert "Traceback" not in err
     assert not (out / "DOCKING_EXECUTION.json").exists()
 
 

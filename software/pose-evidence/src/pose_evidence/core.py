@@ -142,6 +142,8 @@ def _cluster(poses: list[dict[str, Any]], rmsd_cutoff: float, fcc_cutoff: float)
 
 
 def analyze(config: Mapping[str, Any], *, base_dir: str | Path) -> tuple[dict[str, Any], dict[str, str]]:
+    if not isinstance(config, Mapping):
+        raise InputError("pose config must be a JSON object")
     base = Path(base_dir).resolve()
     receptor_spec = config.get("receptor")
     if not isinstance(receptor_spec, Mapping):
