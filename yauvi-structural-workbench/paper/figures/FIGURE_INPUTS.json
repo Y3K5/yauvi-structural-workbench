@@ -1,0 +1,146 @@
+{
+  "schema_version": "1",
+  "recorded_root": "yauvi-structural-workbench/paper/figures/recorded-runs",
+  "store_case_layout": "structural_analyses/cases/<analysis_id>/runs/<run_id>",
+  "figures": {
+    "architecture": {
+      "input_class": "schematic",
+      "run_ids": [],
+      "reason": "Schematic of the shared path from input to interpretation. It does not plot a StructuralAnalysisStore run, so it has no run id."
+    },
+    "six-evidence-questions": {
+      "input_class": "schematic",
+      "run_ids": [],
+      "reason": "Schematic of the six evidence questions. It does not plot a StructuralAnalysisStore run, so it has no run id."
+    },
+    "qualification-history": {
+      "input_class": "historical_receipt",
+      "run_ids": [],
+      "reason": "Adopted-panel counts, the retained single-machine execution summary, and the public CI job record are not a StructuralAnalysisStore run. They cannot be regenerated from the public CA2 case or from any other public store run. No store run id is assigned.",
+      "artifacts": [
+        {
+          "role": "execution_summary",
+          "path": "evidence/benchmarks/qualification-v2/results/EXECUTION_SUMMARY.json",
+          "sha256": "9f954e9a53cec1787d6af66f8b917c308b12064dc74943068f26a45483146a5b"
+        },
+        {
+          "role": "panel_manifest",
+          "path": "evidence/benchmarks/qualification-v2/PANEL_MANIFEST.json",
+          "sha256": "c6a4ec6350f1485f63f7a5596b74706fed8b2d26b78196d9b144d5a5448a1200"
+        },
+        {
+          "role": "qualification_reconciliation",
+          "path": "evidence/preparation-2026-09-20/QUALIFICATION_RECONCILIATION.json",
+          "sha256": "0f26c5592979ed357005cfd3f21167a4d67150325260c47c0245b95e24f637a1"
+        },
+        {
+          "role": "public_ci_observation",
+          "path": "evidence/preparation-2026-09-20/CI_OBSERVATION.json",
+          "sha256": "d90daa26f86d108bb16d968fef2f34e6c5b1b83a95c709de245270783a4d67ff"
+        }
+      ]
+    },
+    "worked-example": {
+      "input_class": "store_run",
+      "reason": "Cα trace and completeness lines for the shipped two-residue StructQC fixture. Drawn from a recorded StructuralAnalysisStore run of software/structqc/examples, not from the frozen 2026-09-06 folder.",
+      "runs": [
+        {
+          "analysis_id": "synthetic-structqc",
+          "run_id": "run-963b421095bb0b15",
+          "artifacts": [
+            {
+              "role": "analysis_run",
+              "path": "ANALYSIS_RUN.json",
+              "sha256": "00eb670d2c4f2d422314e74a887e90dc638718e4e593e8bf9953b97a7071d6a5"
+            },
+            {
+              "role": "structure_evidence",
+              "path": "outputs/structqc/STRUCTURE_EVIDENCE.json",
+              "sha256": "7cc48aeb81277dd291b040b7520a1cfc9ab91a2e3df3c6796a6de78ae490ec4f"
+            },
+            {
+              "role": "residue_quality",
+              "path": "outputs/structqc/RESIDUE_QUALITY.tsv",
+              "sha256": "943870295b249daad3762eecea979901c577d9fcaf9c7c0465142fa2cbaec355"
+            }
+          ]
+        }
+      ]
+    },
+    "ca2-coverage": {
+      "input_class": "store_run",
+      "case_id": "public-ca2-structure-coverage-v1",
+      "reason": "Sequence coverage for chain A of PDB 2POW and 4RN4 against UniProt P00918, drawn from recorded StructuralAnalysisStore runs of the public case.",
+      "source_lock": {
+        "role": "source_lock",
+        "path": "examples/structural-portfolio/public_research_sources.json",
+        "sha256": "0f341f810472544e8e205f8f9e190de2578aa0941ffa3313556a526fe3dd8a30"
+      },
+      "runs": [
+        {
+          "analysis_id": "2pow",
+          "entry_id": "2POW",
+          "run_id": "run-34f976fe741681be",
+          "artifacts": [
+            {
+              "role": "analysis_run",
+              "path": "ANALYSIS_RUN.json",
+              "sha256": "19e6130c479c3f50b479b3047ed02d8098f17af0141e223945444717763ab919"
+            },
+            {
+              "role": "structure_evidence",
+              "path": "outputs/structqc/STRUCTURE_EVIDENCE.json",
+              "sha256": "23d6ea9f57ad5711aa096e1ff9b2d4b15c6b9f31ae20ab75a03b111369b9ac92"
+            },
+            {
+              "role": "residue_quality",
+              "path": "outputs/structqc/RESIDUE_QUALITY.tsv",
+              "sha256": "bc25c92cf2b41c4fef26e3c6f256f73fdda52fcbf111dd13f28e893e94aa4c27"
+            }
+          ]
+        },
+        {
+          "analysis_id": "4rn4",
+          "entry_id": "4RN4",
+          "run_id": "run-cf802634e64a2e94",
+          "artifacts": [
+            {
+              "role": "analysis_run",
+              "path": "ANALYSIS_RUN.json",
+              "sha256": "4400c0d82a167b970d0618648de4475cece2f283b93ee92d20527ae98974c571"
+            },
+            {
+              "role": "structure_evidence",
+              "path": "outputs/structqc/STRUCTURE_EVIDENCE.json",
+              "sha256": "eeb1a4a916ba16a022c70d67b6df2512ecfed1f1e21e62d00b10e4127e4770e0"
+            },
+            {
+              "role": "residue_quality",
+              "path": "outputs/structqc/RESIDUE_QUALITY.tsv",
+              "sha256": "a18df9c202e07b1be6910c0b3b6a996d5841a8ffb45c176fca366ac426b5e73a"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "historical_receipts": {
+    "implementation_evidence_2026-09-06": {
+      "retained": true,
+      "path": "evidence/implementation-evidence/2026-09-06",
+      "note": "Original inputs for the worked-example figure. Retained. They are not a StructuralAnalysisStore run and are not deleted. The residue table bytes match the recorded synthetic run; the evidence JSON is the earlier schema 1.1 export.",
+      "artifacts": [
+        {
+          "role": "installed_example",
+          "path": "evidence/implementation-evidence/2026-09-06/installed-example-STRUCTURE_EVIDENCE.json",
+          "sha256": "81af34b6d25d2c11235190daa9bd4f7dfd251d5f510b6bcc52dc4ed879a3e94f"
+        },
+        {
+          "role": "installed_residue_table",
+          "path": "evidence/implementation-evidence/2026-09-06/installed-example-RESIDUE_QUALITY.tsv",
+          "sha256": "943870295b249daad3762eecea979901c577d9fcaf9c7c0465142fa2cbaec355"
+        }
+      ]
+    }
+  }
+}

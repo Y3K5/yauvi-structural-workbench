@@ -40,6 +40,16 @@ python tools/build_cli_reference.py
 
 CI runs `python tools/build_cli_reference.py --check` and fails if it is stale.
 
+Regenerate the JOSS figures from the recorded run manifest, then check them:
+
+```bash
+python -m pip install "matplotlib==3.11.2"
+python tools/build_scientific_figures.py
+python tools/build_scientific_figures.py --check
+```
+
+CI runs the check. See [Paper figures](yauvi-structural-workbench/docs/figures.md).
+
 ## Opening work
 
 Open issues and pull requests at

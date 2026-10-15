@@ -103,6 +103,15 @@ Network tests and live public-source smoke tests are opt-in. A genuine offline
 demonstration must use bundled synthetic fixtures; cached or remote retrieval is
 not treated as offline.
 
+## Paper figures
+
+Regenerate the JOSS figures from the recorded store runs and the historical
+qualification receipt with `python tools/build_scientific_figures.py`. The
+manifest, the run ids, and the PNG comparison rule are in
+[Paper figures](figures.md). Qualification history is not a store run.
+`evidence/implementation-evidence/2026-09-06/` stays as the worked example's
+historical receipt.
+
 ## Independent public qualification
 
 The historical v1 scientific panel is separate from the synthetic software

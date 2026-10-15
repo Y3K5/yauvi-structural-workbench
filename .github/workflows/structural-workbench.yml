@@ -249,6 +249,10 @@ jobs:
           diff -qr "$showcase_tmp/public-a" "$showcase_tmp/public-b"
       - name: CLI reference matches the installed parsers
         run: python tools/build_cli_reference.py --check
+      - name: Paper figures regenerate from recorded runs
+        run: |
+          python -m pip install "matplotlib==3.11.2"
+          python tools/build_scientific_figures.py --check
 
       - name: Wheel contains only canonical package namespaces
         run: |
