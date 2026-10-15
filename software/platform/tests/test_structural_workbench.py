@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import zipfile
 
 import pytest
@@ -38,11 +39,12 @@ def inputs(tmp_path: Path) -> tuple[Path, Path, Path]:
     return structure, provenance, validation
 
 
-def test_definitions_register_eight_tasks_and_display_metrics():
+def test_definitions_register_public_tasks_and_display_metrics():
     definitions = analysis_definitions()
     assert [item["analysis_type"] for item in definitions] == [
         "structure_qc", "membrane_orientation", "conformational_state",
         "functional_site_state", "assembly_interface", "sf_csa", "region_explorer", "bio_orient",
+        "dockprep", "pose_evidence",
     ]
     assert metric_definitions()["rmsd_A"]["decimals"] == 3
     assert all(item["claim_ceiling"] for item in definitions)
@@ -64,10 +66,12 @@ def test_definitions_register_eight_tasks_and_display_metrics():
         for artifact in source["artifacts"]
     }
     assert {"pdb.coordinates", "pdb.biological_assembly", "wwpdb.validation", "alphafold.pae", "uniprot.sequence"}.issubset(artifact_types)
-    assert definitions[-3]["module_ids"] == ["structure_quality", "sf_csa"]
-    assert definitions[-2]["module_ids"] == ["structure_quality", "region_explorer"]
-    assert definitions[-1]["module_ids"] == ["structure_quality", "bio_orient"]
     by_type = {row["analysis_type"]: row for row in definitions}
+    assert by_type["sf_csa"]["module_ids"] == ["structure_quality", "sf_csa"]
+    assert by_type["region_explorer"]["module_ids"] == ["structure_quality", "region_explorer"]
+    assert by_type["bio_orient"]["module_ids"] == ["structure_quality", "bio_orient"]
+    assert by_type["dockprep"]["module_ids"] == ["dockprep"]
+    assert by_type["pose_evidence"]["module_ids"] == ["pose_evidence"]
     assert "topology_evidence" in {row["role"] for row in by_type["membrane_orientation"]["inputs"]}
     assert "topology_evidence" not in {row["role"] for row in by_type["structure_qc"]["inputs"]}
     assert "alignment_map" in {row["role"] for row in by_type["conformational_state"]["inputs"]}
@@ -107,6 +111,15 @@ def test_scope_specific_readiness_does_not_promote_experimental_methods(tmp_path
     abl = {row["scope_id"]: row for row in rows["conformational_state"]["scientific_scopes"]}
     assert abl["abl_family"]["scientific_state"] == "prototype"
     assert abl["other_proteins"]["release_blocking"] is False
+    docking = rows["docking"]
+    assert set(docking["required_runtimes"]) == {
+        "vina", "mk_prepare_receptor", "mk_prepare_ligand", "haddock3",
+    }
+    docking_missing = [name for name, value in docking["required_runtimes"].items() if value == "missing"]
+    assert docking["state"] == ("blocked_missing_runtime" if docking_missing else "prototype")
+    assert rows["design"]["state"] == "adapter_only"
+    assert rows["dockprep"]["state"] == "experimental"
+    assert rows["pose_evidence"]["state"] == "experimental"
 
 
 def test_new_evidence_templates_are_downloadable_and_explicit():
@@ -337,3 +350,77 @@ def test_abl_preflight_requires_complete_exact_v2_map(tmp_path):
     checks = {row["name"]: row for row in preflight["checks"]}
     assert preflight["valid"], checks
     assert checks["evidence:state_alignment_map_v2"]["ok"]
+
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_dockprep_case_dispatches_run_then_execute(tmp_path):
+    receptor = tmp_path / "receptor.pdbqt"
+    ligand = tmp_path / "ligand.pdbqt"
+    receptor.write_text("ATOM\n", encoding="utf-8")
+    ligand.write_text("MOLECULE\n", encoding="utf-8")
+    approval = tmp_path / "approval.json"
+    approval.write_text(json.dumps({
+        "approval_id": "approval-1", "status": "approved_for_docking", "job_type": "small_molecule",
+        "receptor_sha256": _sha(receptor), "ligand_sha256": _sha(ligand),
+    }), encoding="utf-8")
+    spec = tmp_path / "job.json"
+    spec.write_text(json.dumps({
+        "job_type": "small_molecule",
+        "receptor": {"path": receptor.name, "assembly_id": "1", "conformational_state": "observed",
+                     "selected_site_residues": [{"chain_id": "A", "auth_seq_id": 10, "mapping_state": "exact"}]},
+        "ligand": {"path": ligand.name, "identifier": "CHEBI:1", "chemistry": {
+            "identifier": "CHEBI:1", "connectivity": "declared", "bond_orders": "declared",
+            "charge": 0, "protonation": "pH_user_declared"}},
+        "source_terms": {"derivatives_allowed": True, "docking_allowed": True},
+        "approval": {"path": approval.name},
+        "search": {"center": [0, 0, 0], "size": [20, 20, 20], "seed": 7},
+    }), encoding="utf-8")
+    store = StructuralAnalysisStore(tmp_path)
+    store.create("dock-1", analysis_type="dockprep", question="Can this approved pair be prepared locally?")
+    for path, role in ((spec, "job_spec"), (receptor, "docking_input"), (ligand, "docking_input"), (approval, "docking_input")):
+        store.add_file("dock-1", role=role, path=path)
+    preflight = store.preflight("dock-1")
+    assert preflight["valid"], preflight
+    result = store.run("dock-1")
+    run_dir = tmp_path / "structural_analyses" / "cases" / "dock-1" / "runs" / result["run_id"]
+    job = json.loads((run_dir / "outputs" / "dockprep" / "DOCKING_JOB.json").read_text(encoding="utf-8"))
+    execution = json.loads((run_dir / "outputs" / "dockprep" / "execution" / "DOCKING_EXECUTION.json").read_text(encoding="utf-8"))
+    assert job["receptor"]["path"].startswith("inputs/")
+    assert {step["module_id"] for step in result["steps"]} == {"dockprep", "dockprep_execute"}
+    assert "affinity" in execution["limitations"][0]
+    if shutil.which("vina") is None:
+        assert result["status"] == "scientifically_incomplete"
+        assert "autodock_vina_runtime" in execution["missing_evidence"]
+
+
+def test_pose_evidence_case_keeps_geometry_proxies_and_missing_sasa(tmp_path):
+    def atom(serial, name, resname, chain, resseq, x, y, z, element="C"):
+        return f"ATOM  {serial:5d} {name:^4s} {resname:>3s} {chain:1s}{resseq:4d}    {x:8.3f}{y:8.3f}{z:8.3f}  1.00 20.00          {element:>2s}\n"
+
+    receptor = tmp_path / "receptor.pdb"
+    pose = tmp_path / "pose.pdb"
+    receptor.write_text(atom(1, "CA", "ALA", "A", 1, 0, 0, 0), encoding="utf-8")
+    pose.write_text(atom(1, "C1", "LIG", "L", 1, 3, 0, 0), encoding="utf-8")
+    config = tmp_path / "poses.json"
+    config.write_text(json.dumps({
+        "subject": {"id": "p"}, "receptor": {"path": receptor.name},
+        "poses": [{"pose_id": "p1", "path": pose.name, "engine": "cluspro", "job_type": "protein_peptide",
+                   "ligand_chains": ["L"], "engine_score_unit": "ClusPro cluster rank"}],
+    }), encoding="utf-8")
+    store = StructuralAnalysisStore(tmp_path)
+    store.create("poses-1", analysis_type="pose_evidence", question="What geometry is in this imported pose?")
+    store.add_file("poses-1", role="pose_config", path=config)
+    store.add_file("poses-1", role="pose_file", path=receptor)
+    store.add_file("poses-1", role="pose_file", path=pose)
+    assert store.preflight("poses-1")["valid"]
+    result = store.run("poses-1")
+    run_dir = tmp_path / "structural_analyses" / "cases" / "poses-1" / "runs" / result["run_id"]
+    document = json.loads((run_dir / "outputs" / "pose_evidence" / "POSE_EVIDENCE.json").read_text(encoding="utf-8"))
+    assert result["status"] == "scientifically_incomplete"
+    assert result["steps"] == [{"module_id": "pose_evidence", "exit_code": 1}]
+    assert document["buried_sasa"]["state"] == "unevaluated"
+    assert "geometry proxies" in document["limitations"][1]
+    assert "never uploaded" in document["limitations"][2]
