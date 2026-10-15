@@ -43,6 +43,30 @@ jobs:
           cache: pip
       - name: One-command reviewer installation
         run: python -m pip install ".[dev]"
+      # The install above follows open lower bounds. This records the versions
+      # that bound actually resolved, so a later claim about the run can be
+      # checked against the job log and the uploaded freeze.
+      - name: Record resolved dependency versions
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/resolved-deps"
+          {
+            python -c 'import platform; print(f"# {platform.system()}/{platform.machine()} CPython {platform.python_version()}")'
+            python -m pip freeze
+          } | tee "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+          {
+            echo "### Resolved dependencies"
+            echo
+            echo '```'
+            cat "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload resolved dependency versions
+        uses: actions/upload-artifact@v5
+        with:
+          name: resolved-deps-py${{ matrix.python }}-${{ matrix.os }}
+          path: ${{ runner.temp }}/resolved-deps/pip-freeze.txt
+          retention-days: 90
       # Names the architecture in the log of every job, so the install-matrix
       # gates are read off recorded evidence instead of inferred from a runner
       # label whose meaning changed once already when macos-latest moved to arm64.
@@ -155,6 +179,27 @@ jobs:
           cache: pip
       - name: Install reviewer distribution
         run: python -m pip install ".[dev]"
+      - name: Record resolved dependency versions
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/resolved-deps"
+          {
+            python -c 'import platform; print(f"# {platform.system()}/{platform.machine()} CPython {platform.python_version()}")'
+            python -m pip freeze
+          } | tee "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+          {
+            echo "### Resolved dependencies"
+            echo
+            echo '```'
+            cat "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload resolved dependency versions
+        uses: actions/upload-artifact@v5
+        with:
+          name: resolved-deps-workbench-py3.12-ubuntu-latest
+          path: ${{ runner.temp }}/resolved-deps/pip-freeze.txt
+          retention-days: 90
       - name: Controller, source, report, and contract tests
         run: |
           # This distribution contains only yauvi_platform.structural_workbench,

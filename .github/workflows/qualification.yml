@@ -61,6 +61,31 @@ jobs:
       - name: Install the distribution
         run: python -m pip install ".[dev]"
 
+      # The install above follows open lower bounds. This records the versions
+      # that bound actually resolved, so a later claim about the run can be
+      # checked against the job log and the uploaded freeze.
+      - name: Record resolved dependency versions
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/resolved-deps"
+          {
+            python -c 'import platform; print(f"# {platform.system()}/{platform.machine()} CPython {platform.python_version()}")'
+            python -m pip freeze
+          } | tee "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+          {
+            echo "### Resolved dependencies"
+            echo
+            echo '```'
+            cat "${RUNNER_TEMP}/resolved-deps/pip-freeze.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload resolved dependency versions
+        uses: actions/upload-artifact@v5
+        with:
+          name: resolved-deps-py${{ matrix.python }}-${{ matrix.os }}
+          path: ${{ runner.temp }}/resolved-deps/pip-freeze.txt
+          retention-days: 90
+
       # assembly-context shells out to the FreeSASA binary, and the panel's
       # gate compares its surface areas against an independent run of the same
       # tool, so the binary must be present. The distribution package suffices:
