@@ -173,6 +173,12 @@ jobs:
       - name: Suite · Workbench application
         if: always()
         run: python -m pytest software/structural-workbench/tests -m "not network and not adapter" --tb=short
+      # Supplied-input GROMACS auditing and bounded pilot diagnostics. The
+      # tests use invented non-biological fixtures and mocked engine calls,
+      # so they run without GROMACS installed.
+      - name: Suite · MD Health
+        if: always()
+        run: python -m pytest software/md-health/tests -m "not network and not adapter" --tb=short
 
   workbench:
     name: Workbench contracts, security, and pre-public materials

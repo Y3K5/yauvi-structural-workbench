@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yauvi-md-health"
+version = "0.1.0"
+description = "Local GROMACS input derivation and bounded early-run diagnostics."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+md-health = "md_health.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

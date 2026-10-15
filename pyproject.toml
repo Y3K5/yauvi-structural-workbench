@@ -51,6 +51,7 @@ structprep = "structprep.cli:main"
 bio-orient = "bio_orient.cli:main"
 dockprep = "dockprep.cli:main"
 pose-evidence = "pose_evidence.cli:main"
+md-health = "md_health.cli:main"
 
 [tool.setuptools.packages.find]
 where = [
@@ -68,11 +69,13 @@ where = [
   "software/bio-orient/src",
   "software/dockprep/src",
   "software/pose-evidence/src",
+  "software/md-health/src",
 ]
 include = [
   "yauvi_structural_workbench*", "yauvi_platform.structural_workbench*", "yauvi_sources*", "structqc*", "memorient*",
   "state_atlas*", "site_context*", "actstate*", "assembly_context*", "sf_csa*",
   "structprep*", "bio_orient*", "dockprep*", "pose_evidence*",
+  "md_health*",
 ]
 
 [tool.setuptools]
@@ -88,6 +91,7 @@ assembly_context = ["sources.yaml", "py.typed"]
 sf_csa = ["sources.yaml", "py.typed"]
 dockprep = ["sources.yaml", "py.typed"]
 pose_evidence = ["sources.yaml", "py.typed"]
+md_health = ["py.typed"]
 yauvi_sources = ["py.typed", "structural_sources.yaml"]
 yauvi_structural_workbench = ["ui/*", "ui/vendor/*", "examples/*"]
 

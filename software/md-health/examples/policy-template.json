@@ -1,0 +1,9 @@
+{
+  "note": "Preparation template only. Replace all placeholders with stage/system-specific declared limits. No universal MD health thresholds are supplied.",
+  "expected_end_ps": "REPLACE_WITH_EXPECTED_RECORDED_ENDPOINT",
+  "time_tolerance_ps": "REPLACE_WITH_EXPLICIT_OUTPUT_CADENCE_TOLERANCE",
+  "required_metrics": ["Temperature"],
+  "bands": {
+    "Temperature": ["REPLACE_WITH_LOWER_BOUND_K", "REPLACE_WITH_UPPER_BOUND_K"]
+  }
+}
