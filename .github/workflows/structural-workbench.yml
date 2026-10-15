@@ -113,7 +113,7 @@ jobs:
       # Reference values: d = 9.918221 (macOS arm64), 9.914208 (linux/amd64).
       - name: Record membrane fit geometry
         if: always()
-        run: PYTHONPATH="software/Membrane Orientor/memorient/tests" python tools/diagnose_membrane_fit.py
+        run: PYTHONPATH="software/membrane-orientor/memorient/tests" python tools/diagnose_membrane_fit.py
 
       # continue-on-error on both membrane steps, for the reason qualification.yml
       # already gives: collection 2.4 moved membrane orientation to non-blocking,
@@ -148,7 +148,7 @@ jobs:
       - name: Suite · MembraneOrient
         if: always()
         continue-on-error: true
-        run: python -m pytest "software/Membrane Orientor/memorient/tests" -m "not network and not adapter" --tb=short
+        run: python -m pytest "software/membrane-orientor/memorient/tests" -m "not network and not adapter" --tb=short
       - name: Suite · StateAtlas
         if: always()
         run: python -m pytest software/state-atlas/tests -m "not network and not adapter" --tb=short

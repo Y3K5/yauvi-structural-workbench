@@ -22,7 +22,7 @@ PACKAGES = {
     "structural-workbench": "yauvi_structural_workbench",
     "platform": "yauvi_platform/structural_workbench",
     "sources": "yauvi_sources", "structqc": "structqc",
-    "Membrane Orientor/memorient": "memorient", "state-atlas": "state_atlas",
+    "membrane-orientor/memorient": "memorient", "state-atlas": "state_atlas",
     "site-context": "site_context", "activity-state": "actstate",
     "assembly-context": "assembly_context", "sf-csa": "sf_csa", "structprep": "structprep",
 }

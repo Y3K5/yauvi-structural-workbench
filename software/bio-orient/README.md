@@ -28,7 +28,7 @@ For the standalone CLI, resolve its engine dependencies from this checkout in
 the same installation command; these local engines need not be published on PyPI:
 
 ```bash
-python -m pip install ./software/structqc "./software/Membrane Orientor/memorient" \
+python -m pip install ./software/structqc "./software/membrane-orientor/memorient" \
   ./software/assembly-context ./software/bio-orient
 ```
 

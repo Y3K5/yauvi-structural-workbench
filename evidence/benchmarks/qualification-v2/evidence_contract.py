@@ -16,7 +16,7 @@ def file_digest(path):
 def execution_identity():
     files = {}
     for directory in ('structural-workbench', 'software/platform/src', 'software/sources/src', 'software/structqc/src',
-                      'software/Membrane Orientor/memorient/src', 'software/state-atlas/src', 'software/site-context/src',
+                      'software/membrane-orientor/memorient/src', 'software/state-atlas/src', 'software/site-context/src',
                       'software/activity-state/src', 'software/assembly-context/src', 'software/sf-csa/src', 'tools'):
         for path in sorted((ROOT / directory).rglob('*.py')):
             if not {'__pycache__', 'build', '.venv'}.intersection(path.parts):

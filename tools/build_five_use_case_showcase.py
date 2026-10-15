@@ -27,7 +27,7 @@ DEFAULT_PUBLIC_OUT = ROOT / "evidence" / "public-showcase"
 PUBLIC_SOURCE_FILES = ("index.html", "styles.css", "app.js", "README.md")
 PACKAGE_PATHS = (
     "software/structqc/src",
-    "software/Membrane Orientor/memorient/src",
+    "software/membrane-orientor/memorient/src",
     "software/state-atlas/src",
     "software/site-context/src",
     "software/assembly-context/src",

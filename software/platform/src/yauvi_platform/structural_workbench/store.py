@@ -429,7 +429,7 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
     }
     packages = ({
         "structure_qc": source_root / "structqc",
-        "membrane_orientation": source_root / "Membrane Orientor" / "memorient",
+        "membrane_orientation": source_root / "membrane-orientor" / "memorient",
         "conformational_state": source_root / "state-atlas",
         "functional_site_state": source_root / "site-context",
         "assembly_interface": source_root / "assembly-context",
@@ -1250,7 +1250,7 @@ class StructuralAnalysisStore:
             self.source_root / "structqc" / "src", self.source_root / "assembly-context" / "src",
             self.source_root / "site-context" / "src", self.source_root / "state-atlas" / "src",
             self.source_root / "activity-state" / "src", self.source_root / "sf-csa" / "src",
-            self.source_root / "Membrane Orientor" / "memorient" / "src",
+            self.source_root / "membrane-orientor" / "memorient" / "src",
             self.source_root / "bio-orient" / "src",
         ]
         env = os.environ.copy()
