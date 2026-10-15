@@ -103,6 +103,18 @@ Network tests and live public-source smoke tests are opt-in. A genuine offline
 demonstration must use bundled synthetic fixtures; cached or remote retrieval is
 not treated as offline.
 
+## Paper figures
+
+Regenerate the JOSS figures with `python tools/build_scientific_figures.py`.
+The command reruns the synthetic StructQC fixture and the public CA2 case,
+then checks those runs against the ids and artifact SHA-256s in
+`paper/figures/FIGURE_INPUTS.json`. The run directories are not committed.
+The pins match Linux x86_64, CPython 3.12.3, and
+`docs/requirements-linux-x86_64-py312.txt`. Qualification history is not a
+store run. `evidence/implementation-evidence/2026-09-06/` stays as the worked
+example's historical receipt. The command, the pin file, and the PNG
+comparison rule are in [Paper figures](figures.md).
+
 ## Independent public qualification
 
 The historical v1 scientific panel is separate from the synthetic software

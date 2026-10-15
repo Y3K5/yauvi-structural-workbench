@@ -40,6 +40,18 @@ python tools/build_cli_reference.py
 
 CI runs `python tools/build_cli_reference.py --check` and fails if it is stale.
 
+Regenerate the JOSS figures from the public inputs, then check them. The pins
+match Linux x86_64, CPython 3.12.3, and the constraint file below. CA2
+acquisition needs network access.
+
+```bash
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]" "matplotlib==3.11.2"
+python tools/build_scientific_figures.py
+python tools/build_scientific_figures.py --check
+```
+
+CI runs the check on that interpreter. See [Paper figures](yauvi-structural-workbench/docs/figures.md).
+
 ## Opening work
 
 Open issues and pull requests at
