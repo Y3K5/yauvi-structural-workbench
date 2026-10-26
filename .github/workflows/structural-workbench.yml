@@ -264,6 +264,7 @@ jobs:
 
       - name: Wheel contains only canonical package namespaces
         run: |
+          python -m pytest tools/test_workbench_wheel.py -q
           python -m build --wheel --outdir dist
           python tools/verify_structural_workbench_wheel.py dist/*.whl
       - name: Pre-public JOSS material is internally honest
