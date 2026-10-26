@@ -1,5 +1,7 @@
 # memorient
 
+Organism Orient now connects membrane exploration, saved placements, reviewed local preparation and portable results to Structural Workbench. Start with the offline invented helix. [Use, installation boundaries and scientific limits](docs/OPEN_SOURCE.md). Public packages exclude biological coordinates and force-field data.
+
 **Context-aware membrane orientation and per-residue accessibility for protein structures.**
 
 Given a predicted or experimental structure, `memorient` estimates how the protein sits in a
@@ -98,3 +100,23 @@ suitable as an implementer hand-off.
 v0.2.0. Pure Python (NumPy/SciPy/BioPython); SASA computed in-package
 (Shrake–Rupley). The clean reviewer selection currently reports 85 passing
 offline tests and 4 network/adapter tests deselected.
+
+## Experimental curved membrane surfaces
+
+See [surface guide](00_START_HERE.md) for the new local `surface` command, invented example, supported shapes and limits. Explicit lipid reconstruction and organism-specific qualification remain future work.
+
+## Organism Orient local viewer
+
+The [local studio guide](00_START_HERE.md) covers PDB import, four membrane shapes, protein/receptor banks, multiple showcase placements, read-only MARSE ecosystem context and explicit-lipid recipe preparation. Start with `memorient viewer`. No lipid packing or ecological/molecular feedback is implemented.
+
+## Sourced starter organisms
+
+Organism Orient now bundles E. coli K-12, B. subtilis and S. cerevisiae contexts with seven experimental protein entries and five OPM membrane frames. Whole-envelope views are explicitly schematic. [Source catalogue guide](docs/STARTER_ORGANISMS.md).
+
+## Explicit K-12 lipid assembly
+
+A [source-derived finite outer-membrane patch](docs/ECOLI_K12_EXPLICIT_MEMBRANE.md) now combines experimental OmpF/FhuA with 592 explicit LPS/phospholipid molecules. `memorient build-ecoli-om --out NEW_DIRECTORY` rebuilds coordinates locally. The viewer exposes leaflet/protein visibility, atom inspection and mmCIF export. This is unrelaxed and not MD ready; donor composition discrepancies and exclusions are recorded.
+
+## Local molecular preparation extension
+
+[Organism Orient preparation guide](docs/LOCAL_MEMBRANE_PREPARATION.md): a separate local K-12 OmpF/FhuA branch supplies a full source-bound CHARMM36m/CHARMM36 topology, solvation, neutralization and restrained minimization. `memorient md-prepare --profile ... --out NEW_DIRECTORY` accepts reviewed standalone topology/GRO inputs and stops before equilibration. Input hashes, strict GROMACS preprocessing and final numerical acceptance are recorded separately from scientific qualification. Other organism profiles require admitted chemistry; no universal membrane builder is claimed. Raw force-field dependencies and local run outputs are excluded from publication/package selection.

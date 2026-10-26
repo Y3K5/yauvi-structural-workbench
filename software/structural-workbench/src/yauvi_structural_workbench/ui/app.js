@@ -76,8 +76,8 @@ function inputCard(role){
 }
 function render(){
  const {analysis:a,definition:d}=snapshot;$('analysis').hidden=false;$('empty').hidden=true;$('analysis-type').textContent=names[a.analysis_type]||d.title;$('analysis-subject').textContent=a.subject_id;$('analysis-question').textContent=a.question;$('status').textContent=states[a.state]||friendly(a.state);
- $('qualification').replaceChildren(el('strong',a.analysis_type==='membrane_orientation'?'Experimental':'Scientific qualification incomplete'),el('span',' · '+(a.analysis_type==='sf_csa'?'Qualification reference universe unresolved.':'Execution status and biological validity are separate.')));
- $('experimental-label').hidden=a.analysis_type!=='membrane_orientation';
+ $('qualification').replaceChildren(el('strong',['membrane_orientation','membrane_surface_placement','membrane_preparation','membrane_result_import'].includes(a.analysis_type)?'Experimental':'Scientific qualification incomplete'),el('span',' · '+(a.analysis_type==='sf_csa'?'Qualification reference universe unresolved.':'Execution status and biological validity are separate.')));
+ $('experimental-label').hidden=!['membrane_orientation','membrane_surface_placement','membrane_preparation','membrane_result_import'].includes(a.analysis_type);
  const required=d.inputs.filter(r=>r.required),optional=d.inputs.filter(r=>!r.required);
  $('inputs').replaceChildren(...required.map(inputCard));$('optional-files').replaceChildren(...optional.map(inputCard));$('optional-inputs').hidden=!optional.length;
  $('input-count').textContent=`${required.filter(r=>a.inputs.filter(i=>i.role===r.role).length>=(r.minimum_files||1)).length} of ${required.length} required roles attached`;
@@ -97,7 +97,7 @@ function populateCoordinates(){
  if(!options.length)$('coordinate').append(new Option('No coordinates attached',''));$('view').disabled=!options.length;$('coordinate').disabled=!options.length;
 }
 function updateActions(){
- if(!snapshot)return;const active=jobs.some(j=>j.analysis_id===current&&['queued','running'].includes(j.state));const valid=snapshot.preflight?.valid&&snapshot.preflight.revision_sha256===snapshot.analysis.revision_sha256;const experimental=snapshot.analysis.analysis_type==='membrane_orientation';
+ if(!snapshot)return;const active=jobs.some(j=>j.analysis_id===current&&['queued','running'].includes(j.state));const valid=snapshot.preflight?.valid&&snapshot.preflight.revision_sha256===snapshot.analysis.revision_sha256;const experimental=['membrane_orientation','membrane_surface_placement','membrane_preparation','membrane_result_import'].includes(snapshot.analysis.analysis_type);
  $('run').disabled=busy||dirty||active||!valid||(experimental&&!$('experimental').checked);$('validate').disabled=busy||dirty||active;$('run').textContent=active?'In progress':'Run analysis';$('parameter-note').textContent=dirty?'Unsaved changes':'';
  $('next-action').textContent=active?'An analysis is in progress':dirty?'Save your parameters':valid?'Ready for the next step':'Check your inputs';
  $('next-description').textContent=active?'Open Process to follow or cancel the run.':dirty?'Save this revision before checking or running it.':valid?(experimental&&!$('experimental').checked?'Acknowledge the experimental limits below to continue.':'Ready to execute. Interpretation still depends on the evidence.'):'Readiness checks include required files and installed tools.';

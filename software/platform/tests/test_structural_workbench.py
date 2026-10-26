@@ -45,7 +45,7 @@ def test_definitions_register_public_tasks_and_display_metrics():
     definitions = analysis_definitions()
     assert [item["analysis_type"] for item in definitions] == [
         "structure_qc", "membrane_orientation", "conformational_state",
-        "functional_site_state", "assembly_interface", "sf_csa", "region_explorer", "bio_orient",
+        "functional_site_state", "assembly_interface", "sf_csa", "membrane_surface_placement", "membrane_preparation", "membrane_result_import", "region_explorer", "bio_orient",
         "dockprep", "pose_evidence",
     ]
     assert metric_definitions()["rmsd_A"]["decimals"] == 3
@@ -53,7 +53,10 @@ def test_definitions_register_public_tasks_and_display_metrics():
     for definition in definitions:
         roles = [item["role"] for item in definition["inputs"]]
         assert len(roles) == len(set(roles))
-        assert "validation_report" in roles
+        # Whole-system GRO preparation and exact result imports have their own
+        # numerical/identity gates, rather than a protein-coordinate report.
+        if definition['analysis_type'] not in {'membrane_preparation','membrane_result_import'}:
+            assert "validation_report" in roles
         for input_role in definition["inputs"]:
             assert {
                 "description", "why_needed", "absence_effect", "accepted_artifact_types",

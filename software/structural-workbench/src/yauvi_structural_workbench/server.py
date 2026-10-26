@@ -97,6 +97,31 @@ class Handler(BaseHTTPRequestHandler):
         except (OSError,TimeoutError):self._send(400,{'error':'request or artifact unavailable'})
         except Exception:self._send(500,{'error':'unexpected local request failure; inspect the case and job records before retrying'})
     def _get(self,p):
+        if p[:1]==['organism-orient']:
+            from memorient.surface_viewer import get_response
+            response=get_response('/'+'/'.join(p[1:]),workbench=True)
+            if response is None:return self._send(404,{'error':'Local molecular data is not configured; import a portable result'})
+            return self._send(*response)
+        if p==['api','membrane-cases']:
+            from yauvi_platform.structural_workbench.membrane_workflow import TYPES
+            return self._send(200,[r for r in self.server.store.list() if r['analysis_type'] in TYPES])
+        if len(p)==6 and p[:2]==['api','analyses'] and p[3]=='membrane-result':
+            from yauvi_platform.structural_workbench.membrane_workflow import recorded_manifest
+            from memorient.run_bundle import scene,artifact_path
+            path,doc=recorded_manifest(self.server.store,p[2],p[4])
+            if p[5]=='manifest':return self._send(200,doc)
+            if p[5]=='scene':return self._send(200,scene(path))
+            if p[5]=='bundle':
+                import io,zipfile
+                buffer=io.BytesIO()
+                with zipfile.ZipFile(buffer,'w',compression=zipfile.ZIP_DEFLATED) as archive:
+                    archive.write(path,'MEMBRANE_RUN.json')
+                    for ref in doc['artifacts'].values():archive.write(artifact_path(path.parent,ref['path']),ref['path'])
+                return self._send(200,buffer.getvalue(),'application/zip',attachment='MEMBRANE_RESULT.zip')
+            ref=doc['artifacts'].get(p[5])
+            if ref is None:raise ValueError('Unknown membrane artifact')
+            target=artifact_path(path.parent,ref['path'])
+            return self._send(200,target.read_bytes(),'application/octet-stream',attachment=target.name)
         store=self.server.store
         if p[:2]==['api','biological-cases']:
             from yauvi_platform.structural_workbench.biological_case import BiologicalCaseStore
@@ -173,6 +198,12 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(200,self.server.ui_assets[name],mimetypes.guess_type(name)[0] or 'application/octet-stream')
     def _mutate(self,p):
         store=self.server.store
+        if p==['organism-orient','place']:
+            from memorient.pdb_surface import build_scene
+            return self._send(200,build_scene(self._body()))
+        if p==['organism-orient','marse-context']:
+            from memorient.organism_context import read_marse_context
+            return self._send(200,read_marse_context(self._body()['text']))
         if len(p)==4 and p[:2]==['api','ingests'] and self.command=='PUT':
             return self._send(200,store.ingest_chunk(p[2],int(p[3]),self._body(raw=True)))
         data=self._body()

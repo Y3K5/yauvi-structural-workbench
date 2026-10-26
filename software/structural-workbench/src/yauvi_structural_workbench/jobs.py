@@ -56,7 +56,7 @@ class JobManager:
 
     def submit(self,analysis_id, *, experimental_acknowledged=False):
         manifest=self.store.load(analysis_id)
-        if manifest['analysis_type']=='membrane_orientation' and not experimental_acknowledged:
+        if manifest['analysis_type'] in {'membrane_orientation','membrane_surface_placement','membrane_preparation','membrane_result_import'} and not experimental_acknowledged:
             raise AnalysisError('membrane orientation is experimental; acknowledge its limits before running')
         with self._lock:
             if self._stop.is_set(): raise AnalysisError('server is stopping')

@@ -1,0 +1,11 @@
+# Public source distributions exclude biological snapshots and local evidence.
+prune md-prep
+prune docs
+prune src/memorient/catalogue/sources
+prune src/memorient/ecoli_om
+exclude src/memorient/catalogue/starter.json
+exclude 00_START_HERE.md 00_CHANGELOG.md
+exclude Launch*.command
+recursive-exclude tests *.pdb *.cif *.gro *.top *.zip
+
+include docs/OPEN_SOURCE.md requirements-md-prep.txt

@@ -1,0 +1,26 @@
+# Private local research must never enter a source distribution.
+prune Findings
+exclude 00_START_HERE.md 00_CHANGELOG.md
+
+# MemOrient code and metadata only; biological acquisitions and runs stay local.
+prune software/membrane-orientor/memorient/md-prep
+prune software/membrane-orientor/memorient/docs
+prune software/membrane-orientor/memorient/src/memorient/catalogue/sources
+prune software/membrane-orientor/memorient/src/memorient/ecoli_om
+exclude software/membrane-orientor/memorient/src/memorient/catalogue/starter.json
+
+include NOTICE.md
+include tools/build_membrane_release.py tools/verify_structural_workbench_wheel.py tools/test_workbench_wheel.py
+include software/membrane-orientor/memorient/docs/OPEN_SOURCE.md
+include software/membrane-orientor/memorient/requirements-md-prep.txt
+include software/membrane-orientor/memorient/tests/test_run_bundle.py
+include software/platform/tests/test_membrane_workflow.py
+
+include software/membrane-orientor/memorient/pyproject.toml software/membrane-orientor/memorient/MANIFEST.in
+include software/membrane-orientor/memorient/README.md software/membrane-orientor/memorient/LICENSE
+include software/membrane-orientor/memorient/tests/test_md_geometry.py
+include software/structural-workbench/tests/test_membrane_server.py software/structural-workbench/tests/conftest.py
+include tools/test_membrane_release.py
+include .github/workflows/structural-workbench.yml
+
+include software/platform/tests/test_membrane_process_control.py

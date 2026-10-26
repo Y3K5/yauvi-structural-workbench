@@ -342,6 +342,8 @@ _ROLE_GUIDANCE: Mapping[str, Mapping[str, Any]] = {
 def analysis_definitions() -> list[dict[str, Any]]:
     """Return human-readable, source-aware task definitions for CLI and UI."""
     definitions = _base_analysis_definitions()
+    from .membrane_workflow import definitions as membrane_definitions
+    definitions.extend(membrane_definitions())
     definitions.append({
         "analysis_type": "region_explorer", "title": "Region explorer",
         "question": "Which annotated regions and observed component contacts are represented in these exact coordinates?",
@@ -433,6 +435,9 @@ def analysis_definitions() -> list[dict[str, Any]]:
                 "source_ids": [], "format_guide": "Versioned local JSON with exact bindings; see Bio-Orient documentation.",
                 "validator_id": input_role["role"], "sensitivity": "sensitive_by_default",
             }))
+            if definition['analysis_type'] in {'membrane_surface_placement','membrane_preparation','membrane_result_import'}:
+                input_role['accepted_artifact_types']=[]
+                input_role['source_ids']=[]
             input_role.setdefault("template_id", None)
     return definitions
 
@@ -614,8 +619,11 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
                                 "required_evidence": ["checksum-bound receptor", "imported pose coordinates", "engine-specific scores kept separate"],
                                 "known_limitations": ["Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies.",
                                                       "Imported ClusPro results are read-only and are never uploaded by this module."]}]
+    from .membrane_workflow import TYPES as MEMBRANE_TYPES, readiness as membrane_readiness
+    rows.extend(membrane_readiness())
     for definition in analysis_definitions():
         tool = definition["analysis_type"]
+        if tool in MEMBRANE_TYPES:continue
         missing = [name for name in required[tool] if runtimes[name] == "missing"]
         state = "blocked_missing_runtime" if missing else definition["readiness"]
         rows.append({
@@ -1290,6 +1298,14 @@ class StructuralAnalysisStore:
                 interpretation_ok, interpretation_detail = False, str(exc)
             checks.append({"name": "evidence:sf_csa_interpretation_tables", "category": "scientific_evidence", "ok": interpretation_ok,
                            "detail": interpretation_detail})
+        from .membrane_workflow import TYPES as MEMBRANE_TYPES
+        if manifest['analysis_type'] in MEMBRANE_TYPES:
+            from .membrane_workflow import preflight as membrane_preflight
+            try:
+                membrane_preflight(self,manifest,inputs);ok,detail=True,'Exact inputs and supported stage verified; no equilibration'
+            except (ValueError,OSError,KeyError,TypeError,RuntimeError,ImportError,subprocess.SubprocessError) as exc:
+                ok,detail=False,str(exc)
+            checks.append({'name':'evidence:membrane_profile','category':'scientific_evidence','ok':ok,'detail':detail})
         valid = all(item["ok"] for item in checks)
         record = {
             "schema_version": SCHEMA_VERSION, "contract_id": "analysis_preflight",
@@ -1351,7 +1367,7 @@ class StructuralAnalysisStore:
 
     def _execute(self, command: list[str], *, cwd: Path, log_path: Path,
                  cancel_event: Any | None = None, on_process: Any | None = None,
-                 timeout_seconds: float = 3600) -> int:
+                 timeout_seconds: float = 3600, on_tick: Any | None = None) -> int:
         process = subprocess.Popen(command, cwd=cwd, env=self._package_env(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
         deadline = time.monotonic() + timeout_seconds
         if on_process is not None:
@@ -1362,6 +1378,7 @@ class StructuralAnalysisStore:
                 break
             except subprocess.TimeoutExpired:
                 pass
+            if on_tick is not None:on_tick()
             cancelled = cancel_event is not None and cancel_event.is_set()
             if cancelled or time.monotonic() >= deadline:
                 # The engine may spawn FreeSASA, Foldseek or DIAMOND. Terminate
@@ -1573,9 +1590,14 @@ class StructuralAnalysisStore:
         return spec
 
     def _run_registered(self, manifest: Mapping[str, Any], run_dir: Path,
-                        cancel_event: Any | None = None, on_process: Any | None = None) -> tuple[list[dict[str, Any]], int]:
+                        cancel_event: Any | None = None, on_process: Any | None = None,
+                        on_progress: Any | None = None) -> tuple[list[dict[str, Any]], int]:
         inputs = self._materialize_inputs(self._inputs_by_role(manifest), run_dir); params = manifest.get("parameters", {})
         tool = manifest["analysis_type"]; steps: list[dict[str, Any]] = []; codes: list[int] = []
+        from .membrane_workflow import TYPES as MEMBRANE_TYPES
+        if tool in MEMBRANE_TYPES:
+            from .membrane_workflow import execute
+            return execute(self,manifest,inputs,run_dir,cancel_event,on_process,on_progress)
         if tool in {"dockprep", "pose_evidence"}:
             # These engines take a config, not a StructQC coordinate prelude.
             # `run` is the store's dispatch contract. DockPrep's `execute`
@@ -1817,7 +1839,7 @@ class StructuralAnalysisStore:
         _write_json(run_dir / "INPUT_CASE.json", manifest)
         progress("analysis", "Starting scientific analysis")
         try:
-            steps, exit_code = self._run_registered(manifest, run_dir, cancel_event=cancel_event, on_process=on_process)
+            steps, exit_code = self._run_registered(manifest, run_dir, cancel_event=cancel_event, on_process=on_process, on_progress=progress)
             status = "completed" if exit_code == 0 else "scientifically_incomplete" if exit_code == 1 else "failed"
             error = ""
         except InterruptedError as exc:

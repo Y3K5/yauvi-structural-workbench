@@ -21,17 +21,21 @@ dev = ["pytest>=7.3.0", "numpy>=1.24.0", "scipy>=1.10.0", "biopython>=1.81", "ma
 [project.scripts]
 memorient = "memorient.cli:main"
 
+[tool.setuptools]
+include-package-data = false
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
 # sources.yaml ships inside the package so `yauvi-fetch plan --for memorient`
 # works from an install, with no checkout of the workspace present.
-memorient = ["sources.yaml", "*.js"]
+memorient = ["sources.yaml", "membrane_bilayer.js", "viewer_assets/index.html", "viewer_assets/app.js", "viewer_assets/workbench.js", "viewer_assets/3Dmol-min.js", "viewer_assets/3DMOL-LICENSE.txt", "viewer_assets/3Dmol-min.js.LICENSE.txt", "viewer_assets/3DMOL-NOTICE.md", "catalogue/metadata.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-m 'not network'"
 markers = [
+    "local_data: requires separately supplied biological source snapshots; no acquisition",
     "network: test requires network access (fetches a PDB from RCSB); skipped offline",
 ]

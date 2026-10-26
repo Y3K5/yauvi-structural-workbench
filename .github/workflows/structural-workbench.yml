@@ -149,6 +149,8 @@ jobs:
         if: always()
         continue-on-error: true
         run: python -m pytest "software/membrane-orientor/memorient/tests" -m "not network and not adapter" --tb=short
+      - name: Organism Orient · synthetic custody and release controls
+        run: python -m pytest software/platform/tests/test_membrane_workflow.py software/platform/tests/test_membrane_process_control.py software/structural-workbench/tests/test_membrane_server.py tools/test_membrane_release.py -m "not network and not adapter and not local_data" --tb=short
       - name: Suite · StateAtlas
         if: always()
         run: python -m pytest software/state-atlas/tests -m "not network and not adapter" --tb=short

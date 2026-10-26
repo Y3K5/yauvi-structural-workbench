@@ -260,9 +260,142 @@ def _cmd_fetch(args: argparse.Namespace) -> int:
     return fetch_main(["plan", "--for", "memorient", "--manifest", str(SOURCES_MANIFEST)])
 
 
+def _cmd_surface(args: argparse.Namespace) -> int:
+    """Build explicitly supplied geometry; never infer an organism membrane."""
+    try:
+        from .surfaces import Surface, place_receptor
+        raw = Path(args.spec).read_bytes()
+        spec = json.loads(raw)
+        if spec.get("schema_version") != "memorient.surface.v1":
+            raise ValueError("expected schema_version memorient.surface.v1")
+        surface = Surface(**spec["surface"])
+        result = {
+            "schema_version": "memorient.surface_result.v1",
+            "input_sha256": hashlib.sha256(raw).hexdigest(),
+            "units": "angstrom", "angle_units": "radian",
+            "scientific_state": "geometric_model_only",
+            "specification": spec,
+            "surface": surface.sample(**spec.get("sampling", {})),
+            "receptors": [place_receptor(surface=surface, **item) for item in spec.get("receptors", [])],
+            "limitations": ["No organism-specific reconstruction or lipid packing", "Geometric normal does not identify biological compartments", "No receptor-receptor or receptor-membrane clash checking"],
+        }
+        destination = Path(args.out)
+        with destination.open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    except (OSError, ValueError, KeyError, TypeError, ImportError) as exc:
+        print(f"memorient surface: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def _cmd_viewer(args):
+    from .surface_viewer import serve
+    from .starter_catalogue import configure
+    configure(args.cache)
+    serve(args.port,manifest=args.manifest)
+    return 0
+
+
+def _cmd_place_pdb(args):
+    from .pdb_surface import build_scene
+    try:
+        spec = json.loads(Path(args.spec).read_text(encoding="utf-8"))
+        spec["pdb"] = Path(args.pdb).read_bytes().decode("utf-8")
+        result = build_scene(spec)
+        with Path(args.out).open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        print(f"memorient place-pdb: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def _cmd_lipid_plan(args):
+    from .lipid_plan import plan_lipids
+    try:
+        result = plan_lipids(json.loads(Path(args.spec).read_text(encoding="utf-8")))
+        with Path(args.out).open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        print(f"memorient lipid-plan: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def _cmd_build_ecoli_om(args):
+    from .explicit_outer_membrane import save_patch
+    try:
+        receipt = save_patch(args.out)
+        print(json.dumps({k:receipt[k] for k in ("state", "full_atoms", "view_atoms", "retained_lipids", "checks")}, indent=2))
+    except (ValueError, OSError) as exc:
+        print(f"memorient build-ecoli-om: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def _cmd_md_prepare(args):
+    from .md_preparation import prepare_and_minimize
+    try:
+        result = prepare_and_minimize(args.profile, args.out, args.gmx, args.threads)
+        print(json.dumps(result, indent=2))
+        return 0 if result['state'] == 'minimized' else 3
+    except (ValueError, OSError, KeyError, RuntimeError) as exc:
+        print(f"memorient md-prepare: {exc}", file=sys.stderr)
+        return 2
+
+
+def _cmd_result_bundle(args):
+    from .run_bundle import import_legacy,load_manifest,artifact_path
+    import zipfile
+    try:
+        path=import_legacy(args.run,args.display,args.out)
+        doc=load_manifest(path)
+        with zipfile.ZipFile(Path(args.out)/'MEMBRANE_RESULT.zip','x',compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.write(path,'MEMBRANE_RUN.json')
+            for ref in doc['artifacts'].values():archive.write(artifact_path(path.parent,ref['path']),ref['path'])
+        print('Accepted local result bundle created. Contains molecular data; review before any sharing.')
+        return 0
+    except (OSError,ValueError,KeyError,TypeError) as exc:
+        print(f'memorient result-bundle: {exc}',file=sys.stderr)
+        return 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="memorient", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="command", required=True)
+    bundle=sub.add_parser('result-bundle',help='copy a verified legacy result to a portable local bundle; no simulation')
+    for name in ('run','display','out'):bundle.add_argument('--'+name,required=True)
+    bundle.set_defaults(func=_cmd_result_bundle)
+    pmd = sub.add_parser("md-prepare", help="solvate and neutralize reviewed inputs, minimize locally; stop before equilibration")
+    pmd.add_argument("--profile", required=True, help="source-bound local JSON profile")
+    pmd.add_argument("--out", required=True, help="new output directory")
+    pmd.add_argument("--gmx", default="gmx")
+    pmd.add_argument("--threads", type=int, default=4)
+    pmd.set_defaults(func=_cmd_md_prepare)
+    pecoli = sub.add_parser("build-ecoli-om", help="assemble the pinned finite K-12 atomic membrane patch; no MD")
+    pecoli.add_argument("--out", required=True, help="new output directory; refuses overwrite")
+    pecoli.set_defaults(func=_cmd_build_ecoli_om)
+
+    plipid = sub.add_parser("lipid-plan", help="check explicit-lipid recipe inputs; no packing")
+    plipid.add_argument("--spec", required=True)
+    plipid.add_argument("--out", required=True)
+    plipid.set_defaults(func=_cmd_lipid_plan)
+
+    pview = sub.add_parser("viewer", help="serve the private loopback membrane studio")
+    pview.add_argument("--port", type=int, default=8956)
+    pview.add_argument('--cache',help='explicit local checksum-addressed catalogue coordinate cache')
+    pview.add_argument('--manifest',help='portable MEMBRANE_RUN.json to inspect')
+    pview.set_defaults(func=_cmd_viewer)
+    ppdb = sub.add_parser("place-pdb", help="place a local PDB on a supplied surface")
+    ppdb.add_argument("--pdb", required=True)
+    ppdb.add_argument("--spec", required=True, help="JSON surface and placement objects")
+    ppdb.add_argument("--out", required=True, help="new scene JSON including placed PDB")
+    ppdb.set_defaults(func=_cmd_place_pdb)
+
+    ps = sub.add_parser("surface", help="experimental geometric membrane and receptor placement")
+    ps.add_argument("--spec", required=True, help="local memorient.surface.v1 JSON")
+    ps.add_argument("--out", required=True, help="new output JSON; refuses overwrite")
+    ps.set_defaults(func=_cmd_surface)
 
     pc = sub.add_parser("contexts", help="list membrane contexts")
     pc.add_argument("--json", action="store_true", help="emit JSON")

@@ -1,0 +1,4416 @@
+{
+  "schema_version": "organism_orient.catalogue.v1",
+  "retrieved_on": "2026-10-26",
+  "organisms": [
+    {
+      "id": "ecoli_k12",
+      "name": "Escherichia coli K-12",
+      "taxon_id": 83333,
+      "strain_scope": "K-12 protein sources; not every K-12 derivative or condition",
+      "envelope_summary": "Diderm envelope: inner membrane, periplasm with peptidoglycan, outer membrane. Outer-membrane protein loops face an LPS-containing environment.",
+      "sources": [
+        {
+          "url": "https://journals.asm.org/doi/10.1128/jb.185.20.6112-6118.2003",
+          "claim": "Cryo-TEM observations of K-12 envelope layers and preparation-dependent variation."
+        }
+      ],
+      "layers": [
+        {
+          "label": "Inner membrane",
+          "offset_angstrom": 0,
+          "color": "#649ed6",
+          "evidence_state": "schematic display shell"
+        },
+        {
+          "label": "Peptidoglycan (schematic)",
+          "offset_angstrom": 140,
+          "color": "#bc93de",
+          "evidence_state": "schematic display shell"
+        },
+        {
+          "label": "Outer membrane",
+          "offset_angstrom": 280,
+          "color": "#63d7be",
+          "evidence_state": "schematic display shell"
+        }
+      ],
+      "overview_surface": {
+        "kind": "ellipsoid",
+        "size": [
+          4000,
+          4000,
+          10000
+        ],
+        "thickness": 30
+      },
+      "target_layer": "Outer membrane",
+      "measurements": [],
+      "limits": "Rod represented by a smooth ellipsoid. Dimensions, layer gaps and thickness are illustrative display choices, not segmented or quantitatively reconstructed from this paper. LPS/cell-wall polymers are not built.",
+      "protein_ids": [
+        "2OMF",
+        "2FCP"
+      ],
+      "overview_evidence_state": "literature-informed schematic; no segmented organism mesh",
+      "molecular_preparation": {
+        "state": "requires_local_reviewed_inputs",
+        "reason": "Organism metadata alone does not supply compatible chemistry, topology or hydration settings."
+      }
+    },
+    {
+      "id": "bsubtilis",
+      "name": "Bacillus subtilis",
+      "taxon_id": 1423,
+      "strain_scope": "KtrAB/TasA: strain 168; OpuAC structure: species-level record, exact matched strain not established",
+      "envelope_summary": "Cytoplasmic membrane with an external peptidoglycan/teichoic-acid wall region. Membrane proteins can lie beneath the outer wall; extracellular does not guarantee unobstructed access.",
+      "sources": [
+        {
+          "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2958.2005.04535.x",
+          "claim": "Frozen-hydrated sections of strain 168 distinguish low-density inner and polymeric outer wall zones."
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2519384/",
+          "claim": "OpuAC is an extracellular ligand-binding component of OpuA, with membrane-tethered lipoprotein context."
+        }
+      ],
+      "layers": [
+        {
+          "label": "Cytoplasmic membrane",
+          "offset_angstrom": 0,
+          "color": "#63d7be",
+          "evidence_state": "schematic display shell"
+        },
+        {
+          "label": "Outer wall boundary (schematic)",
+          "offset_angstrom": 550,
+          "color": "#bc93de",
+          "evidence_state": "schematic display shell"
+        }
+      ],
+      "overview_surface": {
+        "kind": "ellipsoid",
+        "size": [
+          4500,
+          4500,
+          12000
+        ],
+        "thickness": 30
+      },
+      "target_layer": "Cytoplasmic membrane / extracellular matrix context",
+      "measurements": [
+        {
+          "quantity": "cell/cylinder diameter",
+          "mean": 1.04,
+          "sd": 0.04,
+          "units": "micrometre"
+        },
+        {
+          "quantity": "plasma membrane apparent thickness",
+          "mean": 6.6,
+          "sd": 0.8,
+          "units": "nm"
+        },
+        {
+          "quantity": "inner wall zone",
+          "mean": 22.3,
+          "sd": 4.8,
+          "units": "nm"
+        },
+        {
+          "quantity": "outer wall zone",
+          "mean": 33.3,
+          "sd": 4.7,
+          "units": "nm"
+        }
+      ],
+      "limits": "Paper measurements are condition/preparation-specific means, not universal parameters. Display dimensions/gaps are illustrative. OPM hydrophobic boundaries are distinct from microscopy total membrane thickness. TasA monomer is not a native fibril.",
+      "protein_ids": [
+        "4J7C",
+        "2B4L",
+        "5OF1"
+      ],
+      "overview_evidence_state": "literature-informed schematic; no segmented organism mesh",
+      "molecular_preparation": {
+        "state": "held",
+        "reason": "Organism metadata alone does not supply compatible chemistry, topology or hydration settings."
+      }
+    },
+    {
+      "id": "scerevisiae",
+      "name": "Saccharomyces cerevisiae",
+      "taxon_id": 4932,
+      "strain_scope": "Pma1: S288C; Ste2: species-level/mixed yeast entity annotations; no identical strain/condition claim",
+      "envelope_summary": "Plasma membrane beneath a cell wall. Ste2 receptors and Pma1 pumps belong to the plasma membrane; their presence does not establish exposure beyond the wall.",
+      "sources": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5751760/",
+          "claim": "Cryo-ET-informed yeast geometry explicitly distinguishes plasma membrane, cell wall and extracellular regions."
+        },
+        {
+          "url": "https://doi.org/10.1021/acs.jpcb.7b00672",
+          "claim": "Primary whole-cell geometry study; current viewer does not use its tomographic segmentation."
+        }
+      ],
+      "layers": [
+        {
+          "label": "Plasma membrane",
+          "offset_angstrom": 0,
+          "color": "#63d7be",
+          "evidence_state": "schematic display shell"
+        },
+        {
+          "label": "Cell wall boundary (schematic)",
+          "offset_angstrom": 1500,
+          "color": "#bc93de",
+          "evidence_state": "schematic display shell"
+        }
+      ],
+      "overview_surface": {
+        "kind": "sphere",
+        "size": [
+          25000
+        ],
+        "thickness": 30
+      },
+      "target_layer": "Plasma membrane beneath cell wall",
+      "measurements": [],
+      "limits": "Sphere, radius and wall gap are illustrative. Budding/scars, wall architecture and native protein abundance/locations are not reconstructed. Experimental membrane complexes contain intracellular domains and engineered states.",
+      "protein_ids": [
+        "7AD3",
+        "7VH5"
+      ],
+      "overview_evidence_state": "literature-informed schematic; no segmented organism mesh",
+      "molecular_preparation": {
+        "state": "held",
+        "reason": "Organism metadata alone does not supply compatible chemistry, topology or hydration settings."
+      }
+    }
+  ],
+  "proteins": [
+    {
+      "id": "2OMF",
+      "organism_id": "ecoli_k12",
+      "name": "OmpF porin",
+      "role": "channel_transporter",
+      "attachment": "transmembrane",
+      "notes": "OPM trimer; source asymmetric unit is a monomer. Porin/channel, not a ligand-specific receptor.",
+      "structure_source": "https://www.rcsb.org/structure/2OMF",
+      "pdb_doi": "https://doi.org/10.2210/pdb2OMF/pdb",
+      "citation": {
+        "id": "primary",
+        "journal_abbrev": "To be Published",
+        "journal_id_CSD": "0353",
+        "rcsb_authors": [
+          "Cowan, S.W."
+        ],
+        "rcsb_journal_abbrev": "To be published",
+        "title": "The Refined Structure of Ompf Porin from E.Coli at 2.4 Angstroms Resolution"
+      },
+      "method": [
+        "X-RAY DIFFRACTION"
+      ],
+      "resolution_angstrom": [
+        2.4
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "MATRIX PORIN OUTER MEMBRANE PROTEIN F",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Escherichia coli K12"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Escherichia coli K-12",
+              "ncbi_taxonomy_id": 83333,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Escherichia coli K12",
+              "source_type": "natural",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "3379134",
+                  "name": "Pseudomonadati"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Pseudomonadota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "\"Alphaproteobacteriota\" Whitman et al. 2018"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Alphaproteobacteriota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Proteobacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Proteobacteriota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "proteobacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "purple photosynthetic bacteria and relatives"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Gammaproteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Proteobacteria gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Pseudomonadia"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Purple bacteria, gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "g-proteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma proteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma subgroup"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacterales"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriaceae and related endosymbionts"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriaceae group"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriales"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "Enterobacteriaceae"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "Enterobacteraceae"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "enterobacteria"
+                },
+                {
+                  "depth": 8,
+                  "id": "561",
+                  "name": "Escherichia"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Escherichia coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacillus coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacterium coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacterium coli commune"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "E. coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Enterococcus coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Escherichia/Shigella coli"
+                },
+                {
+                  "depth": 10,
+                  "id": "83333",
+                  "name": "Escherichia coli K-12"
+                },
+                {
+                  "depth": 10,
+                  "id": "83333",
+                  "name": "Escherichia coli K12"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P02931"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/2omf-opm.pdb",
+      "coordinate_source_sha256": "e507d21003b37957a1ed257f7184d14f8daf2fdfd19415d3d97832d0cb46bc8c",
+      "view_pdb_sha256": "bec667e2a3c45e6a8c0c4524a421ebfa8504ac78463521f5df9bd45e1b48b35b",
+      "view_atoms": 8481,
+      "view_chains": [
+        "A",
+        "B",
+        "C"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "DUM membrane markers removed and used to record boundary planes"
+      ],
+      "orientation_basis": "OPM supplied flat-membrane coordinate frame; computational",
+      "sidedness_state": "OPM N(inner)/O(outer) marker convention; no independent intact-cell validation",
+      "membrane_core_thickness_angstrom": 25.2,
+      "opm_dummy_planes_z_angstrom": [
+        -12.6,
+        12.6
+      ],
+      "default_placement": {
+        "anchor": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 0,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          160,
+          160
+        ],
+        "thickness": 25.2
+      },
+      "cache_file": "bec667e2a3c45e6a8c0c4524a421ebfa8504ac78463521f5df9bd45e1b48b35b.pdb"
+    },
+    {
+      "id": "2FCP",
+      "organism_id": "ecoli_k12",
+      "name": "FhuA ferrichrome receptor",
+      "role": "receptor",
+      "attachment": "transmembrane",
+      "notes": "OPM monomer with source-bound LPS and other heteroatoms; this does not reconstruct an LPS leaflet.",
+      "structure_source": "https://www.rcsb.org/structure/2FCP",
+      "pdb_doi": "https://doi.org/10.2210/pdb2FCP/pdb",
+      "citation": {
+        "country": "US",
+        "id": "primary",
+        "journal_abbrev": "Science",
+        "journal_id_ASTM": "SCIEAS",
+        "journal_id_CSD": "0038",
+        "journal_id_ISSN": "0036-8075",
+        "journal_volume": "282",
+        "page_first": "2215",
+        "page_last": "2220",
+        "pdbx_database_id_DOI": "10.1126/science.282.5397.2215",
+        "pdbx_database_id_PubMed": 9856937,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "?"
+        ],
+        "rcsb_authors": [
+          "Ferguson, A.D.",
+          "Hofmann, E.",
+          "Coulton, J.W.",
+          "Diederichs, K.",
+          "Welte, W."
+        ],
+        "rcsb_journal_abbrev": "Science",
+        "title": "Siderophore-mediated iron transport: crystal structure of FhuA with bound lipopolysaccharide.",
+        "year": 1998
+      },
+      "method": [
+        "X-RAY DIFFRACTION"
+      ],
+      "resolution_angstrom": [
+        2.5
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "PROTEIN (FERRIC HYDROXAMATE UPTAKE RECEPTOR)",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Escherichia coli K12"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Escherichia coli K-12",
+              "ncbi_taxonomy_id": 83333,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Escherichia coli",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "3379134",
+                  "name": "Pseudomonadati"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Pseudomonadota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "\"Alphaproteobacteriota\" Whitman et al. 2018"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Alphaproteobacteriota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Proteobacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "Proteobacteriota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "proteobacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1224",
+                  "name": "purple photosynthetic bacteria and relatives"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Gammaproteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Proteobacteria gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Pseudomonadia"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "Purple bacteria, gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "g-proteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma proteobacteria"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma subdivision"
+                },
+                {
+                  "depth": 5,
+                  "id": "1236",
+                  "name": "gamma subgroup"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacterales"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriaceae and related endosymbionts"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriaceae group"
+                },
+                {
+                  "depth": 6,
+                  "id": "91347",
+                  "name": "Enterobacteriales"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "Enterobacteriaceae"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "Enterobacteraceae"
+                },
+                {
+                  "depth": 7,
+                  "id": "543",
+                  "name": "enterobacteria"
+                },
+                {
+                  "depth": 8,
+                  "id": "561",
+                  "name": "Escherichia"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Escherichia coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacillus coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacterium coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Bacterium coli commune"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "E. coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Enterococcus coli"
+                },
+                {
+                  "depth": 9,
+                  "id": "562",
+                  "name": "Escherichia/Shigella coli"
+                },
+                {
+                  "depth": 10,
+                  "id": "83333",
+                  "name": "Escherichia coli K-12"
+                },
+                {
+                  "depth": 10,
+                  "id": "83333",
+                  "name": "Escherichia coli K12"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P06971"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/2fcp-opm.pdb",
+      "coordinate_source_sha256": "5c46d3f11c1c8e6aebaf19ca4e49f6f5d923ec7ca5b3bee2033b6c4625fec7ad",
+      "view_pdb_sha256": "55ba80d7f7d0d76a0b7f0d8196de57a7ac9f7dad68caca5f3c97676bf1fcfa67",
+      "view_atoms": 5833,
+      "view_chains": [
+        "A"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "DUM membrane markers removed and used to record boundary planes"
+      ],
+      "orientation_basis": "OPM supplied flat-membrane coordinate frame; computational",
+      "sidedness_state": "OPM N(inner)/O(outer) marker convention; no independent intact-cell validation",
+      "membrane_core_thickness_angstrom": 24.4,
+      "opm_dummy_planes_z_angstrom": [
+        -12.2,
+        12.2
+      ],
+      "default_placement": {
+        "anchor": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 0,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          160,
+          160
+        ],
+        "thickness": 24.4
+      },
+      "cache_file": "55ba80d7f7d0d76a0b7f0d8196de57a7ac9f7dad68caca5f3c97676bf1fcfa67.pdb"
+    },
+    {
+      "id": "4J7C",
+      "organism_id": "bsubtilis",
+      "name": "KtrAB potassium transporter",
+      "role": "channel_transporter",
+      "attachment": "transmembrane",
+      "notes": "OPM selected A8B2 complex; original deposited asymmetric unit contains additional KtrB chains. Source reports mutations. Cytosolic KtrA is not surface exposed.",
+      "structure_source": "https://www.rcsb.org/structure/4J7C",
+      "pdb_doi": "https://doi.org/10.2210/pdb4J7C/pdb",
+      "citation": {
+        "country": "UK",
+        "id": "primary",
+        "journal_abbrev": "Nature",
+        "journal_id_ASTM": "NATUAS",
+        "journal_id_CSD": "0006",
+        "journal_id_ISSN": "0028-0836",
+        "journal_volume": "496",
+        "page_first": "323",
+        "page_last": "328",
+        "pdbx_database_id_DOI": "10.1038/nature12055",
+        "pdbx_database_id_PubMed": 23598340,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?"
+        ],
+        "rcsb_authors": [
+          "Vieira-Pires, R.S.",
+          "Szollosi, A.",
+          "Morais-Cabral, J.H."
+        ],
+        "rcsb_journal_abbrev": "Nature",
+        "title": "The structure of the KtrAB potassium transporter",
+        "year": 2013
+      },
+      "method": [
+        "X-RAY DIFFRACTION"
+      ],
+      "resolution_angstrom": [
+        3.5
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Ktr system potassium uptake protein A",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Bacillus subtilis 168",
+                "Bacillus subtilis subsp. subtilis 168",
+                "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Bacillus subtilis subsp. subtilis str. 168",
+              "ncbi_taxonomy_id": 224308,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Bacillus subtilis",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Bacillati"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmacutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicuteota"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes corrig. Gibbons and Murray 1978 (Approved Lists 1980)"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria group"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacterida"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillaeota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota corrig. Gibbons and Murray 2021"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillus/Clostridium group"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Clostridium group firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Low G+C firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "clostridial firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low G+C Gram-positive bacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low GC Gram+"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacilli"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacillus/Lactobacillus/Streptococcus group"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Firmibacteria"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Caryophanales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillus/Staphylococcus group"
+                },
+                {
+                  "depth": 7,
+                  "id": "186817",
+                  "name": "Bacillaceae"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus rRNA group 1"
+                },
+                {
+                  "depth": 9,
+                  "id": "653685",
+                  "name": "Bacillus subtilis group"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus subtilis"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus natto"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus uniflagellatus"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Vibrio subtilis"
+                },
+                {
+                  "depth": 11,
+                  "id": "135461",
+                  "name": "Bacillus subtilis subsp. subtilis"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "ktrA"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "O32080"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Ktr system potassium uptake protein B",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Bacillus subtilis 168",
+                "Bacillus subtilis subsp. subtilis 168",
+                "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Bacillus subtilis subsp. subtilis str. 168",
+              "ncbi_taxonomy_id": 224308,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Bacillus subtilis",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Bacillati"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmacutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicuteota"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes corrig. Gibbons and Murray 1978 (Approved Lists 1980)"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria group"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacterida"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillaeota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota corrig. Gibbons and Murray 2021"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillus/Clostridium group"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Clostridium group firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Low G+C firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "clostridial firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low G+C Gram-positive bacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low GC Gram+"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacilli"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacillus/Lactobacillus/Streptococcus group"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Firmibacteria"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Caryophanales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillus/Staphylococcus group"
+                },
+                {
+                  "depth": 7,
+                  "id": "186817",
+                  "name": "Bacillaceae"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus rRNA group 1"
+                },
+                {
+                  "depth": 9,
+                  "id": "653685",
+                  "name": "Bacillus subtilis group"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus subtilis"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus natto"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus uniflagellatus"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Vibrio subtilis"
+                },
+                {
+                  "depth": 11,
+                  "id": "135461",
+                  "name": "Bacillus subtilis subsp. subtilis"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "ktrB"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "O32081"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/4j7c-opm.pdb",
+      "coordinate_source_sha256": "03abbce10eb1071b3289443f8d2cd370f76a98cbb2ce3ae7cf99886b7fbbb981",
+      "view_pdb_sha256": "c9a77c1ece9b1e0ed24162266f0bc49cfea3eab5f8a86e703fa8127a3cc4377e",
+      "view_atoms": 20434,
+      "view_chains": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "DUM membrane markers removed and used to record boundary planes"
+      ],
+      "orientation_basis": "OPM supplied flat-membrane coordinate frame; computational",
+      "sidedness_state": "OPM N(inner)/O(outer) marker convention; no independent intact-cell validation",
+      "membrane_core_thickness_angstrom": 31.8,
+      "opm_dummy_planes_z_angstrom": [
+        -15.9,
+        15.9
+      ],
+      "default_placement": {
+        "anchor": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 0,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          220.0,
+          220.0
+        ],
+        "thickness": 31.8
+      },
+      "cache_file": "c9a77c1ece9b1e0ed24162266f0bc49cfea3eab5f8a86e703fa8127a3cc4377e.pdb"
+    },
+    {
+      "id": "2B4L",
+      "organism_id": "bsubtilis",
+      "name": "OpuAC substrate-binding protein",
+      "role": "receptor",
+      "attachment": "peripheral",
+      "notes": "Isolated soluble binding domain. Native OpuAC is lipid-tethered; this structure supplies neither complete lipid anchor nor transporter. Placement is illustrative, not a transmembrane fit.",
+      "structure_source": "https://www.rcsb.org/structure/2B4L",
+      "pdb_doi": "https://doi.org/10.2210/pdb2B4L/pdb",
+      "citation": {
+        "country": "UK",
+        "id": "primary",
+        "journal_abbrev": "J.Mol.Biol.",
+        "journal_id_ASTM": "JMOBAK",
+        "journal_id_CSD": "0070",
+        "journal_id_ISSN": "0022-2836",
+        "journal_volume": "357",
+        "page_first": "592",
+        "page_last": "606",
+        "pdbx_database_id_DOI": "10.1016/j.jmb.2005.12.085",
+        "pdbx_database_id_PubMed": 16445940,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?"
+        ],
+        "rcsb_authors": [
+          "Horn, C.",
+          "Sohn-Boesser, L.",
+          "Breed, J.",
+          "Welte, W.",
+          "Schmitt, L.",
+          "Bremer, E."
+        ],
+        "rcsb_journal_abbrev": "J Mol Biol",
+        "title": "Molecular Determinants for Substrate Specificity of the Ligand-binding Protein OpuAC from Bacillus subtilis for the Compatible Solutes Glycine Betaine and Proline Betaine.",
+        "year": 2006
+      },
+      "method": [
+        "X-RAY DIFFRACTION"
+      ],
+      "resolution_angstrom": [
+        2.0
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Glycine betaine-binding protein",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Bacillus natto",
+                "Bacillus uniflagellatus",
+                "Vibrio subtilis"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Bacillus subtilis",
+              "ncbi_taxonomy_id": 1423,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Bacillus subtilis",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Bacillati"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmacutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicuteota"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes corrig. Gibbons and Murray 1978 (Approved Lists 1980)"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria group"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacterida"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillaeota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota corrig. Gibbons and Murray 2021"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillus/Clostridium group"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Clostridium group firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Low G+C firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "clostridial firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low G+C Gram-positive bacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low GC Gram+"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacilli"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacillus/Lactobacillus/Streptococcus group"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Firmibacteria"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Caryophanales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillus/Staphylococcus group"
+                },
+                {
+                  "depth": 7,
+                  "id": "186817",
+                  "name": "Bacillaceae"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus rRNA group 1"
+                },
+                {
+                  "depth": 9,
+                  "id": "653685",
+                  "name": "Bacillus subtilis group"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus subtilis"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus natto"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus uniflagellatus"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Vibrio subtilis"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "opuAC"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P46922"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/2B4L.pdb",
+      "coordinate_source_sha256": "ec5e52927bc86bae62eca2d8c4734265740b69d9024937c33fa4ff8d2f5b1b06",
+      "view_pdb_sha256": "e5fad26988774e78d0003625f2c105e72f5619c3a36db46b7abb516d7c939909",
+      "view_atoms": 2297,
+      "view_chains": [
+        "A"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "only chain A ATOM/HETATM retained; no coordinate rotation"
+      ],
+      "orientation_basis": "unqualified illustrative exterior placement",
+      "sidedness_state": "unknown",
+      "membrane_core_thickness_angstrom": 30,
+      "opm_dummy_planes_z_angstrom": [],
+      "default_placement": {
+        "anchor": [
+          9.246693077927715,
+          13.548643447975632,
+          16.55152111449717
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 64.16552111449717,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          160,
+          160
+        ],
+        "thickness": 30
+      },
+      "cache_file": "e5fad26988774e78d0003625f2c105e72f5619c3a36db46b7abb516d7c939909.pdb"
+    },
+    {
+      "id": "5OF1",
+      "organism_id": "bsubtilis",
+      "name": "TasA extracellular matrix protein",
+      "role": "extracellular_matrix",
+      "attachment": "extracellular",
+      "notes": "Selected protein chain A from crystal asymmetric unit. This globular monomer is not a reconstructed native TasA fibre, spore coat or membrane anchor. PDB entity description uses the legacy name spore coat-associated protein N.",
+      "structure_source": "https://www.rcsb.org/structure/5OF1",
+      "pdb_doi": "https://doi.org/10.2210/pdb5OF1/pdb",
+      "citation": {
+        "country": "US",
+        "id": "primary",
+        "journal_abbrev": "Proc. Natl. Acad. Sci. U.S.A.",
+        "journal_id_ASTM": "PNASA6",
+        "journal_id_CSD": "0040",
+        "journal_id_ISSN": "1091-6490",
+        "journal_volume": "115",
+        "page_first": "3237",
+        "page_last": "3242",
+        "pdbx_database_id_DOI": "10.1073/pnas.1718102115",
+        "pdbx_database_id_PubMed": 29531041,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?"
+        ],
+        "rcsb_authors": [
+          "Diehl, A.",
+          "Roske, Y.",
+          "Ball, L.",
+          "Chowdhury, A.",
+          "Hiller, M.",
+          "Moliere, N.",
+          "Kramer, R.",
+          "Stoppler, D.",
+          "Worth, C.L.",
+          "Schlegel, B.",
+          "Leidert, M.",
+          "Cremer, N.",
+          "Erdmann, N.",
+          "Lopez, D.",
+          "Stephanowitz, H.",
+          "Krause, E.",
+          "van Rossum, B.J.",
+          "Schmieder, P.",
+          "Heinemann, U.",
+          "Turgay, K.",
+          "Akbey, U.",
+          "Oschkinat, H."
+        ],
+        "rcsb_journal_abbrev": "Proc Natl Acad Sci U S A",
+        "title": "Structural changes of TasA in biofilm formation ofBacillus subtilis.",
+        "year": 2018
+      },
+      "method": [
+        "X-RAY DIFFRACTION"
+      ],
+      "resolution_angstrom": [
+        1.56
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Spore coat-associated protein N",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "end_seq_num": 210,
+              "ncbi_common_names": [
+                "Bacillus subtilis 168",
+                "Bacillus subtilis subsp. subtilis 168",
+                "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+              ],
+              "ncbi_parent_scientific_name": "Bacteria",
+              "ncbi_scientific_name": "Bacillus subtilis subsp. subtilis str. 168",
+              "ncbi_taxonomy_id": 224308,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Bacillus subtilis (strain 168)",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria (ex Cavalier-Smith 1987)"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteria Woese et al. 2024"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "Bacteriobiota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "bacteria"
+                },
+                {
+                  "depth": 2,
+                  "id": "2",
+                  "name": "eubacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Bacillati"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmacutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicuteota"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Firmicutes corrig. Gibbons and Murray 1978 (Approved Lists 1980)"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacteria group"
+                },
+                {
+                  "depth": 3,
+                  "id": "1783272",
+                  "name": "Terrabacterida"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillaeota"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillota corrig. Gibbons and Murray 2021"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Bacillus/Clostridium group"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Clostridium group firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "Low G+C firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "clostridial firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "firmicutes"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low G+C Gram-positive bacteria"
+                },
+                {
+                  "depth": 4,
+                  "id": "1239",
+                  "name": "low GC Gram+"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacilli"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Bacillus/Lactobacillus/Streptococcus group"
+                },
+                {
+                  "depth": 5,
+                  "id": "91061",
+                  "name": "Firmibacteria"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Caryophanales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillales"
+                },
+                {
+                  "depth": 6,
+                  "id": "1385",
+                  "name": "Bacillus/Staphylococcus group"
+                },
+                {
+                  "depth": 7,
+                  "id": "186817",
+                  "name": "Bacillaceae"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus"
+                },
+                {
+                  "depth": 8,
+                  "id": "1386",
+                  "name": "Bacillus rRNA group 1"
+                },
+                {
+                  "depth": 9,
+                  "id": "653685",
+                  "name": "Bacillus subtilis group"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus subtilis"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus natto"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Bacillus uniflagellatus"
+                },
+                {
+                  "depth": 10,
+                  "id": "1423",
+                  "name": "Vibrio subtilis"
+                },
+                {
+                  "depth": 11,
+                  "id": "135461",
+                  "name": "Bacillus subtilis subsp. subtilis"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis 168"
+                },
+                {
+                  "depth": 12,
+                  "id": "224308",
+                  "name": "Bacillus subtilis subsp. subtilis str. BGSC 1A700"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "tasA"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "cotN"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "yqhF"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "BSU24620"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P54507"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/5OF1.pdb",
+      "coordinate_source_sha256": "94fca407d0b53205fe34c531a5181204f91b5b814315be0632f157d6085e5f34",
+      "view_pdb_sha256": "8f5a4d78c06e56ba80f4867e50b9c5e7066416173309d2fd937a71a3fc848060",
+      "view_atoms": 1752,
+      "view_chains": [
+        "A"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "only chain A ATOM/HETATM retained; no coordinate rotation"
+      ],
+      "orientation_basis": "unqualified illustrative exterior placement",
+      "sidedness_state": "unknown",
+      "membrane_core_thickness_angstrom": 30,
+      "opm_dummy_planes_z_angstrom": [],
+      "default_placement": {
+        "anchor": [
+          48.34215639269407,
+          23.710051940639232,
+          40.01414611872148
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 58.238146118721474,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          160,
+          160
+        ],
+        "thickness": 30
+      },
+      "cache_file": "8f5a4d78c06e56ba80f4867e50b9c5e7066416173309d2fd937a71a3fc848060.pdb"
+    },
+    {
+      "id": "7AD3",
+      "organism_id": "scerevisiae",
+      "name": "Ste2 pheromone receptor complex",
+      "role": "receptor",
+      "attachment": "transmembrane",
+      "notes": "Experimental engineered receptor/G-protein/pheromone complex; source reports mutations. G proteins are intracellular. Species-level yeast entry; not asserted identical to the S288C Pma1 strain.",
+      "structure_source": "https://www.rcsb.org/structure/7AD3",
+      "pdb_doi": "https://doi.org/10.2210/pdb7AD3/pdb",
+      "citation": {
+        "country": "UK",
+        "id": "primary",
+        "journal_abbrev": "Nature",
+        "journal_id_ASTM": "NATUAS",
+        "journal_id_CSD": "0006",
+        "journal_id_ISSN": "1476-4687",
+        "journal_volume": "589",
+        "page_first": "148",
+        "page_last": "153",
+        "pdbx_database_id_DOI": "10.1038/s41586-020-2994-1",
+        "pdbx_database_id_PubMed": 33268889,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "0000-0002-8040-3648",
+          "0000-0002-4299-7561",
+          "0000-0001-8100-8132",
+          "0000-0002-2008-9183"
+        ],
+        "rcsb_authors": [
+          "Velazhahan, V.",
+          "Ma, N.",
+          "Pandy-Szekeres, G.",
+          "Kooistra, A.J.",
+          "Lee, Y.",
+          "Gloriam, D.E.",
+          "Vaidehi, N.",
+          "Tate, C.G."
+        ],
+        "rcsb_journal_abbrev": "Nature",
+        "title": "Structure of the class D GPCR Ste2 dimer coupled to two G proteins.",
+        "year": 2021
+      },
+      "method": [
+        "ELECTRON MICROSCOPY"
+      ],
+      "resolution_angstrom": [
+        3.3
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Pheromone alpha factor receptor",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 431,
+              "ncbi_common_names": [
+                "Candida robusta",
+                "Mycoderma cerevisiae",
+                "Saccharomyces boulardii",
+                "Saccharomyces boulardii (nom. inval.)",
+                "Saccharomyces capensis",
+                "Saccharomyces cerevisiae 'var. diastaticus",
+                "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883",
+                "Saccharomyces diastaticus",
+                "Saccharomyces italicus",
+                "Saccharomyces oviformis",
+                "Saccharomyces uvarum var. melibiosus",
+                "baker's yeast",
+                "brewer's yeast"
+              ],
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae",
+              "ncbi_taxonomy_id": 4932,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "STE2"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "D6VTK4"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Alpha-factor mating pheromone",
+          "source_organisms": [
+            {
+              "ncbi_common_names": [
+                "Candida robusta",
+                "Mycoderma cerevisiae",
+                "Saccharomyces boulardii",
+                "Saccharomyces boulardii (nom. inval.)",
+                "Saccharomyces capensis",
+                "Saccharomyces cerevisiae 'var. diastaticus",
+                "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883",
+                "Saccharomyces diastaticus",
+                "Saccharomyces italicus",
+                "Saccharomyces oviformis",
+                "Saccharomyces uvarum var. melibiosus",
+                "baker's yeast",
+                "brewer's yeast"
+              ],
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae",
+              "ncbi_taxonomy_id": 4932,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae",
+              "source_type": "synthetic",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P01149"
+          ]
+        },
+        {
+          "entity_id": "3",
+          "description": "STE4 isoform 1",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 423,
+              "ncbi_common_names": [
+                "Candida robusta",
+                "Mycoderma cerevisiae",
+                "Saccharomyces boulardii",
+                "Saccharomyces boulardii (nom. inval.)",
+                "Saccharomyces capensis",
+                "Saccharomyces cerevisiae 'var. diastaticus",
+                "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883",
+                "Saccharomyces diastaticus",
+                "Saccharomyces italicus",
+                "Saccharomyces oviformis",
+                "Saccharomyces uvarum var. melibiosus",
+                "baker's yeast",
+                "brewer's yeast"
+              ],
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae",
+              "ncbi_taxonomy_id": 4932,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "STE4"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "GI526_G0005548"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P18851"
+          ]
+        },
+        {
+          "entity_id": "4",
+          "description": "Guanine nucleotide-binding protein alpha-1 subunit,Guanine nucleotide-binding protein alpha-1 subunit",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 70,
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae S288C",
+              "ncbi_taxonomy_id": 559292,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                },
+                {
+                  "depth": 14,
+                  "id": "559292",
+                  "name": "Saccharomyces cerevisiae S288C"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "GPA1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "CDC70"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "DAC1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "SCG1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "YHR005C"
+                }
+              ]
+            },
+            {
+              "beg_seq_num": 71,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 233,
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae S288C",
+              "ncbi_taxonomy_id": 559292,
+              "pdbx_src_id": 2,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                },
+                {
+                  "depth": 14,
+                  "id": "559292",
+                  "name": "Saccharomyces cerevisiae S288C"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "GPA1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "CDC70"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "DAC1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "SCG1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "YHR005C"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P08539"
+          ]
+        },
+        {
+          "entity_id": "5",
+          "description": "Guanine nucleotide-binding protein subunit gamma",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 109,
+              "ncbi_common_names": [
+                "Candida robusta",
+                "Mycoderma cerevisiae",
+                "Saccharomyces boulardii",
+                "Saccharomyces boulardii (nom. inval.)",
+                "Saccharomyces capensis",
+                "Saccharomyces cerevisiae 'var. diastaticus",
+                "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883",
+                "Saccharomyces diastaticus",
+                "Saccharomyces italicus",
+                "Saccharomyces oviformis",
+                "Saccharomyces uvarum var. melibiosus",
+                "baker's yeast",
+                "brewer's yeast"
+              ],
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae",
+              "ncbi_taxonomy_id": 4932,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "STE18"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "GI526_G0003318"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PACBIOSEQ_LOCUS2168"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PACBIOSEQ_LOCUS3627"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PACBIOSEQ_LOCUS3692"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PACBIOSEQ_LOCUS3742"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PACBIOSEQ_LOCUS3767"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P18852"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/7ad3-opm.pdb",
+      "coordinate_source_sha256": "e797aad9e5e1e1d5eb2644c4e311ac34f33f74ffcbdbc1d13cbb3f4e56833bb3",
+      "view_pdb_sha256": "621a513d777acb71a82b11cd59543fa85858318b59de32d361e607e0f58a7047",
+      "view_atoms": 9420,
+      "view_chains": [
+        "A",
+        "B",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "K"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "DUM membrane markers removed and used to record boundary planes"
+      ],
+      "orientation_basis": "OPM supplied flat-membrane coordinate frame; computational",
+      "sidedness_state": "OPM N(inner)/O(outer) marker convention; no independent intact-cell validation",
+      "membrane_core_thickness_angstrom": 30.2,
+      "opm_dummy_planes_z_angstrom": [
+        -15.1,
+        15.1
+      ],
+      "default_placement": {
+        "anchor": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 0,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          160,
+          160
+        ],
+        "thickness": 30.2
+      },
+      "cache_file": "621a513d777acb71a82b11cd59543fa85858318b59de32d361e607e0f58a7047.pdb"
+    },
+    {
+      "id": "7VH5",
+      "organism_id": "scerevisiae",
+      "name": "Pma1 proton-pump hexamer",
+      "role": "channel_transporter",
+      "attachment": "transmembrane",
+      "notes": "Autoinhibited hexamer at pH 7.4; cytosolic domains and experimental lipid/heteroatom records are retained. Not an outer cell-wall structure.",
+      "structure_source": "https://www.rcsb.org/structure/7VH5",
+      "pdb_doi": "https://doi.org/10.2210/pdb7VH5/pdb",
+      "citation": {
+        "country": "UK",
+        "id": "primary",
+        "journal_abbrev": "Nat Commun",
+        "journal_id_ISSN": "2041-1723",
+        "journal_volume": "12",
+        "page_first": "6439",
+        "page_last": "6439",
+        "pdbx_database_id_DOI": "10.1038/s41467-021-26782-y",
+        "pdbx_database_id_PubMed": 34750373,
+        "rcsb_ORCID_identifiers": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?"
+        ],
+        "rcsb_authors": [
+          "Zhao, P.",
+          "Zhao, C.",
+          "Chen, D.",
+          "Yun, C.",
+          "Li, H.",
+          "Bai, L."
+        ],
+        "rcsb_journal_abbrev": "Nat Commun",
+        "title": "Structure and activation mechanism of the hexameric plasma membrane H + -ATPase.",
+        "year": 2021
+      },
+      "method": [
+        "ELECTRON MICROSCOPY"
+      ],
+      "resolution_angstrom": [
+        3.2
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Plasma membrane ATPase 1",
+          "source_organisms": [
+            {
+              "beg_seq_num": 1,
+              "common_name": "Baker's yeast",
+              "end_seq_num": 918,
+              "ncbi_parent_scientific_name": "Eukaryota",
+              "ncbi_scientific_name": "Saccharomyces cerevisiae S288C",
+              "ncbi_taxonomy_id": 559292,
+              "pdbx_src_id": 1,
+              "provenance_source": "Primary Data",
+              "scientific_name": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)",
+              "source_type": "genetically engineered",
+              "taxonomy_lineage": [
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "cellular organisms"
+                },
+                {
+                  "depth": 1,
+                  "id": "131567",
+                  "name": "biota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryota"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eucaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukarya"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "Eukaryotae"
+                },
+                {
+                  "depth": 2,
+                  "id": "2759",
+                  "name": "eukaryotes"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Opisthokonta"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "Fungi/Metazoa group"
+                },
+                {
+                  "depth": 3,
+                  "id": "33154",
+                  "name": "opisthokonts"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Fungi"
+                },
+                {
+                  "depth": 4,
+                  "id": "4751",
+                  "name": "Mycota"
+                },
+                {
+                  "depth": 5,
+                  "id": "451864",
+                  "name": "Dikarya"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "Ascomycota"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "ascomycete fungi"
+                },
+                {
+                  "depth": 6,
+                  "id": "4890",
+                  "name": "sac fungi"
+                },
+                {
+                  "depth": 7,
+                  "id": "716545",
+                  "name": "saccharomyceta"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "Saccharomycotina"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "budding yeasts & allies"
+                },
+                {
+                  "depth": 8,
+                  "id": "147537",
+                  "name": "true yeasts"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Saccharomycetes"
+                },
+                {
+                  "depth": 9,
+                  "id": "4891",
+                  "name": "Hemiascomycetes"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Saccharomycetales"
+                },
+                {
+                  "depth": 10,
+                  "id": "4892",
+                  "name": "Endomycetales"
+                },
+                {
+                  "depth": 11,
+                  "id": "4893",
+                  "name": "Saccharomycetaceae"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Saccharomyces"
+                },
+                {
+                  "depth": 12,
+                  "id": "4930",
+                  "name": "Pachytichospora"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Candida robusta"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Mycoderma cerevisiae"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces boulardii (nom. inval.)"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces capensis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae 'var. diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces cerevisiae (Desm.) Meyen ex E.C. Hansen, 1883"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces diastaticus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces italicus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces oviformis"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "Saccharomyces uvarum var. melibiosus"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "baker's yeast"
+                },
+                {
+                  "depth": 13,
+                  "id": "4932",
+                  "name": "brewer's yeast"
+                },
+                {
+                  "depth": 14,
+                  "id": "559292",
+                  "name": "Saccharomyces cerevisiae S288C"
+                }
+              ],
+              "rcsb_gene_name": [
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "PMA1"
+                },
+                {
+                  "provenance_source": "Primary Data",
+                  "value": "YGL008C"
+                }
+              ]
+            }
+          ],
+          "uniprot_ids": [
+            "P05030"
+          ]
+        }
+      ],
+      "coordinate_source_file": "sources/7vh5-opm.pdb",
+      "coordinate_source_sha256": "d34f4a8a59b7dbc39de1e25710dea855d48a757a3e71837f5beeb81968b1f4dd",
+      "view_pdb_sha256": "8184f5b9731599067e92e6692c65e6382b2f47004f2eb4d79d663517d921430e",
+      "view_atoms": 39615,
+      "view_chains": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "transformations": [
+        "coordinate-only derivative: header/ANISOU/CONECT metadata omitted",
+        "DUM membrane markers removed and used to record boundary planes"
+      ],
+      "orientation_basis": "OPM supplied flat-membrane coordinate frame; computational",
+      "sidedness_state": "OPM N(inner)/O(outer) marker convention; no independent intact-cell validation",
+      "membrane_core_thickness_angstrom": 31.2,
+      "opm_dummy_planes_z_angstrom": [
+        -15.6,
+        15.6
+      ],
+      "default_placement": {
+        "anchor": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "u": 0,
+        "v": 0,
+        "side": 1,
+        "depth": 0,
+        "spin": 0
+      },
+      "default_surface": {
+        "kind": "plane",
+        "size": [
+          260.0,
+          240.0
+        ],
+        "thickness": 31.2
+      },
+      "cache_file": "8184f5b9731599067e92e6692c65e6382b2f47004f2eb4d79d663517d921430e.pdb"
+    }
+  ],
+  "sources": [
+    {
+      "file": "sources/2B4L-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/2B4L/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "7188697336d2caa2cff4d0b42378f50ce07abb6693c223df541807462df52f10",
+      "bytes": 16541,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2B4L-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/2B4L",
+      "retrieved_on": "2026-10-26",
+      "sha256": "007295c7f5cd76b887f5dd17f38529e6121cdb4d3fee24e5804c7177084de7c6",
+      "bytes": 15477,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2B4L.pdb",
+      "url": "https://files.rcsb.org/download/2B4L.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "ec5e52927bc86bae62eca2d8c4734265740b69d9024937c33fa4ff8d2f5b1b06",
+      "bytes": 236358,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/2FCP-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/2FCP/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "cb0dca2bcbaf1ac242cf39bebc6939bcd0c64464884908c8a32a3de103571ca5",
+      "bytes": 41426,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2FCP-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/2FCP",
+      "retrieved_on": "2026-10-26",
+      "sha256": "4e869641cc56652171080a1d5807b4c0e4a154e174f1986e4de39253ded78392",
+      "bytes": 26077,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2FCP.pdb",
+      "url": "https://files.rcsb.org/download/2FCP.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "21b0465d28ae5bea809db379932705d82d25c0067df62a45ed293fbe2f39d19b",
+      "bytes": 537030,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/2OMF-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/2OMF/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "fa82df23eea49297060556bcde5d2b356ed6a1595a0522798848b432417cf95d",
+      "bytes": 25110,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2OMF-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/2OMF",
+      "retrieved_on": "2026-10-26",
+      "sha256": "6a93e0a42bfae26e13780f8461dd18c0449914049fd9168843554debe46788cf",
+      "bytes": 12070,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/2OMF.pdb",
+      "url": "https://files.rcsb.org/download/2OMF.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "40d7701d5bf44857759606b44b2b60e0c1edc79519a2521f8d33e08ae6342d45",
+      "bytes": 274104,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/2fcp-opm.pdb",
+      "url": "https://storage.googleapis.com/opm-assets/pdb/2fcp.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "5c46d3f11c1c8e6aebaf19ca4e49f6f5d923ec7ca5b3bee2033b6c4625fec7ad",
+      "bytes": 668655,
+      "kind": "OPM computational membrane placement",
+      "rights_note": "Publicly downloadable OPM coordinate derivative; standalone dataset licence not established; cite OPM and original PDB. API software licence is not assumed to license data."
+    },
+    {
+      "file": "sources/2omf-opm.pdb",
+      "url": "https://storage.googleapis.com/opm-assets/pdb/2omf.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "e507d21003b37957a1ed257f7184d14f8daf2fdfd19415d3d97832d0cb46bc8c",
+      "bytes": 936684,
+      "kind": "OPM computational membrane placement",
+      "rights_note": "Publicly downloadable OPM coordinate derivative; standalone dataset licence not established; cite OPM and original PDB. API software licence is not assumed to license data."
+    },
+    {
+      "file": "sources/4J7C-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/4J7C/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "10519f69af165abf9f3b4032ff5dd7867c14ea63f2770e8ca5fd638891abba7d",
+      "bytes": 20143,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/4J7C-entity-2.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/4J7C/2",
+      "retrieved_on": "2026-10-26",
+      "sha256": "3b5c61c1ef5ddf336e70cb85cca9b9438bf381a236434f0ba776835a1ec3f2e2",
+      "bytes": 24084,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/4J7C-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/4J7C",
+      "retrieved_on": "2026-10-26",
+      "sha256": "65d6fa090b2cd5af17d66d4be1a0a5253e8675685ad1283ca9c629c0474a8a0d",
+      "bytes": 21726,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/4J7C.pdb",
+      "url": "https://files.rcsb.org/download/4J7C.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "cba1833c8bf09fc62eada7c7c495bc44c2249b51d775b55efee146aeee7847a6",
+      "bytes": 2341548,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/4j7c-opm.pdb",
+      "url": "https://storage.googleapis.com/opm-assets/pdb/4j7c.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "03abbce10eb1071b3289443f8d2cd370f76a98cbb2ce3ae7cf99886b7fbbb981",
+      "bytes": 1963521,
+      "kind": "OPM computational membrane placement",
+      "rights_note": "Publicly downloadable OPM coordinate derivative; standalone dataset licence not established; cite OPM and original PDB. API software licence is not assumed to license data."
+    },
+    {
+      "file": "sources/5OF1-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/5OF1/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "c8cca7e70d35d789a76ed96a17af5fb6709c29139e1c4f54ce11dc996931475c",
+      "bytes": 15882,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/5OF1-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/5OF1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "8a4bf1644e364d079c46589ed116de158a57d7eddefada90b9427ff02cb949d3",
+      "bytes": 18185,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/5OF1.pdb",
+      "url": "https://files.rcsb.org/download/5OF1.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "94fca407d0b53205fe34c531a5181204f91b5b814315be0632f157d6085e5f34",
+      "bytes": 328860,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/7AD3-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7AD3/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "f6d1564dd1dc8907b51fb6686dfda7d5b4a66b29f4522f449bbdefd39b7717e6",
+      "bytes": 23900,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3-entity-2.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7AD3/2",
+      "retrieved_on": "2026-10-26",
+      "sha256": "69a3579b2d45f8a01ae0cff22f089c05fd0aa5bddcb8240155f3aa339556bd83",
+      "bytes": 11379,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3-entity-3.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7AD3/3",
+      "retrieved_on": "2026-10-26",
+      "sha256": "88fd73ecc4424074a2c4ffb6ba46cb0cd5eef0dba417e6332d989ce1fb08b093",
+      "bytes": 30226,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3-entity-4.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7AD3/4",
+      "retrieved_on": "2026-10-26",
+      "sha256": "12b4c4a1040a520468123b4045084a01b9602f882309c14f8dc434bb06d44fa1",
+      "bytes": 36499,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3-entity-5.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7AD3/5",
+      "retrieved_on": "2026-10-26",
+      "sha256": "b4593a808e4f6f6fb6b4362e798a6ada7855998fa335bc9c4baf648a8ce6cee3",
+      "bytes": 19954,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/7AD3",
+      "retrieved_on": "2026-10-26",
+      "sha256": "feab065b5fedd49e763b3c30e563c0edd600c3617f4146ed157293bb5582cfea",
+      "bytes": 19228,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7AD3.pdb",
+      "url": "https://files.rcsb.org/download/7AD3.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "225fe87265ce26c6facb13ef533d813163ae63960d853b54b8f453c99d823d5d",
+      "bytes": 885897,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/7VH5-entity-1.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7VH5/1",
+      "retrieved_on": "2026-10-26",
+      "sha256": "5e737c563df9af14b2a55d254ab35af33f7b0a84472ee371d53ba41365fe996e",
+      "bytes": 46183,
+      "kind": "RCSB polymer entity metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7VH5-entry.json",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/7VH5",
+      "retrieved_on": "2026-10-26",
+      "sha256": "6b608001af6e86d2f1208c99e232325b00f4fc922e49e76250b5b1e43b73d72b",
+      "bytes": 10486,
+      "kind": "RCSB entry metadata",
+      "rights_note": "RCSB API data CC0, subject to external-resource exceptions"
+    },
+    {
+      "file": "sources/7VH5.pdb",
+      "url": "https://files.rcsb.org/download/7VH5.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "8bc283486fea87f44557db455d9f2f43bb4272f1a8f9bf5b470f181b79ffa99a",
+      "bytes": 3567888,
+      "kind": "PDB deposited coordinates",
+      "rights_note": "wwPDB archive CC0"
+    },
+    {
+      "file": "sources/7ad3-opm.pdb",
+      "url": "https://storage.googleapis.com/opm-assets/pdb/7ad3.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "e797aad9e5e1e1d5eb2644c4e311ac34f33f74ffcbdbc1d13cbb3f4e56833bb3",
+      "bytes": 1034725,
+      "kind": "OPM computational membrane placement",
+      "rights_note": "Publicly downloadable OPM coordinate derivative; standalone dataset licence not established; cite OPM and original PDB. API software licence is not assumed to license data."
+    },
+    {
+      "file": "sources/7vh5-opm.pdb",
+      "url": "https://storage.googleapis.com/opm-assets/pdb/7vh5.pdb",
+      "retrieved_on": "2026-10-26",
+      "sha256": "d34f4a8a59b7dbc39de1e25710dea855d48a757a3e71837f5beeb81968b1f4dd",
+      "bytes": 3799741,
+      "kind": "OPM computational membrane placement",
+      "rights_note": "Publicly downloadable OPM coordinate derivative; standalone dataset licence not established; cite OPM and original PDB. API software licence is not assumed to license data."
+    }
+  ],
+  "opm_reference": "https://doi.org/10.1093/bioinformatics/btk023",
+  "rights_policy": "https://www.rcsb.org/pages/policies",
+  "distribution": "Metadata only. Coordinates are separate local acquisitions; no automatic downloads."
+}
