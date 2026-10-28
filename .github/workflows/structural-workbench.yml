@@ -273,10 +273,18 @@ jobs:
         run: python tools/verify_structural_joss_staging.py
 
   paper-figures:
-    name: Paper figures · Linux x86_64 · py3.12.3
+    name: Paper figures · archived-source replay · Linux x86_64 · py3.12.3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # The published figure run ids include exact orchestration source hashes.
+      # Replay their recorded source; current code is tested by the other jobs.
+      - name: Check out the source recorded by the paper figure pins
+        uses: actions/checkout@v5
+        with:
+          ref: 21398f9a788870190385ee87397e1e488b38d09b
+          path: .paper-replay-source
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12.3"
@@ -288,8 +296,21 @@ jobs:
       # unavailable. CA2 acquisition needs network access to RCSB and UniProt.
       - name: Install the pinned figure environment
         run: |
-          python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]" "matplotlib==3.11.2"
+          python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e "./.paper-replay-source[dev]" "matplotlib==3.11.2"
           python -c "import platform; print(f'{platform.system()}/{platform.machine()} CPython {platform.python_version()}')"
+      - name: Verify the historical scientific source identity
+        run: |
+          python - <<'PYCODE'
+          from pathlib import Path
+          from yauvi_platform.structural_workbench import store
+          root = Path('.paper-replay-source').resolve()
+          assert Path(store.__file__).resolve().is_relative_to(root)
+          probe = store.StructuralAnalysisStore(Path('${{ runner.temp }}') / 'figure-source-probe')
+          assert probe._source_digests('structure_qc') == {
+              'structure_qc': '4c67e6d91be94c39106144a384db18bc641a32ef5b0e502b9e7f444ed676446f',
+              'workbench_orchestrator': 'ccc283d080a8d3503172815efafbb7f6da9bbfe477b62a592ee5b3353bdd2a38',
+          }
+          PYCODE
       - name: Regenerate public runs and check the paper figures
         run: python tools/build_scientific_figures.py --check
 

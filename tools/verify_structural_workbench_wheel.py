@@ -28,6 +28,20 @@ FORBIDDEN_PARTS = {
     "structdesign", "vaxpipe", "subproteo",
 }
 
+# Runtime assets are reviewed independently of setuptools declarations.
+REQUIRED_RUNTIME_ASSETS = {
+    'memorient/fold_bridge.js',
+    'memorient/membrane_bilayer.js',
+    'memorient/catalogue/metadata.json',
+    'memorient/viewer_assets/index.html',
+    'memorient/viewer_assets/app.js',
+    'memorient/viewer_assets/workbench.js',
+    'memorient/viewer_assets/3Dmol-min.js',
+    'memorient/viewer_assets/3DMOL-LICENSE.txt',
+    'memorient/viewer_assets/3Dmol-min.js.LICENSE.txt',
+    'memorient/viewer_assets/3DMOL-NOTICE.md',
+}
+
 
 def main(argv: list[str]) -> int:
     if len(argv) != 2:
@@ -39,8 +53,14 @@ def main(argv: list[str]) -> int:
         return 2
     with zipfile.ZipFile(wheel) as archive:
         names = [name for name in archive.namelist() if not name.endswith("/")]
+    missing_assets = sorted(REQUIRED_RUNTIME_ASSETS - set(names))
+    if missing_assets:
+        print({"missing_runtime_assets": missing_assets}, file=sys.stderr)
+        return 1
     roots = {name.split("/", 1)[0] for name in names if ".dist-info/" not in name}
-    missing = sorted(REQUIRED_ROOTS - roots)
+    missing = sorted(root for root in REQUIRED_ROOTS if root not in roots or
+                     (root + ("/structural_workbench" if root == "yauvi_platform" else "") +
+                      "/__init__.py") not in names)
     unexpected = sorted(root for root in roots - REQUIRED_ROOTS if not root.endswith(".dist-info"))
     forbidden = sorted({part for name in names for part in FORBIDDEN_PARTS if part in name.lower()})
     platform_files = sorted(name for name in names if name.startswith("yauvi_platform/"))

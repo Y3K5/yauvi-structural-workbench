@@ -21,6 +21,21 @@ PACKAGE_ROOTS = {
 }
 
 
+# Test fixture is independent of the guard and distribution declarations.
+RUNTIME_ASSETS = (
+    'memorient/fold_bridge.js',
+    'memorient/membrane_bilayer.js',
+    'memorient/catalogue/metadata.json',
+    'memorient/viewer_assets/index.html',
+    'memorient/viewer_assets/app.js',
+    'memorient/viewer_assets/workbench.js',
+    'memorient/viewer_assets/3Dmol-min.js',
+    'memorient/viewer_assets/3DMOL-LICENSE.txt',
+    'memorient/viewer_assets/3Dmol-min.js.LICENSE.txt',
+    'memorient/viewer_assets/3DMOL-NOTICE.md',
+)
+
+
 @pytest.fixture
 def guard():
     spec = importlib.util.spec_from_file_location(
@@ -31,7 +46,7 @@ def guard():
     return module
 
 
-def make_wheel(tmp_path, *, omit=(), extra=(), licenses=None):
+def make_wheel(tmp_path, *, omit=(), omit_assets=(), extra=(), licenses=None):
     path = tmp_path / "example.whl"
     if licenses is None:
         licenses = ["example.dist-info/LICENSE"]
@@ -39,6 +54,9 @@ def make_wheel(tmp_path, *, omit=(), extra=(), licenses=None):
         for root in sorted(PACKAGE_ROOTS - set(omit)):
             package = root + ("/structural_workbench" if root == "yauvi_platform" else "")
             archive.writestr(package + "/__init__.py", "")
+        for name in RUNTIME_ASSETS:
+            if name not in omit_assets:
+                archive.writestr(name, "invented runtime asset")
         for name in extra:
             archive.writestr(name, "invented control")
         for name in licenses:
@@ -101,3 +119,10 @@ def test_exactly_one_license_is_required(guard, tmp_path, capsys, licenses):
     wheel = make_wheel(tmp_path, licenses=licenses)
     assert guard.main(["guard", str(wheel)]) == 1
     assert "exactly one complete project LICENSE" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("asset", RUNTIME_ASSETS)
+def test_missing_runtime_asset_fails(guard, tmp_path, capsys, asset):
+    wheel = make_wheel(tmp_path, omit_assets=[asset])
+    assert guard.main(["guard", str(wheel)]) == 1
+    assert asset in capsys.readouterr().err

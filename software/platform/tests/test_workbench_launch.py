@@ -103,6 +103,7 @@ def test_analysis_types_are_discoverable_without_creating_a_case(capsys):
         'structure_qc', 'membrane_orientation', 'conformational_state',
         'functional_site_state', 'assembly_interface', 'sf_csa', 'bio_orient', 'region_explorer',
         'dockprep', 'pose_evidence',
+        'membrane_surface_placement', 'membrane_preparation', 'membrane_result_import',
     }
     assert all(item['claim_ceiling'] for item in result)
 

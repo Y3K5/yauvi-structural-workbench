@@ -28,7 +28,7 @@ for exact inputs and interpretation limits.
 |---|---|
 | [`yauvi`](#yauvi) | Structural analysis case store: create, add inputs, validate, run, export. |
 | [`structqc`](#structqc) | Coordinate trust: completeness, provenance class, imported validation. |
-| [`memorient`](#memorient) | Membrane orientation and sidedness labelling. |
+| [`memorient`](#memorient) | Membrane orientation, receptor placement, local exploration and reviewed preparation. |
 | [`state-atlas`](#state-atlas) | Conformational-state resemblance against declared references. |
 | [`site-context`](#site-context) | Functional-site roles, cofactors, ligands, and pockets. |
 | [`actstate`](#actstate) | Activity-state evidence assembly. |
@@ -121,26 +121,26 @@ options:
 ### `yauvi analysis inputs`
 
 ```
-usage: yauvi analysis inputs [-h] --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
+usage: yauvi analysis inputs [-h]
+                             --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
 
 options:
   -h, --help            show this help message and exit
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
                         Analysis type from 'analysis types'.
 ```
 
 ### `yauvi analysis create`
 
 ```
-usage: yauvi analysis create [-h] --analysis ANALYSIS --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
+usage: yauvi analysis create [-h] --analysis ANALYSIS
+                             --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS   Local case identifier.
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,region_explorer,bio_orient,dockprep,pose_evidence}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
                         Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
@@ -338,15 +338,26 @@ options:
 
 ## memorient
 
-Membrane orientation and sidedness labelling.
+Membrane orientation, receptor placement, local exploration and reviewed preparation.
 
 ```
-usage: memorient [-h] {contexts,describe,orient,run,validate,fetch} ...
+usage: memorient [-h]
+                 {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch} ...
 
 ``memorient`` command line.
 
 positional arguments:
-  {contexts,describe,orient,run,validate,fetch}
+  {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch}
+    result-bundle       copy a verified legacy result to a portable local
+                        bundle; no simulation
+    md-prepare          solvate and neutralize reviewed inputs, minimize
+                        locally; stop before equilibration
+    build-ecoli-om      assemble the pinned finite K-12 atomic membrane patch;
+                        no MD
+    lipid-plan          check explicit-lipid recipe inputs; no packing
+    viewer              serve the private loopback membrane studio
+    place-pdb           place a local PDB on a supplied surface
+    surface             experimental geometric membrane and receptor placement
     contexts            list membrane contexts
     describe            the module interface, or one membrane context if named
     orient              orient a structure and label residues
@@ -396,7 +407,7 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --context CONTEXT, -c CONTEXT
+  --context, -c CONTEXT
                         membrane context (default: gram_negative_om)
   --chain CHAIN         restrict to one chain id
   --topology-evidence TOPOLOGY_EVIDENCE
@@ -421,7 +432,7 @@ options:
   -h, --help            show this help message and exit
   --structure STRUCTURE
                         path to a PDB or mmCIF file
-  --context CONTEXT, -c CONTEXT
+  --context, -c CONTEXT
   --chain CHAIN
   --topology-evidence TOPOLOGY_EVIDENCE
   --out OUT
@@ -448,6 +459,90 @@ usage: memorient fetch [-h] [--plan]
 options:
   -h, --help  show this help message and exit
   --plan      print the declared sources only
+```
+
+### `memorient surface`
+
+```
+usage: memorient surface [-h] --spec SPEC --out OUT
+
+options:
+  -h, --help   show this help message and exit
+  --spec SPEC  local memorient.surface.v1 JSON
+  --out OUT    new output JSON; refuses overwrite
+```
+
+### `memorient viewer`
+
+```
+usage: memorient viewer [-h] [--port PORT] [--cache CACHE]
+                        [--manifest MANIFEST]
+
+options:
+  -h, --help           show this help message and exit
+  --port PORT
+  --cache CACHE        explicit local checksum-addressed catalogue coordinate
+                       cache
+  --manifest MANIFEST  portable MEMBRANE_RUN.json to inspect
+```
+
+### `memorient place-pdb`
+
+```
+usage: memorient place-pdb [-h] --pdb PDB --spec SPEC --out OUT
+
+options:
+  -h, --help   show this help message and exit
+  --pdb PDB
+  --spec SPEC  JSON surface and placement objects
+  --out OUT    new scene JSON including placed PDB
+```
+
+### `memorient lipid-plan`
+
+```
+usage: memorient lipid-plan [-h] --spec SPEC --out OUT
+
+options:
+  -h, --help   show this help message and exit
+  --spec SPEC
+  --out OUT
+```
+
+### `memorient build-ecoli-om`
+
+```
+usage: memorient build-ecoli-om [-h] --out OUT
+
+options:
+  -h, --help  show this help message and exit
+  --out OUT   new output directory; refuses overwrite
+```
+
+### `memorient md-prepare`
+
+```
+usage: memorient md-prepare [-h] --profile PROFILE --out OUT [--gmx GMX]
+                            [--threads THREADS]
+
+options:
+  -h, --help         show this help message and exit
+  --profile PROFILE  source-bound local JSON profile
+  --out OUT          new output directory
+  --gmx GMX
+  --threads THREADS
+```
+
+### `memorient result-bundle`
+
+```
+usage: memorient result-bundle [-h] --run RUN --display DISPLAY --out OUT
+
+options:
+  -h, --help         show this help message and exit
+  --run RUN
+  --display DISPLAY
+  --out OUT
 ```
 
 
@@ -729,9 +824,9 @@ options:
 
 ```
 usage: assembly-context validate [-h] --manifest MANIFEST --isolated ISOLATED
-                                 --assembly ASSEMBLY --subject-chain
-                                 SUBJECT_CHAIN --relationship
-                                 {exact_protein,homolog_assembly,architecture_analogy,unresolved}
+                                 --assembly ASSEMBLY
+                                 --subject-chain SUBJECT_CHAIN
+                                 --relationship {exact_protein,homolog_assembly,architecture_analogy,unresolved}
                                  [--reference-id REFERENCE_ID]
                                  [--assembly-id ASSEMBLY_ID]
                                  [--expected-chains EXPECTED_CHAINS]
@@ -754,8 +849,7 @@ options:
 ```
 usage: assembly-context run [-h] --manifest MANIFEST --isolated ISOLATED
                             --assembly ASSEMBLY --subject-chain SUBJECT_CHAIN
-                            --relationship
-                            {exact_protein,homolog_assembly,architecture_analogy,unresolved}
+                            --relationship {exact_protein,homolog_assembly,architecture_analogy,unresolved}
                             [--reference-id REFERENCE_ID]
                             [--assembly-id ASSEMBLY_ID]
                             [--expected-chains EXPECTED_CHAINS] --out OUT
@@ -1099,9 +1193,9 @@ options:
 ### `bio-orient validate`
 
 ```
-usage: bio-orient validate [-h] --structure STRUCTURE --patch-declaration
-                           PATCH_DECLARATION [--model MODEL]
-                           [--assembly-id ASSEMBLY_ID]
+usage: bio-orient validate [-h] --structure STRUCTURE
+                           --patch-declaration PATCH_DECLARATION
+                           [--model MODEL] [--assembly-id ASSEMBLY_ID]
                            [--chemical-reference CHEMICAL_REFERENCE]
                            [--topology-evidence TOPOLOGY_EVIDENCE]
                            [--evidence EVIDENCE]
@@ -1120,8 +1214,8 @@ options:
 ### `bio-orient run`
 
 ```
-usage: bio-orient run [-h] --structure STRUCTURE --patch-declaration
-                      PATCH_DECLARATION [--model MODEL]
+usage: bio-orient run [-h] --structure STRUCTURE
+                      --patch-declaration PATCH_DECLARATION [--model MODEL]
                       [--assembly-id ASSEMBLY_ID]
                       [--chemical-reference CHEMICAL_REFERENCE]
                       [--topology-evidence TOPOLOGY_EVIDENCE]

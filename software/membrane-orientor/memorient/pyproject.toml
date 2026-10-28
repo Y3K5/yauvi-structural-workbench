@@ -30,7 +30,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 # sources.yaml ships inside the package so `yauvi-fetch plan --for memorient`
 # works from an install, with no checkout of the workspace present.
-memorient = ["sources.yaml", "membrane_bilayer.js", "viewer_assets/index.html", "viewer_assets/app.js", "viewer_assets/workbench.js", "viewer_assets/3Dmol-min.js", "viewer_assets/3DMOL-LICENSE.txt", "viewer_assets/3Dmol-min.js.LICENSE.txt", "viewer_assets/3DMOL-NOTICE.md", "catalogue/metadata.json"]
+memorient = ["sources.yaml", "membrane_bilayer.js", "fold_bridge.js", "viewer_assets/index.html", "viewer_assets/app.js", "viewer_assets/workbench.js", "viewer_assets/3Dmol-min.js", "viewer_assets/3DMOL-LICENSE.txt", "viewer_assets/3Dmol-min.js.LICENSE.txt", "viewer_assets/3DMOL-NOTICE.md", "catalogue/metadata.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -63,6 +63,27 @@ experimental_workflows:
     software_checks: software/pose-evidence/tests/test_pose_evidence.py
     public_example_check: software/pose-evidence/README.md
     limitations: Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies. Imported ClusPro results are read-only and are never uploaded. Software checks do not establish affinity or a qualified pose scope.
+  membrane_surface_placement:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/platform/tests/test_membrane_workflow.py
+    public_example_check: software/membrane-orientor/memorient/docs/OPEN_SOURCE.md
+    limitations: Rigid geometric placement only; synthetic controls do not establish native receptor orientation.
+  membrane_preparation:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/platform/tests/test_membrane_workflow.py
+    public_example_check: software/membrane-orientor/memorient/docs/OPEN_SOURCE.md
+    limitations: Reviewed local topology admission and bounded minimization only; no equilibrated or biologically validated membrane claim.
+  membrane_result_import:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/platform/tests/test_membrane_workflow.py
+    public_example_check: software/membrane-orientor/memorient/docs/OPEN_SOURCE.md
+    limitations: Checksum-bound result reopening only; imports do not establish physical or biological validity.
 release_rule: all_six_mark_1_release_blocking_scopes_must_pass_qualification_v2
 release_rule_satisfied: false
 qualification_runner: qualification-v2/run_qualification.py

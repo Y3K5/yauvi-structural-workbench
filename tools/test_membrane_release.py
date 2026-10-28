@@ -27,5 +27,5 @@ def test_workbench_and_standalone_ship_the_same_memorient_assets():
              tomllib.loads((home/'software/membrane-orientor/memorient/pyproject.toml').read_text())]
     lists=[set(c['tool']['setuptools']['package-data']['memorient']) for c in configs]
     assert lists[0]==lists[1]
-    assert {'viewer_assets/workbench.js','viewer_assets/3DMOL-LICENSE.txt','catalogue/metadata.json'}<=lists[0]
+    assert {'fold_bridge.js','viewer_assets/workbench.js','viewer_assets/3DMOL-LICENSE.txt','catalogue/metadata.json'}<=lists[0]
     assert all('sources/' not in p and 'model-v2' not in p and 'starter.json' not in p for p in lists[0])

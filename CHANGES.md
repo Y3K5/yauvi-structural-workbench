@@ -5,6 +5,17 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Organism Orient packaging now explicitly includes the existing fold bridge in
+  both distributions. The independent wheel guard checks required viewer assets
+  and package initializers. The launcher discovery test includes the three new
+  membrane procedures, and the generated CLI guide covers their commands.
+- The paper-figure job replays source revision
+  `21398f9a788870190385ee87397e1e488b38d09b`, whose source hashes match the
+  original figure records. Current-code checks remain separate. Figure pins,
+  figures, provenance and original scientific records are unchanged. The three
+  membrane procedures are listed as experimental and not qualified; frozen
+  qualification panels/results are unchanged.
+
 - Paper figures are rebuilt from `yauvi-structural-workbench/paper/figures/FIGURE_INPUTS.json`.
   `worked-example` and `ca2-coverage` cite structural-workbench run ids and the
   SHA-256 of the artifacts they plot. `--check` regenerates the synthetic

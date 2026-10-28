@@ -5,11 +5,24 @@ file. The synthetic StructQC run and the public CA2 runs are regenerated into
 a temporary store, then checked against the run ids and artifact SHA-256s in
 the pin file. Those run directories are not committed.
 
+The historical source revision is `21398f9a788870190385ee87397e1e488b38d09b`.
+The paper-figures CI job checks out that exact revision into
+`.paper-replay-source`, installs it in the pinned environment, and runs the
+current figure checker against the current committed figures and pin file.
+For a manual replay, make that historical checkout available at the same path:
+
 ```bash
-python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e ".[dev]" "matplotlib==3.11.2"
-python tools/build_scientific_figures.py
+python -m pip install --constraint yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt -e "./.paper-replay-source[dev]" "matplotlib==3.11.2"
 python tools/build_scientific_figures.py --check
 ```
+
+Run ids also hash the scientific source and orchestration source. Adding a new
+Workbench procedure changes that identity even when the plotted measurements
+are identical. This job reproduces the historical figures with their recorded
+source; it does not qualify the current application. The other reviewer,
+installed-package and determinism jobs continue to test the current commit.
+The original figure pins, provenance, figures and scientific receipts remain
+unchanged. Do not update them merely to make a newer application match.
 
 The pins were recorded on Linux x86_64, CPython 3.12.3, with
 `yauvi-structural-workbench/docs/requirements-linux-x86_64-py312.txt`. A run id
