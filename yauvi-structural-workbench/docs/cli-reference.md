@@ -121,8 +121,8 @@ options:
 ### `yauvi analysis inputs`
 
 ```
-usage: yauvi analysis inputs [-h]
-                             --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+usage: yauvi analysis inputs [-h] --type
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
 
 options:
   -h, --help            show this help message and exit
@@ -133,8 +133,8 @@ options:
 ### `yauvi analysis create`
 
 ```
-usage: yauvi analysis create [-h] --analysis ANALYSIS
-                             --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+usage: yauvi analysis create [-h] --analysis ANALYSIS --type
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
@@ -342,7 +342,8 @@ Membrane orientation, receptor placement, local exploration and reviewed prepara
 
 ```
 usage: memorient [-h]
-                 {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch} ...
+                 {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch}
+                 ...
 
 ``memorient`` command line.
 
@@ -407,7 +408,7 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --context, -c CONTEXT
+  --context CONTEXT, -c CONTEXT
                         membrane context (default: gram_negative_om)
   --chain CHAIN         restrict to one chain id
   --topology-evidence TOPOLOGY_EVIDENCE
@@ -432,7 +433,7 @@ options:
   -h, --help            show this help message and exit
   --structure STRUCTURE
                         path to a PDB or mmCIF file
-  --context, -c CONTEXT
+  --context CONTEXT, -c CONTEXT
   --chain CHAIN
   --topology-evidence TOPOLOGY_EVIDENCE
   --out OUT
@@ -824,9 +825,9 @@ options:
 
 ```
 usage: assembly-context validate [-h] --manifest MANIFEST --isolated ISOLATED
-                                 --assembly ASSEMBLY
-                                 --subject-chain SUBJECT_CHAIN
-                                 --relationship {exact_protein,homolog_assembly,architecture_analogy,unresolved}
+                                 --assembly ASSEMBLY --subject-chain
+                                 SUBJECT_CHAIN --relationship
+                                 {exact_protein,homolog_assembly,architecture_analogy,unresolved}
                                  [--reference-id REFERENCE_ID]
                                  [--assembly-id ASSEMBLY_ID]
                                  [--expected-chains EXPECTED_CHAINS]
@@ -849,7 +850,8 @@ options:
 ```
 usage: assembly-context run [-h] --manifest MANIFEST --isolated ISOLATED
                             --assembly ASSEMBLY --subject-chain SUBJECT_CHAIN
-                            --relationship {exact_protein,homolog_assembly,architecture_analogy,unresolved}
+                            --relationship
+                            {exact_protein,homolog_assembly,architecture_analogy,unresolved}
                             [--reference-id REFERENCE_ID]
                             [--assembly-id ASSEMBLY_ID]
                             [--expected-chains EXPECTED_CHAINS] --out OUT
@@ -1193,9 +1195,9 @@ options:
 ### `bio-orient validate`
 
 ```
-usage: bio-orient validate [-h] --structure STRUCTURE
-                           --patch-declaration PATCH_DECLARATION
-                           [--model MODEL] [--assembly-id ASSEMBLY_ID]
+usage: bio-orient validate [-h] --structure STRUCTURE --patch-declaration
+                           PATCH_DECLARATION [--model MODEL]
+                           [--assembly-id ASSEMBLY_ID]
                            [--chemical-reference CHEMICAL_REFERENCE]
                            [--topology-evidence TOPOLOGY_EVIDENCE]
                            [--evidence EVIDENCE]
@@ -1214,8 +1216,8 @@ options:
 ### `bio-orient run`
 
 ```
-usage: bio-orient run [-h] --structure STRUCTURE
-                      --patch-declaration PATCH_DECLARATION [--model MODEL]
+usage: bio-orient run [-h] --structure STRUCTURE --patch-declaration
+                      PATCH_DECLARATION [--model MODEL]
                       [--assembly-id ASSEMBLY_ID]
                       [--chemical-reference CHEMICAL_REFERENCE]
                       [--topology-evidence TOPOLOGY_EVIDENCE]

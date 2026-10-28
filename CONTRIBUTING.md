@@ -32,7 +32,10 @@ whose architecture matches the machine — see "Running the tests" in `README.md
 That count is from `python tools/run_structural_workbench_tests.py` on Linux
 x86_64 / Python 3.12.3.
 
-If you change a CLI's arguments, regenerate the command reference and commit it:
+If you change a CLI's arguments, regenerate the command reference in an active
+Python 3.12 environment with this distribution installed, then commit it. The
+commands on PATH must come from that environment. Python's argparse help
+formatting varies between minor versions; the reference check in CI uses 3.12:
 
 ```bash
 python tools/build_cli_reference.py

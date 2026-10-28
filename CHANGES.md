@@ -5,6 +5,11 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Regenerated the CLI reference with Python 3.12 to match the reviewer CI
+  interpreter. Contributor instructions now specify the same generation
+  environment, preventing help-format differences from failing the reference
+  check after regeneration on a newer Python.
+
 - Organism Orient packaging now explicitly includes the existing fold bridge in
   both distributions. The independent wheel guard checks required viewer assets
   and package initializers. The launcher discovery test includes the three new
