@@ -159,3 +159,10 @@ Original YAUVI code is staged under Apache-2.0; public release remains blocked
 until the third-party-asset audit passes. See [CITATION.cff](CITATION.cff) and
 [NOTICE.md](../NOTICE.md). Public source data and optional runtimes retain their own
 licenses and are never silently redistributed.
+
+## Local capability inspection
+
+The sidebar’s **Methods · capability and readiness** view reads existing method
+metadata and saved checks without running tools. See [capability readiness](docs/capability-readiness.md)
+for inputs, outputs, privacy limits and the public distribution’s two unavailable
+optional methods. This does not change scientific qualification or release gates.

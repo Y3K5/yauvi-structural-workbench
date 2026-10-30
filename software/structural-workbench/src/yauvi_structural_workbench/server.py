@@ -97,6 +97,18 @@ class Handler(BaseHTTPRequestHandler):
         except (OSError,TimeoutError):self._send(400,{'error':'request or artifact unavailable'})
         except Exception:self._send(500,{'error':'unexpected local request failure; inspect the case and job records before retrying'})
     def _get(self,p):
+        if p[:2]==['api','capabilities']:
+            from .capabilities import CapabilityView
+            values=parse_qs(urlsplit(self.path).query,keep_blank_values=True)
+            if set(values)-{'expected_sha256','analysis_id'} or any(len(v)!=1 for v in values.values()):
+                raise ValueError('Choose one capability identity and saved input case')
+            view=CapabilityView(self.server.store,reference_fetch_enabled=self.server.allow_reference_fetch)
+            if len(p)==2:
+                if values:raise ValueError('Select a method before choosing its inputs')
+                return self._send(200,view.catalogue())
+            if len(p)==3:
+                return self._send(200,view.detail(p[2],**{k:v[0] for k,v in values.items()}))
+            raise ValueError('Unknown capability route')
         if p[:1]==['organism-orient']:
             from memorient.surface_viewer import get_response
             response=get_response('/'+'/'.join(p[1:]),workbench=True)

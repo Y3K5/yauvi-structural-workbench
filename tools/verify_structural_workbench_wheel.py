@@ -30,6 +30,7 @@ FORBIDDEN_PARTS = {
 
 # Runtime assets are reviewed independently of setuptools declarations.
 REQUIRED_RUNTIME_ASSETS = {
+    'yauvi_structural_workbench/ui/capabilities.js',
     'memorient/fold_bridge.js',
     'memorient/membrane_bilayer.js',
     'memorient/catalogue/metadata.json',

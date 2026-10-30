@@ -5,6 +5,11 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Added read-only local capability inspection in the native Workbench. Structure
+  QC uses the existing registry; two optional methods are explicitly unavailable
+  in this distribution. Inspection performs no runtime probe, validation or job.
+  Invented controls and the independent wheel asset guard cover the new view.
+
 - Regenerated the CLI reference with Python 3.12 to match the reviewer CI
   interpreter. Contributor instructions now specify the same generation
   environment, preventing help-format differences from failing the reference
