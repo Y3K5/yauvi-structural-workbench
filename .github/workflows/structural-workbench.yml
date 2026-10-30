@@ -220,7 +220,7 @@ jobs:
           # not the private platform's campaign, cell-fate, oral-atlas, or
           # vaccine-orchestration modules. The packaged controller uses only
           # the structural service.
-          python -m pytest software/platform/tests/test_structural_workbench.py software/platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
+          python -m pytest software/platform/tests/test_structural_workbench.py software/platform/tests/test_record_qc_regressions.py software/platform/tests/test_qualification_v2.py -m "not network and not adapter" --tb=short
           python -m pytest software/platform/tests/test_biological_case.py -q
           python -m pytest software/sources/tests -m "not network and not adapter" --tb=short
       - name: Showcase bundle parses without a network build

@@ -166,3 +166,9 @@ The sidebar’s **Methods · capability and readiness** view reads existing meth
 metadata and saved checks without running tools. See [capability readiness](docs/capability-readiness.md)
 for inputs, outputs, privacy limits and the public distribution’s two unavailable
 optional methods. This does not change scientific qualification or release gates.
+
+## Record listing and local QC fixtures
+
+[Record/QC integrity](docs/record-qc-integrity.md) describes the public equivalents
+of the local empty-folder and QC-source safeguards, their invented regression
+checks, package requirements and the separate private Research boundary.

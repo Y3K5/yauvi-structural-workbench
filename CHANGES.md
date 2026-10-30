@@ -5,6 +5,12 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Added invented regressions for empty-folder case listings and QC run/input
+  custody. Independent wheel admission now requires the bundled QC reference and
+  StructQC typing marker. Existing public readers already ignore unwritten
+  folders and both source files already have local bytes; no private Research
+  layer, record migration, scientific-method change or new engine is included.
+
 - Added read-only local capability inspection in the native Workbench. Structure
   QC uses the existing registry; two optional methods are explicitly unavailable
   in this distribution. Inspection performs no runtime probe, validation or job.

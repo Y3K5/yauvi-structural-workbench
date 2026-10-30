@@ -23,6 +23,8 @@ PACKAGE_ROOTS = {
 
 # Test fixture is independent of the guard and distribution declarations.
 RUNTIME_ASSETS = (
+    'structqc/py.typed',
+    'yauvi_structural_workbench/examples/reference.fasta',
     'yauvi_structural_workbench/ui/capabilities.js',
     'memorient/fold_bridge.js',
     'memorient/membrane_bilayer.js',
