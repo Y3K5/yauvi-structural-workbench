@@ -36,6 +36,7 @@ SUITES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("sf-csa", ("software/sf-csa/tests",)),
     ("sf-csa fixture", ("tools/fixtures/sfcsa",)),
     ("structural workbench", ("software/platform/tests/test_structural_workbench.py", "software/platform/tests/test_record_qc_regressions.py")),
+    ("protein function records", ("software/platform/tests/test_function_records_public.py",)),
     ("qualification v2", ("software/platform/tests/test_qualification_v2.py",)),
     ("product hardening", ("software/platform/tests/test_product_hardening.py",)),
     ("workbench launcher", ("software/platform/tests/test_workbench_launch.py",)),

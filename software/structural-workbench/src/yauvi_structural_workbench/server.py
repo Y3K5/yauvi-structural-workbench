@@ -97,6 +97,10 @@ class Handler(BaseHTTPRequestHandler):
         except (OSError,TimeoutError):self._send(400,{'error':'request or artifact unavailable'})
         except Exception:self._send(500,{'error':'unexpected local request failure; inspect the case and job records before retrying'})
     def _get(self,p):
+        from .function_record_routes import get as function_get
+        if function_get(self,p):return
+        if p in [['function-records'],['studies.html']]:
+            return self._send(200,self.server.ui_assets['function-records.html'],'text/html')
         if p[:2]==['api','capabilities']:
             from .capabilities import CapabilityView
             values=parse_qs(urlsplit(self.path).query,keep_blank_values=True)
@@ -209,6 +213,10 @@ class Handler(BaseHTTPRequestHandler):
         if name not in self.server.ui_assets:return self._send(404,{'error':'not found'})
         return self._send(200,self.server.ui_assets[name],mimetypes.guess_type(name)[0] or 'application/octet-stream')
     def _mutate(self,p):
+        if p[:2]==['api','protein-functions']:
+            from .function_record_routes import mutate as function_mutate
+            function_mutate(self,p,self._body())
+            return
         store=self.server.store
         if p==['organism-orient','place']:
             from memorient.pdb_surface import build_scene

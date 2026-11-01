@@ -147,3 +147,7 @@ commitment, which those documents state directly rather than imply.
 Passing local tests is not JOSS acceptance and not external scientific
 validation. See [`CHANGES.md`](CHANGES.md) for how this distribution was assembled and what
 was corrected in the process.
+
+## Protein function records and unknown investigations
+
+[Use the local function-record capability](yauvi-structural-workbench/docs/protein-function-records.md) to inspect a supplied hash-pinned catalogue, explicit location/partner/function gaps and proposed investigations with native revision/checksum exports. No proteome or saved study is bundled, and no predictor executes. An explicitly invented offline example is provided for software review.
