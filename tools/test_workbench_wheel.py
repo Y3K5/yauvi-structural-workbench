@@ -23,6 +23,15 @@ PACKAGE_ROOTS = {
 
 # Test fixture is independent of the guard and distribution declarations.
 RUNTIME_ASSETS = (
+    'yauvi_platform/structural_workbench/function_catalogue.py',
+    'yauvi_platform/structural_workbench/function_records.py',
+    'yauvi_platform/structural_workbench/function_investigations.py',
+    'yauvi_platform/structural_workbench/function_record_store.py',
+    'yauvi_structural_workbench/function_record_routes.py',
+    'yauvi_structural_workbench/ui/protein-functions.js',
+    'yauvi_structural_workbench/ui/function-records.html',
+    'yauvi_structural_workbench/ui/function-records-host.js',
+    'yauvi_structural_workbench/ui/function-records.css',
     'structqc/py.typed',
     'yauvi_structural_workbench/examples/reference.fasta',
     'yauvi_structural_workbench/ui/capabilities.js',

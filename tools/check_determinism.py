@@ -162,6 +162,17 @@ KNOWN_GENERATORS: dict[str, list[tuple[str, str]]] = {
             "Import record ids. Not part of the public-case store run.",
         ),
     ],
+    "software/platform/src/yauvi_platform/structural_workbench/function_investigations.py": [
+        (
+            "sid='protein-function-'+secrets.token_hex(8)",
+            "Explicit proposal-save custody ids. These ids persist in native "
+            "study revisions and distinguish independently created plans; those "
+            "study records are not claimed to be byte-identical. The fixed "
+            "public structural case never saves an investigation. No scientific "
+            "seed is inferred, no study id is stripped from checksums, and no "
+            "comparison field is relaxed. Only this reviewed assignment is admitted.",
+        ),
+    ],
     "software/platform/src/yauvi_platform/structural_workbench/sources.py": [
         (
             "secrets.token_",
@@ -211,6 +222,27 @@ def logical_snapshot(files: dict[str, bytes]) -> dict[str, bytes]:
     return out
 
 
+def _reviewed_generator_line(line: str, rules: list[tuple[str, str]]) -> bool:
+    """Require each generator hit to begin inside a reviewed expression.
+
+    A reviewed expression must not mask a second, unrelated call on the same
+    line. Prefix rules already used by the audit keep their existing meaning.
+    """
+    spans = []
+    for snippet, _reason in rules:
+        if not snippet:
+            continue
+        start = 0
+        while True:
+            offset = line.find(snippet, start)
+            if offset < 0:
+                break
+            spans.append((offset, offset + len(snippet)))
+            start = offset + len(snippet)
+    return all(any(left <= hit.start() < right for left, right in spans)
+               for hit in GENERATOR_RE.finditer(line))
+
+
 def audit_generators() -> list[str]:
     """Search scientific source for generators. Unknown hits are failures."""
     unexpected: list[str] = []
@@ -229,7 +261,7 @@ def audit_generators() -> list[str]:
                     continue
                 seen.add(relative)
                 allowed = KNOWN_GENERATORS.get(relative, [])
-                if any(snippet in line for snippet, _reason in allowed):
+                if _reviewed_generator_line(line, allowed):
                     continue
                 unexpected.append(f"{relative}:{number}: {line.strip()}")
     missing = sorted(set(KNOWN_GENERATORS) - seen)
@@ -1099,6 +1131,33 @@ def _self_test_tree(
     return files
 
 
+def _self_test_generator_rules() -> bool:
+    path = "software/platform/src/yauvi_platform/structural_workbench/function_investigations.py"
+    rules = KNOWN_GENERATORS.get(path, [])
+    reviewed = "sid='protein-function-'+secrets.token_hex(8)"
+    if not _reviewed_generator_line(reviewed + "; record = {}", rules):
+        print("self-test failed: reviewed custody id was not admitted")
+        return False
+    unreviewed = [
+        reviewed.replace("hex(8)", "hex(16)"),
+        "other_id=secrets.token_hex(8)",
+        "rng=np.random.default_rng(0)",
+        reviewed + "; other_id=secrets.token_hex(8)",
+        reviewed + "; rng=np.random.default_rng(0)",
+    ]
+    if any(_reviewed_generator_line(line, rules) for line in unreviewed):
+        print("self-test failed: an unreviewed generator was admitted")
+        return False
+    if _reviewed_generator_line(reviewed, []):
+        print("self-test failed: an absent review was accepted")
+        return False
+    legacy = KNOWN_GENERATORS["software/platform/src/yauvi_platform/structural_workbench/store.py"]
+    if not _reviewed_generator_line("upload_id = os.urandom(8).hex()", legacy):
+        print("self-test failed: reviewed upload-id prefix semantics changed")
+        return False
+    return True
+
+
 def self_test() -> int:
     base = _self_test_tree("run-aaaaaaaaaaaaaaaa", "3.12.3", "not_available", "1.25")
     same = _self_test_tree("run-aaaaaaaaaaaaaaaa", "3.12.3", "not_available", "1.25")
@@ -1191,6 +1250,8 @@ def self_test() -> int:
     if code == 0 or not factor_bugs:
         print("self-test failed: a B-factor change was accepted alongside the run id")
         print_findings(findings)
+        return 1
+    if not _self_test_generator_rules():
         return 1
     unexpected = audit_generators()
     if unexpected:
