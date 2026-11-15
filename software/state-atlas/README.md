@@ -18,3 +18,6 @@ state-atlas run --manifest STRUCTURE_EVIDENCE.json --topology top.pdb \
 Reference sets must contain experimental active and inactive structures, state
 evidence, a maximum interpretable RMSD, and a between-state margin. StateAtlas
 reports unresolved frames in every denominator; it never hides them.
+When the best active and inactive RMSDs are exactly equal, the frame is
+unresolved even if the minimum margin is zero, and `best_reference` is null
+(blank in TSV) because neither state has a closer reference.

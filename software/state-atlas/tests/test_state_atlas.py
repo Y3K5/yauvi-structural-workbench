@@ -3,7 +3,10 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 import pytest
@@ -62,6 +65,43 @@ def test_unresolved_frames_remain_in_total_population(tmp_path):
     assert document["frames_total"] == 3
     assert document["frames_interpretable"] == 2
     assert document["populations"]["unresolved"]["fraction_total"] == pytest.approx(1 / 3, abs=1e-6)
+
+
+def test_equal_state_scores_are_unresolved_across_hash_seeds(tmp_path):
+    query, refs, manifest = setup(tmp_path)
+    (tmp_path / "inactive.pdb").write_text(pdb(BASE))
+    refs["decision_rules"]["min_margin_A"] = 0
+    script = """\
+import json, sys
+from pathlib import Path
+from state_atlas.core import analyze
+data = json.load(sys.stdin)
+doc = analyze(data['manifest'], data['refs'], reference_base=Path(data['base']),
+              structure_path=Path(data['query']), cluster_cutoff_A=0.5)
+print(json.dumps(doc['frame_metrics'], sort_keys=True))
+"""
+    source_path = str(Path(__file__).resolve().parents[1] / "src")
+    env = {**os.environ, "PYTHONPATH": os.pathsep.join(filter(None, [source_path, os.environ.get("PYTHONPATH")]))}
+    outputs = []
+    for seed in ("1", "2"):
+        result = subprocess.run(
+            [sys.executable, "-c", script],
+            input=json.dumps({"manifest": manifest, "refs": refs, "base": str(tmp_path), "query": str(query)}),
+            text=True, capture_output=True, check=True, env={**env, "PYTHONHASHSEED": seed},
+        )
+        outputs.append(json.loads(result.stdout))
+    assert outputs[0] == outputs[1]
+    assert all(row["call"] == "unresolved" and row["best_reference"] is None and row["margin_A"] == 0
+               for row in outputs[0])
+
+
+def test_zero_margin_still_classifies_distinct_state_scores(tmp_path):
+    query, refs, manifest = setup(tmp_path)
+    refs["decision_rules"]["min_margin_A"] = 0
+    doc = analyze(manifest, refs, reference_base=tmp_path, structure_path=query, cluster_cutoff_A=0.5)
+    assert [(row["call"], row["best_reference"]) for row in doc["frame_metrics"]] == [
+        ("active_like", "ACTIVE"), ("inactive_like", "INACTIVE"),
+    ]
 
 
 def test_one_sided_reference_set_is_refused(tmp_path):

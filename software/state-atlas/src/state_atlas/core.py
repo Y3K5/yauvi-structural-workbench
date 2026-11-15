@@ -517,9 +517,14 @@ def analyze(
             _placed, score = _superpose(frame[ref["query_indices"]], ref["coords"])
             scores[ref["id"]] = score
         by_state = {state: min((scores[r["id"]], r["id"]) for r in references if r["state"] == state) for state in STATES}
-        best_state = min(STATES, key=lambda state: by_state[state][0]); other_state = (STATES - {best_state}).pop()
+        best_state = min(STATES, key=lambda state: (by_state[state][0], state)); other_state = (STATES - {best_state}).pop()
         best_rmsd, best_ref = by_state[best_state]; margin = by_state[other_state][0] - best_rmsd
-        call = f"{best_state}_like" if best_rmsd <= max_rmsd and margin >= min_margin else "unresolved"
+        if margin == 0:
+            # Equal support for both states is not evidence for either one.
+            best_ref = None
+            call = "unresolved"
+        else:
+            call = f"{best_state}_like" if best_rmsd <= max_rmsd and margin >= min_margin else "unresolved"
         frame_rows.append({"frame": frame_index, "call": call, "best_reference": best_ref,
                            "best_rmsd_A": round(best_rmsd, 6), "margin_A": round(margin, 6),
                            **{f"rmsd_{key}_A": round(value, 6) for key, value in sorted(scores.items())}})
