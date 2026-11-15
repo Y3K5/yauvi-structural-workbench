@@ -274,7 +274,9 @@ jobs:
 
   paper-figures:
     name: Paper figures · archived-source replay · Linux x86_64 · py3.12.3
-    runs-on: ubuntu-latest
+    # Pinned to 24.04, not ubuntu-latest: the 26.04 image's setup-python
+    # manifest starts at CPython 3.12.13, and the figure run ids hash 3.12.3.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       # The published figure run ids include exact orchestration source hashes.
