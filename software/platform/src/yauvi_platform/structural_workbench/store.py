@@ -439,6 +439,8 @@ def analysis_definitions() -> list[dict[str, Any]]:
                 input_role['accepted_artifact_types']=[]
                 input_role['source_ids']=[]
             input_role.setdefault("template_id", None)
+    from .domain_orientation import definitions as domain_definitions
+    definitions.extend(domain_definitions())
     return definitions
 
 
@@ -620,10 +622,13 @@ def tool_readiness(workspace: str | Path) -> list[dict[str, Any]]:
                                 "known_limitations": ["Hydrogen bonds, salt bridges, clashes, and metal coordination are geometry proxies.",
                                                       "Imported ClusPro results are read-only and are never uploaded by this module."]}]
     from .membrane_workflow import TYPES as MEMBRANE_TYPES, readiness as membrane_readiness
+    from .domain_orientation import TYPE as DOMAIN_TYPE, readiness as domain_readiness
     rows.extend(membrane_readiness())
+    rows.extend(domain_readiness())
     for definition in analysis_definitions():
         tool = definition["analysis_type"]
-        if tool in MEMBRANE_TYPES:continue
+        if tool in MEMBRANE_TYPES or tool == DOMAIN_TYPE:
+            continue
         missing = [name for name in required[tool] if runtimes[name] == "missing"]
         state = "blocked_missing_runtime" if missing else definition["readiness"]
         rows.append({
@@ -1306,6 +1311,15 @@ class StructuralAnalysisStore:
             except (ValueError,OSError,KeyError,TypeError,RuntimeError,ImportError,subprocess.SubprocessError) as exc:
                 ok,detail=False,str(exc)
             checks.append({'name':'evidence:membrane_profile','category':'scientific_evidence','ok':ok,'detail':detail})
+        if manifest["analysis_type"] == "domain_membrane_orientation" and inputs.get("structure"):
+            from .domain_orientation import preflight as domain_preflight
+            try:
+                result = domain_preflight(self, manifest, inputs)
+                ok, detail = True, f"{result['c_alpha_residues']} usable C-alpha residues"
+            except (ValueError, OSError, ImportError) as exc:
+                ok, detail = False, str(exc)
+            checks.append({"name": "evidence:domain_orientation_input", "category": "identity_mapping",
+                           "ok": ok, "detail": detail})
         valid = all(item["ok"] for item in checks)
         record = {
             "schema_version": SCHEMA_VERSION, "contract_id": "analysis_preflight",
@@ -1594,6 +1608,9 @@ class StructuralAnalysisStore:
                         on_progress: Any | None = None) -> tuple[list[dict[str, Any]], int]:
         inputs = self._materialize_inputs(self._inputs_by_role(manifest), run_dir); params = manifest.get("parameters", {})
         tool = manifest["analysis_type"]; steps: list[dict[str, Any]] = []; codes: list[int] = []
+        if tool == "domain_membrane_orientation":
+            from .domain_orientation import execute
+            return execute(self, manifest, inputs, run_dir, cancel_event, on_process, on_progress)
         from .membrane_workflow import TYPES as MEMBRANE_TYPES
         if tool in MEMBRANE_TYPES:
             from .membrane_workflow import execute
@@ -1765,6 +1782,9 @@ class StructuralAnalysisStore:
 
     def _source_digests(self, analysis_type: str) -> dict[str, str | None]:
         """Bind a run to the exact scientific source trees that can affect it."""
+        if analysis_type == "domain_membrane_orientation":
+            from .domain_orientation import source_identity
+            return {**source_identity(), "workbench_orchestrator": _tree_sha(Path(__file__).resolve().parent)}
         readiness = {row["analysis_type"]: row for row in tool_readiness(self.workspace) if not row.get("labs")}
         tools = [analysis_type]
         if analysis_type != "structure_qc":
