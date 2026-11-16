@@ -23,7 +23,7 @@ CLIS: list[tuple[str, str, list[str]]] = [
      ["describe", "validate", "fetch", "run"]),
     ("memorient", "Membrane orientation, receptor placement, local exploration and reviewed preparation.",
      ["contexts", "describe", "orient", "run", "validate", "fetch", "surface", "viewer",
-      "place-pdb", "lipid-plan", "build-ecoli-om", "md-prepare", "result-bundle"]),
+      "place-pdb", "lipid-plan", "build-ecoli-om", "md-prepare", "result-bundle", "domain-orient"]),
     ("state-atlas", "Conformational-state resemblance against declared references.",
      ["describe", "fetch", "validate", "run"]),
     ("site-context", "Functional-site roles, cofactors, ligands, and pockets.",

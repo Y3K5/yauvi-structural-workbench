@@ -360,6 +360,20 @@ def _cmd_result_bundle(args):
         return 2
 
 
+def _cmd_domain_orient(args):
+    """Exit 0: a membrane core was found and a pose written; 1: no core found; 2: input error."""
+    from .domain_report import run
+    try:
+        document = run(args.pdb, args.out, chain=args.chain, half=args.half, skip_n=args.skip_n)
+    except (OSError, ValueError) as exc:
+        print(f"memorient domain-orient: {exc}", file=sys.stderr)
+        return 2
+    result = document["result"]
+    print(json.dumps({"method": result.get("method"), "confidence": result.get("confidence"),
+                      "n_core": result.get("n_core"), "outputs": document["outputs"]}, indent=1))
+    return 0 if result.get("method") not in (None, "none") else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="memorient", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="command", required=True)
@@ -426,6 +440,14 @@ def build_parser() -> argparse.ArgumentParser:
     po.add_argument("--out-html", default=None, help="write self-contained 3Dmol.js HTML viewer here")
     po.add_argument("--max-rows", type=int, default=40, help="max residue rows to print (0 = all)")
     po.set_defaults(func=_cmd_orient)
+
+    pdo = sub.add_parser("domain-orient", help="domain-aware C-alpha orientation estimate (writes four files)")
+    pdo.add_argument("pdb", help="path to a local PDB file (first model is used)")
+    pdo.add_argument("--out", required=True, help="new folder for the output files (must not exist)")
+    pdo.add_argument("--chain", default=None, help="restrict to one chain id")
+    pdo.add_argument("--half", type=float, default=None, help="membrane half-thickness in A (default: method's own)")
+    pdo.add_argument("--skip-n", type=int, default=0, help="leading residues to ignore for the side vote (e.g. a signal peptide)")
+    pdo.set_defaults(func=_cmd_domain_orient)
 
     pr = sub.add_parser("run", help="common-contract run with deterministic output names")
     pr.add_argument("--structure", required=True, help="path to a PDB or mmCIF file")

@@ -46,7 +46,7 @@ def test_definitions_register_public_tasks_and_display_metrics():
     assert [item["analysis_type"] for item in definitions] == [
         "structure_qc", "membrane_orientation", "conformational_state",
         "functional_site_state", "assembly_interface", "sf_csa", "membrane_surface_placement", "membrane_preparation", "membrane_result_import", "region_explorer", "bio_orient",
-        "dockprep", "pose_evidence",
+        "dockprep", "pose_evidence", "domain_membrane_orientation",
     ]
     assert metric_definitions()["rmsd_A"]["decimals"] == 3
     assert all(item["claim_ceiling"] for item in definitions)

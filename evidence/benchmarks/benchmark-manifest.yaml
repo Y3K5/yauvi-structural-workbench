@@ -35,6 +35,13 @@ workflows:
     historical_v1_case_state: passed
     qualification_v2_state: source_adoption_required
 experimental_workflows:
+  domain_membrane_orientation:
+    qualification_state: not_qualified
+    release_blocking: false
+    qualification_panel: null
+    software_checks: software/structural-workbench/tests/test_domain_orientation_workflow.py
+    public_example_check: software/membrane-orientor/memorient/tests/test_domain_report.py
+    notes: Invented-coordinate software controls only. Independent reference orientation remains open.
   region_explorer:
     qualification_state: not_qualified
     release_blocking: false

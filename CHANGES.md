@@ -5,6 +5,10 @@ development tree, recorded so the provenance of the published state is explicit.
 
 ## Unreleased
 
+- Added experimental domain-aware MemOrient estimates for supplied PDB coordinates,
+  with a CLI command, local Workbench workflow, membrane overlay, and residue-zone report.
+  The workflow remains outside the Mark 1 scientific qualification scope.
+
 - Added invented regressions for empty-folder case listings and QC run/input
   custody. Independent wheel admission now requires the bundled QC reference and
   StructQC typing marker. Existing public readers already ignore unwritten

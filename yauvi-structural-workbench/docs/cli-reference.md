@@ -122,11 +122,11 @@ options:
 
 ```
 usage: yauvi analysis inputs [-h] --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence,domain_membrane_orientation}
 
 options:
   -h, --help            show this help message and exit
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence,domain_membrane_orientation}
                         Analysis type from 'analysis types'.
 ```
 
@@ -134,13 +134,13 @@ options:
 
 ```
 usage: yauvi analysis create [-h] --analysis ANALYSIS --type
-                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+                             {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence,domain_membrane_orientation}
                              --question QUESTION [--subject-id SUBJECT_ID]
 
 options:
   -h, --help            show this help message and exit
   --analysis ANALYSIS   Local case identifier.
-  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence}
+  --type {structure_qc,membrane_orientation,conformational_state,functional_site_state,assembly_interface,sf_csa,membrane_surface_placement,membrane_preparation,membrane_result_import,region_explorer,bio_orient,dockprep,pose_evidence,domain_membrane_orientation}
                         Analysis type from 'analysis types'.
   --question QUESTION
   --subject-id SUBJECT_ID
@@ -342,13 +342,13 @@ Membrane orientation, receptor placement, local exploration and reviewed prepara
 
 ```
 usage: memorient [-h]
-                 {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch}
+                 {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,domain-orient,run,validate,fetch}
                  ...
 
 ``memorient`` command line.
 
 positional arguments:
-  {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,run,validate,fetch}
+  {result-bundle,md-prepare,build-ecoli-om,lipid-plan,viewer,place-pdb,surface,contexts,describe,orient,domain-orient,run,validate,fetch}
     result-bundle       copy a verified legacy result to a portable local
                         bundle; no simulation
     md-prepare          solvate and neutralize reviewed inputs, minimize
@@ -362,6 +362,8 @@ positional arguments:
     contexts            list membrane contexts
     describe            the module interface, or one membrane context if named
     orient              orient a structure and label residues
+    domain-orient       domain-aware C-alpha orientation estimate (writes four
+                        files)
     run                 common-contract run with deterministic output names
     validate            check an input structure without orienting it
     fetch               what raw files this module needs, and where from
@@ -544,6 +546,25 @@ options:
   --run RUN
   --display DISPLAY
   --out OUT
+```
+
+### `memorient domain-orient`
+
+```
+usage: memorient domain-orient [-h] --out OUT [--chain CHAIN] [--half HALF]
+                               [--skip-n SKIP_N]
+                               pdb
+
+positional arguments:
+  pdb              path to a local PDB file (first model is used)
+
+options:
+  -h, --help       show this help message and exit
+  --out OUT        new folder for the output files (must not exist)
+  --chain CHAIN    restrict to one chain id
+  --half HALF      membrane half-thickness in A (default: method's own)
+  --skip-n SKIP_N  leading residues to ignore for the side vote (e.g. a signal
+                   peptide)
 ```
 
 

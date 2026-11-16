@@ -18,3 +18,5 @@ load_structure ─▶ canonicalize ─▶ compute_sasa ─┐
                                                  ▼
                         viz: display_oriented / write_3dmol_html / write_pymol_script
 ```
+
+- [Domain-aware membrane orientation (experimental)](DOMAIN_ORIENT.md)

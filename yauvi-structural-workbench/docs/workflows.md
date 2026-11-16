@@ -23,6 +23,24 @@ spans and remains experimental; unsupported sidedness is unresolved. Neither
 path proves intact-cell exposure. OPM/PPM remains an external qualification
 reference.
 
+
+### Domain-aware membrane orientation (experimental)
+
+Select **Membrane orientation · domain-aware estimate** for a supplied local
+PDB structure. An optional chain selects the coordinates used for the estimate.
+A leading-residue skip affects the side vote. The workflow requires the
+experimental acknowledgement.
+
+The run records the estimated frame, residue zones and interpretation limits.
+When a membrane core is found, the Workbench shows the oriented structure and
+slab. A run without a detected core is scientifically incomplete. The estimate
+does not establish native sidedness, exposure, function or a measured membrane
+position. Independent reference review remains open.
+
+The standalone command and output files are documented in the
+[domain-aware MemOrient guide](../../software/membrane-orientor/memorient/docs/DOMAIN_ORIENT.md).
+
+
 ## Conformational resemblance
 
 Aligns query coordinates or trajectory frames to at least two independently
